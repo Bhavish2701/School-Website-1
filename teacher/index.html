@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Portal | Sri Vidya E.M High School</title>
+  <meta name="description" content="Dedicated Teacher and Classroom Management Portal for Sri Vidya E.M High School faculty.">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Teacher Portal Stylesheet -->
+  <link rel="stylesheet" href="../css/teacher.css">
+</head>
+<body>
+  <div class="portal-layout">
+
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <!-- School Brand Header -->
+      <div class="sidebar-brand">
+        <a href="../index.html" class="brand-link" title="Return to Public Website">
+          <img src="../assets/images/school-logo.jpg" alt="Logo" class="brand-logo" onerror="this.src="../images/logo.png'">
+          <div>
+            <div class="brand-name">SRI VIDYA</div>
+            <div class="brand-sub">Teacher Portal</div>
+            <div class="brand-est">Est. 2017</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Teacher Profile Pill -->
+      <div class="teacher-profile-pill">
+        <div class="teacher-avatar-circle">A</div>
+        <div>
+          <div class="teacher-info-name">Ms. Anjali</div>
+          <div class="teacher-info-role">Class Teacher – Grade 8A</div>
+        </div>
+      </div>
+
+      <!-- Navigation Modules Menu -->
+      <nav class="sidebar-menu" id="teacherSidebarMenu">
+        <div class="nav-section-title">TEACHER WORKSPACE</div>
+
+        <!-- 1. Dashboard -->
+        <div class="nav-item active" data-module="dashboard">
+          <a href="#dashboard" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-chalkboard-user"></i></span>
+            <span class="nav-text">Dashboard</span>
+            <span class="nav-badge">Today</span>
+          </a>
+        </div>
+
+        <!-- 2. My Classes -->
+        <div class="nav-item" data-module="my-classes">
+          <a href="#my-classes" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-shapes"></i></span>
+            <span class="nav-text">My Classes</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#class-8a" class="nav-sub-link active" data-sub="8a"><i class="fa-solid fa-star text-amber"></i> Class 8A (Class Teacher)</a>
+            <a href="#class-9b" class="nav-sub-link" data-sub="9b">Class 9B (Maths)</a>
+            <a href="#class-7c" class="nav-sub-link" data-sub="7c">Class 7C (Maths)</a>
+          </div>
+        </div>
+
+        <!-- 3. Students -->
+        <div class="nav-item" data-module="students">
+          <a href="#students" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+            <span class="nav-text">Students</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#students-list" class="nav-sub-link active" data-sub="list">Student List</a>
+            <a href="#students-profile" class="nav-sub-link" data-sub="profile">Student Profile</a>
+            <a href="#students-attendance" class="nav-sub-link" data-sub="att-history">Attendance</a>
+            <a href="#students-performance" class="nav-sub-link" data-sub="perf">Performance</a>
+          </div>
+        </div>
+
+        <!-- 4. Attendance -->
+        <div class="nav-item" data-module="attendance">
+          <a href="#attendance" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span>
+            <span class="nav-text">Attendance</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#attendance-mark" class="nav-sub-link active" data-sub="mark">Mark Attendance</a>
+            <a href="#attendance-history" class="nav-sub-link" data-sub="history">Attendance History</a>
+            <a href="#attendance-report" class="nav-sub-link" data-sub="report">Attendance Report</a>
+          </div>
+        </div>
+
+        <!-- 5. Academics -->
+        <div class="nav-item" data-module="academics">
+          <a href="#academics" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
+            <span class="nav-text">Academics</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#academics-assignments" class="nav-sub-link active" data-sub="assignments">Assignments</a>
+            <a href="#academics-homework" class="nav-sub-link" data-sub="homework">Homework</a>
+            <a href="#academics-materials" class="nav-sub-link" data-sub="materials">Study Materials</a>
+            <a href="#academics-lessonplans" class="nav-sub-link" data-sub="plans">Lesson Plans</a>
+            <a href="#academics-syllabus" class="nav-sub-link" data-sub="syllabus">Syllabus</a>
+          </div>
+        </div>
+
+        <!-- 6. Examinations -->
+        <div class="nav-item" data-module="examinations">
+          <a href="#examinations" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-file-pen"></i></span>
+            <span class="nav-text">Examinations</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#exams-create" class="nav-sub-link active" data-sub="create">Create Exam</a>
+            <a href="#exams-entermarks" class="nav-sub-link" data-sub="enter-marks">Enter Marks</a>
+            <a href="#exams-gradestudents" class="nav-sub-link" data-sub="grade">Grade Students</a>
+            <a href="#exams-results" class="nav-sub-link" data-sub="results">Results</a>
+          </div>
+        </div>
+
+        <!-- 7. Timetable -->
+        <div class="nav-item" data-module="timetable">
+          <a href="#timetable" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-text">Timetable</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#timetable-my" class="nav-sub-link active" data-sub="my">My Timetable</a>
+            <a href="#timetable-class" class="nav-sub-link" data-sub="class">Class Timetable</a>
+          </div>
+        </div>
+
+        <div class="nav-section-title">CONNECT & LEAVE</div>
+
+        <!-- 8. Communication -->
+        <div class="nav-item" data-module="communication">
+          <a href="#communication" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-comments"></i></span>
+            <span class="nav-text">Communication</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#comm-class" class="nav-sub-link active" data-sub="class-announcements">Class Announcements</a>
+            <a href="#comm-parents" class="nav-sub-link" data-sub="parent-messages">Parent Messages <span class="nav-badge" style="background: var(--color-accent-amber); color:#fff;">2 New</span></a>
+            <a href="#comm-notifications" class="nav-sub-link" data-sub="notifications">Notifications</a>
+          </div>
+        </div>
+
+        <!-- 9. Leave -->
+        <div class="nav-item" data-module="leave">
+          <a href="#leave" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-minus"></i></span>
+            <span class="nav-text">Leave</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#leave-apply" class="nav-sub-link active" data-sub="apply">Apply Leave</a>
+            <a href="#leave-status" class="nav-sub-link" data-sub="status">Leave Status</a>
+          </div>
+        </div>
+
+        <!-- 10. Reports -->
+        <div class="nav-item" data-module="reports">
+          <a href="#reports" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span>
+            <span class="nav-text">Reports</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#reports-performance" class="nav-sub-link active" data-sub="student-perf">Student Performance</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <a href="../management" class="portal-switch-link" title="Open Management Portal (Principals)">
+          <i class="fa-solid fa-building-columns"></i> Admin Portal
+        </a>
+        <a href="../student" class="portal-switch-link" title="Open Student Academic Dashboard">
+          <i class="fa-solid fa-graduation-cap"></i> Student
+        </a>
+        <a href="../index.html" class="portal-switch-link" title="Return to School Website">
+          <i class="fa-solid fa-globe"></i> Website
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN TEACHER PORTAL CONTAINER
+         ========================================== -->
+    <div class="portal-main">
+
+      <!-- Top Header -->
+      <header class="portal-header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" id="mobileSidebarToggle" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <div class="header-breadcrumb">
+            <span class="crumb-school">Sri Vidya E.M High School</span>
+            <i class="fa-solid fa-chevron-right crumb-sep"></i>
+            <span class="crumb-page" id="teacherCurrentPageCrumb">Dashboard</span>
+          </div>
+
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="teacherSearchInput" placeholder="Search student in Grade 8A, 9B, 7C..." onkeyup="teacherApp.filterDashboardStudents()">
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Quick Role/Class Switcher -->
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">
+            Active: <strong class="text-primary">Ms. Anjali (Mathematics)</strong>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-moon theme-icon" id="themeIcon"></i>
+          </button>
+
+          <!-- Notifications -->
+          <button class="header-action-btn" onclick="teacherApp.navigateTo('communication', 'notifications')" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge">3</span>
+          </button>
+
+          <!-- Return to Management Portal -->
+          <a href="../management" class="btn-nav-mgmt" title="Switch to Executive Management Portal">
+            <i class="fa-solid fa-shield-halved"></i> Management Portal
+          </a>
+
+          <!-- Quick Link to Student Portal -->
+          <a href="../student" class="btn-nav-mgmt" style="background: rgba(37, 99, 235, 0.1); color: #2563EB; border-color: rgba(37, 99, 235, 0.25);" title="Switch to Student Academic Dashboard">
+            <i class="fa-solid fa-graduation-cap"></i> Student Portal
+          </a>
+        </div>
+      </header>
+
+      <!-- Dynamic Content Views -->
+      <main class="portal-content" id="teacherMainContent">
+
+        <!-- =================================================================
+             MODULE 1: DASHBOARD (EXACT USER WIREFRAME)
+             ================================================================= -->
+        <section class="portal-view active" id="view-dashboard">
+
+          <!-- Header Greeting: Good Morning, Ms. Anjali | Class Teacher – Grade 8A -->
+          <div class="teacher-welcome-banner">
+            <div>
+              <div class="tw-badge"><i class="fa-solid fa-award"></i> Senior Faculty • Mathematics</div>
+              <h1 class="tw-title">Good Morning, Ms. Anjali</h1>
+              <div class="tw-subtitle">Class Teacher – Grade 8A</div>
+              <div class="tw-meta-pills">
+                <span class="tw-pill"><i class="fa-regular fa-calendar"></i> Saturday, Sept 19, 2026</span>
+                <span class="tw-pill"><i class="fa-solid fa-school"></i> Academic Term 1 (2025–26)</span>
+                <span class="tw-pill active"><i class="fa-solid fa-circle-check"></i> Next Class: 09:00 AM (8A)</span>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="teacherApp.openModal('markAttendanceModal')" style="background: rgba(255,255,255,0.2); border: 1.5px solid #fff;">
+                <i class="fa-solid fa-clipboard-user"></i> Quick Mark 8A Attendance
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Metric Cards:
+               [ My Classes: 4 ] [ Students: 152 ] [ Attendance: 96% ] [ Pending: 8 Tasks ] -->
+          <div class="metrics-quad">
+            
+            <div class="metric-card" onclick="teacherApp.navigateTo('my-classes')">
+              <span class="metric-label">My Classes</span>
+              <div class="metric-value text-primary">4</div>
+              <span class="metric-sub">8A (Lead), 9B, 7C, 10A Remedial</span>
+            </div>
+
+            <div class="metric-card" onclick="teacherApp.navigateTo('students')">
+              <span class="metric-label">Students</span>
+              <div class="metric-value">152</div>
+              <span class="metric-sub">Across all 4 allocated sections</span>
+            </div>
+
+            <div class="metric-card" onclick="teacherApp.navigateTo('attendance')">
+              <span class="metric-label">Attendance</span>
+              <div class="metric-value text-emerald">96%</div>
+              <span class="metric-sub">Grade 8A Daily Attendance Rate</span>
+            </div>
+
+            <div class="metric-card" onclick="teacherApp.scrollToTasks()">
+              <span class="metric-label">Pending</span>
+              <div class="metric-value text-amber" id="pendingTasksCount">8 Tasks</div>
+              <span class="metric-sub">2 Due today • 6 This week</span>
+            </div>
+
+          </div>
+
+          <!-- Today's Classes Section:
+               09:00 Mathematics – 8A
+               10:00 Mathematics – 9B
+               12:00 Mathematics – 7C -->
+          <div class="today-classes-card">
+            <div class="card-header-bar">
+              <h2><i class="fa-solid fa-clock text-primary"></i> Today's Classes Schedule</h2>
+              <span class="portal-badge badge-primary">3 Scheduled Classes Today</span>
+            </div>
+
+            <div class="class-schedule-list">
+              <!-- Class 1: 09:00 Mathematics – 8A -->
+              <div class="schedule-item current">
+                <div class="schedule-time-block">
+                  <div class="schedule-time-badge">09:00</div>
+                  <div class="schedule-details">
+                    <h4>Mathematics – Class 8A (Class Teacher Period)</h4>
+                    <p>Room 204 • Topic: Linear Equations in One Variable (Exercise 2.3)</p>
+                  </div>
+                </div>
+                <div class="schedule-actions">
+                  <button class="btn btn-primary btn-sm" onclick="teacherApp.openModal('markAttendanceModal')">
+                    <i class="fa-solid fa-check"></i> Mark Attendance
+                  </button>
+                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'homework')">
+                    <i class="fa-solid fa-file-pen"></i> Assign Homework
+                  </button>
+                </div>
+              </div>
+
+              <!-- Class 2: 10:00 Mathematics – 9B -->
+              <div class="schedule-item">
+                <div class="schedule-time-block">
+                  <div class="schedule-time-badge">10:00</div>
+                  <div class="schedule-details">
+                    <h4>Mathematics – Class 9B</h4>
+                    <p>Room 208 • Topic: Polynomials & Factor Theorem</p>
+                  </div>
+                </div>
+                <div class="schedule-actions">
+                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'materials')">
+                    <i class="fa-solid fa-book-open"></i> View Materials
+                  </button>
+                </div>
+              </div>
+
+              <!-- Class 3: 12:00 Mathematics – 7C -->
+              <div class="schedule-item">
+                <div class="schedule-time-block">
+                  <div class="schedule-time-badge">12:00</div>
+                  <div class="schedule-details">
+                    <h4>Mathematics – Class 7C</h4>
+                    <p>Room 112 • Topic: Fractions and Decimals Multiplication Drills</p>
+                  </div>
+                </div>
+                <div class="schedule-actions">
+                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'plans')">
+                    <i class="fa-solid fa-list-check"></i> Lesson Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-Column Split: [Pending Work | Announcements] -->
+          <div class="teacher-two-col" id="dashboardTwoCol">
+            
+            <!-- Column 1: Pending Work -->
+            <div class="task-list-card">
+              <div class="card-header-bar">
+                <h3><i class="fa-solid fa-list-check text-amber"></i> Pending Work</h3>
+                <span class="portal-badge badge-warning" id="taskBadgeCount">8 Tasks</span>
+              </div>
+              <div class="tasks-container" id="tasksContainer">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
+            <!-- Column 2: Announcements -->
+            <div class="announcements-card">
+              <div class="card-header-bar">
+                <h3><i class="fa-solid fa-bullhorn text-primary"></i> Announcements</h3>
+                <span class="portal-badge badge-primary">School Bulletins</span>
+              </div>
+              <div class="announcements-container">
+                
+                <div class="announcement-item">
+                  <div class="announcement-title">Quarterly Examination Timetable Released</div>
+                  <div class="announcement-body">Quarterly examinations commence Sept 24. Teachers must complete syllabus and submit question papers to Vice Principal by Monday.</div>
+                  <div class="announcement-meta"><i class="fa-regular fa-clock"></i> Yesterday from Office • High Priority</div>
+                </div>
+
+                <div class="announcement-item">
+                  <div class="announcement-title">Swachh Vidya Drive & Gandhi Jayanti</div>
+                  <div class="announcement-body">Class Teachers of Grades 6–10 are requested to select 5 student leaders for cleanliness drive coordination on Oct 2.</div>
+                  <div class="announcement-meta"><i class="fa-regular fa-clock"></i> 2 days ago from Principal</div>
+                </div>
+
+                <div class="announcement-item">
+                  <div class="announcement-title">Staff Coordination Meeting</div>
+                  <div class="announcement-body">All High School mathematics and science faculty meeting with Sri Navva Anand (VP) in Conference Hall at 04:00 PM.</div>
+                  <div class="announcement-meta"><i class="fa-regular fa-clock"></i> Sept 16 from Academic Cell</div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================================
+             MODULE 2: MY CLASSES (8A, 9B, 7C)
+             ================================================================= -->
+        <section class="portal-view" id="view-my-classes">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-shapes text-primary"></i> My Classes Management</h2>
+            <button class="btn btn-primary" onclick="teacherApp.openModal('createHomeworkModal')">
+              <i class="fa-solid fa-plus"></i> Post Homework
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchClassTab('8a')">Class 8A (Class Teacher - 42 Students)</button>
+            <button class="tab-btn" onclick="teacherApp.switchClassTab('9b')">Class 9B (Subject - 40 Students)</button>
+            <button class="tab-btn" onclick="teacherApp.switchClassTab('7c')">Class 7C (Subject - 38 Students)</button>
+          </div>
+
+          <div id="classOverviewContent">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 3: STUDENTS
+             (Student List, Profile, Attendance, Performance)
+             ================================================================= -->
+        <section class="portal-view" id="view-students">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-user-graduate text-primary"></i> Student Roster & Performance</h2>
+            <div class="filter-group">
+              <select id="studentClassFilterSelect" class="form-control" onchange="teacherApp.filterStudentList()">
+                <option value="8A">Filter: Class 8A (My Section)</option>
+                <option value="9B">Filter: Class 9B</option>
+                <option value="7C">Filter: Class 7C</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('students', 'list')">Student List</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'profile')">Student Dossiers</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'att-history')">Attendance History</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'perf')">Academic Marks</button>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table" id="teacherStudentsTable">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Class</th>
+                  <th>Parent Contact</th>
+                  <th>Attendance %</th>
+                  <th>Maths Score</th>
+                  <th>Grade</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="teacherStudentsTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 4: ATTENDANCE
+             (Mark Attendance, Attendance History, Report)
+             ================================================================= -->
+        <section class="portal-view" id="view-attendance">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-clipboard-check text-primary"></i> Classroom Attendance Register</h2>
+            <div>
+              <button class="btn btn-secondary" onclick="teacherApp.markAllPresent()">
+                <i class="fa-solid fa-check-double"></i> Mark All Present
+              </button>
+              <button class="btn btn-primary" onclick="teacherApp.saveDailyAttendance()">
+                <i class="fa-solid fa-floppy-disk"></i> Submit Daily Register
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('attendance', 'mark')">Mark Attendance (Today: Class 8A)</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'history')">Monthly Attendance History</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'report')">Absentee Summary</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-bar">
+              <div>
+                <h3>Class 8A Daily Register — Sept 19, 2026</h3>
+                <p class="text-muted text-sm mt-1">Total Enrolled: 42 Students • Class Teacher: Ms. Anjali</p>
+              </div>
+              <div id="attendanceLiveCounter">
+                <span class="portal-badge badge-success" id="presentCountBadge">Present: 40</span>
+                <span class="portal-badge badge-danger" id="absentCountBadge">Absent: 2</span>
+              </div>
+            </div>
+
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Status Selector (Click to Toggle)</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceMarkingTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 5: ACADEMICS
+             (Assignments, Homework, Study Materials, Lesson Plans, Syllabus)
+             ================================================================= -->
+        <section class="portal-view" id="view-academics">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-book text-primary"></i> Academic Materials & Homework</h2>
+            <button class="btn btn-primary" onclick="teacherApp.openModal('createHomeworkModal')">
+              <i class="fa-solid fa-plus"></i> New Homework / Assignment
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('academics', 'assignments')">Assignments (4 Active)</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'homework')">Daily Homework Log</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'materials')">Study Materials & PDFs</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'plans')">Lesson Plans</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'syllabus')">Syllabus Tracker</button>
+          </div>
+
+          <div id="homeworkFeedContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 6: EXAMINATIONS
+             (Create Exam, Enter Marks, Grade Students, Results)
+             ================================================================= -->
+        <section class="portal-view" id="view-examinations">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-file-pen text-primary"></i> Examination & Marks Entry</h2>
+            <div>
+              <button class="btn btn-primary" onclick="teacherApp.saveMarks()">
+                <i class="fa-solid fa-floppy-disk"></i> Save & Lock Marks
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('examinations', 'enter-marks')">Enter Marks: Class 8A (Unit Test 2 - Maths)</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'create')">Create Assessment</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'grade')">Grade Distributions</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'results')">Class Results Dossier</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-bar">
+              <div>
+                <h3>Mathematics Unit Test 2 — Class 8A (Max Marks: 50)</h3>
+                <p class="text-muted text-sm mt-1">Enter marks below. Percentage and CBSE/State Grade calculate automatically.</p>
+              </div>
+              <span class="portal-badge badge-primary">Term 1 Assessment</span>
+            </div>
+
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll #</th>
+                    <th>Student Name</th>
+                    <th>Marks Scored (out of 50)</th>
+                    <th>Percentage</th>
+                    <th>Grade</th>
+                    <th>Teacher Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="marksEntryTableBody">
+                  <!-- Populated via JS with editable inputs -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 7: TIMETABLE
+             (My Timetable, Class Timetable)
+             ================================================================= -->
+        <section class="portal-view" id="view-timetable">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-calendar-days text-primary"></i> Teaching Timetable</h2>
+            <button class="btn btn-secondary" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Print My Schedule
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('timetable', 'my')">My Weekly Teaching Schedule</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('timetable', 'class')">Class 8A Full Timetable</button>
+          </div>
+
+          <div class="card p-4">
+            <h3>Weekly Teaching Periods for Ms. Anjali</h3>
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Time / Period</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>09:00 - 09:45 (P1)</strong></td>
+                    <td><span class="portal-badge badge-primary">Class 8A (Maths)</span></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-primary">Class 8A (Maths)</span></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-primary">Class 8A (Maths)</span></td>
+                    <td>Assembly / Math Club</td>
+                  </tr>
+                  <tr>
+                    <td><strong>09:45 - 10:30 (P2)</strong></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-warning">Class 9B (Maths)</span></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-warning">Class 9B (Maths)</span></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-warning">Class 9B (Maths)</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>10:45 - 11:30 (P3)</strong></td>
+                    <td>Remedial Clinic</td>
+                    <td>Free / Prep</td>
+                    <td>Remedial Clinic</td>
+                    <td>Free / Prep</td>
+                    <td>Library Duty</td>
+                    <td>Free / Prep</td>
+                  </tr>
+                  <tr>
+                    <td><strong>11:30 - 12:15 (P4)</strong></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-success">Class 7C (Maths)</span></td>
+                    <td>Free / Prep</td>
+                    <td><span class="portal-badge badge-success">Class 7C (Maths)</span></td>
+                    <td><span class="portal-badge badge-success">Class 7C (Maths)</span></td>
+                    <td>Weekly Review</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 8: COMMUNICATION
+             (Class Announcements, Parent Messages, Notifications)
+             ================================================================= -->
+        <section class="portal-view" id="view-communication">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-comments text-primary"></i> Parent & Classroom Communication</h2>
+            <button class="btn btn-primary" onclick="teacherApp.openModal('postAnnouncementModal')">
+              <i class="fa-solid fa-bullhorn"></i> Post Class Notice
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('communication', 'class-announcements')">Class 8A Notices</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'parent-messages')">Parent Messages (2)</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'notifications')">Staff Circulars</button>
+          </div>
+
+          <div id="parentMessagesContainer">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 9: LEAVE
+             (Apply Leave, Leave Status)
+             ================================================================= -->
+        <section class="portal-view" id="view-leave">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-calendar-minus text-primary"></i> Teacher Leave Management</h2>
+            <button class="btn btn-primary" onclick="teacherApp.openModal('applyLeaveModal')">
+              <i class="fa-solid fa-plus"></i> Apply for Leave
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="teacherApp.switchSubTab('leave', 'apply')">Apply for Leave</button>
+            <button class="tab-btn" onclick="teacherApp.switchSubTab('leave', 'status')">My Leave Applications History</button>
+          </div>
+
+          <div class="card p-4">
+            <h3>My Leave Balance (2025–26)</h3>
+            <div class="metrics-quad mt-3">
+              <div class="metric-card">
+                <span class="metric-label">Casual Leaves (CL)</span>
+                <div class="metric-value text-primary">8 / 12</div>
+                <span class="metric-sub">Remaining</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Medical Leaves (ML)</span>
+                <div class="metric-value text-emerald">10 / 10</div>
+                <span class="metric-sub">Remaining</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">On Duty (OD)</span>
+                <div class="metric-value">2 Days</div>
+                <span class="metric-sub">Taken for Seminars</span>
+              </div>
+            </div>
+
+            <h4 class="mt-4">Recent Leave Applications & Approval Status</h4>
+            <div class="table-container mt-2">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Application ID</th>
+                    <th>Leave Type</th>
+                    <th>Dates</th>
+                    <th>Substitute Arranged</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="myLeaveStatusTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 10: REPORTS
+             (Student Performance)
+             ================================================================= -->
+        <section class="portal-view" id="view-reports">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-chart-line text-primary"></i> Student Academic Performance Analytics</h2>
+            <button class="btn btn-primary" onclick="window.print()">
+              <i class="fa-solid fa-file-pdf"></i> Export Class 8A Report Card
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active">Class 8A Grade Analytics</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-bar">
+              <div>
+                <h3>Class 8A Mathematics Performance Matrix</h3>
+                <p class="text-muted text-sm mt-1">Class Average: <strong>86.4%</strong> • Subject Topper: <strong>V. Divya Bharathi (49/50)</strong></p>
+              </div>
+              <span class="portal-badge badge-success">42 Students Evaluated</span>
+            </div>
+
+            <div class="metrics-quad mt-3">
+              <div class="metric-card">
+                <span class="metric-label">Distinction (A1/A2)</span>
+                <div class="metric-value text-emerald">28 Students</div>
+                <span class="metric-sub">66.7% of class</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">First Class (B1/B2)</span>
+                <div class="metric-value text-primary">11 Students</div>
+                <span class="metric-sub">26.2% of class</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Remedial Support</span>
+                <div class="metric-value text-amber">3 Students</div>
+                <span class="metric-sub">Targeted practice sessions</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- Modal 1: Quick Mark Attendance -->
+  <div class="modal-backdrop" id="markAttendanceModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-clipboard-user text-primary"></i> Mark Attendance — Class 8A</h3>
+        <button class="modal-close" onclick="teacherApp.closeModal('markAttendanceModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">Quickly confirm attendance for today (Sept 19, 2026). Default is set to Present for all 42 students.</p>
+        <div class="form-group">
+          <label>Mark Absentee Roll Numbers (Comma Separated):</label>
+          <input type="text" class="form-control" id="modalAbsentRolls" placeholder="e.g. 804, 842">
+          <small class="text-muted">Absent students' parents will receive automated notification via SMS.</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('markAttendanceModal')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="teacherApp.confirmQuickAttendance()">Confirm & Submit to Office</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Create Homework -->
+  <div class="modal-backdrop" id="createHomeworkModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-pen text-primary"></i> Post New Homework / Assignment</h3>
+        <button class="modal-close" onclick="teacherApp.closeModal('createHomeworkModal')">&times;</button>
+      </div>
+      <form onsubmit="teacherApp.handleCreateHomework(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Target Class *</label>
+              <select class="form-control" id="hwClass" required>
+                <option value="Class 8A">Class 8A (Mathematics)</option>
+                <option value="Class 9B">Class 9B (Mathematics)</option>
+                <option value="Class 7C">Class 7C (Mathematics)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Due Date *</label>
+              <input type="date" class="form-control" id="hwDueDate" required value="2026-09-22">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assignment Title / Chapter *</label>
+            <input type="text" class="form-control" id="hwTitle" required placeholder="e.g. Chapter 2: Exercise 2.3 Questions 1 to 8">
+          </div>
+          <div class="form-group">
+            <label>Detailed Instructions</label>
+            <textarea class="form-control" id="hwInstructions" rows="3" placeholder="Solve step-by-step in the homework notebook. Show graph wherever necessary."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('createHomeworkModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish to Students & Parents</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Apply Leave -->
+  <div class="modal-backdrop" id="applyLeaveModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-calendar-minus text-primary"></i> Apply for Teacher Leave</h3>
+        <button class="modal-close" onclick="teacherApp.closeModal('applyLeaveModal')">&times;</button>
+      </div>
+      <form onsubmit="teacherApp.handleApplyLeave(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Leave Type *</label>
+              <select class="form-control" id="lvType" required>
+                <option value="Casual Leave (CL)">Casual Leave (CL)</option>
+                <option value="Medical Leave (ML)">Medical Leave (ML)</option>
+                <option value="On Duty (OD)">On Duty (OD)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Number of Days *</label>
+              <input type="number" class="form-control" id="lvDays" required min="1" max="10" value="1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>From Date *</label>
+              <input type="date" class="form-control" id="lvFromDate" required value="2026-09-23">
+            </div>
+            <div class="form-group">
+              <label>To Date *</label>
+              <input type="date" class="form-control" id="lvToDate" required value="2026-09-23">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Proposed Substitute Teacher</label>
+            <select class="form-control" id="lvSubstitute">
+              <option value="Sri P. Satyanarayana (Maths HOD)">Sri P. Satyanarayana (Maths HOD)</option>
+              <option value="Smt. S. Lakshmi (Science)">Smt. S. Lakshmi (Science)</option>
+              <option value="Sri D. Srinivas (Computers)">Sri D. Srinivas (Computers)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Reason for Leave *</label>
+            <input type="text" class="form-control" id="lvReason" required placeholder="e.g. Attending university seminar / Family function">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('applyLeaveModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit to Vice Principal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Post Class Notice -->
+  <div class="modal-backdrop" id="postAnnouncementModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-bullhorn text-primary"></i> Post Class Announcement</h3>
+        <button class="modal-close" onclick="teacherApp.closeModal('postAnnouncementModal')">&times;</button>
+      </div>
+      <form onsubmit="teacherApp.handlePostNotice(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Target Class *</label>
+            <select class="form-control" id="noticeClass">
+              <option value="Class 8A Parents & Students">Class 8A Parents & Students</option>
+              <option value="Class 9B Students">Class 9B Students</option>
+              <option value="Class 7C Students">Class 7C Students</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Notice Subject *</label>
+            <input type="text" class="form-control" id="noticeSubject" required placeholder="e.g. Mathematics Notebook Submission on Monday">
+          </div>
+          <div class="form-group">
+            <label>Notice Content *</label>
+            <textarea class="form-control" id="noticeContent" rows="3" required placeholder="Enter announcement text for parents and students..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('postAnnouncementModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Broadcast Notice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Teacher Portal Logic -->
+  <script src="../js/teacher.js"></script>
+</body>
+</html>

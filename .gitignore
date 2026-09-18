@@ -1,0 +1,13 @@
+# Scratch and temporary testing files
+scratch/
+*.log
+__pycache__/
+
+# Extracted duplicate nested directory
+School-Website-1-main/
+
+# IDE / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

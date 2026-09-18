@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Management Portal | Sri Vidya E.M High School</title>
+  <meta name="description" content="Role-based administration and management portal for Sri Vidya E.M High School. Principal, Vice Principal, and Admin modules.">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Portal Custom CSS -->
+  <link rel="stylesheet" href="../css/portal.css">
+</head>
+<body>
+  <div class="portal-layout">
+    
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <!-- School Branding Header -->
+      <div class="sidebar-brand">
+        <a href="../index.html" class="brand-link" title="Return to Public Website">
+          <img src="../images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src="../images/logo-placeholder.svg'">
+          <div class="brand-text">
+            <span class="brand-name">SRI VIDYA</span>
+            <span class="brand-sub">E.M HIGH SCHOOL</span>
+            <span class="brand-est">Est. 2017</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Current Role Indicator Badge -->
+      <div class="sidebar-role-indicator">
+        <div class="role-avatar" id="sidebarRoleAvatar">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="role-info">
+          <div class="role-title" id="sidebarRoleTitle">Principal</div>
+          <div class="role-holder" id="sidebarRoleHolder">Smt. Gorle Varalakshmi</div>
+        </div>
+        <span class="role-status-dot" title="Active & Authorized"></span>
+      </div>
+
+      <!-- Module Navigation Menu -->
+      <nav class="sidebar-menu" id="sidebarMenu">
+        <div class="nav-section-title">CORE MODULES</div>
+
+        <!-- 1. Dashboard -->
+        <div class="nav-item active" data-module="dashboard">
+          <a href="#dashboard" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>
+            <span class="nav-text">Dashboard</span>
+            <span class="nav-badge pulse">Live</span>
+          </a>
+        </div>
+
+        <!-- 2. Students -->
+        <div class="nav-item" data-module="students">
+          <a href="#students" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+            <span class="nav-text">Students</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#students-all" class="nav-sub-link active" data-sub="all">All Students</a>
+            <a href="#students-profiles" class="nav-sub-link" data-sub="profiles">Student Profiles</a>
+            <a href="#students-admissions" class="nav-sub-link" data-sub="admissions">Admissions <span class="nav-sub-badge">18 New</span></a>
+            <a href="#students-transfers" class="nav-sub-link" data-sub="transfers">Transfers (TC)</a>
+            <a href="#students-performance" class="nav-sub-link" data-sub="performance">Student Performance</a>
+          </div>
+        </div>
+
+        <!-- 3. Teachers & Staff -->
+        <div class="nav-item" data-module="teachers">
+          <a href="#teachers" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-chalkboard-user"></i></span>
+            <span class="nav-text">Teachers & Staff</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#teachers-faculty" class="nav-sub-link active" data-sub="faculty">Faculty (Teaching)</a>
+            <a href="#teachers-staff" class="nav-sub-link" data-sub="staff">Staff (Non-Teaching)</a>
+            <a href="#teachers-attendance" class="nav-sub-link" data-sub="attendance">Staff Attendance</a>
+            <a href="#teachers-leave" class="nav-sub-link" data-sub="leave">Leave Requests <span class="nav-sub-badge warning">3 Req</span></a>
+            <a href="#teachers-performance" class="nav-sub-link" data-sub="performance">Appraisal & Feedback</a>
+          </div>
+        </div>
+
+        <!-- 4. Academics -->
+        <div class="nav-item" data-module="academics">
+          <a href="#academics" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-book-open"></i></span>
+            <span class="nav-text">Academics</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#academics-classes" class="nav-sub-link active" data-sub="classes">Classes & Sections</a>
+            <a href="#academics-subjects" class="nav-sub-link" data-sub="subjects">Subjects & Syllabus</a>
+            <a href="#academics-timetable" class="nav-sub-link" data-sub="timetable">Master Timetable</a>
+            <a href="#academics-exams" class="nav-sub-link" data-sub="exams">Exams Schedule</a>
+            <a href="#academics-results" class="nav-sub-link" data-sub="results">Results & Grading</a>
+            <a href="#academics-reports" class="nav-sub-link" data-sub="reports">Academic Reports</a>
+          </div>
+        </div>
+
+        <!-- 5. Attendance -->
+        <!-- 5. Attendance -->
+        <div class="nav-item" data-module="attendance">
+          <a href="#attendance" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-clipboard-user"></i></span>
+            <span class="nav-text">Attendance</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#attendance-student" class="nav-sub-link active" data-sub="student">Student Attendance</a>
+            <a href="#attendance-teacher" class="nav-sub-link" data-sub="teacher">Teacher Attendance</a>
+            <a href="#attendance-daily" class="nav-sub-link" data-sub="daily">Daily Report</a>
+            <a href="#attendance-monthly" class="nav-sub-link" data-sub="monthly">Monthly Summary</a>
+          </div>
+        </div>
+
+        <!-- 6. Timetable & Substitution (VP Focus) -->
+        <div class="nav-item" data-module="timetable">
+          <a href="#timetable" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-text">Timetable</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#timetable-master" class="nav-sub-link active" data-sub="master">Class Schedules</a>
+            <a href="#timetable-substitutions" class="nav-sub-link" data-sub="substitutions">Substitution Planner <span class="nav-sub-badge warning">3 Needed</span></a>
+            <a href="#timetable-rooms" class="nav-sub-link" data-sub="rooms">Lab & Hall Allocations</a>
+          </div>
+        </div>
+
+        <!-- 7. Examinations (VP Focus) -->
+        <div class="nav-item" data-module="examinations">
+          <a href="#examinations" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span>
+            <span class="nav-text">Examinations</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#exams-schedule" class="nav-sub-link active" data-sub="schedule">Exam Schedule</a>
+            <a href="#exams-invigilation" class="nav-sub-link" data-sub="invigilation">Invigilation Duties</a>
+            <a href="#exams-halls" class="nav-sub-link" data-sub="halls">Room Seating Plan</a>
+            <a href="#exams-results" class="nav-sub-link" data-sub="results">Tabulation & Marks</a>
+          </div>
+        </div>
+
+        <!-- 8. Discipline & Code of Conduct (VP Focus) -->
+        <div class="nav-item" data-module="discipline">
+          <a href="#discipline" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+            <span class="nav-text">Discipline</span>
+            <span class="nav-badge success" id="navDisciplineBadge">Active</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#discipline-all" class="nav-sub-link active" data-sub="all">Incident Records</a>
+            <a href="#discipline-late" class="nav-sub-link" data-sub="late">Late-Coming Register</a>
+            <a href="#discipline-merit" class="nav-sub-link" data-sub="merit">Merit & Demerit</a>
+            <a href="#discipline-summons" class="nav-sub-link" data-sub="summons">Parent Convocations</a>
+          </div>
+        </div>
+
+        <!-- 9. Leave Management (VP Focus) -->
+        <div class="nav-item" data-module="leaves">
+          <a href="#leaves" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-minus"></i></span>
+            <span class="nav-text">Leave Management</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#leaves-faculty" class="nav-sub-link active" data-sub="faculty">Faculty Leave Review <span class="nav-sub-badge warning">3 Req</span></a>
+            <a href="#leaves-students" class="nav-sub-link" data-sub="students">Student Leave Requests</a>
+            <a href="#leaves-history" class="nav-sub-link" data-sub="history">Leave History Register</a>
+          </div>
+        </div>
+
+        <!-- 10. Fees (Limited for VP) -->
+        <div class="nav-item" data-module="fees" id="sidebarNavItemFees">
+          <a href="#fees" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+            <span class="nav-text">Fees</span>
+            <span class="nav-badge" id="sidebarFeesBadge" style="display:none; background: var(--color-accent-amber); color: #fff; font-size: 0.65rem;">Limited</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#fees-collection" class="nav-sub-link active" data-sub="collection">Fee Collection</a>
+            <a href="#fees-pending" class="nav-sub-link" data-sub="pending">Pending Dues <span class="nav-sub-badge danger">₹4.2L</span></a>
+            <a href="#fees-reports" class="nav-sub-link" data-sub="reports">Fee Reports</a>
+            <a href="#fees-transactions" class="nav-sub-link" data-sub="transactions">Transactions Ledger</a>
+          </div>
+        </div>
+
+        <div class="nav-section-title">ENGAGEMENT & ADMINISTRATION</div>
+
+        <!-- 7. Communication -->
+        <div class="nav-item" data-module="communication">
+          <a href="#communication" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+            <span class="nav-text">Communication</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#comm-announcements" class="nav-sub-link active" data-sub="announcements">Announcements</a>
+            <a href="#comm-notices" class="nav-sub-link" data-sub="notices">Official Circulars</a>
+            <a href="#comm-sms" class="nav-sub-link" data-sub="sms">SMS Broadcast</a>
+            <a href="#comm-email" class="nav-sub-link" data-sub="email">Email Dispatch</a>
+            <a href="#comm-push" class="nav-sub-link" data-sub="push">Mobile Push</a>
+          </div>
+        </div>
+
+        <!-- 8. Events -->
+        <div class="nav-item" data-module="events">
+          <a href="#events" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-text">Events</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#events-calendar" class="nav-sub-link active" data-sub="calendar">Annual Calendar</a>
+            <a href="#events-school" class="nav-sub-link" data-sub="school">School Events</a>
+            <a href="#events-competitions" class="nav-sub-link" data-sub="competitions">Competitions</a>
+            <a href="#events-activities" class="nav-sub-link" data-sub="activities">Club & Sports</a>
+          </div>
+        </div>
+
+        <!-- 9. Reports -->
+        <div class="nav-item" data-module="reports">
+          <a href="#reports" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+            <span class="nav-text">Reports</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#reports-academic" class="nav-sub-link active" data-sub="academic">Academic Analytics</a>
+            <a href="#reports-attendance" class="nav-sub-link" data-sub="attendance">Attendance Records</a>
+            <a href="#reports-financial" class="nav-sub-link" data-sub="financial">Financial Statements</a>
+            <a href="#reports-staff" class="nav-sub-link" data-sub="staff">Staff Payroll & Audits</a>
+            <a href="#reports-student" class="nav-sub-link" data-sub="student">Student Demographics</a>
+          </div>
+        </div>
+
+        <!-- 10. Settings -->
+        <div class="nav-item" data-module="settings">
+          <a href="#settings" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
+            <span class="nav-text">Settings</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#settings-profile" class="nav-sub-link active" data-sub="profile">School Profile</a>
+            <a href="#settings-year" class="nav-sub-link" data-sub="year">Academic Year (2025-26)</a>
+            <a href="#settings-roles" class="nav-sub-link" data-sub="roles">Role Management</a>
+            <a href="#settings-permissions" class="nav-sub-link" data-sub="permissions">Access Permissions</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer User Card -->
+      <div class="sidebar-user-card">
+        <div class="user-avatar-mini" id="sidebarUserAvatar">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="user-meta">
+          <span class="user-name" id="sidebarUserName">Gorle Varalakshmi</span>
+          <span class="user-badge" id="sidebarUserDesignation">Principal</span>
+        </div>
+        <a href="../index.html" class="btn-logout" title="Back to Website">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN PORTAL CONTAINER
+         ========================================== -->
+    <div class="portal-main">
+      
+      <!-- Top Control Bar -->
+      <header class="portal-header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" id="mobileSidebarToggle" aria-label="Toggle Navigation Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <div class="header-breadcrumb">
+            <span class="crumb-school">Sri Vidya E.M High School</span>
+            <i class="fa-solid fa-chevron-right crumb-sep"></i>
+            <span class="crumb-page" id="currentPageCrumb">Principal Dashboard</span>
+          </div>
+
+          <!-- Universal Instant Search -->
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="portalUniversalSearch" placeholder="Search students, admission no, teachers, roll nos..." aria-label="Search">
+            <span class="search-shortcut">⌘K</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Role Switcher Dropdown (Principal / Vice Principal / Admin) -->
+          <div class="role-selector-wrap" title="Switch Portal Role View">
+            <label for="roleSelect" class="role-select-label">Role:</label>
+            <select id="roleSelect" class="role-select">
+              <option value="principal" selected>Principal (Smt. Gorle Varalakshmi)</option>
+              <option value="vice-principal">Vice Principal (Sri Navva Anand)</option>
+              <option value="admin">Admin / School Office</option>
+            </select>
+          </div>
+
+          <!-- Dark / Light Theme Toggle -->
+          <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark / Light Mode" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon theme-icon" id="themeIcon"></i>
+          </button>
+
+          <!-- Notification Bell -->
+          <div class="notification-dropdown-wrapper">
+            <button class="header-action-btn" id="notifBellBtn" title="Pending Notifications" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="notif-badge" id="headerNotifCount">4</span>
+            </button>
+            <div class="notif-flyout" id="notifFlyout">
+              <div class="notif-header">
+                <span class="notif-title">Notifications</span>
+                <span class="notif-mark" id="markAllRead">Mark all read</span>
+              </div>
+              <div class="notif-list">
+                <div class="notif-item unread">
+                  <div class="notif-dot"></div>
+                  <div class="notif-body">
+                    <strong>New Transfer Certificate Request</strong>
+                    <p>Roll #1042 (Class IX-A) pending principal signature</p>
+                    <small>12 mins ago</small>
+                  </div>
+                </div>
+                <div class="notif-item unread">
+                  <div class="notif-dot"></div>
+                  <div class="notif-body">
+                    <strong>Leave Application: Science Faculty</strong>
+                    <p>K. Rajesh (Physics) requested 2 days casual leave</p>
+                    <small>35 mins ago</small>
+                  </div>
+                </div>
+                <div class="notif-item unread">
+                  <div class="notif-dot"></div>
+                  <div class="notif-body">
+                    <strong>Online Admissions Surge</strong>
+                    <p>18 new admission forms submitted today for 2025-26</p>
+                    <small>2 hours ago</small>
+                  </div>
+                </div>
+                <div class="notif-item">
+                  <div class="notif-body">
+                    <strong>Daily Fee Collection Target</strong>
+                    <p>87% of monthly dues collected. ₹3.8L pending.</p>
+                    <small>Yesterday</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Link to Teacher Portal -->
+          <a href="../teacher" style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Teacher Portal">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>Teacher Portal</span>
+          </a>
+
+          <!-- Quick Link to Student Portal -->
+          <a href="../student" style="background: var(--color-accent-blue-subtle); color: var(--color-primary); border: 1px solid rgba(37, 99, 235, 0.35); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Student Academic Dashboard (Rahul)">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Student Portal</span>
+          </a>
+
+          <!-- Quick Return to Public Website -->
+          <a href="../index.html" class="btn-back-public" title="Open Public Website">
+            <i class="fa-solid fa-globe"></i>
+            <span>Public Site</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Dynamic Portal Content Area -->
+      <main class="portal-content" id="portalMainContent">
+
+        <!-- =================================================================
+             MODULE 1: DASHBOARD (MATCHES USER WIREFRAME EXACTLY)
+             ================================================================= -->
+        <section class="portal-view active" id="view-dashboard">
+          
+          <!-- Executive Role Quick Switcher Strip (Principal / Vice Principal / Admin) -->
+          <div class="executive-role-switcher" id="dashboardRoleSwitcher">
+            <div class="role-switch-header">
+              <span class="role-switch-label"><i class="fa-solid fa-users-gear"></i> Active Dashboard View:</span>
+              <span class="role-switch-hint">Toggle between Principal & Vice Principal dashboards to inspect aligned role workflows</span>
+            </div>
+            <div class="role-pill-group">
+              <button type="button" class="role-pill-btn active" data-role="principal" onclick="portalApp.switchRole('principal')">
+                <i class="fa-solid fa-user-tie"></i>
+                <div class="role-btn-text">
+                  <span class="role-btn-title">Principal</span>
+                  <span class="role-btn-name">Smt. Gorle Varalakshmi</span>
+                </div>
+                <span class="role-btn-tag">Full Executive</span>
+              </button>
+              <button type="button" class="role-pill-btn" data-role="vice-principal" onclick="portalApp.switchRole('vice-principal')">
+                <i class="fa-solid fa-user-check"></i>
+                <div class="role-btn-text">
+                  <span class="role-btn-title">Vice Principal</span>
+                  <span class="role-btn-name">Sri Navva Anand</span>
+                </div>
+                <span class="role-btn-tag">Academic & Discipline</span>
+              </button>
+              <button type="button" class="role-pill-btn" data-role="admin" onclick="portalApp.switchRole('admin')">
+                <i class="fa-solid fa-id-badge"></i>
+                <div class="role-btn-text">
+                  <span class="role-btn-title">Admin / Office</span>
+                  <span class="role-btn-name">School Office & Accounts</span>
+                </div>
+                <span class="role-btn-tag">Office Clerk</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Vice Principal Focused Permissions & Scope Bar (Visible when in Vice Principal mode) -->
+          <div class="vp-permissions-bar" id="vpPermissionsBar" style="display: none;">
+            <div class="vp-bar-top">
+              <div class="vp-identity">
+                <div class="vp-badge-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                  <h3 class="vp-title">Vice Principal Operational Dashboard — Sri Navva Anand</h3>
+                  <p class="vp-subtitle">Focus: Campus Discipline, Master Timetable, Examinations, Faculty Substitutions & Academic Oversight</p>
+                </div>
+              </div>
+              <div class="vp-scope-badge"><i class="fa-solid fa-shield"></i> Access Policy: Vice Principal Role</div>
+            </div>
+            <div class="vp-perms-grid">
+              <div class="vp-perm-pill perm-yes" title="Full unrestricted academic management authority">
+                <i class="fa-solid fa-circle-check"></i> Academic Management: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="Full campus discipline and behavioral investigation authority">
+                <i class="fa-solid fa-circle-check"></i> Campus Discipline: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="Real-time student and staff daily attendance authority">
+                <i class="fa-solid fa-circle-check"></i> Attendance Tracking: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="Timetable master schedules and examination conduct">
+                <i class="fa-solid fa-circle-check"></i> Timetable & Exams: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-ltd" title="Financial reports are read-only summary (restricted to Principal & Accounts)">
+                <i class="fa-solid fa-triangle-exclamation"></i> Financial Reports: <strong>LIMITED</strong>
+              </div>
+              <div class="vp-perm-pill perm-no" title="Institutional bylaws and school profile locked to Principal">
+                <i class="fa-solid fa-lock"></i> School Configuration: <strong>NO / LIMITED</strong>
+              </div>
+              <div class="vp-perm-pill perm-ltd" title="User permission escalation requires Principal sign-off">
+                <i class="fa-solid fa-user-lock"></i> User Permissions: <strong>LIMITED</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Welcome Banner: "Good Morning, Principal" -->
+          <div class="welcome-banner">
+            <div class="welcome-content">
+              <div class="welcome-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span id="bannerRoleBadge">SRI VIDYA ADMINISTRATIVE PORTAL</span>
+              </div>
+              <h1 class="welcome-title" id="dashboardGreeting">Good Morning, Principal</h1>
+              <p class="welcome-subtitle" id="dashboardSubtext">
+                Overview of Sri Vidya E.M High School operations, live campus metrics, and pending executive actions for today.
+              </p>
+            </div>
+            <div class="welcome-meta">
+              <div class="meta-pill">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="liveDateText">Saturday, Sept 19, 2026</span>
+              </div>
+              <div class="meta-pill">
+                <i class="fa-solid fa-school"></i>
+                <span>Academic Year: 2025–26</span>
+              </div>
+              <div class="meta-pill live">
+                <span class="live-dot"></span>
+                <span>System: Online</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Key Executive Indicators:
+               [Students: 2,450] [Teachers: 145] [Attendance: 94.6%] [Fees: 87%] -->
+          <div class="metrics-quad">
+            
+            <!-- Metric 1: Students 2,450 -->
+            <div class="metric-card" onclick="portalApp.navigateTo('students')">
+              <div class="metric-icon-wrap icon-blue">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Students</span>
+                <div class="metric-value">2,450</div>
+                <div class="metric-trend trend-up">
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+                  <span>+120 new admissions</span>
+                </div>
+              </div>
+              <div class="metric-progress-wrap">
+                <div class="metric-subtext">Pre-Primary to Class X</div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-blue" style="width: 96%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 2: Teachers 145 -->
+            <div class="metric-card" onclick="portalApp.navigateTo('teachers')">
+              <div class="metric-icon-wrap icon-emerald">
+                <i class="fa-solid fa-chalkboard-user"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Teachers</span>
+                <div class="metric-value">145</div>
+                <div class="metric-trend trend-steady">
+                  <i class="fa-solid fa-check"></i>
+                  <span>142 present today (98%)</span>
+                </div>
+              </div>
+              <div class="metric-progress-wrap">
+                <div class="metric-subtext">1:17 Student-Teacher Ratio</div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-emerald" style="width: 98%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 3: Attendance 94.6% -->
+            <div class="metric-card" onclick="portalApp.navigateTo('attendance')">
+              <div class="metric-icon-wrap icon-indigo">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Attendance</span>
+                <div class="metric-value">94.6%</div>
+                <div class="metric-trend trend-up">
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+                  <span>+1.2% vs last week</span>
+                </div>
+              </div>
+              <div class="metric-progress-wrap">
+                <div class="metric-subtext">2,318 of 2,450 present</div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-indigo" style="width: 94.6%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 4: Fees 87% (Principal / Admin view) -->
+            <div class="metric-card" id="metricCardFees" onclick="portalApp.navigateTo('fees')">
+              <div class="metric-icon-wrap icon-amber">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Fees</span>
+                <div class="metric-value">87%</div>
+                <div class="metric-trend trend-up">
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+                  <span>₹28.4L collected (Term 2)</span>
+                </div>
+              </div>
+              <div class="metric-progress-wrap">
+                <div class="metric-subtext">₹4.2L Pending Reminders</div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-amber" style="width: 87%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 4 Alternate: Discipline & Leaves (Vice Principal Focus view) -->
+            <div class="metric-card" id="metricCardVPDiscipline" style="display: none;" onclick="portalApp.navigateTo('discipline')">
+              <div class="metric-icon-wrap icon-amber">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Discipline & Leaves</span>
+                <div class="metric-value">3 Cases</div>
+                <div class="metric-trend trend-steady">
+                  <i class="fa-solid fa-user-clock"></i>
+                  <span>3 Faculty Leaves Pending</span>
+                </div>
+              </div>
+              <div class="metric-progress-wrap">
+                <div class="metric-subtext">VP Focus • Financials Limited</div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-amber" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- =================================================================
+               SCHOOL PERFORMANCE OVERVIEW (2x2 GRID AS SPECIFIED)
+               [ Attendance Trend   | Academic Performance ]
+               [ Upcoming Events    | Pending Approvals    ]
+               ================================================================= -->
+          <div class="performance-overview-section">
+            <div class="section-title-bar">
+              <div class="title-with-icon">
+                <i class="fa-solid fa-chart-line"></i>
+                <h2>SCHOOL PERFORMANCE OVERVIEW</h2>
+              </div>
+              <div class="section-actions">
+                <span class="live-pulse-badge"><i class="fa-solid fa-circle"></i> Live Campus Data</span>
+                <button class="btn-refresh" onclick="portalApp.refreshDashboard()" title="Refresh Overview">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="overview-grid">
+              
+              <!-- 1. Attendance Trend -->
+              <div class="overview-card" id="cardAttendanceTrend">
+                <div class="card-header">
+                  <div class="card-header-title">
+                    <i class="fa-solid fa-arrow-trend-up text-primary"></i>
+                    <h3>Attendance Trend</h3>
+                  </div>
+                  <div class="card-header-badge">Weekly Aggregates</div>
+                </div>
+                <div class="card-body">
+                  <p class="chart-summary-text">Campus-wide daily presence across all 4 academic wings:</p>
+                  
+                  <div class="bar-chart-container">
+                    <!-- Pre-Primary -->
+                    <div class="bar-chart-row">
+                      <div class="bar-label">Pre-Primary (PP1 & PP2)</div>
+                      <div class="bar-track">
+                        <div class="bar-fill fill-blue" style="width: 92%;"></div>
+                      </div>
+                      <div class="bar-value">92.0%</div>
+                    </div>
+
+                    <!-- Primary -->
+                    <div class="bar-chart-row">
+                      <div class="bar-label">Primary Wing (Classes I–V)</div>
+                      <div class="bar-track">
+                        <div class="bar-fill fill-blue" style="width: 95.8%;"></div>
+                      </div>
+                      <div class="bar-value">95.8%</div>
+                    </div>
+
+                    <!-- Middle School -->
+                    <div class="bar-chart-row">
+                      <div class="bar-label">Middle School (Classes VI–VIII)</div>
+                      <div class="bar-track">
+                        <div class="bar-fill fill-blue" style="width: 96.2%;"></div>
+                      </div>
+                      <div class="bar-value">96.2%</div>
+                    </div>
+
+                    <!-- High School -->
+                    <div class="bar-chart-row">
+                      <div class="bar-label">High School (Classes IX–X)</div>
+                      <div class="bar-track">
+                        <div class="bar-fill fill-emerald" style="width: 97.4%;"></div>
+                      </div>
+                      <div class="bar-value">97.4%</div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Stats Footnote -->
+                  <div class="card-footer-stats">
+                    <div class="stat-pill">
+                      <span class="label">Total Absentees Today:</span>
+                      <strong class="value text-red">132 students</strong>
+                    </div>
+                    <div class="stat-pill">
+                      <span class="label">SMS Alerts Sent:</span>
+                      <strong class="value text-emerald">132 delivered</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Academic Performance -->
+              <div class="overview-card" id="cardAcademicPerformance">
+                <div class="card-header">
+                  <div class="card-header-title">
+                    <i class="fa-solid fa-award text-emerald"></i>
+                    <h3>Academic Performance</h3>
+                  </div>
+                  <div class="card-header-badge">Mid-Term & SSC Benchmarks</div>
+                </div>
+                <div class="card-body">
+                  <div class="perf-stats-grid">
+                    <div class="perf-metric-box highlight">
+                      <div class="perf-num">100%</div>
+                      <div class="perf-desc">SSC Board Pass Record</div>
+                      <span class="perf-sub">Consecutive 6 Years</span>
+                    </div>
+                    <div class="perf-metric-box">
+                      <div class="perf-num">78.4%</div>
+                      <div class="perf-desc">Distinction Grade (A+)</div>
+                      <span class="perf-sub">Class X Pre-Board 1</span>
+                    </div>
+                    <div class="perf-metric-box">
+                      <div class="perf-num">89.6%</div>
+                      <div class="perf-desc">Science Olympiad Avg</div>
+                      <span class="perf-sub">District Rank #2</span>
+                    </div>
+                    <div class="perf-metric-box">
+                      <div class="perf-num">91.2%</div>
+                      <div class="perf-desc">Maths Benchmark Score</div>
+                      <span class="perf-sub">Classes VI–X Avg</span>
+                    </div>
+                  </div>
+
+                  <!-- Subject Highlights List -->
+                  <div class="subject-progress-list">
+                    <div class="subj-item">
+                      <div class="subj-info">
+                        <span class="subj-name">Mathematics</span>
+                        <span class="subj-score">91.2% avg</span>
+                      </div>
+                      <div class="mini-bar-track">
+                        <div class="mini-bar-fill bg-blue" style="width: 91%;"></div>
+                      </div>
+                    </div>
+                    <div class="subj-item">
+                      <div class="subj-info">
+                        <span class="subj-name">Physical & Biological Science</span>
+                        <span class="subj-score">89.4% avg</span>
+                      </div>
+                      <div class="mini-bar-track">
+                        <div class="mini-bar-fill bg-emerald" style="width: 89%;"></div>
+                      </div>
+                    </div>
+                    <div class="subj-item">
+                      <div class="subj-info">
+                        <span class="subj-name">English Language & Fluency</span>
+                        <span class="subj-score">94.1% avg</span>
+                      </div>
+                      <div class="mini-bar-track">
+                        <div class="mini-bar-fill bg-purple" style="width: 94%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Upcoming Events -->
+              <div class="overview-card" id="cardUpcomingEvents">
+                <div class="card-header">
+                  <div class="card-header-title">
+                    <i class="fa-solid fa-calendar-check text-amber"></i>
+                    <h3>Upcoming Events</h3>
+                  </div>
+                  <button class="btn-card-action" onclick="portalApp.navigateTo('events')">View Calendar</button>
+                </div>
+                <div class="card-body">
+                  <div class="events-timeline">
+                    
+                    <div class="event-item">
+                      <div class="event-date-badge">
+                        <span class="ev-month">SEP</span>
+                        <span class="ev-day">24</span>
+                      </div>
+                      <div class="event-content">
+                        <span class="event-tag tag-exam">Academic Exam</span>
+                        <h4 class="event-title">Quarterly Examinations Commences</h4>
+                        <p class="event-desc">Classes I to X timetable published. Admit cards distributed.</p>
+                      </div>
+                    </div>
+
+                    <div class="event-item">
+                      <div class="event-date-badge">
+                        <span class="ev-month">OCT</span>
+                        <span class="ev-day">02</span>
+                      </div>
+                      <div class="event-content">
+                        <span class="event-tag tag-celebration">Campus Activity</span>
+                        <h4 class="event-title">Gandhi Jayanti & Swachh Vidya Day</h4>
+                        <p class="event-desc">Cleanliness drive, essay writing, and patriotic elocution.</p>
+                      </div>
+                    </div>
+
+                    <div class="event-item">
+                      <div class="event-date-badge">
+                        <span class="ev-month">OCT</span>
+                        <span class="ev-day">14</span>
+                      </div>
+                      <div class="event-content">
+                        <span class="event-tag tag-sports">Annual Sports</span>
+                        <h4 class="event-title">Sri Vidya Inter-House Sports Meet</h4>
+                        <p class="event-desc">Athletics, Kho-Kho, Volleyball, and Badminton championships.</p>
+                      </div>
+                    </div>
+
+                    <div class="event-item">
+                      <div class="event-date-badge">
+                        <span class="ev-month">NOV</span>
+                        <span class="ev-day">14</span>
+                      </div>
+                      <div class="event-content">
+                        <span class="event-tag tag-science">Exhibition</span>
+                        <h4 class="event-title">Children's Day & Science Exhibition 2026</h4>
+                        <p class="event-desc">Working models, robotics, and cultural stage presentations.</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Pending Approvals -->
+              <div class="overview-card" id="cardPendingApprovals">
+                <div class="card-header">
+                  <div class="card-header-title">
+                    <i class="fa-solid fa-signature text-purple"></i>
+                    <h3>Pending Approvals</h3>
+                  </div>
+                  <div class="card-header-badge badge-warning" id="pendingCountBadge">4 Requiring Action</div>
+                </div>
+                <div class="card-body">
+                  <div class="approval-list" id="approvalListContainer">
+                    
+                    <!-- Approval 1: Transfer Certificate -->
+                    <div class="approval-card" id="approval-item-1">
+                      <div class="approval-icon-col icon-tc">
+                        <i class="fa-solid fa-file-invoice"></i>
+                      </div>
+                      <div class="approval-info">
+                        <div class="approval-title">Transfer Certificate (TC) Issue</div>
+                        <div class="approval-meta">
+                          <span>Student: <strong>G. Sai Teja</strong></span> • <span>Class IX-A</span> • <span>Roll #1042</span>
+                        </div>
+                        <div class="approval-reason">Parent relocated to Vijayawada; No dues cleared.</div>
+                      </div>
+                      <div class="approval-actions">
+                        <button class="btn-approve" onclick="portalApp.handleApproval(1, true, 'TC Approved for G. Sai Teja')">
+                          <i class="fa-solid fa-check"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="portalApp.handleApproval(1, false, 'TC Request Sent Back')">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Approval 2: Teacher Leave -->
+                    <div class="approval-card" id="approval-item-2">
+                      <div class="approval-icon-col icon-leave">
+                        <i class="fa-solid fa-calendar-minus"></i>
+                      </div>
+                      <div class="approval-info">
+                        <div class="approval-title">Faculty Medical Leave</div>
+                        <div class="approval-meta">
+                          <span>Teacher: <strong>K. Rajesh (Physics)</strong></span> • <span>2 Days</span> • <span>Sept 21–22</span>
+                        </div>
+                        <div class="approval-reason">Substitute allocated: M. Lakshmi (General Science).</div>
+                      </div>
+                      <div class="approval-actions">
+                        <button class="btn-approve" onclick="portalApp.handleApproval(2, true, 'Leave Approved for K. Rajesh')">
+                          <i class="fa-solid fa-check"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="portalApp.handleApproval(2, false, 'Leave Request Rejected')">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Approval 3: Admission Fee Concession -->
+                    <div class="approval-card" id="approval-item-3">
+                      <div class="approval-icon-col icon-concession">
+                        <i class="fa-solid fa-percent"></i>
+                      </div>
+                      <div class="approval-info">
+                        <div class="approval-title">Merit Scholarship Concession</div>
+                        <div class="approval-meta">
+                          <span>Applicant: <strong>P. Hema Latha</strong></span> • <span>Class X</span> • <span>Score: 98.2%</span>
+                        </div>
+                        <div class="approval-reason">Requested 20% tuition concession under Academic Talent scheme.</div>
+                      </div>
+                      <div class="approval-actions">
+                        <button class="btn-approve" onclick="portalApp.handleApproval(3, true, 'Scholarship Concession Approved')">
+                          <i class="fa-solid fa-check"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="portalApp.handleApproval(3, false, 'Concession Request Rejected')">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Approval 4: Lab Consumables Purchase -->
+                    <div class="approval-card" id="approval-item-4">
+                      <div class="approval-icon-col icon-po">
+                        <i class="fa-solid fa-flask-vial"></i>
+                      </div>
+                      <div class="approval-info">
+                        <div class="approval-title">Chemistry Lab Equipment PO</div>
+                        <div class="approval-meta">
+                          <span>Requisition: <strong>₹18,500</strong></span> • <span>Submitted by Science Dept</span>
+                        </div>
+                        <div class="approval-reason">Glassware & chemical reagents for high school board practicals.</div>
+                      </div>
+                      <div class="approval-actions">
+                        <button class="btn-approve" onclick="portalApp.handleApproval(4, true, 'Lab Requisition PO Approved')">
+                          <i class="fa-solid fa-check"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="portalApp.handleApproval(4, false, 'Requisition Sent for Review')">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- =================================================================
+             MODULE 2: STUDENTS
+             (All Students, Profiles, Admissions, Transfers, Performance)
+             ================================================================= -->
+        <section class="portal-view" id="view-students">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-user-graduate text-primary"></i> Students Management</h2>
+              <p>Manage student enrolments, admissions, transfer certificates, and grade tracking.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="portalApp.exportTableToCSV('studentsTable', 'Sri_Vidya_Students.csv')">
+                <i class="fa-solid fa-file-export"></i> Export CSV
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.openModal('addStudentModal')">
+                <i class="fa-solid fa-plus"></i> New Admission
+              </button>
+            </div>
+          </div>
+
+          <!-- Sub-tab Selector -->
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('students', 'all')">All Students (2,450)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'profiles')">Student Profiles</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'admissions')">Admissions Queue (18)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'transfers')">Transfers (TC)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'performance')">Academic Performance</button>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div class="filter-toolbar">
+            <div class="filter-group search-group">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="studentFilterInput" placeholder="Filter by name, admission ID, class..." onkeyup="portalApp.filterStudents()">
+            </div>
+            <div class="filter-group">
+              <label>Class:</label>
+              <select id="studentClassFilter" onchange="portalApp.filterStudents()">
+                <option value="">All Classes</option>
+                <option value="X">Class X</option>
+                <option value="IX">Class IX</option>
+                <option value="VIII">Class VIII</option>
+                <option value="VII">Class VII</option>
+                <option value="VI">Class VI</option>
+                <option value="V">Class V</option>
+                <option value="IV">Class IV</option>
+                <option value="III">Class III</option>
+                <option value="II">Class II</option>
+                <option value="I">Class I</option>
+                <option value="PP">Pre-Primary</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Section:</label>
+              <select id="studentSectionFilter" onchange="portalApp.filterStudents()">
+                <option value="">All Sections</option>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Fee Status:</label>
+              <select id="studentFeeFilter" onchange="portalApp.filterStudents()">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Students Data Table -->
+          <div class="table-container">
+            <table class="data-table" id="studentsTable">
+              <thead>
+                <tr>
+                  <th>Adm No.</th>
+                  <th>Student Name</th>
+                  <th>Class & Sec</th>
+                  <th>Roll No</th>
+                  <th>Parent / Guardian</th>
+                  <th>Contact</th>
+                  <th>Attendance</th>
+                  <th>Fee Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <!-- Populated via portal.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 3: TEACHERS & STAFF
+             (Faculty, Staff, Attendance, Leave, Performance)
+             ================================================================= -->
+        <section class="portal-view" id="view-teachers">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-chalkboard-user text-primary"></i> Teachers & Staff Management</h2>
+              <p>Faculty directory, attendance logs, leave management, and teacher appraisals.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="portalApp.openModal('teacherAttendanceModal')">
+                <i class="fa-solid fa-clock"></i> Log Attendance
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.openModal('addTeacherModal')">
+                <i class="fa-solid fa-user-plus"></i> Add Faculty
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('teachers', 'faculty')">Faculty (112)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('teachers', 'staff')">Non-Teaching Staff (33)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('teachers', 'attendance')">Staff Attendance Today</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('teachers', 'leave')">Leave Requests (3)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('teachers', 'performance')">Faculty Appraisals</button>
+          </div>
+
+          <!-- Staff Cards Grid -->
+          <div class="staff-grid" id="staffGridContainer">
+            <!-- Populated via portal.js -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 4: ACADEMICS
+             (Classes, Subjects, Timetable, Exams, Results, Academic Reports)
+             ================================================================= -->
+        <section class="portal-view" id="view-academics">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-book-open text-primary"></i> Academic Management</h2>
+              <p>Curriculum design, class allocations, master schedules, exams, and grading.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Print Schedule
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.showToast('Exam Schedule Builder opened', 'info')">
+                <i class="fa-solid fa-file-circle-plus"></i> Schedule Exam
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('academics', 'classes')">Classes & Sections</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('academics', 'subjects')">Subjects & Curriculum</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('academics', 'timetable')">Master Timetable</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('academics', 'exams')">Exams Schedule</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('academics', 'results')">Results & Grading</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('academics', 'reports')">Academic Reports</button>
+          </div>
+
+          <div class="academics-container" id="academicsContent">
+            <!-- Timetable & Class Roster Views -->
+            <div class="card p-4">
+              <div class="card-header-flex">
+                <h3><i class="fa-solid fa-calendar-days text-primary"></i> Class X-A Master Timetable (Current Week)</h3>
+                <span class="portal-badge badge-primary">Class Teacher: Smt. M. Sunitha (English)</span>
+              </div>
+              <div class="table-container mt-3">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Period / Time</th>
+                      <th>Monday</th>
+                      <th>Tuesday</th>
+                      <th>Wednesday</th>
+                      <th>Thursday</th>
+                      <th>Friday</th>
+                      <th>Saturday</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>1 (09:00 - 09:45)</strong></td>
+                      <td>Mathematics</td>
+                      <td>English</td>
+                      <td>Mathematics</td>
+                      <td>Physical Science</td>
+                      <td>Mathematics</td>
+                      <td>Social Studies</td>
+                    </tr>
+                    <tr>
+                      <td><strong>2 (09:45 - 10:30)</strong></td>
+                      <td>Physical Science</td>
+                      <td>Mathematics</td>
+                      <td>Telugu</td>
+                      <td>English</td>
+                      <td>Natural Science</td>
+                      <td>Mathematics</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 (10:45 - 11:30)</strong></td>
+                      <td>English</td>
+                      <td>Natural Science</td>
+                      <td>Physical Science</td>
+                      <td>Mathematics</td>
+                      <td>Hindi</td>
+                      <td>English</td>
+                    </tr>
+                    <tr>
+                      <td><strong>4 (11:30 - 12:15)</strong></td>
+                      <td>Social Studies</td>
+                      <td>Hindi</td>
+                      <td>Social Studies</td>
+                      <td>Telugu</td>
+                      <td>Computer Lab</td>
+                      <td>Library / GK</td>
+                    </tr>
+                    <tr class="table-break-row">
+                      <td colspan="7"><strong>LUNCH BREAK & NOON ASSEMBLY (12:15 PM – 01:00 PM)</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>5 (01:00 - 01:45)</strong></td>
+                      <td>Science Lab</td>
+                      <td>Social Studies</td>
+                      <td>English</td>
+                      <td>Computer Lab</td>
+                      <td>Physical Science</td>
+                      <td>Moral Science</td>
+                    </tr>
+                    <tr>
+                      <td><strong>6 (01:45 - 02:30)</strong></td>
+                      <td>Science Lab</td>
+                      <td>Computer Lab</td>
+                      <td>Hindi</td>
+                      <td>Science Lab</td>
+                      <td>Social Studies</td>
+                      <td>Games & Sports</td>
+                    </tr>
+                    <tr>
+                      <td><strong>7 (02:40 - 03:25)</strong></td>
+                      <td>Telugu</td>
+                      <td>Telugu</td>
+                      <td>Games & PT</td>
+                      <td>Social Studies</td>
+                      <td>Telugu</td>
+                      <td>Club Activities</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 5: ATTENDANCE
+             (Student Attendance, Teacher Attendance, Daily Report, Monthly Report)
+             ================================================================= -->
+        <section class="portal-view" id="view-attendance">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-clipboard-user text-primary"></i> Attendance Hub</h2>
+              <p>Campus attendance monitoring, biometric punches, SMS triggers for absentees, and monthly logs.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="portalApp.triggerAbsenteeSMS()">
+                <i class="fa-solid fa-paper-plane"></i> Send Absentee SMS
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.showToast('Attendance report downloaded', 'success')">
+                <i class="fa-solid fa-download"></i> Daily Log (PDF)
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('attendance', 'student')">Student Attendance (94.6%)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('attendance', 'teacher')">Teacher Attendance (98%)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('attendance', 'daily')">Daily Class Breakdowns</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('attendance', 'monthly')">Monthly Attendance Register</button>
+          </div>
+
+          <div class="attendance-summary-grid">
+            <div class="summary-card">
+              <span class="sc-title">Total Enrolled</span>
+              <span class="sc-value">2,450</span>
+              <span class="sc-sub text-muted">All sections</span>
+            </div>
+            <div class="summary-card">
+              <span class="sc-title">Present Today</span>
+              <span class="sc-value text-emerald">2,318</span>
+              <span class="sc-sub text-emerald">94.6% Turnout</span>
+            </div>
+            <div class="summary-card">
+              <span class="sc-title">Absentees</span>
+              <span class="sc-value text-red">132</span>
+              <span class="sc-sub text-red">SMS Dispatched</span>
+            </div>
+            <div class="summary-card">
+              <span class="sc-title">On Approved Leave</span>
+              <span class="sc-value text-amber">14</span>
+              <span class="sc-sub text-amber">Documented</span>
+            </div>
+          </div>
+
+          <div class="table-container mt-4">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Total Strength</th>
+                  <th>Present</th>
+                  <th>Absent</th>
+                  <th>Leave</th>
+                  <th>Attendance %</th>
+                  <th>Class Teacher</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceClassTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE: TIMETABLE & SUBSTITUTION PLANNER (VP FOCUS)
+             ================================================================= -->
+        <section class="portal-view" id="view-timetable">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-calendar-days text-primary"></i> Master Timetable & Substitution Planner</h2>
+              <p>Period allocations, teacher availability matrix, and emergency substitution management.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Print Day Sheet
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.openModal('assignSubstitutionModal')">
+                <i class="fa-solid fa-user-clock"></i> Assign Substitution
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('timetable', 'master')">Class Schedules</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('timetable', 'substitutions')">Daily Substitution Board (3)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('timetable', 'rooms')">Science & Computer Labs</button>
+          </div>
+
+          <!-- Active Substitutions Alert Card -->
+          <div class="card p-4 mb-4" style="border-left: 4px solid var(--color-accent-amber);">
+            <div class="card-header-flex">
+              <div>
+                <h3 style="color: var(--color-accent-amber); font-size: 1.1rem;"><i class="fa-solid fa-bell"></i> Today's Substitution Roster — Supervised by Vice Principal</h3>
+                <p class="text-muted text-sm mt-1">Sri K. Rajesh (Physical Science) is on approved medical leave. 3 periods covered.</p>
+              </div>
+              <span class="portal-badge badge-warning">3 Periods Assigned</span>
+            </div>
+
+            <div class="substitution-roster-grid mt-3">
+              <div class="sub-card">
+                <div class="sub-card-title">
+                  <span>Class X-B (Physics)</span>
+                  <span class="sub-period-badge">Period 2 (09:45 AM)</span>
+                </div>
+                <div class="sub-details">
+                  <strong>Original:</strong> Sri K. Rajesh<br>
+                  <strong>Substitute:</strong> <span class="text-primary font-bold">Sri Navva Anand (VP)</span><br>
+                  <small class="text-muted">Topic: Light Reflection Numerical Exercises</small>
+                </div>
+                <div class="portal-badge badge-success"><i class="fa-solid fa-check"></i> VP In-Charge</div>
+              </div>
+
+              <div class="sub-card">
+                <div class="sub-card-title">
+                  <span>Class IX-A (Physics Lab)</span>
+                  <span class="sub-period-badge">Period 5 (01:00 PM)</span>
+                </div>
+                <div class="sub-details">
+                  <strong>Original:</strong> Sri K. Rajesh<br>
+                  <strong>Substitute:</strong> <span class="text-emerald font-bold">Smt. S. Lakshmi (Biology)</span><br>
+                  <small class="text-muted">Topic: Practical Apparatus Supervision</small>
+                </div>
+                <div class="portal-badge badge-success"><i class="fa-solid fa-check"></i> Confirmed</div>
+              </div>
+
+              <div class="sub-card">
+                <div class="sub-card-title">
+                  <span>Class IX-A (Science Quiz)</span>
+                  <span class="sub-period-badge">Period 6 (01:45 PM)</span>
+                </div>
+                <div class="sub-details">
+                  <strong>Original:</strong> Sri K. Rajesh<br>
+                  <strong>Substitute:</strong> <span class="text-purple font-bold">Sri D. Srinivas (Computers)</span><br>
+                  <small class="text-muted">Topic: General Science Quiz & Library Review</small>
+                </div>
+                <div class="portal-badge badge-success"><i class="fa-solid fa-check"></i> Confirmed</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE: EXAMINATIONS & ASSESSMENTS (VP FOCUS)
+             ================================================================= -->
+        <section class="portal-view" id="view-examinations">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-file-signature text-primary"></i> Examination & Assessment Desk</h2>
+              <p>Exam scheduling, room allotment, invigilation duty registers, and result processing.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Print Seating Plan
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.showToast('Hall Tickets batch queued for printing', 'success')">
+                <i class="fa-solid fa-id-card"></i> Issue Hall Tickets
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('examinations', 'schedule')">Quarterly Exam 2026 Schedule</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('examinations', 'invigilation')">Invigilation Duty Chart</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('examinations', 'halls')">Room Seating Arrangement</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('examinations', 'results')">Tabulation Registers</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-flex">
+              <div>
+                <h3><i class="fa-solid fa-clipboard-list text-primary"></i> Invigilation Roster (Quarterly Exams Commencing Sept 24)</h3>
+                <p class="text-muted text-sm mt-1">Chief Superintendent: <strong>Sri Navva Anand (Vice Principal)</strong> • Total Exam Halls: 12</p>
+              </div>
+              <span class="portal-badge badge-primary">Superintendent Verified</span>
+            </div>
+
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Hall / Room No.</th>
+                    <th>Classes Accommodated</th>
+                    <th>Invigilator 1 (Primary)</th>
+                    <th>Invigilator 2 (Reliever)</th>
+                    <th>Total Students</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Hall 1 (Rooms 101-102)</strong></td>
+                    <td>Class X-A & X-B</td>
+                    <td>Smt. M. Sunitha (English)</td>
+                    <td>Sri P. Satyanarayana (Maths)</td>
+                    <td>82 Candidates</td>
+                    <td><span class="portal-badge badge-success">Duty Assigned</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hall 2 (Rooms 103-104)</strong></td>
+                    <td>Class IX-A & IX-B</td>
+                    <td>Sri R. Venkata Ramana (Social)</td>
+                    <td>Smt. G. Sarada (Telugu)</td>
+                    <td>89 Candidates</td>
+                    <td><span class="portal-badge badge-success">Duty Assigned</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hall 3 (Rooms 201-202)</strong></td>
+                    <td>Class VIII-A & VIII-B</td>
+                    <td>Sri D. Srinivas (Computers)</td>
+                    <td>Smt. B. Meenakshi (Hindi)</td>
+                    <td>91 Candidates</td>
+                    <td><span class="portal-badge badge-success">Duty Assigned</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hall 4 (Rooms 203-204)</strong></td>
+                    <td>Class VII (A & B)</td>
+                    <td>Sri V. Ramesh Babu (PET)</td>
+                    <td>Smt. K. Anitha (Primary)</td>
+                    <td>88 Candidates</td>
+                    <td><span class="portal-badge badge-success">Duty Assigned</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE: DISCIPLINE & CODE OF CONDUCT (VP PRIMARY FOCUS)
+             ================================================================= -->
+        <section class="portal-view" id="view-discipline">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-scale-balanced text-primary"></i> Discipline & Student Conduct Oversight</h2>
+              <p>Campus behavioral records, late-coming gate registers, merit points, and parent meetings under Vice Principal jurisdiction.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="portalApp.openModal('gateRegisterModal')">
+                <i class="fa-solid fa-door-open"></i> Gate Late-Book
+              </button>
+              <button class="btn btn-primary" onclick="portalApp.openModal('logIncidentModal')">
+                <i class="fa-solid fa-plus-circle"></i> Log Conduct Incident
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('discipline', 'all')">Active Incident Logs (2)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('discipline', 'late')">Morning Gate Late-Coming (8)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('discipline', 'merit')">Merit & Character Awards</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('discipline', 'summons')">Parent Convocations (1)</button>
+          </div>
+
+          <!-- Discipline Quad Stats -->
+          <div class="discipline-quad-stat">
+            <div class="discipline-stat-box">
+              <div class="dsb-title">Overall Student Conduct</div>
+              <div class="dsb-num text-emerald">99.2%</div>
+              <div class="dsb-sub text-emerald">Good Standing</div>
+            </div>
+            <div class="discipline-stat-box">
+              <div class="dsb-title">Active Disciplinary Cases</div>
+              <div class="dsb-num text-amber" id="activeCasesCount">2</div>
+              <div class="dsb-sub text-amber">Under Review</div>
+            </div>
+            <div class="discipline-stat-box">
+              <div class="dsb-title">Late Arrivals Today</div>
+              <div class="dsb-num text-primary">8</div>
+              <div class="dsb-sub text-muted">Gate Check Verified</div>
+            </div>
+            <div class="discipline-stat-box">
+              <div class="dsb-title">Parent Convocations</div>
+              <div class="dsb-num text-red">1</div>
+              <div class="dsb-sub text-red">Scheduled for Monday</div>
+            </div>
+          </div>
+
+          <!-- Incident Cards Grid -->
+          <div class="incident-grid" id="disciplineIncidentsGrid">
+            <!-- Rendered dynamically by portal.js -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE: LEAVE MANAGEMENT (VP FOCUS)
+             ================================================================= -->
+        <section class="portal-view" id="view-leaves">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-calendar-minus text-primary"></i> Leave Management Desk</h2>
+              <p>Faculty and student leave approvals, medical certificate verification, and substitution sync.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-primary" onclick="portalApp.showToast('Leave register exported for Principal endorsement', 'success')">
+                <i class="fa-solid fa-file-arrow-down"></i> Export Leave Register
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('leaves', 'faculty')">Faculty Applications (3 Pending)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('leaves', 'students')">Student Leave Slips (14)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('leaves', 'history')">Monthly Leave Balance</button>
+          </div>
+
+          <div class="card p-4">
+            <h3><i class="fa-solid fa-clock-rotate-left text-primary"></i> Faculty Leave Applications Pending VP Recommendation</h3>
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Teacher Name</th>
+                    <th>Department / Subject</th>
+                    <th>Leave Type</th>
+                    <th>Dates</th>
+                    <th>Substitute Arranged</th>
+                    <th>Reason</th>
+                    <th>Vice Principal Action</th>
+                  </tr>
+                </thead>
+                <tbody id="vpLeaveTableBody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 6: FEES
+             (Collection, Pending Fees, Fee Reports, Transactions)
+             ================================================================= -->
+        <section class="portal-view" id="view-fees">
+          
+          <!-- Vice Principal Restricted Access Banner -->
+          <div id="feesLimitedBanner" class="restricted-banner" style="display: none;">
+            <i class="fa-solid fa-lock"></i>
+            <div>
+              <strong>Limited Financial Access — Vice Principal Role Scope</strong>
+              <p>Financial ledger audits and fee counter edits are restricted to the Principal & School Office. As Vice Principal, you have read-only visibility into campus-wide collection indicators.</p>
+            </div>
+          </div>
+
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-receipt text-primary"></i> Fee Management</h2>
+              <p>Tuition collection, concession tracking, automated pending reminders, and audit ledgers.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-secondary" onclick="portalApp.sendFeeReminders()">
+                <i class="fa-solid fa-bell"></i> Send WhatsApp / SMS Reminders
+              </button>
+              <button class="btn btn-primary" id="collectFeeBtn" onclick="portalApp.openModal('collectFeeModal')">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Collect Fee
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('fees', 'collection')">Collection Overview</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('fees', 'pending')">Pending Defaulters (₹4.2L)</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('fees', 'reports')">Fee Reports & Summaries</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('fees', 'transactions')">Transactions Ledger</button>
+          </div>
+
+          <div class="fees-quad-stat">
+            <div class="fee-stat-box">
+              <div class="fs-title">Total Annual Demand</div>
+              <div class="fs-num">₹32,60,000</div>
+              <div class="fs-sub text-muted">Academic Year 2025-26</div>
+            </div>
+            <div class="fee-stat-box highlight">
+              <div class="fs-title">Total Collected</div>
+              <div class="fs-num text-emerald">₹28,40,000</div>
+              <div class="fs-sub text-emerald">87.1% Realized</div>
+            </div>
+            <div class="fee-stat-box warning">
+              <div class="fs-title">Outstanding Due</div>
+              <div class="fs-num text-amber">₹4,20,000</div>
+              <div class="fs-sub text-amber">12.9% Pending</div>
+            </div>
+            <div class="fee-stat-box">
+              <div class="fs-title">Collected This Month</div>
+              <div class="fs-num text-primary">₹3,45,000</div>
+              <div class="fs-sub text-primary">September Receipts</div>
+            </div>
+          </div>
+
+          <div class="table-container mt-4">
+            <div class="table-header-bar">
+              <h3><i class="fa-solid fa-list-check"></i> Recent Fee Transactions</h3>
+            </div>
+            <table class="data-table" id="feeTransactionsTable">
+              <thead>
+                <tr>
+                  <th>Receipt #</th>
+                  <th>Student Name</th>
+                  <th>Class</th>
+                  <th>Installment</th>
+                  <th>Amount Paid</th>
+                  <th>Payment Mode</th>
+                  <th>Date & Time</th>
+                  <th>Cashier</th>
+                  <th>Receipt</th>
+                </tr>
+              </thead>
+              <tbody id="feeTransactionsTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 7: COMMUNICATION
+             (Announcements, Notices, SMS, Email, Push Notifications)
+             ================================================================= -->
+        <section class="portal-view" id="view-communication">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-bullhorn text-primary"></i> School Communication Desk</h2>
+              <p>Broadcast notices, SMS to parents, email newsletters, and mobile app notifications.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-primary" onclick="portalApp.openModal('newNoticeModal')">
+                <i class="fa-solid fa-feather"></i> Compose Broadcast
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('communication', 'announcements')">Announcements</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('communication', 'notices')">Circulars & Notices</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('communication', 'sms')">SMS Logs</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('communication', 'email')">Email Transmissions</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('communication', 'push')">Push Notifications</button>
+          </div>
+
+          <div class="communication-split">
+            <!-- Left: Notice Composer Quick Form -->
+            <div class="comm-composer-card">
+              <h3><i class="fa-solid fa-paper-plane text-primary"></i> Instant School Broadcast</h3>
+              <form id="broadcastForm" onsubmit="portalApp.handleBroadcast(event)">
+                <div class="form-group">
+                  <label>Channel:</label>
+                  <div class="radio-row">
+                    <label class="radio-chip"><input type="checkbox" checked> SMS</label>
+                    <label class="radio-chip"><input type="checkbox" checked> Notice Board</label>
+                    <label class="radio-chip"><input type="checkbox"> WhatsApp</label>
+                    <label class="radio-chip"><input type="checkbox"> Email</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Recipient Group:</label>
+                  <select class="form-control" id="broadcastRecipients">
+                    <option value="all">All Parents & Guardians (2,450)</option>
+                    <option value="class-x">Class X Parents Only (240)</option>
+                    <option value="high-school">High School Parents (Classes VIII-X)</option>
+                    <option value="primary">Primary Parents (Classes I-V)</option>
+                    <option value="teachers">Teaching Staff (145)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Message Title / Subject:</label>
+                  <input type="text" class="form-control" id="broadcastSubject" placeholder="e.g. Quarterly Exam Schedule & Hall Tickets" required>
+                </div>
+                <div class="form-group">
+                  <label>Message Body:</label>
+                  <textarea class="form-control" id="broadcastBody" rows="4" placeholder="Type notification content here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fa-solid fa-satellite-dish"></i> Transmit to Recipients
+                </button>
+              </form>
+            </div>
+
+            <!-- Right: Sent Broadcast History -->
+            <div class="comm-history-card">
+              <h3><i class="fa-solid fa-clock-rotate-left"></i> Broadcast Log</h3>
+              <div class="broadcast-feed" id="broadcastFeed">
+                <div class="feed-item">
+                  <div class="feed-badge sms"><i class="fa-solid fa-comment-dots"></i> SMS</div>
+                  <div class="feed-content">
+                    <div class="feed-title">Quarterly Examination Timetable Released</div>
+                    <p>Dear Parents, Sri Vidya High School Quarterly exams commence Sept 24. Collect hall tickets by Monday.</p>
+                    <div class="feed-meta">Dispatched to 2,450 parents • 99.4% Delivery rate • Sept 18, 04:30 PM</div>
+                  </div>
+                </div>
+
+                <div class="feed-item">
+                  <div class="feed-badge circular"><i class="fa-solid fa-scroll"></i> Circular</div>
+                  <div class="feed-content">
+                    <div class="feed-title">Swachh Vidya Cleanliness Drive</div>
+                    <p>Celebration on Gandhi Jayanti (Oct 2). Students are invited to participate in green campus activities.</p>
+                    <div class="feed-meta">Published on Public Website & Portal • Sept 15</div>
+                  </div>
+                </div>
+
+                <div class="feed-item">
+                  <div class="feed-badge alert"><i class="fa-solid fa-triangle-exclamation"></i> Alert</div>
+                  <div class="feed-content">
+                    <div class="feed-title">Advisory on Heavy Rain Preparedness</div>
+                    <p>Classes running as per normal schedule under district educational officer guidelines.</p>
+                    <div class="feed-meta">Dispatched to All Parents • Sept 10</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 8: EVENTS
+             (Calendar, School Events, Competitions, Activities)
+             ================================================================= -->
+        <section class="portal-view" id="view-events">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-calendar-days text-primary"></i> School Events & Activities</h2>
+              <p>Annual academic calendar, cultural events, sports championships, and competitions.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-primary" onclick="portalApp.openModal('addEventModal')">
+                <i class="fa-solid fa-calendar-plus"></i> Add New Event
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('events', 'calendar')">Annual Calendar</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('events', 'school')">School Events</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('events', 'competitions')">Competitions</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('events', 'activities')">Co-Curricular & Clubs</button>
+          </div>
+
+          <div class="events-portal-grid" id="eventsContainer">
+            <!-- Event cards generated by JS -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 9: REPORTS
+             (Academic, Attendance, Financial, Staff, Student)
+             ================================================================= -->
+        <section class="portal-view" id="view-reports">
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-chart-pie text-primary"></i> Reports & Analytical Insights</h2>
+              <p>Executive reporting, audit trails, governmental compliance data, and performance analytics.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-primary" onclick="window.print()">
+                <i class="fa-solid fa-file-pdf"></i> Generate Master Dossier
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('reports', 'academic')">Academic Reports</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('reports', 'attendance')">Attendance Analytics</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('reports', 'financial')">Financial Ledger</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('reports', 'staff')">Staff & Faculty</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('reports', 'student')">Student Demographics</button>
+          </div>
+
+          <div class="reports-dossier-grid">
+            <div class="report-box">
+              <div class="rb-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <h3>SSC Board Examination Audit</h3>
+              <p>Comprehensive breakdown of pass percentages, GPA distributions, and topper list over 6 consecutive years.</p>
+              <button class="btn-download-rep" onclick="portalApp.showToast('Generating SSC Audit Dossier...', 'info')">Download PDF</button>
+            </div>
+
+            <div class="report-box">
+              <div class="rb-icon"><i class="fa-solid fa-chart-simple"></i></div>
+              <h3>Quarterly Attendance Dossier</h3>
+              <p>Section-wise attendance tracking, recurring absentee analysis, and health-related leave metrics.</p>
+              <button class="btn-download-rep" onclick="portalApp.showToast('Generating Attendance Dossier...', 'info')">Download PDF</button>
+            </div>
+
+            <div class="report-box">
+              <div class="rb-icon"><i class="fa-solid fa-wallet"></i></div>
+              <h3>Tuition & Concession Audit</h3>
+              <p>Detailed revenue ledger, scholarship allocations, fee defaults, and bank reconciliation statement.</p>
+              <button class="btn-download-rep" onclick="portalApp.showToast('Generating Financial Statement...', 'info')">Download PDF</button>
+            </div>
+
+            <div class="report-box">
+              <div class="rb-icon"><i class="fa-solid fa-id-card-clip"></i></div>
+              <h3>Teacher Appraisal & Workload</h3>
+              <p>Class hours, syllabus completion rates, student feedback scores, and training certificates.</p>
+              <button class="btn-download-rep" onclick="portalApp.showToast('Generating Faculty Appraisal...', 'info')">Download PDF</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 10: SETTINGS
+             (School Profile, Academic Year, Roles, Permissions)
+             ================================================================= -->
+        <section class="portal-view" id="view-settings">
+          
+          <!-- Vice Principal Configuration Locked Banner -->
+          <div id="settingsLockedBanner" class="restricted-banner" style="display: none;">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <strong>Institutional Configuration Restricted — Vice Principal Scope</strong>
+              <p>School profile metadata, affiliation codes, academic year calendars, and security permissions are locked and can only be altered by the Principal & Governing Council.</p>
+            </div>
+          </div>
+
+          <div class="module-header">
+            <div class="module-header-info">
+              <h2><i class="fa-solid fa-sliders text-primary"></i> Portal Configuration & Settings</h2>
+              <p>Institution metadata, academic terms, user role hierarchies, and granular permissions.</p>
+            </div>
+            <div class="module-header-actions">
+              <button class="btn btn-primary" id="saveSettingsBtn" onclick="portalApp.saveSettings()">
+                <i class="fa-solid fa-floppy-disk"></i> Save Configuration
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="portalApp.switchSubTab('settings', 'profile')">School Profile</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('settings', 'year')">Academic Year</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('settings', 'roles')">Roles & Hierarchy</button>
+            <button class="tab-btn" onclick="portalApp.switchSubTab('settings', 'permissions')">Permissions Matrix</button>
+          </div>
+
+          <div class="settings-card" id="settingsFormCard">
+            <h3><i class="fa-solid fa-school text-primary"></i> Institutional Details</h3>
+            <div class="settings-form-grid mt-3">
+              <div class="form-group">
+                <label>Institution Name</label>
+                <input type="text" class="form-control" value="Sri Vidya E.M High School" id="settingSchoolName">
+              </div>
+              <div class="form-group">
+                <label>Year of Establishment</label>
+                <input type="text" class="form-control" value="2017" readonly id="settingEstYear">
+              </div>
+              <div class="form-group">
+                <label>Principal In-Charge</label>
+                <input type="text" class="form-control" value="Smt. Gorle Varalakshmi" id="settingPrincipal">
+              </div>
+              <div class="form-group">
+                <label>Vice Principal</label>
+                <input type="text" class="form-control" value="Sri Navva Anand" id="settingVicePrincipal">
+              </div>
+              <div class="form-group">
+                <label>Principal Contact No.</label>
+                <input type="text" class="form-control" value="8106636230" id="settingPrincipalPhone">
+              </div>
+              <div class="form-group">
+                <label>Vice Principal Contact No.</label>
+                <input type="text" class="form-control" value="9966422096" id="settingVicePhone">
+              </div>
+              <div class="form-group">
+                <label>Official Email</label>
+                <input type="email" class="form-control" value="srividyaschools2017@gmail.com" id="settingEmail">
+              </div>
+              <div class="form-group">
+                <label>Instagram Official URL</label>
+                <input type="url" class="form-control" value="https://www.instagram.com/sri_vidya_school_offl_2017/?hl=en" id="settingInstagram">
+              </div>
+              <div class="form-group full-span">
+                <label>Motto</label>
+                <input type="text" class="form-control" value="Vidyathe Vijayam — Knowledge Empowers True Victory" id="settingMotto">
+              </div>
+            </div>
+
+            <div class="roles-hierarchy-preview mt-4">
+              <h4><i class="fa-solid fa-shield text-primary"></i> Role Hierarchy Architecture</h4>
+              <div class="hierarchy-tree">
+                <div class="ht-node root">
+                  <i class="fa-solid fa-building-columns"></i>
+                  <span>Management Portal</span>
+                </div>
+                <div class="ht-children">
+                  <div class="ht-node child">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <strong>Principal (Gorle Varalakshmi)</strong>
+                    <span class="ht-desc">Full Executive Access, Approvals, Financial Overviews, TC Signatures</span>
+                  </div>
+                  <div class="ht-node child">
+                    <i class="fa-solid fa-user-check"></i>
+                    <strong>Vice Principal (Navva Anand)</strong>
+                    <span class="ht-desc">Academics, Staff Roster, Daily Attendance, Student Disciplinary Oversight</span>
+                  </div>
+                  <div class="ht-node child">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <strong>Admin / School Office</strong>
+                    <span class="ht-desc">Admissions Entry, Fee Collection, Certificate Issuance, SMS Broadcasts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- Add Student / Admission Modal -->
+  <div class="modal-backdrop" id="addStudentModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus text-primary"></i> New Student Admission</h3>
+        <button class="modal-close" onclick="portalApp.closeModal('addStudentModal')">&times;</button>
+      </div>
+      <form id="newStudentForm" onsubmit="portalApp.handleNewStudent(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" class="form-control" id="mStudentName" required placeholder="e.g. M. Rajesh">
+            </div>
+            <div class="form-group">
+              <label>Admission No *</label>
+              <input type="text" class="form-control" id="mAdmNo" required placeholder="e.g. SV-2026-142">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Class *</label>
+              <select class="form-control" id="mClass" required>
+                <option value="X">Class X</option>
+                <option value="IX">Class IX</option>
+                <option value="VIII">Class VIII</option>
+                <option value="VII">Class VII</option>
+                <option value="VI">Class VI</option>
+                <option value="V">Class V</option>
+                <option value="IV">Class IV</option>
+                <option value="III">Class III</option>
+                <option value="II">Class II</option>
+                <option value="I">Class I</option>
+                <option value="PP">Pre-Primary</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Section *</label>
+              <select class="form-control" id="mSection" required>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Parent / Guardian Name *</label>
+              <input type="text" class="form-control" id="mParentName" required placeholder="e.g. M. Srinivasa Rao">
+            </div>
+            <div class="form-group">
+              <label>Parent Contact Phone *</label>
+              <input type="tel" class="form-control" id="mParentPhone" required placeholder="10-digit mobile number">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Residential Address</label>
+            <input type="text" class="form-control" id="mAddress" placeholder="Street, Area, Mandal, District">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('addStudentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Complete Enrolment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Student Profile View Modal -->
+  <div class="modal-backdrop" id="viewStudentModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-id-card text-primary"></i> Student Profile Dossier</h3>
+        <button class="modal-close" onclick="portalApp.closeModal('viewStudentModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="viewStudentModalBody">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('viewStudentModal')">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">Print Dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log Disciplinary Incident Modal (VP Jurisdiction) -->
+  <div class="modal-backdrop" id="logIncidentModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-triangle-exclamation text-amber"></i> Log Student Conduct / Disciplinary Incident</h3>
+        <button class="modal-close" onclick="portalApp.closeModal('logIncidentModal')">&times;</button>
+      </div>
+      <form id="disciplineIncidentForm" onsubmit="portalApp.handleLogIncident(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Student Name *</label>
+              <input type="text" class="form-control" id="incStudentName" required placeholder="e.g. B. Tarun Reddy">
+            </div>
+            <div class="form-group">
+              <label>Class & Section *</label>
+              <select class="form-control" id="incClass" required>
+                <option value="Class X-A">Class X-A</option>
+                <option value="Class X-B">Class X-B</option>
+                <option value="Class IX-A">Class IX-A</option>
+                <option value="Class IX-B" selected>Class IX-B</option>
+                <option value="Class VIII-A">Class VIII-A</option>
+                <option value="Class VIII-B">Class VIII-B</option>
+                <option value="Class VII">Class VII</option>
+                <option value="Class VI">Class VI</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Incident Category *</label>
+              <select class="form-control" id="incCategory" required>
+                <option value="Late Arrival / Gate Breach">Late Arrival / Gate Breach</option>
+                <option value="Improper Uniform / Grooming">Improper Uniform / Grooming</option>
+                <option value="Classroom Disruption">Classroom Disruption</option>
+                <option value="Unauthorized Device / Mobile">Unauthorized Device / Mobile</option>
+                <option value="Homework / Academic Negligence">Homework / Academic Negligence</option>
+                <option value="Exemplary Merit / Good Deed">Exemplary Merit / Good Deed (Award)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Severity Level *</label>
+              <select class="form-control" id="incSeverity" required>
+                <option value="Minor">Minor (First Warning)</option>
+                <option value="Moderate" selected>Moderate (Diary Note / Detention)</option>
+                <option value="High">High (Parent Summons Required)</option>
+                <option value="Merit">Merit (+Points)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Detailed Incident Description *</label>
+            <textarea class="form-control" id="incDescription" rows="3" required placeholder="Describe what occurred, location, and witnesses..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Action Taken by Vice Principal / Discipline In-Charge *</label>
+            <input type="text" class="form-control" id="incActionTaken" required placeholder="e.g. Warning letter issued; parent requested for conference Monday.">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('logIncidentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to Conduct Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Assign Substitution Modal (VP Jurisdiction) -->
+  <div class="modal-backdrop" id="assignSubstitutionModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-clock text-primary"></i> Assign Emergency Faculty Substitution</h3>
+        <button class="modal-close" onclick="portalApp.closeModal('assignSubstitutionModal')">&times;</button>
+      </div>
+      <form id="assignSubstitutionForm" onsubmit="portalApp.handleAssignSubstitution(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Absent Teacher *</label>
+              <select class="form-control" id="subAbsentTeacher" required>
+                <option value="Sri K. Rajesh (Physics)">Sri K. Rajesh (Physics)</option>
+                <option value="Smt. K. Anitha (Primary Lead)">Smt. K. Anitha (Primary Lead)</option>
+                <option value="Sri V. Ramesh Babu (PET)">Sri V. Ramesh Babu (PET)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Target Class & Period *</label>
+              <select class="form-control" id="subClassPeriod" required>
+                <option value="Class X-B (Period 3 - 10:45 AM)">Class X-B (Period 3 - 10:45 AM)</option>
+                <option value="Class IX-A (Period 4 - 11:30 AM)">Class IX-A (Period 4 - 11:30 AM)</option>
+                <option value="Class VIII-B (Period 7 - 02:40 PM)">Class VIII-B (Period 7 - 02:40 PM)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assign Available Substitute Teacher *</label>
+            <select class="form-control" id="substituteTeacher" required>
+              <option value="Sri Navva Anand (Vice Principal - Physics)">Sri Navva Anand (Vice Principal - Physics)</option>
+              <option value="Smt. M. Sunitha (English HOD)">Smt. M. Sunitha (English HOD)</option>
+              <option value="Sri P. Satyanarayana (Maths HOD)">Sri P. Satyanarayana (Maths HOD)</option>
+              <option value="Smt. S. Lakshmi (Biology)">Smt. S. Lakshmi (Biology)</option>
+              <option value="Sri D. Srinivas (Computer Science)">Sri D. Srinivas (Computer Science)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Instructions for Class</label>
+            <input type="text" class="form-control" id="subInstructions" placeholder="e.g. Conduct chapter review & assignment supervision">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('assignSubstitutionModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm & Notify Teacher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Portal Logic Script -->
+  <script src="../js/portal.js"></script>
+</body>
+</html>

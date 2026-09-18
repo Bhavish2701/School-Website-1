@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal | Sri Vidya E.M High School</title>
+  <meta name="description" content="Personalized student and academic dashboard for Sri Vidya E.M High School learners.">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Student Portal Stylesheet -->
+  <link rel="stylesheet" href="../css/student.css">
+</head>
+<body>
+  <div class="portal-layout">
+
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <!-- School Brand Header -->
+      <div class="sidebar-brand">
+        <a href="../index.html" class="brand-link" title="Return to School Website">
+          <img src="../assets/images/school-logo.jpg" alt="Logo" class="brand-logo" onerror="this.src="../images/logo.png'">
+          <div>
+            <div class="brand-name">SRI VIDYA</div>
+            <div class="brand-sub">Student Portal</div>
+            <div class="brand-est">Est. 2017</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Student Profile Card in Sidebar -->
+      <div class="student-profile-pill">
+        <div class="student-avatar-circle">R</div>
+        <div>
+          <div class="student-info-name">Rahul</div>
+          <div class="student-info-class">Grade 10 – Section A</div>
+        </div>
+      </div>
+
+      <!-- Navigation Modules Menu (All 13 Modules) -->
+      <nav class="sidebar-menu" id="studentSidebarMenu">
+        <div class="nav-section-title">MY ACADEMICS</div>
+
+        <!-- 1. Dashboard -->
+        <div class="nav-item active" data-module="dashboard">
+          <a href="#dashboard" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>
+            <span class="nav-text">Dashboard</span>
+            <span class="nav-badge">Today</span>
+          </a>
+        </div>
+
+        <!-- 2. My Profile -->
+        <div class="nav-item" data-module="profile">
+          <a href="#profile" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-id-card"></i></span>
+            <span class="nav-text">My Profile</span>
+          </a>
+        </div>
+
+        <!-- 3. Academics -->
+        <div class="nav-item" data-module="academics">
+          <a href="#academics" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-book-open-reader"></i></span>
+            <span class="nav-text">Academics</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#academics-subjects" class="nav-sub-link active" data-sub="subjects">Subjects</a>
+            <a href="#academics-materials" class="nav-sub-link" data-sub="materials">Study Materials</a>
+            <a href="#academics-homework" class="nav-sub-link" data-sub="homework">Homework</a>
+            <a href="#academics-assignments" class="nav-sub-link" data-sub="assignments">Assignments <span class="nav-badge" style="background: var(--color-accent-amber); color:#fff;">3</span></a>
+            <a href="#academics-notes" class="nav-sub-link" data-sub="notes">Notes</a>
+          </div>
+        </div>
+
+        <!-- 4. Attendance -->
+        <div class="nav-item" data-module="attendance">
+          <a href="#attendance" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-clipboard-user"></i></span>
+            <span class="nav-text">Attendance</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#attendance-daily" class="nav-sub-link active" data-sub="daily">Daily Attendance</a>
+            <a href="#attendance-monthly" class="nav-sub-link" data-sub="monthly">Monthly Calendar</a>
+            <a href="#attendance-subject" class="nav-sub-link" data-sub="subject">Subject-wise</a>
+          </div>
+        </div>
+
+        <!-- 5. Examinations -->
+        <div class="nav-item" data-module="examinations">
+          <a href="#examinations" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-file-pen"></i></span>
+            <span class="nav-text">Examinations</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </a>
+          <div class="nav-sub">
+            <a href="#exams-upcoming" class="nav-sub-link active" data-sub="upcoming">Upcoming Exams</a>
+            <a href="#exams-schedule" class="nav-sub-link" data-sub="schedule">Exam Schedule</a>
+            <a href="#exams-marks" class="nav-sub-link" data-sub="marks">Marks Memo</a>
+            <a href="#exams-results" class="nav-sub-link" data-sub="results">Results</a>
+          </div>
+        </div>
+
+        <!-- 6. Timetable -->
+        <div class="nav-item" data-module="timetable">
+          <a href="#timetable" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-text">Timetable</span>
+          </a>
+        </div>
+
+        <!-- 7. Assignments -->
+        <div class="nav-item" data-module="assignments">
+          <a href="#assignments" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+            <span class="nav-text">Assignments</span>
+            <span class="nav-badge" style="background: var(--color-accent-red); color:#fff;">3 Due</span>
+          </a>
+        </div>
+
+        <div class="nav-section-title">CAMPUS LIFE & FEES</div>
+
+        <!-- 8. Events -->
+        <div class="nav-item" data-module="events">
+          <a href="#events" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-trophy"></i></span>
+            <span class="nav-text">Events</span>
+          </a>
+        </div>
+
+        <!-- 9. Library -->
+        <div class="nav-item" data-module="library">
+          <a href="#library" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-book-bookmark"></i></span>
+            <span class="nav-text">Library</span>
+            <span class="nav-badge">2 Books</span>
+          </a>
+        </div>
+
+        <!-- 10. Announcements -->
+        <div class="nav-item" data-module="announcements">
+          <a href="#announcements" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+            <span class="nav-text">Announcements</span>
+          </a>
+        </div>
+
+        <!-- 11. Messages -->
+        <div class="nav-item" data-module="messages">
+          <a href="#messages" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-comments"></i></span>
+            <span class="nav-text">Messages</span>
+          </a>
+        </div>
+
+        <!-- 12. Certificates -->
+        <div class="nav-item" data-module="certificates">
+          <a href="#certificates" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-award"></i></span>
+            <span class="nav-text">Certificates</span>
+          </a>
+        </div>
+
+        <!-- 13. Fees -->
+        <div class="nav-item" data-module="fees">
+          <a href="#fees" class="nav-link">
+            <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+            <span class="nav-text">Fees</span>
+            <span class="nav-badge" style="background: var(--color-accent-green); color:#fff;">Paid</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <a href="../teacher" class="portal-switch-link" title="Open Teacher Portal">
+          <i class="fa-solid fa-chalkboard-user"></i> Teacher Portal
+        </a>
+        <a href="../index.html" class="portal-switch-link" title="Return to School Website">
+          <i class="fa-solid fa-globe"></i> Website
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN PORTAL CONTAINER
+         ========================================== -->
+    <div class="portal-main">
+
+      <!-- Top Header -->
+      <header class="portal-header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" id="mobileSidebarToggle" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <div class="header-breadcrumb">
+            <span class="crumb-school">Sri Vidya E.M High School</span>
+            <i class="fa-solid fa-chevron-right crumb-sep"></i>
+            <span class="crumb-page" id="studentCurrentPageCrumb">Dashboard</span>
+          </div>
+
+          <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="studentSearchInput" placeholder="Search study materials, notes, subjects..." onkeyup="studentApp.handleSearch()">
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Student Mini Badge -->
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">
+            Active Student: <strong class="text-primary">Rahul (10-A)</strong>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-moon theme-icon" id="themeIcon"></i>
+          </button>
+
+          <!-- Notifications -->
+          <button class="header-action-btn" onclick="studentApp.navigateTo('announcements')" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge">3</span>
+          </button>
+
+          <!-- Cross-portal links -->
+          <a href="../teacher" class="btn-portal-switch" title="Teacher Portal">
+            <i class="fa-solid fa-chalkboard-user"></i> Teachers
+          </a>
+          <a href="../management" class="btn-portal-switch" title="Management Portal">
+            <i class="fa-solid fa-shield-halved"></i> Management
+          </a>
+        </div>
+      </header>
+
+      <!-- Dynamic Content Views -->
+      <main class="portal-content" id="studentMainContent">
+
+        <!-- =================================================================
+             MODULE 1: DASHBOARD (EXACT USER WIREFRAME)
+             ================================================================= -->
+        <section class="portal-view active" id="view-dashboard">
+
+          <!-- Header Greeting: Welcome back, Rahul | Grade 10 – Section A -->
+          <div class="student-welcome-banner">
+            <div>
+              <div class="sw-badge"><i class="fa-solid fa-graduation-cap"></i> Student Dashboard • Class of 2026</div>
+              <h1 class="sw-title">Welcome back, Rahul</h1>
+              <div class="sw-subtitle">Grade 10 – Section A</div>
+              <div class="sw-meta-pills">
+                <span class="sw-pill"><i class="fa-regular fa-calendar"></i> Saturday, Sept 19, 2026</span>
+                <span class="sw-pill"><i class="fa-solid fa-id-badge"></i> Roll #1042 • Adm #SV-2024-082</span>
+                <span class="sw-pill house"><i class="fa-solid fa-shield"></i> Shivaji House (Green)</span>
+                <span class="sw-pill"><i class="fa-solid fa-user-tie"></i> Class Teacher: Smt. M. Sunitha</span>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="studentApp.openModal('hallTicketModal')" style="background: rgba(255,255,255,0.2); border: 1.5px solid #fff;">
+                <i class="fa-solid fa-id-card"></i> Download Hall Ticket
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Metric Cards:
+               [ Attendance: 95% ] [ GPA/Marks: 86% ] [ Assignments: 3 Pending ] [ Fees: Paid ] -->
+          <div class="metrics-quad">
+            
+            <div class="metric-card" onclick="studentApp.navigateTo('attendance')">
+              <span class="metric-label">Attendance</span>
+              <div class="metric-value text-emerald">95%</div>
+              <span class="metric-sub">192 of 202 days present</span>
+            </div>
+
+            <div class="metric-card" onclick="studentApp.navigateTo('examinations', 'marks')">
+              <span class="metric-label">GPA / Marks</span>
+              <div class="metric-value text-primary">86%</div>
+              <span class="metric-sub">Grade: A1 • Rank #4 in Section</span>
+            </div>
+
+            <div class="metric-card" onclick="studentApp.navigateTo('assignments')">
+              <span class="metric-label">Assignments</span>
+              <div class="metric-value text-amber" id="pendingAssignmentsCount">3 Pending</div>
+              <span class="metric-sub">Maths, Science & English due</span>
+            </div>
+
+            <div class="metric-card" onclick="studentApp.openModal('feeReceiptModal')">
+              <span class="metric-label">Fees</span>
+              <div class="metric-value text-emerald">Paid</div>
+              <span class="metric-sub">Term 2 Cleared • Receipt #4891</span>
+            </div>
+
+          </div>
+
+          <!-- Today's Timetable Section:
+               08:30 Mathematics
+               09:30 Science
+               11:00 English -->
+          <div class="today-timetable-card">
+            <div class="card-header-bar">
+              <h2><i class="fa-solid fa-clock text-primary"></i> Today's Timetable (Saturday Schedule)</h2>
+              <span class="portal-badge badge-primary">Classroom 301</span>
+            </div>
+
+            <div class="timetable-list">
+              <!-- Period 1: 08:30 Mathematics -->
+              <div class="timetable-item current">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="time-slot-badge">08:30</div>
+                  <div class="period-details">
+                    <h4>Mathematics – Quadratic Equations</h4>
+                    <p>Teacher: Sri P. Satyanarayana (Maths HOD) • Room 301</p>
+                  </div>
+                </div>
+                <div class="period-actions">
+                  <button class="btn btn-secondary btn-sm" onclick="studentApp.downloadNotes('Mathematics')">
+                    <i class="fa-solid fa-download"></i> Formula Sheet
+                  </button>
+                </div>
+              </div>
+
+              <!-- Period 2: 09:30 Science -->
+              <div class="timetable-item">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="time-slot-badge">09:30</div>
+                  <div class="period-details">
+                    <h4>Science – Physical Science Lab Practical</h4>
+                    <p>Teacher: Smt. S. Lakshmi • Physics & Chemistry Lab</p>
+                  </div>
+                </div>
+                <div class="period-actions">
+                  <button class="btn btn-secondary btn-sm" onclick="studentApp.downloadNotes('Science')">
+                    <i class="fa-solid fa-flask"></i> Lab Manual
+                  </button>
+                </div>
+              </div>
+
+              <!-- Period 3: 11:00 English -->
+              <div class="timetable-item">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="time-slot-badge">11:00</div>
+                  <div class="period-details">
+                    <h4>English – Prose Reading & Grammar Review</h4>
+                    <p>Teacher: Smt. M. Sunitha (Class Teacher) • Room 301</p>
+                  </div>
+                </div>
+                <div class="period-actions">
+                  <button class="btn btn-secondary btn-sm" onclick="studentApp.downloadNotes('English')">
+                    <i class="fa-solid fa-book"></i> Textbook PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-Column Split: [Upcoming Exams | Recent Notices] -->
+          <div class="student-two-col">
+            
+            <!-- Column 1: Upcoming Exams -->
+            <div class="exams-card">
+              <div class="card-header-bar">
+                <h3><i class="fa-solid fa-file-signature text-amber"></i> Upcoming Exams</h3>
+                <span class="portal-badge badge-warning">Quarterly 2026</span>
+              </div>
+              <div class="exams-list">
+                
+                <div class="exam-item">
+                  <div class="exam-date-box">
+                    <div class="exam-month">SEP</div>
+                    <div class="exam-day">24</div>
+                  </div>
+                  <div class="exam-info">
+                    <div class="exam-subject">Mathematics (Paper 1)</div>
+                    <div class="exam-time">09:30 AM – 12:45 PM • Hall 1 (Room 101)</div>
+                  </div>
+                  <span class="portal-badge badge-primary">Syllabus: Ch 1 to 5</span>
+                </div>
+
+                <div class="exam-item">
+                  <div class="exam-date-box">
+                    <div class="exam-month">SEP</div>
+                    <div class="exam-day">26</div>
+                  </div>
+                  <div class="exam-info">
+                    <div class="exam-subject">General Science (Physics & Biology)</div>
+                    <div class="exam-time">09:30 AM – 12:45 PM • Hall 1 (Room 101)</div>
+                  </div>
+                  <span class="portal-badge badge-primary">Syllabus: Units 1-4</span>
+                </div>
+
+                <div class="exam-item">
+                  <div class="exam-date-box">
+                    <div class="exam-month">SEP</div>
+                    <div class="exam-day">28</div>
+                  </div>
+                  <div class="exam-info">
+                    <div class="exam-subject">English Language & Fluency</div>
+                    <div class="exam-time">09:30 AM – 12:45 PM • Hall 1 (Room 101)</div>
+                  </div>
+                  <span class="portal-badge badge-primary">Reading & Grammar</span>
+                </div>
+
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-secondary w-100" onclick="studentApp.openModal('hallTicketModal')">
+                  <i class="fa-solid fa-print"></i> View & Print Official Hall Ticket
+                </button>
+              </div>
+            </div>
+
+            <!-- Column 2: Recent Notices -->
+            <div class="notices-card">
+              <div class="card-header-bar">
+                <h3><i class="fa-solid fa-bullhorn text-primary"></i> Recent Notices</h3>
+                <span class="portal-badge badge-primary">Classroom Feed</span>
+              </div>
+              <div class="notices-list">
+                
+                <div class="notice-item">
+                  <div class="notice-title">Swachh Vidya Cleanliness Drive & Gandhi Jayanti</div>
+                  <div class="notice-body">Participate in the inter-house campus green initiative on Oct 2. Green house volunteers to assemble at 08:30 AM.</div>
+                  <div class="notice-meta"><i class="fa-regular fa-clock"></i> Yesterday from Principal Office</div>
+                </div>
+
+                <div class="notice-item">
+                  <div class="notice-title">Mathematics Assignment #3 Due Monday</div>
+                  <div class="notice-body">Class 10-A students must submit solved homework notebook for Chapter 4 by Monday morning assembly.</div>
+                  <div class="notice-meta"><i class="fa-regular fa-clock"></i> 2 days ago from Sri P. Satyanarayana</div>
+                </div>
+
+                <div class="notice-item">
+                  <div class="notice-title">Library Book Return Advisory</div>
+                  <div class="notice-body">Please return or renew issued library books before the commencement of quarterly examinations.</div>
+                  <div class="notice-meta"><i class="fa-regular fa-clock"></i> Sept 16 from Central Library</div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- =================================================================
+             MODULE 2: MY PROFILE
+             ================================================================= -->
+        <section class="portal-view" id="view-profile">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-id-card text-primary"></i> Student Profile & Identity Dossier</h2>
+            <button class="btn btn-primary" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Print ID Card
+            </button>
+          </div>
+
+          <div class="profile-dossier-card">
+            <div class="row" style="display: grid; grid-template-columns: 320px 1fr; gap: 2rem;">
+              
+              <!-- ID Card Badge Preview -->
+              <div class="id-card-preview">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.75rem;">
+                  <span style="font-weight: 800; font-size: 0.85rem; letter-spacing: 0.05em;">SRI VIDYA E.M HIGH SCHOOL</span>
+                  <span style="font-size: 0.7rem; background: #10B981; padding: 0.15rem 0.4rem; border-radius: 4px;">STUDENT ID</span>
+                </div>
+                <div style="text-align: center; margin: 1.25rem 0;">
+                  <div style="width: 80px; height: 80px; border-radius: 50%; background: #3B82F6; color: #fff; font-size: 2.2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; border: 3px solid #fff;">
+                    R
+                  </div>
+                  <h3 style="color: #fff; font-size: 1.3rem;">Rahul</h3>
+                  <div style="color: #93C5FD; font-size: 0.85rem;">Grade 10 – Section A • Roll #1042</div>
+                </div>
+                <div style="font-size: 0.8rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.75rem;">
+                  <div>Adm No: <strong>SV-2024-082</strong></div>
+                  <div>House: <strong style="color: #6EE7B7;">Shivaji House (Green)</strong></div>
+                  <div>Blood Group: <strong>O+ Positive</strong></div>
+                  <div>Valid Thru: <strong>March 2026</strong></div>
+                </div>
+              </div>
+
+              <!-- Student Full Details -->
+              <div>
+                <h3 class="mb-3">Personal & Academic Record</h3>
+                <div class="form-row mb-3">
+                  <div>
+                    <label class="text-muted text-sm">Full Name</label>
+                    <div class="font-bold">Rahul G.</div>
+                  </div>
+                  <div>
+                    <label class="text-muted text-sm">Date of Birth</label>
+                    <div class="font-bold">14 August 2011 (Age 15)</div>
+                  </div>
+                </div>
+
+                <div class="form-row mb-3">
+                  <div>
+                    <label class="text-muted text-sm">Father / Guardian Name</label>
+                    <div class="font-bold">G. Venkata Rao</div>
+                  </div>
+                  <div>
+                    <label class="text-muted text-sm">Mother Name</label>
+                    <div class="font-bold">G. Vijaya Lakshmi</div>
+                  </div>
+                </div>
+
+                <div class="form-row mb-3">
+                  <div>
+                    <label class="text-muted text-sm">Emergency Phone</label>
+                    <div class="font-bold"><a href="tel:9848123456">9848123456</a></div>
+                  </div>
+                  <div>
+                    <label class="text-muted text-sm">Permanent Residential Address</label>
+                    <div class="font-bold">D.No 4-21/A, Main Road, Beside SBI</div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div>
+                    <label class="text-muted text-sm">Class Teacher</label>
+                    <div class="font-bold">Smt. M. Sunitha (Senior English Faculty)</div>
+                  </div>
+                  <div>
+                    <label class="text-muted text-sm">Second Language Elective</label>
+                    <div class="font-bold">Hindi (Rashtrabhasha)</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 3: ACADEMICS
+             (Subjects, Study Materials, Homework, Assignments, Notes)
+             ================================================================= -->
+        <section class="portal-view" id="view-academics">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-book-open-reader text-primary"></i> Academics & Curriculum</h2>
+            <button class="btn btn-primary" onclick="studentApp.downloadAllNotes()">
+              <i class="fa-solid fa-download"></i> Download All Revision Notes
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="studentApp.switchSubTab('academics', 'subjects')">My Subjects (6)</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('academics', 'materials')">Study Materials & PDFs</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('academics', 'homework')">Daily Homework Log</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('academics', 'assignments')">Assignments (3 Pending)</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('academics', 'notes')">Lecture Notes</button>
+          </div>
+
+          <div id="academicsModuleContent">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 4: ATTENDANCE
+             (Daily, Monthly, Subject-wise)
+             ================================================================= -->
+        <section class="portal-view" id="view-attendance">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-clipboard-user text-primary"></i> Attendance Tracker (95%)</h2>
+            <span class="portal-badge badge-success">Good Standing • Above 90% Requirement</span>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="studentApp.switchSubTab('attendance', 'daily')">Daily Log</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('attendance', 'monthly')">Monthly Register</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('attendance', 'subject')">Subject-wise Presence</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="metrics-quad mb-3">
+              <div class="metric-card">
+                <span class="metric-label">Total Working Days</span>
+                <div class="metric-value">202</div>
+                <span class="metric-sub">Academic Year 2025–26</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Days Present</span>
+                <div class="metric-value text-emerald">192</div>
+                <span class="metric-sub">95.0% Presence Rate</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Authorized Leaves</span>
+                <div class="metric-value text-amber">8 Days</div>
+                <span class="metric-sub">Medical certificates filed</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Unexcused Absences</span>
+                <div class="metric-value text-red">2 Days</div>
+                <span class="metric-sub">Within tolerance</span>
+              </div>
+            </div>
+
+            <h3 class="mt-4 mb-2">Subject-wise Presence Benchmark</h3>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Teacher In-Charge</th>
+                    <th>Classes Held</th>
+                    <th>Classes Attended</th>
+                    <th>Attendance %</th>
+                    <th>Eligibility Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Mathematics</strong></td>
+                    <td>Sri P. Satyanarayana</td>
+                    <td>68</td>
+                    <td>66</td>
+                    <td><strong>97.0%</strong></td>
+                    <td><span class="portal-badge badge-success">Eligible</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>General Science</strong></td>
+                    <td>Smt. S. Lakshmi & Sri K. Rajesh</td>
+                    <td>65</td>
+                    <td>62</td>
+                    <td><strong>95.3%</strong></td>
+                    <td><span class="portal-badge badge-success">Eligible</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>English Language</strong></td>
+                    <td>Smt. M. Sunitha</td>
+                    <td>60</td>
+                    <td>59</td>
+                    <td><strong>98.3%</strong></td>
+                    <td><span class="portal-badge badge-success">Eligible</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Social Studies</strong></td>
+                    <td>Sri R. Venkata Ramana</td>
+                    <td>58</td>
+                    <td>54</td>
+                    <td><strong>93.1%</strong></td>
+                    <td><span class="portal-badge badge-success">Eligible</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>First Language (Telugu)</strong></td>
+                    <td>Smt. G. Sarada</td>
+                    <td>55</td>
+                    <td>52</td>
+                    <td><strong>94.5%</strong></td>
+                    <td><span class="portal-badge badge-success">Eligible</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 5: EXAMINATIONS
+             (Upcoming Exams, Schedule, Marks, Results)
+             ================================================================= -->
+        <section class="portal-view" id="view-examinations">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-file-pen text-primary"></i> Examination Desk & Results</h2>
+            <button class="btn btn-primary" onclick="studentApp.openModal('hallTicketModal')">
+              <i class="fa-solid fa-id-card"></i> View Hall Ticket
+            </button>
+          </div>
+
+          <div class="tab-strip">
+            <button class="tab-btn active" onclick="studentApp.switchSubTab('examinations', 'upcoming')">Quarterly Exam 2026 Datesheet</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('examinations', 'marks')">Unit Test 1 & 2 Marks Memo</button>
+            <button class="tab-btn" onclick="studentApp.switchSubTab('examinations', 'results')">Digital Report Card</button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-bar">
+              <div>
+                <h3>Quarterly Examination Datesheet (Sept 2026)</h3>
+                <p class="text-muted text-sm mt-1">Reporting Time: 08:45 AM • Examination Timing: 09:30 AM – 12:45 PM</p>
+              </div>
+              <span class="portal-badge badge-primary">Hall 1 (Room 101)</span>
+            </div>
+
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Subject</th>
+                    <th>Duration</th>
+                    <th>Max Marks</th>
+                    <th>Admit Card Verified</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>24 Sept 2026</strong></td>
+                    <td>Thursday</td>
+                    <td>Mathematics (Paper 1)</td>
+                    <td>3 Hours 15 Mins</td>
+                    <td>100</td>
+                    <td><span class="portal-badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>26 Sept 2026</strong></td>
+                    <td>Saturday</td>
+                    <td>General Science</td>
+                    <td>3 Hours 15 Mins</td>
+                    <td>100</td>
+                    <td><span class="portal-badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>28 Sept 2026</strong></td>
+                    <td>Monday</td>
+                    <td>English Language</td>
+                    <td>3 Hours 15 Mins</td>
+                    <td>100</td>
+                    <td><span class="portal-badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>30 Sept 2026</strong></td>
+                    <td>Wednesday</td>
+                    <td>Social Studies</td>
+                    <td>3 Hours 15 Mins</td>
+                    <td>100</td>
+                    <td><span class="portal-badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>01 Oct 2026</strong></td>
+                    <td>Thursday</td>
+                    <td>First Language (Telugu / Hindi)</td>
+                    <td>3 Hours 15 Mins</td>
+                    <td>100</td>
+                    <td><span class="portal-badge badge-success">Verified</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 6: TIMETABLE
+             ================================================================= -->
+        <section class="portal-view" id="view-timetable">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-calendar-days text-primary"></i> Grade 10-A Weekly Timetable</h2>
+            <button class="btn btn-secondary" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Print Schedule
+            </button>
+          </div>
+
+          <div class="card p-4">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Period / Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>1 (08:30 - 09:30)</strong></td>
+                    <td>Mathematics</td>
+                    <td>English</td>
+                    <td>Mathematics</td>
+                    <td>Science</td>
+                    <td>Mathematics</td>
+                    <td><strong>Mathematics</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>2 (09:30 - 10:30)</strong></td>
+                    <td>Science</td>
+                    <td>Mathematics</td>
+                    <td>Telugu</td>
+                    <td>English</td>
+                    <td>Science</td>
+                    <td><strong>Science Lab</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>3 (11:00 - 12:00)</strong></td>
+                    <td>English</td>
+                    <td>Science</td>
+                    <td>Science</td>
+                    <td>Mathematics</td>
+                    <td>Hindi</td>
+                    <td><strong>English</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>4 (12:00 - 01:00)</strong></td>
+                    <td>Social Studies</td>
+                    <td>Hindi</td>
+                    <td>Social Studies</td>
+                    <td>Telugu</td>
+                    <td>Computer Lab</td>
+                    <td>Library / Reading</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5 (01:45 - 02:45)</strong></td>
+                    <td>Science Practical</td>
+                    <td>Social Studies</td>
+                    <td>English</td>
+                    <td>Computer Lab</td>
+                    <td>Science</td>
+                    <td>Maths Olympiad Club</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 7: ASSIGNMENTS
+             ================================================================= -->
+        <section class="portal-view" id="view-assignments">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-list-check text-primary"></i> My Academic Assignments</h2>
+            <span class="portal-badge badge-warning" id="assignmentBadgeCount">3 Pending Submission</span>
+          </div>
+
+          <div class="assignments-grid" id="assignmentsListContainer">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 8: EVENTS
+             ================================================================= -->
+        <section class="portal-view" id="view-events">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-trophy text-primary"></i> Campus Events & Competitions</h2>
+            <button class="btn btn-primary" onclick="studentApp.showToast('Registered for Inter-House Science Fair', 'success')">
+              <i class="fa-solid fa-plus"></i> Register for Event
+            </button>
+          </div>
+
+          <div class="events-list-grid" id="studentEventsContainer">
+            <!-- Populated via JS -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 9: LIBRARY
+             ================================================================= -->
+        <section class="portal-view" id="view-library">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-book-bookmark text-primary"></i> Central Library Desk</h2>
+            <span class="portal-badge badge-primary">Borrowing Limit: 3 Books</span>
+          </div>
+
+          <div class="card p-4">
+            <h3>Currently Issued Books (2)</h3>
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Accession No.</th>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Issue Date</th>
+                    <th>Return Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>LIB-10482</strong></td>
+                    <td>A Brief History of Time</td>
+                    <td>Stephen Hawking</td>
+                    <td>Sept 08, 2026</td>
+                    <td>Sept 22, 2026</td>
+                    <td><span class="portal-badge badge-warning">Due in 3 Days</span></td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="studentApp.showToast('Book renewed for 14 days', 'success')">Renew Book</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>LIB-08912</strong></td>
+                    <td>Higher Algebra for Secondary Schools</td>
+                    <td>Hall & Knight</td>
+                    <td>Sept 12, 2026</td>
+                    <td>Sept 26, 2026</td>
+                    <td><span class="portal-badge badge-success">Active</span></td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="studentApp.showToast('Book renewed for 14 days', 'success')">Renew Book</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 10: ANNOUNCEMENTS
+             ================================================================= -->
+        <section class="portal-view" id="view-announcements">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-bullhorn text-primary"></i> School Announcements & Circulars</h2>
+          </div>
+
+          <div id="studentAnnouncementsFeed">
+            <!-- Populated via JS -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 11: MESSAGES
+             ================================================================= -->
+        <section class="portal-view" id="view-messages">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-comments text-primary"></i> Teacher Query & Messages Desk</h2>
+            <button class="btn btn-primary" onclick="studentApp.openModal('askTeacherModal')">
+              <i class="fa-solid fa-paper-plane"></i> Ask a Teacher
+            </button>
+          </div>
+
+          <div class="card p-4" id="messagesInboxContainer">
+            <!-- Populated via JS -->
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 12: CERTIFICATES
+             ================================================================= -->
+        <section class="portal-view" id="view-certificates">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-award text-primary"></i> Official Student Certificates</h2>
+          </div>
+
+          <div class="card p-4">
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Certificate Type</th>
+                    <th>Academic Session</th>
+                    <th>Issue Date</th>
+                    <th>Authorized Signatory</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Bonafide & Study Certificate</strong></td>
+                    <td>2025–2026</td>
+                    <td>Sept 01, 2026</td>
+                    <td>Smt. Gorle Varalakshmi (Principal)</td>
+                    <td><button class="btn btn-primary btn-sm" onclick="studentApp.showToast('Generating official Bonafide Certificate PDF...', 'success')"><i class="fa-solid fa-download"></i> Download</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>District Mathematics Olympiad — Merit Award</strong></td>
+                    <td>2025–2026</td>
+                    <td>Aug 20, 2026</td>
+                    <td>District Educational Officer</td>
+                    <td><button class="btn btn-primary btn-sm" onclick="studentApp.showToast('Generating Merit Certificate PDF...', 'success')"><i class="fa-solid fa-download"></i> Download</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================================
+             MODULE 13: FEES
+             ================================================================= -->
+        <section class="portal-view" id="view-fees">
+          <div class="card-header-bar mb-3">
+            <h2><i class="fa-solid fa-receipt text-primary"></i> Tuition Fee Status & Payment History</h2>
+            <button class="btn btn-primary" onclick="studentApp.openModal('feeReceiptModal')">
+              <i class="fa-solid fa-print"></i> Download Official Receipt
+            </button>
+          </div>
+
+          <div class="card p-4">
+            <div class="card-header-bar">
+              <div>
+                <h3>Academic Year 2025–26 Fee Status</h3>
+                <p class="text-muted text-sm mt-1">Student: Rahul (Class 10-A) • Admission No: SV-2024-082</p>
+              </div>
+              <span class="portal-badge badge-success" style="font-size: 0.9rem; padding: 0.4rem 0.85rem;"><i class="fa-solid fa-circle-check"></i> Term 2 Cleared (PAID)</span>
+            </div>
+
+            <div class="table-container mt-3">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Receipt #</th>
+                    <th>Fee Term</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Mode</th>
+                    <th>Date Paid</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>RCPT-2026-4891</strong></td>
+                    <td>Term 2 Tuition & Science Lab Fee</td>
+                    <td><strong class="text-emerald">₹14,500</strong></td>
+                    <td>UPI (PhonePe #9848123456)</td>
+                    <td>Today, 11:20 AM</td>
+                    <td><span class="portal-badge badge-success">Payment Received</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>RCPT-2026-1120</strong></td>
+                    <td>Term 1 Tuition & Annual Computer Lab Fee</td>
+                    <td><strong class="text-emerald">₹16,000</strong></td>
+                    <td>Net Banking</td>
+                    <td>June 15, 2026</td>
+                    <td><span class="portal-badge badge-success">Payment Received</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- Modal 1: Hall Ticket Download -->
+  <div class="modal-backdrop" id="hallTicketModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-id-card text-primary"></i> Official Examination Hall Ticket</h3>
+        <button class="modal-close" onclick="studentApp.closeModal('hallTicketModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="background: var(--color-bg-base); padding: 1.5rem;">
+        <div style="background: #fff; border: 2px solid #1D4ED8; border-radius: var(--radius-md); padding: 1.5rem; color: #0F172A;">
+          <div style="text-align: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 1rem; margin-bottom: 1rem;">
+            <h3 style="color: #1D4ED8; margin: 0; font-size: 1.25rem;">SRI VIDYA E.M HIGH SCHOOL</h3>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #64748B;">Quarterly Examination Hall Ticket 2026</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem; margin-bottom: 1rem;">
+            <div>Candidate: <strong>Rahul G.</strong></div>
+            <div>Roll No: <strong>#1042</strong></div>
+            <div>Class & Section: <strong>Grade 10 – Section A</strong></div>
+            <div>Exam Center: <strong>Hall 1 (Room 101)</strong></div>
+          </div>
+          <div style="font-size: 0.75rem; color: #64748B; border-top: 1px dashed #CBD5E1; padding-top: 0.75rem;">
+            * Reporting time is 08:45 AM. Electronic smart watches and unauthorized devices are strictly prohibited.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="studentApp.closeModal('hallTicketModal')">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Hall Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Submit Assignment -->
+  <div class="modal-backdrop" id="submitAssignmentModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-arrow-up text-primary"></i> Submit Academic Assignment</h3>
+        <button class="modal-close" onclick="studentApp.closeModal('submitAssignmentModal')">&times;</button>
+      </div>
+      <form onsubmit="studentApp.handleSubmitAssignment(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Assignment Title</label>
+            <input type="text" class="form-control" id="modalAssignTitle" readonly value="Mathematics: Chapter 4 Quadratic Curves">
+          </div>
+          <div class="form-group">
+            <label>Upload Document / Solution (PDF, JPG, PNG)</label>
+            <input type="file" class="form-control" required id="modalAssignFile">
+            <small class="text-muted">Maximum file size: 15MB</small>
+          </div>
+          <div class="form-group">
+            <label>Student Remarks / Notes for Teacher</label>
+            <textarea class="form-control" rows="2" placeholder="e.g. Completed all 8 problem sets with step-by-step proofs..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="studentApp.closeModal('submitAssignmentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit for Grading</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Ask Teacher -->
+  <div class="modal-backdrop" id="askTeacherModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-comment-dots text-primary"></i> Ask Subject Faculty</h3>
+        <button class="modal-close" onclick="studentApp.closeModal('askTeacherModal')">&times;</button>
+      </div>
+      <form onsubmit="studentApp.handleSendQuery(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Select Faculty *</label>
+            <select class="form-control" id="queryTeacher" required>
+              <option value="Smt. M. Sunitha (Class Teacher / English)">Smt. M. Sunitha (Class Teacher / English)</option>
+              <option value="Sri P. Satyanarayana (Mathematics HOD)">Sri P. Satyanarayana (Mathematics HOD)</option>
+              <option value="Smt. S. Lakshmi (Biological Science)">Smt. S. Lakshmi (Biological Science)</option>
+              <option value="Sri Navva Anand (Vice Principal / Physics)">Sri Navva Anand (Vice Principal / Physics)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Question Topic *</label>
+            <input type="text" class="form-control" id="querySubject" required placeholder="e.g. Doubt in Exercise 4.2 problem #6">
+          </div>
+          <div class="form-group">
+            <label>Your Question / Message *</label>
+            <textarea class="form-control" id="queryMessage" rows="3" required placeholder="Type your academic query here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="studentApp.closeModal('askTeacherModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send Question</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Fee Receipt -->
+  <div class="modal-backdrop" id="feeReceiptModal">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt text-primary"></i> Fee Payment Receipt</h3>
+        <button class="modal-close" onclick="studentApp.closeModal('feeReceiptModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="border: 2px dashed #CBD5E1; padding: 1.5rem; border-radius: var(--radius-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+            <div>
+              <strong style="color: #1D4ED8; font-size: 1.1rem;">SRI VIDYA E.M HIGH SCHOOL</strong>
+              <div style="font-size: 0.78rem; color: #64748B;">Official Tuition Receipt • Est. 2017</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="portal-badge badge-success">PAID</span>
+              <div style="font-size: 0.78rem; font-weight: 700; margin-top: 0.2rem;">#RCPT-2026-4891</div>
+            </div>
+          </div>
+          <div style="font-size: 0.85rem; line-height: 1.7;">
+            <div>Student Name: <strong>Rahul G.</strong> (Class 10-A, Roll #1042)</div>
+            <div>Parent Name: <strong>G. Venkata Rao</strong></div>
+            <div>Payment Category: <strong>Term 2 Tuition & Science Lab Fee</strong></div>
+            <div>Amount Realized: <strong style="color: #10B981; font-size: 1.05rem;">₹14,500</strong></div>
+            <div>Payment Date: <strong>Sept 19, 2026 • 11:20 AM</strong></div>
+            <div>Mode: <strong>UPI (PhonePe Transaction #8810923)</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="studentApp.closeModal('feeReceiptModal')">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Official Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Student Portal Logic -->
+  <script src="../js/student.js"></script>
+</body>
+</html>

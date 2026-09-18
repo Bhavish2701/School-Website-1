@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Dashboard | Sri Vidya E.M High School</title>
+  <meta name="description" content="Dedicated Parent Portal for Sri Vidya E.M High School. Monitor child academic progress, attendance, pay fees online, track school bus, and communicate with teachers.">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Parent Portal Stylesheet -->
+  <link rel="stylesheet" href="css/parent.css">
+</head>
+<body>
+  <div class="portal-layout">
+    
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <!-- School Branding Header -->
+      <div class="sidebar-brand">
+        <a href="/" class="brand-link" title="Return to Public Website">
+          <img src="images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src='images/logo-placeholder.svg'">
+          <div class="brand-text">
+            <span class="brand-name">SRI VIDYA</span>
+            <span class="brand-sub">PARENT PORTAL</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Active Child Indicator Badge -->
+      <div class="sidebar-child-badge" id="sidebarChildBadge">
+        <div class="sc-avatar" style="background: #1D4ED8;">
+          <i class="fa-solid fa-user-graduate"></i>
+        </div>
+        <div class="sc-info">
+          <div class="sc-name" id="activeChildName">Rahul Sharma (Grade 8A)</div>
+          <div class="sc-grade">Roll #1042 • Section A</div>
+        </div>
+      </div>
+
+      <!-- Module Navigation Menu -->
+      <nav class="sidebar-menu">
+        <div class="nav-section-title">CORE MODULES</div>
+        
+        <a class="nav-link active" data-view="view-dashboard" onclick="navigateTo('view-dashboard')">
+          <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        <a class="nav-link" data-view="view-my-children" onclick="navigateTo('view-my-children')">
+          <i class="fa-solid fa-users"></i> My Children
+        </a>
+        <a class="nav-link" data-view="view-academics" onclick="navigateTo('view-academics')">
+          <i class="fa-solid fa-book-open"></i> Academics
+        </a>
+        <a class="nav-link" data-view="view-attendance" onclick="navigateTo('view-attendance')">
+          <i class="fa-solid fa-calendar-check"></i> Attendance
+        </a>
+        <a class="nav-link" data-view="view-fees" onclick="navigateTo('view-fees')">
+          <i class="fa-solid fa-receipt"></i> Fees &amp; Payments
+        </a>
+        <a class="nav-link" data-view="view-communication" onclick="navigateTo('view-communication')">
+          <i class="fa-solid fa-comments"></i> Communication
+        </a>
+        <a class="nav-link" data-view="view-events" onclick="navigateTo('view-events')">
+          <i class="fa-solid fa-calendar-days"></i> Events &amp; PTM
+        </a>
+        <a class="nav-link" data-view="view-transport" onclick="navigateTo('view-transport')">
+          <i class="fa-solid fa-bus"></i> Transport &amp; GPS
+        </a>
+        <a class="nav-link" data-view="view-leave" onclick="navigateTo('view-leave')">
+          <i class="fa-solid fa-file-signature"></i> Request Leave
+        </a>
+        <a class="nav-link" data-view="view-documents" onclick="navigateTo('view-documents')">
+          <i class="fa-solid fa-folder-open"></i> Documents
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <a href="/" class="btn-back-site">
+          <i class="fa-solid fa-globe"></i> Public Website
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN WRAPPER & HEADER
+         ========================================== -->
+    <div class="portal-main">
+      <!-- Sticky Header -->
+      <header class="portal-header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" onclick="toggleMobileSidebar()" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+
+          <!-- MULTI-CHILD SWITCHER DROPDOWN -->
+          <div class="child-switcher-box">
+            <span class="child-switcher-label"><i class="fa-solid fa-children"></i> Student:</span>
+            <select id="childSelectDropdown" class="child-select" title="Switch Child Profile">
+              <option value="rahul" selected>Rahul Sharma – Grade 8A</option>
+              <option value="sneha">Sneha Sharma – Grade 5B</option>
+              <option value="aditya">Aditya Sharma – UKG</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Header Actions & Portal Switchers -->
+        <div class="header-actions">
+          <a href="/management" class="btn-portal-pill" title="Switch to Management Portal">
+            <i class="fa-solid fa-shield-halved" style="color: #1D4ED8;"></i> Management
+          </a>
+          <a href="/teacher" class="btn-portal-pill" title="Switch to Teacher Portal">
+            <i class="fa-solid fa-chalkboard-user" style="color: #10B981;"></i> Teacher
+          </a>
+          <a href="/student" class="btn-portal-pill" title="Switch to Student Portal">
+            <i class="fa-solid fa-graduation-cap" style="color: #8B5CF6;"></i> Student
+          </a>
+
+          <!-- Theme Toggle Button -->
+          <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark / Light Theme">
+            <i class="fa-solid fa-moon" id="themeToggleIcon"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Portal Content Body -->
+      <main class="portal-content">
+
+        <!-- ================================================================
+             MODULE 1: DASHBOARD
+             ================================================================ -->
+        <section id="view-dashboard" class="portal-view active">
+          <!-- Dynamic Hero Banner for Active Child -->
+          <div class="parent-child-hero">
+            <div class="pch-content">
+              <h1>Good Morning, <span id="heroParentGreeting">Mr. &amp; Mrs. Sharma</span></h1>
+              <div class="pch-meta">
+                Active Student: <strong id="heroChildName" style="color: #FDE047;">Rahul Sharma</strong> • <span id="heroChildGrade">Grade 8A • Roll #1042 • Class Teacher: Ms. Anjali</span>
+              </div>
+              <div class="pch-tags">
+                <span class="pch-tag"><i class="fa-solid fa-shield-cat"></i> <span id="heroChildHouse">Vidyadhari (Blue House) • Blood Grp: O+ve</span></span>
+                <span class="pch-tag"><i class="fa-solid fa-bus"></i> Bus Route #4: On Schedule</span>
+                <span class="pch-tag"><i class="fa-solid fa-circle-check" style="color: #10B981;"></i> Academic Standing: Excellent</span>
+              </div>
+            </div>
+            <div class="pch-quick-actions">
+              <button class="btn-white" onclick="openPayModal()">
+                <i class="fa-solid fa-credit-card"></i> Pay Fees
+              </button>
+              <button class="btn-outline-white" onclick="navigateTo('view-leave')">
+                <i class="fa-solid fa-file-pen"></i> Apply Leave
+              </button>
+              <button class="btn-outline-white" onclick="navigateTo('view-communication')">
+                <i class="fa-solid fa-envelope"></i> Message Teacher
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Metric Quad Cards -->
+          <div class="metrics-quad">
+            <div class="metric-card" onclick="navigateTo('view-attendance')" style="cursor: pointer;">
+              <div class="metric-header">
+                <span class="metric-label">Attendance Rate</span>
+                <div class="metric-icon-wrap icon-green"><i class="fa-solid fa-calendar-check"></i></div>
+              </div>
+              <div class="metric-value" id="metricAttendanceVal">96%</div>
+              <div class="metric-sub" id="metricAttendanceSub">144 / 150 Days</div>
+            </div>
+
+            <div class="metric-card" onclick="navigateTo('view-academics')" style="cursor: pointer;">
+              <div class="metric-header">
+                <span class="metric-label">Term Marks / GPA</span>
+                <div class="metric-icon-wrap icon-blue"><i class="fa-solid fa-chart-line"></i></div>
+              </div>
+              <div class="metric-value" id="metricGpaVal">86.4%</div>
+              <div class="metric-sub" id="metricGpaSub">A Grade (Distinction)</div>
+            </div>
+
+            <div class="metric-card" onclick="navigateTo('view-fees')" style="cursor: pointer;">
+              <div class="metric-header">
+                <span class="metric-label">Fee Status</span>
+                <div class="metric-icon-wrap icon-amber"><i class="fa-solid fa-receipt"></i></div>
+              </div>
+              <div class="metric-value" id="metricFeeVal">₹4,500 Due</div>
+              <div class="metric-sub" id="metricFeeSub">Due by Oct 15, 2025</div>
+            </div>
+
+            <div class="metric-card" onclick="navigateTo('view-my-children')" style="cursor: pointer;">
+              <div class="metric-header">
+                <span class="metric-label">Behaviour &amp; Conduct</span>
+                <div class="metric-icon-wrap icon-purple"><i class="fa-solid fa-star"></i></div>
+              </div>
+              <div class="metric-value" id="metricBehaviourVal">Excellent</div>
+              <div class="metric-sub" id="metricBehaviourSub">4 Merit Stars</div>
+            </div>
+          </div>
+
+          <!-- Today's Classes & Timetable Overview -->
+          <div class="view-card">
+            <div class="view-header">
+              <h2 class="view-title"><i class="fa-solid fa-clock-rotate-left"></i> Today's Schedule &amp; Timetable</h2>
+              <p class="view-sub">Real-time classroom periods, subject schedule, and teachers for the active student</p>
+            </div>
+            <div class="timetable-grid" id="timetableContainer">
+              <!-- Dynamically populated by js/parent.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 2: MY CHILDREN
+             ================================================================ -->
+        <section id="view-my-children" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-children"></i> My Children Profiles</h2>
+            <p class="view-sub">Overview of all enrolled children under Sharma Family Account. Click any child to switch the portal instantly.</p>
+          </div>
+
+          <!-- 3 Children Cards -->
+          <div class="metrics-quad" style="grid-template-columns: repeat(3, 1fr);">
+            <!-- Child 1: Rahul -->
+            <div class="metric-card" style="border-top: 4px solid #1D4ED8; cursor: pointer;" onclick="switchChild('rahul'); navigateTo('view-dashboard');">
+              <div class="metric-header">
+                <div>
+                  <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--color-text-dark);">Rahul Sharma</h3>
+                  <div class="text-sm text-muted">Grade 8A • Roll #1042</div>
+                </div>
+                <div class="sc-avatar" style="background: #1D4ED8;"><i class="fa-solid fa-user-graduate"></i></div>
+              </div>
+              <div style="margin: 0.75rem 0; font-size: 0.85rem;">
+                <div><strong>Class Teacher:</strong> Ms. Anjali</div>
+                <div><strong>Attendance:</strong> <span style="color: var(--color-accent-green); font-weight: 700;">96%</span></div>
+                <div><strong>GPA:</strong> 86.4% (Rank #3)</div>
+                <div><strong>Fee Status:</strong> <span class="badge-due portal-badge">₹4,500 Due</span></div>
+              </div>
+              <button class="btn-sm-action font-bold" style="width: 100%; text-align: center;">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Rahul
+              </button>
+            </div>
+
+            <!-- Child 2: Sneha -->
+            <div class="metric-card" style="border-top: 4px solid #8B5CF6; cursor: pointer;" onclick="switchChild('sneha'); navigateTo('view-dashboard');">
+              <div class="metric-header">
+                <div>
+                  <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--color-text-dark);">Sneha Sharma</h3>
+                  <div class="text-sm text-muted">Grade 5B • Roll #5021</div>
+                </div>
+                <div class="sc-avatar" style="background: #8B5CF6;"><i class="fa-solid fa-graduation-cap"></i></div>
+              </div>
+              <div style="margin: 0.75rem 0; font-size: 0.85rem;">
+                <div><strong>Class Teacher:</strong> Mrs. K. Sunitha</div>
+                <div><strong>Attendance:</strong> <span style="color: var(--color-accent-green); font-weight: 700;">98.2%</span></div>
+                <div><strong>GPA:</strong> 92.5% (Rank #1 Class Topper)</div>
+                <div><strong>Fee Status:</strong> <span class="badge-paid portal-badge">Fully Paid</span></div>
+              </div>
+              <button class="btn-sm-action font-bold" style="width: 100%; text-align: center;">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Sneha
+              </button>
+            </div>
+
+            <!-- Child 3: Aditya -->
+            <div class="metric-card" style="border-top: 4px solid #10B981; cursor: pointer;" onclick="switchChild('aditya'); navigateTo('view-dashboard');">
+              <div class="metric-header">
+                <div>
+                  <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--color-text-dark);">Aditya Sharma</h3>
+                  <div class="text-sm text-muted">UKG • Roll #0214</div>
+                </div>
+                <div class="sc-avatar" style="background: #10B981;"><i class="fa-solid fa-child-reaching"></i></div>
+              </div>
+              <div style="margin: 0.75rem 0; font-size: 0.85rem;">
+                <div><strong>Class Teacher:</strong> Ms. P. Lakshmi</div>
+                <div><strong>Attendance:</strong> <span style="color: var(--color-accent-green); font-weight: 700;">92%</span></div>
+                <div><strong>GPA:</strong> Grade O (Outstanding)</div>
+                <div><strong>Fee Status:</strong> <span class="badge-due portal-badge">₹3,200 Due</span></div>
+              </div>
+              <button class="btn-sm-action font-bold" style="width: 100%; text-align: center;">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Aditya
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 3: ACADEMICS
+             ================================================================ -->
+        <section id="view-academics" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-book-open"></i> Academic Performance &amp; Marks</h2>
+            <p class="view-sub">Detailed subject breakdown, Formative (FA1, FA2) &amp; Summative (SA1) assessments, and teacher remarks</p>
+          </div>
+
+          <!-- Marks Table Card -->
+          <div class="view-card">
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">Subject Marks &amp; Progress Matrix</h3>
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th class="text-center">FA-1 (25)</th>
+                    <th class="text-center">FA-2 (25)</th>
+                    <th class="text-center">SA-1 (100)</th>
+                    <th class="text-center">Total Pct</th>
+                    <th class="text-center">Grade</th>
+                    <th>Teacher Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="academicsTableBody">
+                  <!-- Populated by js/parent.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Assignments Tracker -->
+          <div class="view-card">
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">Homework &amp; Assignments Tracker</h3>
+            <div class="assignments-list" id="assignmentsContainer">
+              <!-- Populated by js/parent.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 4: ATTENDANCE
+             ================================================================ -->
+        <section id="view-attendance" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-calendar-check"></i> Attendance Tracking &amp; Records</h2>
+            <p class="view-sub">Detailed attendance statistics, monthly logs, and absence history</p>
+          </div>
+
+          <!-- Attendance Stats Grid -->
+          <div class="att-summary-grid">
+            <div class="att-box">
+              <div class="text-muted text-sm font-bold">ATTENDANCE RATE</div>
+              <div class="metric-value" id="attRateDisplay" style="color: var(--color-accent-green);">96%</div>
+            </div>
+            <div class="att-box" style="border-left-color: var(--color-primary);">
+              <div class="text-muted text-sm font-bold">DAYS PRESENT</div>
+              <div class="metric-value" id="attPresentCount">144 Days</div>
+            </div>
+            <div class="att-box" style="border-left-color: var(--color-accent-red);">
+              <div class="text-muted text-sm font-bold">DAYS ABSENT</div>
+              <div class="metric-value" id="attAbsentCount" style="color: var(--color-accent-red);">4 Days</div>
+            </div>
+            <div class="att-box" style="border-left-color: var(--color-accent-amber);">
+              <div class="text-muted text-sm font-bold">LATE ARRIVALS</div>
+              <div class="metric-value" id="attLateCount">2 Days</div>
+            </div>
+          </div>
+
+          <!-- Monthly Log & Absences Split -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Monthly Attendance Summary</h3>
+              <div id="attMonthlyList">
+                <!-- Populated by js/parent.js -->
+              </div>
+            </div>
+
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Absence Alerts &amp; Medical Excuses</h3>
+              <div id="attAbsenceList">
+                <!-- Populated by js/parent.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 5: FEES & PAYMENTS
+             ================================================================ -->
+        <section id="view-fees" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-receipt"></i> School Fees &amp; Online Payments</h2>
+            <p class="view-sub">Fee breakdown, payment status, online payment gateway simulation, and receipts archive</p>
+          </div>
+
+          <!-- Fee Top Stats & Pay Action -->
+          <div class="fees-top-grid">
+            <div class="metric-card">
+              <span class="metric-label">Total Annual Fee</span>
+              <div class="metric-value" id="feeTotalAnnual">₹48,000</div>
+              <span class="metric-sub">Session 2025-26</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Amount Paid</span>
+              <div class="metric-value" id="feeTotalPaid" style="color: var(--color-accent-green);">₹43,500</div>
+              <span class="metric-sub">Receipts verified</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Outstanding Balance</span>
+              <div class="metric-value" id="feeTotalDue" style="color: var(--color-accent-red);">₹4,500</div>
+              <span class="metric-sub">Term 3 Tuition</span>
+            </div>
+            <div>
+              <button class="btn-pay-now" id="payNowBtn" onclick="openPayModal()">
+                <i class="fa-solid fa-shield-check"></i> Pay Dues Online
+              </button>
+            </div>
+          </div>
+
+          <!-- Fee Head Breakdown -->
+          <div class="view-card">
+            <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Fee Head Breakdown</h3>
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Fee Component</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Receipt Ref</th>
+                  </tr>
+                </thead>
+                <tbody id="feesBreakdownBody">
+                  <!-- Populated by js/parent.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Payment History Table -->
+          <div class="view-card">
+            <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Payment History &amp; Official Receipts</h3>
+            <div class="table-responsive">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>Receipt #</th>
+                    <th>Payment Date</th>
+                    <th>Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="feesHistoryBody">
+                  <!-- Populated by js/parent.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 6: COMMUNICATION
+             ================================================================ -->
+        <section id="view-communication" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-comments"></i> Parent-School Communication</h2>
+            <p class="view-sub">Direct channel with Class Teacher, administration notices, and official school circulars</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem;">
+            <!-- Teacher Chat -->
+            <div class="view-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border);">
+                <div>
+                  <h3 id="chatTeacherName" style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--color-text-dark);">Ms. Anjali</h3>
+                  <div class="text-sm text-muted" id="chatTeacherRole">Class Teacher (Grade 8A)</div>
+                </div>
+                <span class="portal-badge badge-paid"><i class="fa-solid fa-circle"></i> Online</span>
+              </div>
+
+              <!-- Message History -->
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 280px; overflow-y: auto; margin-bottom: 1rem;">
+                <div style="background: var(--color-bg-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 80%;">
+                  <div class="font-bold text-sm" style="color: var(--color-primary);">Ms. Anjali (Teacher)</div>
+                  <div style="font-size: 0.85rem;">Dear Parents, Rahul performed exceptionally well in the recent Mathematics unit test. Please ensure he completes the homework worksheet by Monday.</div>
+                  <div class="text-muted" style="font-size: 0.7rem; margin-top: 0.25rem;">Yesterday, 04:15 PM</div>
+                </div>
+                <div style="background: var(--color-primary-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 80%; align-self: flex-end;">
+                  <div class="font-bold text-sm" style="color: var(--color-primary-dark);">You (Parent)</div>
+                  <div style="font-size: 0.85rem;">Thank you, Ms. Anjali. We have reviewed the worksheet with him and he will submit it tomorrow morning.</div>
+                  <div class="text-muted" style="font-size: 0.7rem; margin-top: 0.25rem;">Yesterday, 06:30 PM</div>
+                </div>
+              </div>
+
+              <!-- Input Row -->
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" placeholder="Type a message to class teacher..." style="flex: 1; padding: 0.65rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); outline: none; background: var(--color-bg-surface); color: var(--color-text-main);">
+                <button class="btn-white" style="background: var(--color-primary); color: #FFFFFF;" onclick="showToast('Message sent to Class Teacher!')">
+                  <i class="fa-solid fa-paper-plane"></i> Send
+                </button>
+              </div>
+            </div>
+
+            <!-- School Broadcast Circulars -->
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;"><i class="fa-solid fa-bullhorn" style="color: var(--color-primary);"></i> School Notices</h3>
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border);">
+                  <div class="font-bold" style="font-size: 0.9rem;">Parent-Teacher Meeting (PTM) Scheduled</div>
+                  <div class="text-muted text-sm">PTM for Classes I to X scheduled for next Saturday from 09:00 AM to 01:00 PM. Book your slot via Events tab.</div>
+                  <div class="text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;">16 Sep 2025 • Admin Office</div>
+                </div>
+                <div style="padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border);">
+                  <div class="font-bold" style="font-size: 0.9rem;">Annual Science &amp; STEM Exhibition 2025</div>
+                  <div class="text-muted text-sm">Parents are invited to witness innovative student robotics, chemistry, and physics exhibits.</div>
+                  <div class="text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;">12 Sep 2025 • Principal's Desk</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 7: EVENTS & PTM
+             ================================================================ -->
+        <section id="view-events" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-calendar-days"></i> School Events &amp; PTM Scheduler</h2>
+            <p class="view-sub">Book Parent-Teacher Meeting slots, view upcoming school activities, sports meets, and term examinations</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <!-- PTM Booking Card -->
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-handshake" style="color: var(--color-primary);"></i> Book PTM Time Slot</h3>
+              <p class="text-muted text-sm" style="margin-bottom: 1rem;">Next PTM: <strong>Saturday, 27 Sep 2025</strong> with Class Teacher</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <label style="font-size: 0.85rem; font-weight: 600;">Choose Preferred Time Window:</label>
+                <select style="padding: 0.65rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); color: var(--color-text-main);">
+                  <option>09:30 AM - 09:45 AM (Available)</option>
+                  <option selected>10:15 AM - 10:30 AM (Reserved for Sharma Family)</option>
+                  <option>11:00 AM - 11:15 AM (Available)</option>
+                  <option>11:45 AM - 12:00 PM (Available)</option>
+                </select>
+              </div>
+              <button class="btn-white" style="background: var(--color-primary); color: #FFFFFF;" onclick="showToast('PTM Slot 10:15 AM Confirmed with Class Teacher!')">
+                <i class="fa-solid fa-check"></i> Confirm PTM Appointment
+              </button>
+            </div>
+
+            <!-- Calendar of Events -->
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">Upcoming School Calendar</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div style="background: var(--color-primary-subtle); color: var(--color-primary); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-weight: 800; text-align: center; width: 60px;">
+                    <div style="font-size: 1.1rem;">27</div>
+                    <div style="font-size: 0.65rem;">SEP</div>
+                  </div>
+                  <div>
+                    <div class="font-bold">Term 1 Parent-Teacher Meeting</div>
+                    <div class="text-muted text-sm">Comprehensive review of SA-1 marks cards and child progress</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div style="background: var(--color-accent-amber-subtle); color: var(--color-accent-amber); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-weight: 800; text-align: center; width: 60px;">
+                    <div style="font-size: 1.1rem;">02</div>
+                    <div style="font-size: 0.65rem;">OCT</div>
+                  </div>
+                  <div>
+                    <div class="font-bold">Gandhi Jayanti Celebrations</div>
+                    <div class="text-muted text-sm">Special morning assembly and moral integrity discourse</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-weight: 800; text-align: center; width: 60px;">
+                    <div style="font-size: 1.1rem;">15</div>
+                    <div style="font-size: 0.65rem;">NOV</div>
+                  </div>
+                  <div>
+                    <div class="font-bold">Annual Sports Meet 2025-26</div>
+                    <div class="text-muted text-sm">Inter-house track &amp; field championships at school grounds</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 8: TRANSPORT & GPS
+             ================================================================ -->
+        <section id="view-transport" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-bus"></i> School Bus Transport &amp; Live Tracking</h2>
+            <p class="view-sub">Assigned vehicle information, driver credentials, route stops, and live tracking alerts</p>
+          </div>
+
+          <div class="transport-card-grid">
+            <div class="view-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <div>
+                  <h3 id="transRouteName" style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--color-text-dark);">Dwaraka Nagar Express</h3>
+                  <div class="text-muted text-sm">Route Identifier: <strong id="transRouteNo">Route 4</strong></div>
+                </div>
+                <span class="bus-live-tag" id="transStatus"><i class="fa-solid fa-circle-dot"></i> En Route to School</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="att-box" style="border-left-color: var(--color-primary);">
+                  <div class="text-muted text-sm font-bold">MORNING PICKUP</div>
+                  <div id="transPickup" class="font-bold" style="font-size: 0.95rem; margin-top: 0.25rem;">Dwaraka Nagar 3rd Lane (07:55 AM)</div>
+                </div>
+                <div class="att-box" style="border-left-color: var(--color-accent-amber);">
+                  <div class="text-muted text-sm font-bold">EVENING DROP-OFF</div>
+                  <div id="transDrop" class="font-bold" style="font-size: 0.95rem; margin-top: 0.25rem;">Dwaraka Nagar 3rd Lane (04:35 PM)</div>
+                </div>
+              </div>
+
+              <div style="background: var(--color-bg-subtle); padding: 1rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <span class="text-muted text-sm">Estimated Bus Arrival:</span>
+                  <div id="transEta" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: var(--color-primary);">Arriving in 12 mins</div>
+                </div>
+                <button class="btn-sm-action font-bold" onclick="showToast('GPS telemetry refreshed: Vehicle is on schedule')">
+                  <i class="fa-solid fa-arrows-rotate"></i> Refresh GPS
+                </button>
+              </div>
+            </div>
+
+            <!-- Driver Card -->
+            <div class="view-card driver-info-box">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--color-text-dark);"><i class="fa-solid fa-id-card"></i> Driver Information</h3>
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="sc-avatar" style="background: #1E3A8A; width: 48px; height: 48px; font-size: 1.4rem;">
+                  <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                  <div class="font-bold" id="transDriverName" style="font-size: 1rem;">Sri Ramana</div>
+                  <div class="text-sm text-muted">Authorized Transport Pilot</div>
+                </div>
+              </div>
+
+              <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.5rem;">
+                <div><strong>Vehicle No:</strong> <span id="transBusNo">AP31 TJ 4821</span></div>
+                <div><strong>Mobile:</strong> <span id="transDriverPhone">+91 98480 22334</span></div>
+                <div><strong>Safety Features:</strong> CCTV, Speed Limiter, Fire Extinguisher, First Aid Kit</div>
+              </div>
+
+              <a id="transDriverCallBtn" href="tel:9848022334" class="btn-white" style="background: var(--color-accent-green); color: #FFFFFF; justify-content: center; margin-top: 0.5rem;">
+                <i class="fa-solid fa-phone"></i> Call Bus Driver
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 9: REQUEST LEAVE
+             ================================================================ -->
+        <section id="view-leave" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-file-signature"></i> Student Leave Application</h2>
+            <p class="view-sub">Submit formal leave applications directly to Class Teacher and Vice Principal Sri Navva Anand</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <!-- Leave Application Form -->
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">Apply for New Leave</h3>
+              <form id="leaveForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div>
+                    <label style="font-size: 0.8125rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">From Date:</label>
+                    <input type="date" id="leaveFrom" required style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); color: var(--color-text-main);">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.8125rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">To Date:</label>
+                    <input type="date" id="leaveTo" required style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); color: var(--color-text-main);">
+                  </div>
+                </div>
+
+                <div>
+                  <label style="font-size: 0.8125rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Reason for Leave:</label>
+                  <textarea id="leaveReason" rows="3" placeholder="Explain the reason for absence (medical, family event, etc.)..." required style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); color: var(--color-text-main); resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="btn-white" style="background: var(--color-primary); color: #FFFFFF; justify-content: center;">
+                  <i class="fa-solid fa-paper-plane"></i> Submit Leave Request
+                </button>
+              </form>
+            </div>
+
+            <!-- Past Leave Applications & Status -->
+            <div class="view-card">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 1rem;">Past Leave Applications</h3>
+              <div id="leavesHistoryList" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <!-- Populated by js/parent.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             MODULE 10: DOCUMENTS
+             ================================================================ -->
+        <section id="view-documents" class="portal-view">
+          <div class="view-header">
+            <h2 class="view-title"><i class="fa-solid fa-folder-open"></i> Student Documents &amp; Certificates</h2>
+            <p class="view-sub">Download official SA-1 &amp; FA term report cards, merit certificates, and fee tax receipts</p>
+          </div>
+
+          <div class="documents-grid" id="documentsGrid">
+            <!-- Populated by js/parent.js -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       PAYMENT MODAL
+       ========================================== -->
+  <div class="modal-backdrop" id="paymentModalBackdrop">
+    <div class="portal-modal">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-heading); font-size: 1.25rem;"><i class="fa-solid fa-shield-halved" style="color: var(--color-primary);"></i> Sri Vidya Online Fee Payment</h3>
+        <button class="modal-close" onclick="closePayModal()">&times;</button>
+      </div>
+      <div>
+        <p class="text-sm text-muted">Paying school fees for: <strong id="payModalChildName" style="color: var(--color-text-dark);">Rahul Sharma (Grade 8A)</strong></p>
+        <div style="background: var(--color-primary-subtle); padding: 1rem; border-radius: var(--radius-md); margin: 1rem 0; text-align: center;">
+          <div class="text-sm text-muted">Total Amount Due:</div>
+          <div style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: var(--color-primary);" id="payModalAmount">₹4,500</div>
+        </div>
+
+        <label style="font-size: 0.8125rem; font-weight: 700;">Select Payment Method:</label>
+        <div class="pay-options-grid">
+          <div class="pay-opt active"><i class="fa-solid fa-qrcode"></i> UPI / QR Code</div>
+          <div class="pay-opt"><i class="fa-solid fa-building-columns"></i> Net Banking</div>
+          <div class="pay-opt"><i class="fa-regular fa-credit-card"></i> Debit Card</div>
+          <div class="pay-opt"><i class="fa-solid fa-credit-card"></i> Credit Card</div>
+        </div>
+
+        <button class="btn-white" style="background: var(--color-accent-green); color: #FFFFFF; width: 100%; justify-content: center; padding: 0.85rem;" onclick="processPayment()">
+          <i class="fa-solid fa-lock"></i> Authorize &amp; Pay Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="portalToastContainer"></div>
+
+  <!-- Parent Portal Logic Script -->
+  <script src="js/parent.js"></script>
+</body>
+</html>

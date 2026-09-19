@@ -643,27 +643,44 @@ const portalApp = (function () {
     });
     return 'SV-' + String(maxNum + 1).padStart(4, '0');
   }
+  // ── Pagination state for All Students table ─────────────────────────────
+  var studentPage = { current: 1, pageSize: 50, filteredList: [] };
+
 
   function renderStudentsTable(list) {
+    // Store the full filtered list and reset to page 1
+    studentPage.filteredList = sortStudentsByAdmNo(list);
+    studentPage.current = 1;
+    renderStudentsPage();
+  }
+
+  function renderStudentsPage() {
     const tbody = document.getElementById('studentsTableBody');
     if (!tbody) return;
 
-    // Strict ascending order by Admission Number
-    const sortedList = sortStudentsByAdmNo(list);
+    const sorted = studentPage.filteredList;
+    const total  = sorted.length;
+    const ps     = studentPage.pageSize;
+    const page   = studentPage.current;
+    const start  = (page - 1) * ps;
+    const end    = Math.min(start + ps, total);
+    const slice  = sorted.slice(start, end);
 
-    // Update Showing counter & Tab Badge to strictly match current rows
+    // Update counters
     const showingEl = document.getElementById('studentShowingCount');
-    if (showingEl) showingEl.textContent = sortedList.length;
-
+    if (showingEl) showingEl.textContent = total;
+    const totalEl = document.getElementById('studentTotalCount');
+    if (totalEl) totalEl.textContent = state.students.length;
     const allBadge = document.getElementById('allStudentsCountBadge');
-    if (allBadge) allBadge.textContent = sortedList.length;
+    if (allBadge) allBadge.textContent = total;
 
-    if (sortedList.length === 0) {
+    if (total === 0) {
       tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);"><i class="fa-solid fa-user-slash" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>No student records matched your search query.</td></tr>`;
+      renderPaginationBar(0, 0, 0);
       return;
     }
 
-    tbody.innerHTML = sortedList.map(student => {
+    tbody.innerHTML = slice.map(student => {
       let badgeClass = 'badge-success';
       if (student.feeStatus === 'Pending') badgeClass = 'badge-danger';
       if (student.feeStatus === 'Partial') badgeClass = 'badge-warning';
@@ -696,7 +713,7 @@ const portalApp = (function () {
               <button class="action-icon-btn" onclick="portalApp.viewStudentProfile('${student.admNo}')" title="View Full Dossier">
                 <i class="fa-regular fa-eye"></i>
               </button>
-              <button class="action-icon-btn" onclick="portalApp.showToast('Generating ID card & Marks Card for ${student.name}', 'info')" title="Print Documents">
+              <button class="action-icon-btn" onclick="portalApp.showToast('Generating ID card for ${student.name}', 'info')" title="Print Documents">
                 <i class="fa-solid fa-print"></i>
               </button>
             </div>
@@ -704,7 +721,48 @@ const portalApp = (function () {
         </tr>
       `;
     }).join('');
+
+    renderPaginationBar(page, Math.ceil(total / ps), total);
   }
+
+  function renderPaginationBar(currentPage, totalPages, totalRecords) {
+    const bar = document.getElementById('studentPaginationBar');
+    if (!bar) return;
+    if (totalPages <= 1) { bar.innerHTML = ''; return; }
+
+    const ps    = studentPage.pageSize;
+    const start = (currentPage - 1) * ps + 1;
+    const end   = Math.min(currentPage * ps, totalRecords);
+
+    let html = `<div class="pag-info">Showing <strong>${start}–${end}</strong> of <strong>${totalRecords}</strong> students &nbsp;|&nbsp; Page ${currentPage} of ${totalPages}</div><div class="pag-controls">`;
+
+    html += `<button class="pag-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="portalApp.goToStudentPage(${currentPage - 1})"><i class="fa-solid fa-chevron-left"></i> Prev</button>`;
+
+    const windowStart = Math.max(1, currentPage - 2);
+    const windowEnd   = Math.min(totalPages, currentPage + 2);
+    if (windowStart > 1)  html += `<button class="pag-btn" onclick="portalApp.goToStudentPage(1)">1</button>`;
+    if (windowStart > 2)  html += `<span class="pag-ellipsis">…</span>`;
+    for (let p = windowStart; p <= windowEnd; p++) {
+      html += `<button class="pag-btn ${p === currentPage ? 'pag-btn-active' : ''}" onclick="portalApp.goToStudentPage(${p})">${p}</button>`;
+    }
+    if (windowEnd < totalPages - 1) html += `<span class="pag-ellipsis">…</span>`;
+    if (windowEnd < totalPages)     html += `<button class="pag-btn" onclick="portalApp.goToStudentPage(${totalPages})">${totalPages}</button>`;
+
+    html += `<button class="pag-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="portalApp.goToStudentPage(${currentPage + 1})">Next <i class="fa-solid fa-chevron-right"></i></button>`;
+    html += `</div>`;
+    bar.innerHTML = html;
+  }
+
+  function goToStudentPage(page) {
+    const totalPages = Math.ceil(studentPage.filteredList.length / studentPage.pageSize);
+    if (page < 1 || page > totalPages) return;
+    studentPage.current = page;
+    renderStudentsPage();
+    const tableEl = document.getElementById('studentsTable');
+    if (tableEl) tableEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+
 
   function filterStudents() {
     const query = (document.getElementById('studentFilterInput')?.value || '').toLowerCase().trim();
@@ -1687,7 +1745,8 @@ const portalApp = (function () {
     resolveIncident,
     summonParent,
     handleAssignSubstitution,
-    handleVPLeaveAction
+    handleVPLeaveAction,
+    goToStudentPage
   };
 
 })();

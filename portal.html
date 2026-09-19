@@ -1187,7 +1187,8 @@
                 <div class="filter-group">
                   <label for="studentSectionFilter"><i class="fa-solid fa-layer-group"></i> Section:</label>
                   <select id="studentSectionFilter" class="filter-select" onchange="portalApp.filterStudents()">
-                    <option value="A" selected>Section A (Single Section)</option>
+                    <option value="">All Sections</option>
+                    <option value="A">Section A (Single Section)</option>
                   </select>
                 </div>
                 <div class="filter-group">
@@ -1202,7 +1203,7 @@
               </div>
               <div class="filter-right-stats">
                 <span class="filter-count-pill">
-                  <i class="fa-solid fa-filter"></i> Showing <strong id="studentShowingCount">15</strong> of <strong id="studentTotalCount">15</strong>
+                  <i class="fa-solid fa-filter"></i> Showing <strong id="studentShowingCount">0</strong> of <strong id="studentTotalCount">855</strong>
                 </span>
                 <button type="button" class="btn-filter-reset" onclick="portalApp.resetStudentFilters()" title="Reset all filters">
                   <i class="fa-solid fa-rotate-left"></i> Reset
@@ -1231,7 +1232,10 @@
                 </tbody>
               </table>
             </div>
+            <!-- Pagination Bar -->
+            <div class="pagination-bar" id="studentPaginationBar"></div>
           </div>
+
 
           <!-- ==========================================
                SUB-VIEW 2: STUDENT PROFILES DOSSIERS

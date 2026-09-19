@@ -3372,4 +3372,61 @@ body {
 
 .metric-details { display: flex; flex-direction: column; gap: 0.25rem; }
 
-.metric-details { display: flex; flex-direction: column; gap: 0.25rem; }
+/* ── Student Table Pagination ──────────────────────────────────────────── */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.pag-info {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+.pag-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.pag-btn {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 2rem;
+  justify-content: center;
+}
+.pag-btn:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.pag-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pag-btn-active {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+  border-color: var(--color-primary) !important;
+  font-weight: 700;
+}
+.pag-ellipsis {
+  padding: 0 0.3rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}

@@ -465,10 +465,10 @@
                   </div>
                 </div>
                 <div class="schedule-actions">
-                  <button class="btn btn-primary btn-sm" onclick="teacherApp.openModal('markAttendanceModal')">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="teacherApp.openModal('markAttendanceModal')">
                     <i class="fa-solid fa-check"></i> Mark Attendance
                   </button>
-                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'homework')">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'homework')">
                     <i class="fa-solid fa-file-pen"></i> Assign Homework
                   </button>
                 </div>
@@ -484,7 +484,7 @@
                   </div>
                 </div>
                 <div class="schedule-actions">
-                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'materials')">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'materials')">
                     <i class="fa-solid fa-book-open"></i> View Materials
                   </button>
                 </div>
@@ -500,7 +500,7 @@
                   </div>
                 </div>
                 <div class="schedule-actions">
-                  <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'plans')">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('academics', 'plans')">
                     <i class="fa-solid fa-list-check"></i> Lesson Plan
                   </button>
                 </div>
@@ -583,35 +583,42 @@
              ================================================================= -->
         <section class="portal-view" id="view-students">
           <div class="card-header-bar mb-3">
-            <h2><i class="fa-solid fa-user-graduate text-primary"></i> Student Roster & Performance</h2>
-            <div class="filter-group">
-              <select id="studentClassFilterSelect" class="form-control" onchange="teacherApp.filterStudentList()">
-                <option value="8A">Filter: Class 8A (My Section)</option>
-                <option value="9B">Filter: Class 9B</option>
-                <option value="7C">Filter: Class 7C</option>
-              </select>
+            <div>
+              <h2><i class="fa-solid fa-user-graduate text-primary"></i> Student Roster & Performance</h2>
+              <p class="text-muted text-sm mt-1">Individual student profiles, attendance track records, and examination metrics.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="portal-badge badge-primary" id="studentRosterCountBadge">42 Students</span>
+              <div class="filter-group">
+                <select id="studentClassFilterSelect" class="form-control" onchange="teacherApp.filterStudentList()">
+                  <option value="8A">Filter: Class 8A (My Section)</option>
+                  <option value="9B">Filter: Class 9B</option>
+                  <option value="7C">Filter: Class 7C</option>
+                  <option value="ALL">Filter: All Classes</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active" onclick="teacherApp.switchSubTab('students', 'list')">Student List</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'profile')">Student Dossiers</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'att-history')">Attendance History</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('students', 'perf')">Academic Marks</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.switchSubTab('students', 'list')">Student List</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('students', 'profile')">Student Dossiers</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('students', 'att-history')">Attendance History</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('students', 'perf')">Academic Marks</button>
           </div>
 
           <div class="table-container">
             <table class="data-table" id="teacherStudentsTable">
               <thead>
                 <tr>
-                  <th>Roll No</th>
+                  <th class="text-center" style="width: 90px;">Roll No</th>
                   <th>Student Name</th>
-                  <th>Class</th>
-                  <th>Parent Contact</th>
-                  <th>Attendance %</th>
-                  <th>Maths Score</th>
-                  <th>Grade</th>
-                  <th>Actions</th>
+                  <th class="text-center" style="width: 95px;">Class</th>
+                  <th style="width: 140px;">Parent Contact</th>
+                  <th class="text-center" style="width: 125px;">Attendance %</th>
+                  <th class="text-center" style="width: 135px;">Maths Score</th>
+                  <th class="text-center" style="width: 90px;">Grade</th>
+                  <th class="text-center" style="width: 110px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="teacherStudentsTableBody">
@@ -629,30 +636,31 @@
           <div class="card-header-bar mb-3">
             <h2><i class="fa-solid fa-clipboard-check text-primary"></i> Classroom Attendance Register</h2>
             <div>
-              <button class="btn btn-secondary" onclick="teacherApp.markAllPresent()">
+              <button type="button" class="btn btn-secondary" onclick="teacherApp.markAllPresent()">
                 <i class="fa-solid fa-check-double"></i> Mark All Present
               </button>
-              <button class="btn btn-primary" onclick="teacherApp.saveDailyAttendance()">
+              <button type="button" class="btn btn-primary" onclick="teacherApp.saveDailyAttendance()">
                 <i class="fa-solid fa-floppy-disk"></i> Submit Daily Register
               </button>
             </div>
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active" onclick="teacherApp.switchSubTab('attendance', 'mark')">Mark Attendance (Today: Class 8A)</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'history')">Monthly Attendance History</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'report')">Absentee Summary</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.switchSubTab('attendance', 'mark')">Mark Attendance (Today: Class 8A)</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'history')">Monthly Attendance History</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('attendance', 'report')">Absentee Summary</button>
           </div>
 
           <div class="card p-4">
             <div class="card-header-bar">
               <div>
-                <h3>Class 8A Daily Register — Sept 19, 2026</h3>
-                <p class="text-muted text-sm mt-1">Total Enrolled: 42 Students • Class Teacher: Ms. Anjali</p>
+                <h3><i class="fa-solid fa-clipboard-check text-primary"></i> Class 8A Daily Register — Sept 19, 2026</h3>
+                <p class="text-muted text-sm mt-1">Total Enrolled: <strong id="attEnrolledCount">42</strong> Students • Class Teacher: Ms. Anjali</p>
               </div>
               <div id="attendanceLiveCounter">
-                <span class="portal-badge badge-success" id="presentCountBadge">Present: 40</span>
-                <span class="portal-badge badge-danger" id="absentCountBadge">Absent: 2</span>
+                <span class="portal-badge badge-success" id="presentCountBadge"><i class="fa-solid fa-check"></i> Present: 39</span>
+                <span class="portal-badge badge-danger" id="absentCountBadge"><i class="fa-solid fa-xmark"></i> Absent: 2</span>
+                <span class="portal-badge badge-warning" id="lateCountBadge"><i class="fa-solid fa-clock"></i> Late: 1</span>
               </div>
             </div>
 
@@ -660,9 +668,9 @@
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Roll No</th>
+                    <th class="text-center" style="width: 90px;">Roll No</th>
                     <th>Student Name</th>
-                    <th>Status Selector (Click to Toggle)</th>
+                    <th class="text-center" style="width: 170px;">Status Selector (Click to Toggle)</th>
                     <th>Remarks</th>
                   </tr>
                 </thead>
@@ -687,11 +695,11 @@
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active" onclick="teacherApp.switchSubTab('academics', 'assignments')">Assignments (4 Active)</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'homework')">Daily Homework Log</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'materials')">Study Materials & PDFs</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'plans')">Lesson Plans</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'syllabus')">Syllabus Tracker</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.switchSubTab('academics', 'assignments')">Assignments (<span id="hwCountBadge">3</span> Active)</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'homework')">Daily Homework Log</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'materials')">Study Materials & PDFs</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'plans')">Lesson Plans</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('academics', 'syllabus')">Syllabus Tracker</button>
           </div>
 
           <div id="homeworkFeedContainer">
@@ -707,17 +715,17 @@
           <div class="card-header-bar mb-3">
             <h2><i class="fa-solid fa-file-pen text-primary"></i> Examination & Marks Entry</h2>
             <div>
-              <button class="btn btn-primary" onclick="teacherApp.saveMarks()">
+              <button type="button" class="btn btn-primary" onclick="teacherApp.saveMarks()">
                 <i class="fa-solid fa-floppy-disk"></i> Save & Lock Marks
               </button>
             </div>
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active" onclick="teacherApp.switchSubTab('examinations', 'enter-marks')">Enter Marks: Class 8A (Unit Test 2 - Maths)</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'create')">Create Assessment</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'grade')">Grade Distributions</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'results')">Class Results Dossier</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.switchSubTab('examinations', 'enter-marks')">Enter Marks: Class 8A (Unit Test 2 - Maths)</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'create')">Create Assessment</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'grade')">Grade Distributions</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('examinations', 'results')">Class Results Dossier</button>
           </div>
 
           <div class="card p-4">
@@ -733,11 +741,11 @@
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Roll #</th>
+                    <th class="text-center" style="width: 90px;">Roll #</th>
                     <th>Student Name</th>
-                    <th>Marks Scored (out of 50)</th>
-                    <th>Percentage</th>
-                    <th>Grade</th>
+                    <th class="text-center" style="width: 160px;">Marks Scored (out of 50)</th>
+                    <th class="text-center" style="width: 120px;">Percentage</th>
+                    <th class="text-center" style="width: 100px;">Grade</th>
                     <th>Teacher Remarks</th>
                   </tr>
                 </thead>
@@ -837,9 +845,9 @@
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active" onclick="teacherApp.switchSubTab('communication', 'class-announcements')">Class 8A Notices</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'parent-messages')">Parent Messages (2)</button>
-            <button class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'notifications')">Staff Circulars</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.switchSubTab('communication', 'class-announcements')">Class 8A Notices</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'parent-messages')">Parent Messages (<span id="parentMsgCountBadge">2</span>)</button>
+            <button type="button" class="tab-btn" onclick="teacherApp.switchSubTab('communication', 'notifications')">Staff Circulars</button>
           </div>
 
           <div id="parentMessagesContainer">
@@ -918,7 +926,7 @@
           </div>
 
           <div class="tab-strip">
-            <button class="tab-btn active">Class 8A Grade Analytics</button>
+            <button type="button" class="tab-btn active" onclick="teacherApp.showToast('Showing Class 8A Academic Analytics', 'info')">Class 8A Grade Analytics</button>
           </div>
 
           <div class="card p-4">
@@ -1307,6 +1315,25 @@
           <button type="submit" class="btn btn-primary">Broadcast Notice</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Student Dossier Details -->
+  <div class="modal-backdrop" id="studentDossierModal">
+    <div class="portal-modal" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-id-card text-primary"></i> Student Academic Dossier</h3>
+        <button type="button" class="modal-close" onclick="teacherApp.closeModal('studentDossierModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="studentDossierContent">
+        <!-- Dynamically injected via teacherApp.viewStudentDossier -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('studentDossierModal')">Close</button>
+        <button type="button" class="btn btn-primary" onclick="teacherApp.contactParentFromDossier()">
+          <i class="fa-solid fa-phone"></i> Contact Parent
+        </button>
+      </div>
     </div>
   </div>
 

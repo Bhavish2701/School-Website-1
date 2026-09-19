@@ -23,23 +23,12 @@ const portalApp = (function () {
       settings: 'profile'
     },
     pendingApprovalsCount: 4,
-    students: [
-      { admNo: 'SV-0001', name: 'G. Sai Teja', class: 'X', section: 'A', rollNo: '1001', parent: 'G. Venkata Rao', phone: '9848123456', attendance: '96.4%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'O+', dob: '14 May 2011', address: 'Plot 42, Sriharipuram, Visakhapatnam' },
-      { admNo: 'SV-0002', name: 'P. Hema Latha', class: 'X', section: 'A', rollNo: '1002', parent: 'P. Appala Naidu', phone: '9848234567', attendance: '98.2%', feeStatus: 'Paid', gpa: '10.0', bloodGroup: 'A+', dob: '08 Jan 2011', address: 'Door 12-4, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-0003', name: 'K. Rakesh Kumar', class: 'X', section: 'A', rollNo: '1003', parent: 'K. Someswara Rao', phone: '9848345678', attendance: '92.0%', feeStatus: 'Partial', gpa: '9.2', bloodGroup: 'B+', dob: '22 Aug 2011', address: 'Flat 201, Kurmannapalem, Visakhapatnam' },
-      { admNo: 'SV-0004', name: 'M. Sravanthi', class: 'IX', section: 'A', rollNo: '901', parent: 'M. Narayana Murthy', phone: '9848456789', attendance: '95.1%', feeStatus: 'Paid', gpa: '9.6', bloodGroup: 'AB+', dob: '17 Mar 2012', address: 'Sector 5, Steel Plant Township, Visakhapatnam' },
-      { admNo: 'SV-0005', name: 'B. Tarun Reddy', class: 'IX', section: 'A', rollNo: '902', parent: 'B. Krishna Reddy', phone: '9848567890', attendance: '88.5%', feeStatus: 'Pending', gpa: '8.4', bloodGroup: 'O-', dob: '05 Dec 2012', address: 'Near Rythu Bazar, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-0006', name: 'V. Divya Bharathi', class: 'VIII', section: 'A', rollNo: '801', parent: 'V. Satish Kumar', phone: '9848678901', attendance: '97.0%', feeStatus: 'Paid', gpa: '9.5', bloodGroup: 'A-', dob: '11 Jul 2013', address: 'Main Road, Pedagantyada, Visakhapatnam' },
-      { admNo: 'SV-0007', name: 'CH. Karthik', class: 'VIII', section: 'A', rollNo: '802', parent: 'CH. Rambabu', phone: '9848789012', attendance: '91.8%', feeStatus: 'Partial', gpa: '8.9', bloodGroup: 'B+', dob: '29 Nov 2013', address: 'Old Post Office St, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-0008', name: 'S. Bhavana', class: 'VII', section: 'A', rollNo: '701', parent: 'S. Prasad', phone: '9848890123', attendance: '96.8%', feeStatus: 'Paid', gpa: '9.7', bloodGroup: 'O+', dob: '03 Feb 2014', address: 'Teachers Colony, Visakhapatnam' },
-      { admNo: 'SV-0009', name: 'Y. Manjunath', class: 'VI', section: 'A', rollNo: '601', parent: 'Y. Mohan Rao', phone: '9848901234', attendance: '93.4%', feeStatus: 'Paid', gpa: '9.1', bloodGroup: 'A+', dob: '19 Sep 2014', address: 'BHPV Quarters, Visakhapatnam' },
-      { admNo: 'SV-0010', name: 'D. Keerthi', class: 'V', section: 'A', rollNo: '501', parent: 'D. Suresh', phone: '9848012345', attendance: '94.2%', feeStatus: 'Paid', gpa: '9.4', bloodGroup: 'B-', dob: '24 Apr 2015', address: 'BC Road, New Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-0011', name: 'A. Nikhilesh', class: 'IV', section: 'A', rollNo: '401', parent: 'A. Jagannadham', phone: '9848123789', attendance: '90.5%', feeStatus: 'Pending', gpa: '8.8', bloodGroup: 'AB+', dob: '15 Oct 2015', address: 'Kanithi Road, Visakhapatnam' },
-      { admNo: 'SV-0012', name: 'T. Siri Varshini', class: 'III', section: 'A', rollNo: '301', parent: 'T. Srinivasa Rao', phone: '9848234890', attendance: '98.5%', feeStatus: 'Paid', gpa: '9.9', bloodGroup: 'O+', dob: '30 Dec 2016', address: 'Sriharipuram Phase 2, Visakhapatnam' },
-      { admNo: 'SV-0013', name: 'N. Likhit Sai', class: 'II', section: 'A', rollNo: '201', parent: 'N. Prasad Babu', phone: '9848345901', attendance: '95.0%', feeStatus: 'Paid', gpa: '9.3', bloodGroup: 'A+', dob: '18 May 2017', address: 'Duvvada Station Road, Visakhapatnam' },
-      { admNo: 'SV-0014', name: 'K. Tanvi Sree', class: 'I', section: 'A', rollNo: '101', parent: 'K. Ramana', phone: '9848456012', attendance: '97.2%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'B+', dob: '07 Feb 2018', address: 'Scindia Colony, Visakhapatnam' },
-      { admNo: 'SV-0015', name: 'R. Aarav Kumar', class: 'PP', section: 'A', rollNo: '001', parent: 'R. Anand', phone: '9848567123', attendance: '92.5%', feeStatus: 'Paid', gpa: '9.0', bloodGroup: 'O+', dob: '12 Nov 2019', address: 'Mindi Village, Gajuwaka, Visakhapatnam' }
-    ],
+    // All 855 students are loaded from js/student-roster.js (window.STUDENT_ROSTER)
+    // Fallback to empty array if roster script failed to load
+    students: (window.STUDENT_ROSTER && window.STUDENT_ROSTER.length === 855)
+      ? window.STUDENT_ROSTER
+      : [],
+
     admissions: [
       { appId: 'ADM-2026-001', name: 'K. Sai Tharun', class: 'VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', phone: '9848011223', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review' },
       { appId: 'ADM-2026-002', name: 'B. Vennela', class: 'VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', phone: '9848022334', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due' },

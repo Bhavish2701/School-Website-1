@@ -113,12 +113,12 @@ const portalApp = (function () {
       badgeText: 'VICE PRINCIPAL PORTAL'
     },
     'admin': {
-      title: 'Admin / School Office',
-      holder: 'Office & Accounts Staff',
+      title: 'Office / Clerk',
+      holder: 'Office Staff & Accounts',
       avatarIcon: 'fa-solid fa-id-badge',
-      greeting: 'Good Morning, Office Administrator',
+      greeting: 'Good Morning, Office Administrator / Clerk',
       subtext: 'Daily fee counter, new admissions queue, transfer certificates, parent communication logs, and official records.',
-      badgeText: 'SCHOOL OFFICE & ACCOUNTS PORTAL'
+      badgeText: 'SCHOOL OFFICE & CLERK PORTAL'
     }
   };
 
@@ -129,6 +129,16 @@ const portalApp = (function () {
     renderAllTables();
     bindEvents();
     setupHashRouting();
+
+    // Restore saved role if present
+    try {
+      let savedRole = sessionStorage.getItem('sv_role_management');
+      if (savedRole === 'vp' || savedRole === 'viceprincipal') savedRole = 'vice-principal';
+      if (savedRole === 'clerk' || savedRole === 'office') savedRole = 'admin';
+      if (savedRole && roleConfigs[savedRole]) {
+        switchRole(savedRole);
+      }
+    } catch (e) {}
   }
 
   function setupDate() {
@@ -283,6 +293,9 @@ const portalApp = (function () {
   }
 
   function switchRole(roleKey) {
+    if (roleKey === 'vp' || roleKey === 'viceprincipal') roleKey = 'vice-principal';
+    if (roleKey === 'clerk' || roleKey === 'office') roleKey = 'admin';
+
     const config = roleConfigs[roleKey];
     if (!config) return;
 
@@ -343,6 +356,9 @@ const portalApp = (function () {
   }
 
   function applyRolePermissions(role) {
+    if (role === 'vp' || role === 'viceprincipal') role = 'vice-principal';
+    if (role === 'clerk' || role === 'office') role = 'admin';
+
     const approvalsCard = document.getElementById('cardPendingApprovals');
     const feesLimitedBanner = document.getElementById('feesLimitedBanner');
     const collectFeeBtn = document.getElementById('collectFeeBtn');
@@ -352,6 +368,7 @@ const portalApp = (function () {
     const saveSettingsBtn = document.getElementById('saveSettingsBtn');
     const navDisciplineBadge = document.getElementById('navDisciplineBadge');
     const vpPermissionsBar = document.getElementById('vpPermissionsBar');
+    const officePermissionsBar = document.getElementById('officePermissionsBar');
     const metricCardFees = document.getElementById('metricCardFees');
     const metricCardVPDiscipline = document.getElementById('metricCardVPDiscipline');
 
@@ -431,6 +448,7 @@ const portalApp = (function () {
     } else if (role === 'admin') {
       // Admin / Office Clerk Mode
       if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
+      if (officePermissionsBar) officePermissionsBar.style.display = 'block';
 
       if (metricCardFees) metricCardFees.style.display = 'flex';
       if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'none';
@@ -440,6 +458,7 @@ const portalApp = (function () {
       if (collectFeeBtn) {
         collectFeeBtn.disabled = false;
         collectFeeBtn.style.opacity = '1';
+        collectFeeBtn.title = 'Open Fee Collection Counter';
       }
 
       if (settingsLockedBanner) settingsLockedBanner.style.display = 'flex';
@@ -447,7 +466,10 @@ const portalApp = (function () {
       if (saveSettingsBtn) {
         saveSettingsBtn.disabled = true;
         saveSettingsBtn.style.opacity = '0.5';
+        saveSettingsBtn.title = 'Institutional settings locked (Principal Authorization Required)';
       }
+
+      showToast('Office / Clerk Mode Active: Fee Counter, Admissions & Records Access', 'info');
     }
   }
 

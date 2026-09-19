@@ -783,6 +783,79 @@ document.addEventListener("DOMContentLoaded", () => {
     leaveForm.addEventListener("submit", submitLeaveForm);
   }
 
+  // Load Parent Profile
+  loadSavedParentProfile();
+
   // Initial load
   switchChild("rahul");
 });
+
+function loadSavedParentProfile() {
+  try {
+    const raw = localStorage.getItem('sv_parent_profile');
+    const profile = raw ? JSON.parse(raw) : {
+      name: 'Mr. & Mrs. Sharma',
+      phone: '+91 98491 55670',
+      email: 'sharma.family@gmail.com',
+      occupation: 'Senior Technical Manager / Homemaker',
+      address: 'Plot 42, HIG Phase-II, Dwaraka Nagar, Visakhapatnam, AP - 530016',
+      emergency: 'Sri K. Ramamurthy (Grandparent) - +91 98480 55443'
+    };
+
+    parentData.parentName = profile.name;
+    parentData.contact = profile.phone;
+    parentData.email = profile.email;
+    parentData.address = profile.address;
+
+    // Update Dashboard greeting banner
+    const greetingEl = document.getElementById('heroParentGreeting');
+    if (greetingEl) greetingEl.textContent = profile.name;
+
+    // Update Sidebar user card
+    const sidebarName = document.getElementById('parentUserName');
+    if (sidebarName) sidebarName.textContent = profile.name;
+
+    // Update Profile Hero elements
+    const heroName = document.getElementById('profParentHeroName');
+    if (heroName) heroName.textContent = profile.name;
+
+    // Fill form inputs if present
+    const fName = document.getElementById('profParentName');
+    if (fName) fName.value = profile.name;
+    const fPhone = document.getElementById('profParentPhone');
+    if (fPhone) fPhone.value = profile.phone;
+    const fEmail = document.getElementById('profParentEmail');
+    if (fEmail) fEmail.value = profile.email;
+    const fOcc = document.getElementById('profParentOccupation');
+    if (fOcc) fOcc.value = profile.occupation;
+    const fAddr = document.getElementById('profParentAddress');
+    if (fAddr) fAddr.value = profile.address;
+    const fEmerg = document.getElementById('profParentEmergency');
+    if (fEmerg) fEmerg.value = profile.emergency;
+  } catch (e) {
+    console.error('Error loading parent profile:', e);
+  }
+}
+
+function saveParentProfile(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const data = {
+    name: (document.getElementById('profParentName')?.value || 'Mr. & Mrs. Sharma').trim(),
+    phone: (document.getElementById('profParentPhone')?.value || '').trim(),
+    email: (document.getElementById('profParentEmail')?.value || '').trim(),
+    occupation: (document.getElementById('profParentOccupation')?.value || '').trim(),
+    address: (document.getElementById('profParentAddress')?.value || '').trim(),
+    emergency: (document.getElementById('profParentEmergency')?.value || '').trim()
+  };
+
+  localStorage.setItem('sv_parent_profile', JSON.stringify(data));
+  loadSavedParentProfile();
+  showToast('Parent profile and dashboard preferences saved successfully!');
+}
+
+function resetParentProfile() {
+  localStorage.removeItem('sv_parent_profile');
+  loadSavedParentProfile();
+  showToast('Reverted to default parent profile preferences');
+}
+

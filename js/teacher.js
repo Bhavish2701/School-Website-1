@@ -78,6 +78,7 @@ const teacherApp = (function () {
 
   function init() {
     setupTheme();
+    loadSavedProfile();
     bindEvents();
     renderAll();
     setupHashRouting();
@@ -195,7 +196,8 @@ const teacherApp = (function () {
         'timetable': 'Timetable',
         'communication': 'Communication Desk',
         'leave': 'Leave Management',
-        'reports': 'Performance Reports'
+        'reports': 'Performance Reports',
+        'profile': 'My Profile & Account Settings'
       };
       crumb.textContent = titles[moduleKey] || moduleKey;
     }
@@ -649,6 +651,93 @@ const teacherApp = (function () {
     }, 3500);
   }
 
+  function loadSavedProfile() {
+    try {
+      const raw = localStorage.getItem('sv_teacher_profile');
+      const profile = raw ? JSON.parse(raw) : {
+        name: 'Ms. Anjali',
+        motto: 'Class Teacher – Grade 8A',
+        phone: '+91 98481 23456',
+        personalEmail: 'anjali.faculty@gmail.com',
+        address: 'Flat 402, Sri Sai Balaji Enclave, Main Road, Guntur, AP - 522002',
+        bio: 'Senior Faculty with 9+ years of experience specializing in secondary school Mathematics. Passionate about interactive problem solving and academic excellence.',
+        blood: 'A+',
+        emergency: '+91 98480 99887'
+      };
+
+      state.teacher.name = profile.name;
+      state.teacher.role = profile.motto;
+
+      // Update Dashboard welcome banner
+      const bannerH1 = document.querySelector('.teacher-welcome-banner .tw-title');
+      if (bannerH1) bannerH1.textContent = `Good Morning, ${profile.name}`;
+
+      const bannerSub = document.querySelector('.teacher-welcome-banner .tw-subtitle');
+      if (bannerSub) bannerSub.textContent = profile.motto;
+
+      // Update Top Header active text
+      const headerActiveStrong = document.querySelector('.portal-header .text-primary');
+      if (headerActiveStrong && headerActiveStrong.closest('.header-right')) {
+        headerActiveStrong.textContent = `${profile.name} (Mathematics)`;
+      }
+
+      // Update Sidebar user card
+      const sidebarName = document.getElementById('teacherUserName');
+      if (sidebarName) sidebarName.textContent = profile.name;
+
+      // Update Profile Hero elements
+      const heroName = document.getElementById('profTeacherHeroName');
+      if (heroName) heroName.textContent = profile.name;
+
+      const heroRole = document.getElementById('profTeacherHeroRole');
+      if (heroRole) heroRole.innerHTML = `<i class="fa-solid fa-award"></i> ${profile.motto} • Department of Mathematics`;
+
+      // Fill form fields if view is loaded
+      const fName = document.getElementById('profTeacherName');
+      if (fName) fName.value = profile.name;
+      const fMotto = document.getElementById('profTeacherMotto');
+      if (fMotto) fMotto.value = profile.motto;
+      const fPhone = document.getElementById('profTeacherPhone');
+      if (fPhone) fPhone.value = profile.phone;
+      const fEmail = document.getElementById('profTeacherPersonalEmail');
+      if (fEmail) fEmail.value = profile.personalEmail;
+      const fAddr = document.getElementById('profTeacherAddress');
+      if (fAddr) fAddr.value = profile.address;
+      const fBio = document.getElementById('profTeacherBio');
+      if (fBio) fBio.value = profile.bio;
+      const fBlood = document.getElementById('profTeacherBlood');
+      if (fBlood) fBlood.value = profile.blood;
+      const fEmerg = document.getElementById('profTeacherEmergency');
+      if (fEmerg) fEmerg.value = profile.emergency;
+    } catch (e) {
+      console.error('Error loading teacher profile:', e);
+    }
+  }
+
+  function saveProfile(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const data = {
+      name: (document.getElementById('profTeacherName')?.value || 'Ms. Anjali').trim(),
+      motto: (document.getElementById('profTeacherMotto')?.value || 'Class Teacher – Grade 8A').trim(),
+      phone: (document.getElementById('profTeacherPhone')?.value || '').trim(),
+      personalEmail: (document.getElementById('profTeacherPersonalEmail')?.value || '').trim(),
+      address: (document.getElementById('profTeacherAddress')?.value || '').trim(),
+      bio: (document.getElementById('profTeacherBio')?.value || '').trim(),
+      blood: document.getElementById('profTeacherBlood')?.value || 'A+',
+      emergency: (document.getElementById('profTeacherEmergency')?.value || '').trim()
+    };
+
+    localStorage.setItem('sv_teacher_profile', JSON.stringify(data));
+    loadSavedProfile();
+    showToast('Dashboard & profile preferences saved successfully!', 'success');
+  }
+
+  function resetProfile() {
+    localStorage.removeItem('sv_teacher_profile');
+    loadSavedProfile();
+    showToast('Reverted to default teacher profile', 'info');
+  }
+
   // Auto-init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -678,7 +767,10 @@ const teacherApp = (function () {
     scrollToTasks,
     openModal,
     closeModal,
-    showToast
+    showToast,
+    saveProfile,
+    resetProfile,
+    loadSavedProfile
   };
 
 })();

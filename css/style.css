@@ -381,7 +381,7 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 0.15rem;
+  gap: clamp(0.2rem, 0.5vw, 0.55rem);
   margin: 0;
   padding: 0;
   flex: 1 1 auto;
@@ -396,14 +396,14 @@ button, input, select, textarea {
 
 .nav-link {
   font-family: var(--font-subheading);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--color-text-main);
-  padding: 0.45rem 0.55rem;
+  padding: 0.45rem 0.7rem;
   border-radius: var(--radius-md);
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   white-space: nowrap;
   transition: var(--transition);
 }
@@ -526,20 +526,23 @@ button, input, select, textarea {
 
 .portal-dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
-  width: 320px;
+  width: 360px;
+  max-width: calc(100vw - 2rem);
+  white-space: normal;
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.18), 0 5px 15px rgba(0,0,0,0.08);
-  padding: 0.65rem;
+  padding: 0.75rem;
   list-style: none;
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1050;
+  box-sizing: border-box;
 }
 
 .portal-dropdown-wrapper:hover .portal-dropdown-menu,
@@ -550,9 +553,9 @@ button, input, select, textarea {
 }
 
 .portal-drop-header {
-  padding: 0.5rem 0.75rem 0.65rem;
+  padding: 0.4rem 0.65rem 0.65rem;
   border-bottom: 1px solid var(--color-border);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -578,27 +581,30 @@ button, input, select, textarea {
 .portal-drop-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
+  gap: 0.85rem;
+  padding: 0.65rem 0.75rem;
   border-radius: var(--radius-md);
   text-decoration: none;
   transition: var(--transition);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid transparent;
+  box-sizing: border-box;
 }
 
 .portal-drop-item:hover {
   background-color: var(--color-bg-subtle);
-  transform: translateX(3px);
+  border-color: var(--color-border);
+  transform: translateX(2px);
 }
 
 .portal-drop-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
 }
 
@@ -617,34 +623,55 @@ button, input, select, textarea {
   color: #D97706;
 }
 
+.icon-parent {
+  background: rgba(139, 92, 246, 0.12);
+  color: #7C3AED;
+}
+
 .portal-drop-info {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.portal-drop-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .portal-drop-name {
   font-family: var(--font-heading);
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--color-text-dark);
+  line-height: 1.2;
 }
 
 .portal-drop-desc {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
-  line-height: 1.3;
+  line-height: 1.35;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .portal-drop-badge {
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0.55rem;
   border-radius: var(--radius-full);
   background: var(--color-bg-subtle);
   color: var(--color-text-muted);
   border: 1px solid var(--color-border);
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .item-mgmt:hover .portal-drop-badge {
@@ -665,27 +692,33 @@ button, input, select, textarea {
   border-color: #FDE68A;
 }
 
+.item-parent:hover .portal-drop-badge {
+  background: #EDE9FE;
+  color: #6D28D9;
+  border-color: #DDD6FE;
+}
+
 /* Responsive Navbar Adjustments */
 @media (max-width: 1400px) {
   .nav-menu {
-    gap: 0.08rem;
+    gap: 0.35rem;
   }
   .nav-link {
-    padding: 0.4rem 0.45rem;
-    font-size: 0.82rem;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.85rem;
   }
   .brand-name {
-    font-size: 1.18rem;
+    font-size: 1.2rem;
   }
 }
 
 @media (max-width: 1220px) {
   .nav-menu {
-    gap: 0.04rem;
+    gap: 0.25rem;
   }
   .nav-link {
-    padding: 0.35rem 0.38rem;
-    font-size: 0.78rem;
+    padding: 0.35rem 0.45rem;
+    font-size: 0.82rem;
   }
   .brand-motto {
     display: none;

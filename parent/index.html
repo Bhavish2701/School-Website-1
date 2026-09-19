@@ -5,15 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Parent Dashboard | Sri Vidya E.M High School</title>
   <meta name="description" content="Dedicated Parent Portal for Sri Vidya E.M High School. Monitor child academic progress, attendance, pay fees online, track school bus, and communicate with teachers.">
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Parent Portal Stylesheet -->
-  <link rel="stylesheet" href="../css/parent.css">
+  <link rel="stylesheet" href="css/parent.css">
+  <link rel="stylesheet" href="css/portal-login.css">
 </head>
 <body>
+  <!-- ==========================================================================
+       PARENT PORTAL LOGIN OVERLAY
+       ========================================================================== -->
+  <div class="portal-login-overlay" id="parentLoginOverlay">
+    <div class="login-bg-glow glow-1"></div>
+    <div class="login-bg-glow glow-2"></div>
+    <div class="login-card-container">
+      <div class="portal-login-card login-theme-parent">
+        
+        <!-- Showcase Panel -->
+        <div class="login-showcase-panel showcase-parent">
+          <div class="showcase-overlay"></div>
+          <div class="showcase-content">
+            <div class="showcase-brand">
+              <div class="showcase-logo-wrap">
+                <img src="assets/images/school-logo.jpg" alt="Sri Vidya Emblem" class="showcase-logo-img">
+              </div>
+              <div class="showcase-brand-text">
+                <span class="showcase-school-name">SRI VIDYA</span>
+                <span class="showcase-school-sub">E.M. HIGH SCHOOL • EST. 2017</span>
+              </div>
+            </div>
+
+            <div class="showcase-hero">
+              <span class="showcase-badge"><i class="fa-solid fa-users"></i> Parent &amp; Guardian Gateway</span>
+              <h2 class="showcase-title">Partnering in Your Child's Learning &amp; Growth</h2>
+              <p class="showcase-motto">"Vidyathe Vijayam — Knowledge Brings Victory"</p>
+            </div>
+
+            <div class="showcase-features">
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-bell"></i></div>
+                <div class="feat-text">
+                  <strong>Live Attendance &amp; Bus Tracking</strong>
+                  <span>Instant alerts for campus check-in, bus departures, and emergency notices.</span>
+                </div>
+              </div>
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <div class="feat-text">
+                  <strong>Academic Progress &amp; Report Cards</strong>
+                  <span>Real-time marks updates, teacher feedback, and downloadable term report cards.</span>
+                </div>
+              </div>
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-receipt"></i></div>
+                <div class="feat-text">
+                  <strong>Fee Invoices &amp; Instant Receipts</strong>
+                  <span>Transparent term fee breakdown, online UPI payments, and instant official receipts.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="showcase-stats-bar">
+              <div class="stat-pill"><i class="fa-solid fa-award"></i> <span><strong>100%</strong> SSC Pass Rate</span></div>
+              <div class="stat-pill"><i class="fa-solid fa-shield-halved"></i> <span><strong>Safe</strong> Campus</span></div>
+              <div class="stat-pill"><i class="fa-solid fa-heart"></i> <span><strong>Parent</strong> Desk</span></div>
+            </div>
+
+            <div class="showcase-footer">
+              <i class="fa-solid fa-headset"></i> <span>Parent Helpline: <strong>+91 93985 78584</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Panel -->
+        <div class="login-form-panel">
+          <div class="login-form-header">
+            <div class="portal-badge-pill badge-parent">
+              <i class="fa-solid fa-users"></i> Parent &amp; Guardian Portal
+            </div>
+            <h1 class="login-form-title">Parent Sign In</h1>
+            <p class="login-form-subtitle">Enter your registered email or mobile number to proceed.</p>
+          </div>
+
+          <form class="login-form" id="parentLoginForm" onsubmit="PortalAuth.login('parent', event)">
+            <div class="login-field">
+              <label class="login-label">Registered Student / Child</label>
+              <div class="login-input-wrap">
+                <select class="login-select" id="parentChildSelect">
+                  <option value="rahul" selected>Rahul Sharma (Grade 8A - Roll #1042)</option>
+                  <option value="sneha">Sneha Sharma (Grade 5B - Roll #2105)</option>
+                  <option value="aditya">Aditya Sharma (UKG - Roll #3401)</option>
+                </select>
+                <i class="fa-solid fa-children login-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label class="login-label">Parent Registered Email / Mobile Number</label>
+              <div class="login-input-wrap">
+                <input type="text" class="login-input" id="parentLoginUser" value="" required placeholder="e.g. yandrapubhavish2701@gmail.com or 10-digit mobile" autocomplete="username">
+                <i class="fa-solid fa-envelope login-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label class="login-label">Security Password / Parent PIN</label>
+              <div class="login-input-wrap">
+                <input type="password" class="login-input" id="parentLoginPass" value="" required placeholder="Enter password or PIN" autocomplete="current-password">
+                <i class="fa-solid fa-lock login-input-icon"></i>
+                <button type="button" class="login-password-toggle" onclick="PortalAuth.togglePassword('parentLoginPass', this)" aria-label="Toggle password visibility">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="login-meta-row">
+              <label class="login-remember">
+                <input type="checkbox" checked> Keep me logged in
+              </label>
+              <a href="#" class="login-forgot-link" onclick="PortalAuth.showToast('OTP sent to registered helpline 9398578584', 'fa-paper-plane'); return false;">Forgot PIN / OTP?</a>
+            </div>
+
+            <button type="submit" class="btn-login-submit" id="parentSubmitBtn">
+              <i class="fa-solid fa-right-to-bracket"></i> Sign In to Parent Portal
+            </button>
+          </form>
+
+          <div class="login-portal-switch">
+            <span class="switch-label">Other School Portals:</span>
+            <div class="switch-links">
+              <a href="portal.html" class="switch-chip"><i class="fa-solid fa-shield-halved"></i> Mgmt</a>
+              <a href="teacher-portal.html" class="switch-chip"><i class="fa-solid fa-chalkboard-user"></i> Teacher</a>
+              <a href="student-portal.html" class="switch-chip"><i class="fa-solid fa-graduation-cap"></i> Student</a>
+            </div>
+          </div>
+
+          <div class="login-card-footer">
+            <a href="index.html" class="login-back-link">
+              <i class="fa-solid fa-arrow-left"></i> Back to School Website
+            </a>
+            <span class="login-security-tag">
+              <i class="fa-solid fa-shield-heart"></i> Parent Gateway
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="portal-layout">
     
     <!-- ==========================================
@@ -23,7 +166,7 @@
       <!-- School Branding Header -->
       <div class="sidebar-brand">
         <a href="/" class="brand-link" title="Return to Public Website">
-          <img src="../images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src="../images/logo-placeholder.svg'">
+          <img src="images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src='images/logo-placeholder.svg'">
           <div class="brand-text">
             <span class="brand-name">SRI VIDYA</span>
             <span class="brand-sub">PARENT PORTAL</span>
@@ -76,13 +219,32 @@
         <a class="nav-link" data-view="view-documents" onclick="navigateTo('view-documents')">
           <i class="fa-solid fa-folder-open"></i> Documents
         </a>
+
+        <div class="nav-section-title">ACCOUNT &amp; PROFILE</div>
+        <a class="nav-link" data-view="view-my-profile" onclick="navigateTo('view-my-profile')">
+          <i class="fa-solid fa-id-badge"></i> My Profile &amp; Settings
+        </a>
       </nav>
 
       <!-- Sidebar Footer -->
-      <div class="sidebar-footer">
+      <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 0.45rem;">
         <a href="/" class="btn-back-site">
           <i class="fa-solid fa-globe"></i> Public Website
         </a>
+      </div>
+
+      <!-- Sidebar Footer User Card -->
+      <div class="sidebar-user-card" onclick="navigateTo('view-my-profile')" style="cursor: pointer;" title="View & Edit Parent Profile">
+        <div class="user-avatar-mini" id="parentUserAvatar" style="background: #7C3AED;">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="user-meta">
+          <span class="user-name" id="parentUserName">Mr. Rajesh Sharma</span>
+          <span class="user-badge" id="parentUserDesignation" style="color: #7C3AED;">Parent (Rahul - 8A)</span>
+        </div>
+        <button type="button" class="btn-logout" data-action="portal-logout" onclick="event.stopPropagation(); PortalAuth.logout('parent')" title="Fast Logout from Parent Portal">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
       </div>
     </aside>
 
@@ -119,6 +281,12 @@
           <a href="/student" class="btn-portal-pill" title="Switch to Student Portal">
             <i class="fa-solid fa-graduation-cap" style="color: #8B5CF6;"></i> Student
           </a>
+
+          <!-- Fast Logout Button -->
+          <button type="button" class="btn-header-signout" data-action="portal-logout" onclick="PortalAuth.logout('parent')" title="Fast Logout from Parent Portal">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
 
           <!-- Theme Toggle Button -->
           <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark / Light Theme">
@@ -708,6 +876,179 @@
           </div>
         </section>
 
+        <!-- ================================================================
+             MODULE 11: MY PROFILE & PARENT DASHBOARD PREFERENCES
+             ================================================================ -->
+        <section id="view-my-profile" class="portal-view">
+          <div class="profile-view-wrap">
+            
+            <!-- Hero Header Banner -->
+            <div class="profile-hero-banner" style="background: linear-gradient(135deg, #4C1D95 0%, #6D28D9 50%, #7C3AED 100%);">
+              <div class="profile-hero-avatar" style="background: linear-gradient(135deg, #8B5CF6, #6D28D9); border-color: rgba(255,255,255,0.4);">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="profile-hero-info">
+                <h2 id="profParentHeroName">Mr. &amp; Mrs. Sharma</h2>
+                <p id="profParentHeroRole"><i class="fa-solid fa-children"></i> Registered Parents &bull; Rahul Sharma (8A), Sneha (5B), Aditya (UKG)</p>
+                <div class="profile-badge-row">
+                  <span class="profile-badge-tag"><i class="fa-solid fa-id-card-clip"></i> Reg ID: PAR-SV-2024-842</span>
+                  <span class="profile-badge-tag"><i class="fa-solid fa-shield-check"></i> Verified Parent Gateway (2025–26)</span>
+                  <span class="profile-badge-tag"><i class="fa-solid fa-school"></i> Sri Vidya E.M High School</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Management Authority Callout Policy -->
+            <div class="profile-policy-callout">
+              <div class="profile-policy-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="profile-policy-text">
+                <h4>Institutional Security Policy &amp; Management Authority</h4>
+                <p>Official parent/guardian registration credentials including your login username/email (<code>yandrapubhavish2701@gmail.com</code>), Parent Registration ID, linked student roster, and allocated fee schemes are administered and locked centrally by <strong>Sri Vidya School Management</strong> (<code>srividyaschools2017@gmail.com</code>). These official management records cannot be modified by parents, guaranteeing administrative consistency. You may customize your preferred salutation greeting, communication mobile number, and personal postal address below to tailor your parent dashboard experience.</p>
+              </div>
+            </div>
+
+            <!-- Two-Column Form Cards -->
+            <div class="profile-cards-grid">
+              
+              <!-- Left Column: Personal Dashboard Preferences (Editable) -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="profile-card-icon" style="background: #F5F3FF; color: #7C3AED;">
+                    <i class="fa-solid fa-user-pen"></i>
+                  </div>
+                  <div class="profile-card-title-wrap">
+                    <h3 class="profile-card-title">Personal Dashboard Preferences</h3>
+                    <p class="profile-card-subtitle">Customizes how your parent dashboard greeting and personal contact info appear</p>
+                  </div>
+                </div>
+
+                <form id="parentProfileForm" onsubmit="saveParentProfile(event)">
+                  <div class="profile-field">
+                    <label class="profile-label">Preferred Parent Display Greeting Name</label>
+                    <input type="text" class="profile-input" id="profParentName" required value="Mr. &amp; Mrs. Sharma" placeholder="e.g. Mr. Rajesh Sharma / Dr. Sharma">
+                    <span class="profile-help">Updates the "Good Morning, [Name]" dashboard greeting and sidebar card.</span>
+                  </div>
+
+                  <div class="profile-row-2">
+                    <div class="profile-field">
+                      <label class="profile-label">Mobile Number (SMS / WhatsApp)</label>
+                      <input type="tel" class="profile-input" id="profParentPhone" value="+91 98491 55670" placeholder="+91 98491 00000">
+                    </div>
+                    <div class="profile-field">
+                      <label class="profile-label">Parent Contact Email</label>
+                      <input type="email" class="profile-input" id="profParentEmail" value="sharma.family@gmail.com" placeholder="family@email.com">
+                    </div>
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">Occupation / Workplace</label>
+                    <input type="text" class="profile-input" id="profParentOccupation" value="Senior Technical Manager / Homemaker" placeholder="e.g. Govt Officer / Software Engineer">
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">Residential Address</label>
+                    <textarea class="profile-textarea" id="profParentAddress" rows="2" placeholder="Residential postal address...">Plot 42, HIG Phase-II, Dwaraka Nagar, Visakhapatnam, AP - 530016</textarea>
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">Alternate Emergency Contact Person &amp; Phone</label>
+                    <input type="text" class="profile-input" id="profParentEmergency" value="Sri K. Ramamurthy (Grandparent) - +91 98480 55443" placeholder="Name &amp; Phone">
+                  </div>
+
+                  <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <button type="submit" class="btn-save-profile btn-save-parent">
+                      <i class="fa-solid fa-floppy-disk"></i> Save Dashboard Preferences
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetParentProfile()" style="padding: 0.8rem 1.2rem; border-radius: 10px;">
+                      <i class="fa-solid fa-rotate-left"></i> Revert to Defaults
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Right Column: Official Management Records (Strictly Read-Only / Locked) -->
+              <div class="profile-card" style="background: #F8FAFC; border-color: #CBD5E1;">
+                <div class="profile-card-header">
+                  <div class="profile-card-icon" style="background: #FEE2E2; color: #DC2626;">
+                    <i class="fa-solid fa-lock"></i>
+                  </div>
+                  <div class="profile-card-title-wrap">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                      <h3 class="profile-card-title">Official School Management Records</h3>
+                      <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked by Management</span>
+                    </div>
+                    <p class="profile-card-subtitle">Official parent registry maintained by Sri Vidya School Management (srividyaschools2017@gmail.com)</p>
+                  </div>
+                </div>
+
+                <div class="profile-card-body">
+                  <div class="profile-field">
+                    <label class="profile-label">
+                      <span>Official Login Username / Email</span>
+                      <span class="locked-pill"><i class="fa-solid fa-lock"></i> Non-editable</span>
+                    </label>
+                    <input type="text" class="profile-input profile-input-locked" readonly disabled value="yandrapubhavish2701@gmail.com" title="Assigned by School Management. Cannot be changed.">
+                    <span class="profile-help" style="color: #DC2626;"><i class="fa-solid fa-circle-exclamation"></i> Official parent gateway login assigned by Sri Vidya School Management. Cannot be changed.</span>
+                  </div>
+
+                  <div class="profile-row-2">
+                    <div class="profile-field">
+                      <label class="profile-label">
+                        <span>Parent Registration ID</span>
+                        <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked</span>
+                      </label>
+                      <input type="text" class="profile-input profile-input-locked" readonly disabled value="PAR-SV-2024-842">
+                    </div>
+                    <div class="profile-field">
+                      <label class="profile-label">
+                        <span>Registration Status</span>
+                        <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked</span>
+                      </label>
+                      <input type="text" class="profile-input profile-input-locked" readonly disabled value="Active &amp; Verified Guardian">
+                    </div>
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">
+                      <span>Enrolled Wards / Students in Sri Vidya</span>
+                      <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked</span>
+                    </label>
+                    <input type="text" class="profile-input profile-input-locked" readonly disabled value="Rahul Sharma (8A) • Sneha Sharma (5B) • Aditya (UKG)">
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">
+                      <span>Assigned Fee Structure</span>
+                      <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked</span>
+                    </label>
+                    <input type="text" class="profile-input profile-input-locked" readonly disabled value="CBSE Regular Scheme (Multi-Sibling Concession Category B)">
+                  </div>
+
+                  <div class="profile-field">
+                    <label class="profile-label">
+                      <span>Govt Child Info / School Code</span>
+                      <span class="locked-pill"><i class="fa-solid fa-lock"></i> Locked</span>
+                    </label>
+                    <input type="text" class="profile-input profile-input-locked" readonly disabled value="AP-EDU-SV-2017-5421">
+                  </div>
+
+                  <div style="padding: 0.95rem 1rem; background: #FFFFFF; border: 1.5px dashed #CBD5E1; border-radius: 12px; margin-top: 0.25rem;">
+                    <div style="display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.82rem; color: #475569;">
+                      <i class="fa-solid fa-building-columns text-primary" style="margin-top: 0.2rem; font-size: 1.1rem;"></i>
+                      <div>
+                        <strong>Need to update official guardian records or fee schemes?</strong>
+                        <p style="margin: 0.25rem 0 0 0; line-height: 1.45;">Official sibling additions, fee concession applications, or legal guardian record updates must be processed directly with the School Management Office (<code>srividyaschools2017@gmail.com</code>).</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
       </main>
     </div>
   </div>
@@ -747,6 +1088,13 @@
   <div class="toast-container" id="portalToastContainer"></div>
 
   <!-- Parent Portal Logic Script -->
-  <script src="../js/parent.js"></script>
+  <script src="js/parent.js"></script>
+  <!-- Portal Auth Script -->
+  <script src="js/portal-auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      PortalAuth.init('parent');
+    });
+  </script>
 </body>
 </html>

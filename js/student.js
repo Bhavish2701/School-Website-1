@@ -59,6 +59,7 @@ const studentApp = (function () {
 
   function init() {
     setupTheme();
+    loadSavedProfile();
     bindEvents();
     renderAll();
     setupHashRouting();
@@ -482,6 +483,80 @@ const studentApp = (function () {
     }, 3500);
   }
 
+  function loadSavedProfile() {
+    try {
+      const raw = localStorage.getItem('sv_student_profile');
+      const profile = raw ? JSON.parse(raw) : {
+        name: 'Rahul',
+        motto: 'Aspiring Aerospace Engineer • Passionate about Mathematics & Physics',
+        phone: '+91 98481 99881',
+        email: 'rahul.student@gmail.com',
+        hobbies: 'Robotics, Badminton, Kho-Kho, Competitive Coding',
+        blood: 'O+',
+        emergency: '+91 98480 22334',
+        address: 'H.No 12-4-88, Ring Road Colony, Guntur, AP - 522006'
+      };
+
+      state.student.name = profile.name;
+
+      // Update Dashboard welcome banner
+      const bannerH1 = document.querySelector('.student-welcome-banner .sw-title');
+      if (bannerH1) bannerH1.textContent = `Welcome back, ${profile.name}`;
+
+      // Update Sidebar user card
+      const sidebarName = document.getElementById('studentUserName');
+      if (sidebarName) sidebarName.textContent = profile.name;
+
+      // Update Profile Hero elements
+      const heroName = document.getElementById('profStudentHeroName');
+      if (heroName) heroName.textContent = profile.name;
+
+      // Fill form inputs if present
+      const fName = document.getElementById('profStudentName');
+      if (fName) fName.value = profile.name;
+      const fMotto = document.getElementById('profStudentMotto');
+      if (fMotto) fMotto.value = profile.motto;
+      const fPhone = document.getElementById('profStudentPhone');
+      if (fPhone) fPhone.value = profile.phone;
+      const fEmail = document.getElementById('profStudentEmail');
+      if (fEmail) fEmail.value = profile.email;
+      const fHobbies = document.getElementById('profStudentHobbies');
+      if (fHobbies) fHobbies.value = profile.hobbies;
+      const fBlood = document.getElementById('profStudentBlood');
+      if (fBlood) fBlood.value = profile.blood;
+      const fEmergency = document.getElementById('profStudentEmergency');
+      if (fEmergency) fEmergency.value = profile.emergency;
+      const fAddress = document.getElementById('profStudentAddress');
+      if (fAddress) fAddress.value = profile.address;
+    } catch (e) {
+      console.error('Error loading student profile:', e);
+    }
+  }
+
+  function saveProfile(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const data = {
+      name: (document.getElementById('profStudentName')?.value || 'Rahul').trim(),
+      motto: (document.getElementById('profStudentMotto')?.value || 'Aspiring Aerospace Engineer').trim(),
+      phone: (document.getElementById('profStudentPhone')?.value || '').trim(),
+      email: (document.getElementById('profStudentEmail')?.value || '').trim(),
+      hobbies: (document.getElementById('profStudentHobbies')?.value || '').trim(),
+      blood: document.getElementById('profStudentBlood')?.value || 'O+',
+      emergency: (document.getElementById('profStudentEmergency')?.value || '').trim(),
+      address: (document.getElementById('profStudentAddress')?.value || '').trim()
+    };
+
+    localStorage.setItem('sv_student_profile', JSON.stringify(data));
+    loadSavedProfile();
+    showToast('Dashboard & profile preferences saved successfully!', 'success');
+  }
+
+  function resetProfile() {
+    localStorage.removeItem('sv_student_profile');
+    loadSavedProfile();
+    showToast('Reverted to default student profile', 'info');
+  }
+
   // Auto-init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -502,7 +577,10 @@ const studentApp = (function () {
     handleSearch,
     openModal,
     closeModal,
-    showToast
+    showToast,
+    saveProfile,
+    resetProfile,
+    loadSavedProfile
   };
 
 })();

@@ -5,15 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Management Portal | Sri Vidya E.M High School</title>
   <meta name="description" content="Role-based administration and management portal for Sri Vidya E.M High School. Principal, Vice Principal, and Admin modules.">
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Portal Custom CSS -->
-  <link rel="stylesheet" href="../css/portal.css">
+  <link rel="stylesheet" href="css/portal.css">
+  <link rel="stylesheet" href="css/portal-login.css">
 </head>
 <body>
+  <!-- ==========================================================================
+       MANAGEMENT PORTAL LOGIN OVERLAY
+       ========================================================================== -->
+  <div class="portal-login-overlay" id="managementLoginOverlay">
+    <div class="login-bg-glow glow-1"></div>
+    <div class="login-bg-glow glow-2"></div>
+    <div class="login-card-container">
+      <div class="portal-login-card login-theme-mgmt">
+        
+        <!-- Showcase Panel -->
+        <div class="login-showcase-panel showcase-mgmt">
+          <div class="showcase-overlay"></div>
+          <div class="showcase-content">
+            <div class="showcase-brand">
+              <div class="showcase-logo-wrap">
+                <img src="assets/images/school-logo.jpg" alt="Sri Vidya Emblem" class="showcase-logo-img">
+              </div>
+              <div class="showcase-brand-text">
+                <span class="showcase-school-name">SRI VIDYA</span>
+                <span class="showcase-school-sub">E.M. HIGH SCHOOL • EST. 2017</span>
+              </div>
+            </div>
+
+            <div class="showcase-hero">
+              <span class="showcase-badge"><i class="fa-solid fa-graduation-cap"></i> AP Govt. Recognized • Affiliated</span>
+              <h2 class="showcase-title">Executive Governance &amp; Campus Intelligence</h2>
+              <p class="showcase-motto">"Vidyathe Vijayam — Knowledge Brings Victory"</p>
+            </div>
+
+            <div class="showcase-features">
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="feat-text">
+                  <strong>Integrated Administration ERP</strong>
+                  <span>Consolidated academic, faculty, and student intelligence at your fingertips.</span>
+                </div>
+              </div>
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div class="feat-text">
+                  <strong>Financial &amp; Fee Governance</strong>
+                  <span>Live fee collections, automated receipts, expenditure auditing, and dues tracking.</span>
+                </div>
+              </div>
+              <div class="showcase-feat-item">
+                <div class="feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="feat-text">
+                  <strong>Role-Based Access Control</strong>
+                  <span>High-security administrative authorization for Principal and Vice Principal.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="showcase-stats-bar">
+              <div class="stat-pill"><i class="fa-solid fa-award"></i> <span><strong>100%</strong> SSC Pass Rate</span></div>
+              <div class="stat-pill"><i class="fa-solid fa-building-columns"></i> <span><strong>Est.</strong> 2017</span></div>
+              <div class="stat-pill"><i class="fa-solid fa-chalkboard"></i> <span><strong>Smart</strong> STEM Labs</span></div>
+            </div>
+
+            <div class="showcase-footer">
+              <i class="fa-solid fa-headset"></i> <span>Campus IT Helpline: <strong>+91 93985 78584</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Panel -->
+        <div class="login-form-panel">
+          <div class="login-form-header">
+            <div class="portal-badge-pill badge-mgmt">
+              <i class="fa-solid fa-shield-halved"></i> Executive Management Login
+            </div>
+            <h1 class="login-form-title">Management Sign In</h1>
+            <p class="login-form-subtitle">Enter your official administrative credentials to open the console.</p>
+          </div>
+
+          <form class="login-form" id="mgmtLoginForm" onsubmit="PortalAuth.login('management', event)">
+            <div class="login-field">
+              <label class="login-label">Administrative Role</label>
+              <div class="login-input-wrap">
+                <select class="login-select" id="mgmtRoleSelect">
+                  <option value="principal" selected>Principal (Smt. Gorle Varalakshmi) — Full Executive</option>
+                  <option value="vice-principal">Vice Principal (Sri Navva Anand) — Academic &amp; Operations</option>
+                  <option value="admin">Office Administrator / Clerk — Accounts, Admissions &amp; Records</option>
+                </select>
+                <i class="fa-solid fa-users-gear login-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label class="login-label">Official Email / User ID</label>
+              <div class="login-input-wrap">
+                <input type="text" class="login-input" id="managementLoginUser" value="" required placeholder="e.g. srividyaschools2017@gmail.com" autocomplete="username">
+                <i class="fa-solid fa-envelope login-input-icon"></i>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label class="login-label">Security Password</label>
+              <div class="login-input-wrap">
+                <input type="password" class="login-input" id="managementLoginPass" value="" required placeholder="Enter password" autocomplete="current-password">
+                <i class="fa-solid fa-lock login-input-icon"></i>
+                <button type="button" class="login-password-toggle" onclick="PortalAuth.togglePassword('managementLoginPass', this)" aria-label="Toggle password visibility">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="login-meta-row">
+              <label class="login-remember">
+                <input type="checkbox" checked> Remember this device
+              </label>
+              <a href="#" class="login-forgot-link" onclick="PortalAuth.showToast('Please contact IT Admin / School Reception for password reset', 'fa-circle-info'); return false;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login-submit" id="managementSubmitBtn">
+              <i class="fa-solid fa-right-to-bracket"></i> Sign In to Management Console
+            </button>
+          </form>
+
+          <div class="login-portal-switch">
+            <span class="switch-label">Other School Portals:</span>
+            <div class="switch-links">
+              <a href="teacher-portal.html" class="switch-chip"><i class="fa-solid fa-chalkboard-user"></i> Teacher</a>
+              <a href="student-portal.html" class="switch-chip"><i class="fa-solid fa-graduation-cap"></i> Student</a>
+              <a href="parent-portal.html" class="switch-chip"><i class="fa-solid fa-users"></i> Parent</a>
+            </div>
+          </div>
+
+          <div class="login-card-footer">
+            <a href="index.html" class="login-back-link">
+              <i class="fa-solid fa-arrow-left"></i> Back to School Website
+            </a>
+            <span class="login-security-tag">
+              <i class="fa-solid fa-lock"></i> 256-Bit Encrypted
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="portal-layout">
     
     <!-- ==========================================
@@ -22,8 +165,8 @@
     <aside class="portal-sidebar" id="portalSidebar">
       <!-- School Branding Header -->
       <div class="sidebar-brand">
-        <a href="../index.html" class="brand-link" title="Return to Public Website">
-          <img src="../images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src="../images/logo-placeholder.svg'">
+        <a href="index.html" class="brand-link" title="Return to Public Website">
+          <img src="images/logo.png" alt="Sri Vidya High School Logo" class="brand-logo" onerror="this.src='images/logo-placeholder.svg'">
           <div class="brand-text">
             <span class="brand-name">SRI VIDYA</span>
             <span class="brand-sub">E.M HIGH SCHOOL</span>
@@ -271,9 +414,9 @@
           <span class="user-name" id="sidebarUserName">Gorle Varalakshmi</span>
           <span class="user-badge" id="sidebarUserDesignation">Principal</span>
         </div>
-        <a href="../index.html" class="btn-logout" title="Back to Website">
+        <button type="button" class="btn-logout" data-action="portal-logout" onclick="PortalAuth.logout('management')" title="Fast Logout from Management Portal">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </a>
+        </button>
       </div>
     </aside>
 
@@ -310,7 +453,7 @@
             <select id="roleSelect" class="role-select">
               <option value="principal" selected>Principal (Smt. Gorle Varalakshmi)</option>
               <option value="vice-principal">Vice Principal (Sri Navva Anand)</option>
-              <option value="admin">Admin / School Office</option>
+              <option value="admin">Office Administrator / Clerk</option>
             </select>
           </div>
 
@@ -367,22 +510,34 @@
           </div>
 
           <!-- Quick Link to Teacher Portal -->
-          <a href="../teacher" style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Teacher Portal">
+          <a href="/teacher" style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Teacher Portal">
             <i class="fa-solid fa-chalkboard-user"></i>
             <span>Teacher Portal</span>
           </a>
 
           <!-- Quick Link to Student Portal -->
-          <a href="../student" style="background: var(--color-accent-blue-subtle); color: var(--color-primary); border: 1px solid rgba(37, 99, 235, 0.35); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Student Academic Dashboard (Rahul)">
+          <a href="/student" style="background: var(--color-accent-blue-subtle); color: var(--color-primary); border: 1px solid rgba(37, 99, 235, 0.35); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Student Academic Dashboard (Rahul)">
             <i class="fa-solid fa-graduation-cap"></i>
             <span>Student Portal</span>
           </a>
 
+          <!-- Quick Link to Parent Portal -->
+          <a href="/parent" style="background: var(--color-accent-purple-subtle); color: var(--color-accent-purple); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Parent Portal (Multi-Child)">
+            <i class="fa-solid fa-users"></i>
+            <span>Parent Portal</span>
+          </a>
+
           <!-- Quick Return to Public Website -->
-          <a href="../index.html" class="btn-back-public" title="Open Public Website">
+          <a href="index.html" class="btn-back-public" title="Open Public Website">
             <i class="fa-solid fa-globe"></i>
             <span>Public Site</span>
           </a>
+
+          <!-- Fast Logout Button in Header -->
+          <button type="button" class="btn-header-signout" data-action="portal-logout" onclick="PortalAuth.logout('management')" title="Fast Logout from Management Portal">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
         </div>
       </header>
 
@@ -420,8 +575,8 @@
               <button type="button" class="role-pill-btn" data-role="admin" onclick="portalApp.switchRole('admin')">
                 <i class="fa-solid fa-id-badge"></i>
                 <div class="role-btn-text">
-                  <span class="role-btn-title">Admin / Office</span>
-                  <span class="role-btn-name">School Office & Accounts</span>
+                  <span class="role-btn-title">Office / Clerk</span>
+                  <span class="role-btn-name">Office Staff &amp; Accounts</span>
                 </div>
                 <span class="role-btn-tag">Office Clerk</span>
               </button>
@@ -461,6 +616,40 @@
               </div>
               <div class="vp-perm-pill perm-ltd" title="User permission escalation requires Principal sign-off">
                 <i class="fa-solid fa-user-lock"></i> User Permissions: <strong>LIMITED</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Office / Clerk Focused Scope Bar (Visible when in Office / Clerk mode) -->
+          <div class="vp-permissions-bar office-permissions-bar" id="officePermissionsBar" style="display: none; border-color: rgba(14, 165, 233, 0.4); background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(30, 58, 138, 0.04) 100%);">
+            <div class="vp-bar-top">
+              <div class="vp-identity">
+                <div class="vp-badge-icon" style="background: #0284C7;"><i class="fa-solid fa-id-badge"></i></div>
+                <div>
+                  <h3 class="vp-title">School Office &amp; Clerk Administration Dashboard</h3>
+                  <p class="vp-subtitle">Focus: Daily Fee Counter, Student Admissions, Transfer Certificates, Parent Desk &amp; Official Records</p>
+                </div>
+              </div>
+              <div class="vp-scope-badge" style="background: #0284C7; color: #fff;"><i class="fa-solid fa-id-badge"></i> Access Policy: Office Staff / Clerk Role</div>
+            </div>
+            <div class="vp-perms-grid">
+              <div class="vp-perm-pill perm-yes" title="Full access to daily fee collections and receipt generation">
+                <i class="fa-solid fa-circle-check"></i> Fee Counter &amp; Invoices: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="New admission applications, enrollment and inquiries">
+                <i class="fa-solid fa-circle-check"></i> Admissions &amp; Inquiries: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="Official TC generation and Bonafide certificate dispatch">
+                <i class="fa-solid fa-circle-check"></i> Certificates &amp; TC: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-yes" title="Student roll registry and parent contact directory">
+                <i class="fa-solid fa-circle-check"></i> Student Directory: <strong>YES</strong>
+              </div>
+              <div class="vp-perm-pill perm-ltd" title="Teacher performance evaluation is restricted to Principal & VP">
+                <i class="fa-solid fa-triangle-exclamation"></i> Faculty Appraisals: <strong>LIMITED</strong>
+              </div>
+              <div class="vp-perm-pill perm-no" title="Institutional settings and policy configuration locked to Principal">
+                <i class="fa-solid fa-lock"></i> Institutional Bylaws: <strong>LOCKED</strong>
               </div>
             </div>
           </div>
@@ -2102,6 +2291,13 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- Portal Logic Script -->
-  <script src="../js/portal.js"></script>
+  <script src="js/portal.js"></script>
+  <!-- Portal Auth Script -->
+  <script src="js/portal-auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      PortalAuth.init('management');
+    });
+  </script>
 </body>
 </html>

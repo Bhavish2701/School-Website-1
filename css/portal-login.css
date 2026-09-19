@@ -1,0 +1,1321 @@
+/* ==========================================================================
+   Sri Vidya E.M High School - Unified Expansive 2-Column Portal Login Styles
+   Applied across Management, Teacher, Student, and Parent Portals
+   ========================================================================== */
+
+.portal-login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.35) 0%, transparent 45%),
+              radial-gradient(circle at 85% 85%, rgba(30, 58, 138, 0.45) 0%, transparent 45%),
+              radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.6) 0%, transparent 100%),
+              linear-gradient(135deg, #070d1e 0%, #0b1426 40%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1.5rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+  font-family: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.portal-login-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Ambient Floating Glows for Depth */
+.login-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  animation: pulseGlow 8s ease-in-out infinite alternate;
+}
+
+.glow-1 {
+  width: 420px;
+  height: 420px;
+  top: -80px;
+  left: -60px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, transparent 70%);
+}
+
+.glow-2 {
+  width: 500px;
+  height: 500px;
+  bottom: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+  100% { transform: scale(1.12) translate(20px, -20px); opacity: 0.65; }
+}
+
+/* Container */
+.login-card-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  position: relative;
+  z-index: 2;
+  animation: loginSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes loginSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 2-Column Split Card */
+.portal-login-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.14);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 640px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Top Accent Stripe */
+.portal-login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #1D4ED8 0%, #38BDF8 50%, #1E40AF 100%);
+  z-index: 10;
+}
+
+.login-theme-mgmt::before {
+  background: linear-gradient(90deg, #1D4ED8 0%, #60A5FA 50%, #0F172A 100%);
+}
+
+.login-theme-teacher::before {
+  background: linear-gradient(90deg, #059669 0%, #34D399 50%, #065F46 100%);
+}
+
+.login-theme-student::before {
+  background: linear-gradient(90deg, #D97706 0%, #FBBF24 50%, #B45309 100%);
+}
+
+.login-theme-parent::before {
+  background: linear-gradient(90deg, #7C3AED 0%, #A78BFA 50%, #5B21B6 100%);
+}
+
+/* ==========================================================================
+   LEFT COLUMN: Visual Showcase Panel
+   ========================================================================== */
+.login-showcase-panel {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.75rem 2.5rem 2.25rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.showcase-mgmt {
+  background-image: url('../images/campus.jpg');
+}
+
+.showcase-teacher {
+  background-image: url('../images/smart-classroom.jpg');
+}
+
+.showcase-student {
+  background-image: url('../images/science-lab.jpg');
+}
+
+.showcase-parent {
+  background-image: url('../images/sports.jpg');
+}
+
+/* High-Contrast Tint Overlays */
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(8, 17, 43, 0.94) 0%, rgba(15, 23, 42, 0.90) 55%, rgba(30, 58, 138, 0.88) 100%);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.showcase-teacher .showcase-overlay {
+  background: linear-gradient(145deg, rgba(4, 30, 23, 0.95) 0%, rgba(6, 44, 35, 0.90) 55%, rgba(16, 110, 84, 0.88) 100%);
+}
+
+.showcase-student .showcase-overlay {
+  background: linear-gradient(145deg, rgba(30, 20, 8, 0.95) 0%, rgba(45, 26, 8, 0.90) 55%, rgba(180, 83, 9, 0.85) 100%);
+}
+
+.showcase-parent .showcase-overlay {
+  background: linear-gradient(145deg, rgba(25, 12, 45, 0.95) 0%, rgba(36, 16, 68, 0.90) 55%, rgba(109, 40, 217, 0.85) 100%);
+}
+
+.showcase-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  gap: 1.75rem;
+}
+
+/* School Emblem & Brand in Showcase */
+.showcase-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.showcase-logo-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  padding: 3px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.showcase-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.showcase-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.showcase-school-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #FFFFFF;
+  line-height: 1.15;
+}
+
+.showcase-school-sub {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #94A3B8;
+  margin-top: 0.15rem;
+}
+
+/* Showcase Hero Headline */
+.showcase-hero {
+  margin: 0.5rem 0 0;
+}
+
+.showcase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #E2E8F0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  backdrop-filter: blur(4px);
+}
+
+.showcase-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #FFFFFF;
+  margin: 0 0 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.showcase-motto {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #60A5FA;
+  font-weight: 600;
+  margin: 0;
+}
+
+.showcase-teacher .showcase-motto { color: #6EE7B7; }
+.showcase-student .showcase-motto { color: #FCD34D; }
+.showcase-parent .showcase-motto { color: #C4B5FD; }
+
+/* Feature Highlights Grid */
+.showcase-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.showcase-feat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.showcase-feat-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+}
+
+.feat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.feat-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.feat-text strong {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.feat-text span {
+  font-size: 0.76rem;
+  color: #CBD5E1;
+  margin-top: 0.15rem;
+  line-height: 1.3;
+}
+
+/* Stats Row */
+.showcase-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.74rem;
+  color: #E2E8F0;
+}
+
+.stat-pill i {
+  color: #FBBF24;
+}
+
+.stat-pill strong {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* Showcase Bottom Helpline */
+.showcase-footer {
+  font-size: 0.78rem;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.showcase-footer strong {
+  color: #F1F5F9;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: Login Form Panel
+   ========================================================================== */
+.login-form-panel {
+  background: #FFFFFF;
+  padding: 2.75rem 2.5rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.login-form-header {
+  margin-bottom: 1.5rem;
+}
+
+/* Distinct Portal Badges */
+.portal-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.badge-mgmt {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.badge-teacher {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+.badge-student {
+  background: #FFFBEB;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.badge-parent {
+  background: #F5F3FF;
+  color: #6D28D9;
+  border: 1px solid #DDD6FE;
+}
+
+.login-form-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #0F172A;
+  margin: 0 0 0.35rem;
+  line-height: 1.2;
+}
+
+.login-form-subtitle {
+  font-size: 0.84rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Form Layout */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.login-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 0.95rem;
+  color: #94A3B8;
+  font-size: 0.95rem;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.82rem 0.95rem 0.82rem 2.65rem;
+  border-radius: 12px;
+  border: 1.5px solid #CBD5E1;
+  background: #F8FAFC;
+  font-size: 0.92rem;
+  color: #0F172A;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  background: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.login-theme-teacher .login-input:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+
+.login-theme-student .login-input:focus {
+  border-color: #D97706;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
+
+.login-theme-parent .login-input:focus {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.login-input:focus + .login-input-icon,
+.login-input-wrap:focus-within .login-input-icon {
+  color: #2563EB;
+}
+
+.login-theme-teacher .login-input-wrap:focus-within .login-input-icon { color: #059669; }
+.login-theme-student .login-input-wrap:focus-within .login-input-icon { color: #D97706; }
+.login-theme-parent .login-input-wrap:focus-within .login-input-icon { color: #7C3AED; }
+
+.login-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 0.45rem;
+  font-size: 0.95rem;
+  transition: color 0.18s ease;
+}
+
+.login-password-toggle:hover {
+  color: #1E293B;
+}
+
+.login-select {
+  width: 100%;
+  padding: 0.82rem 0.95rem 0.82rem 2.65rem;
+  border-radius: 12px;
+  border: 1.5px solid #CBD5E1;
+  background: #F8FAFC;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0F172A;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.login-select:focus {
+  background: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.login-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-top: -0.2rem;
+}
+
+.login-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.login-remember input {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #2563EB;
+}
+
+.login-forgot-link {
+  color: #2563EB;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.18s ease;
+}
+
+.login-forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* Big Action Button */
+.btn-login-submit {
+  width: 100%;
+  padding: 0.9rem 1.35rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.35);
+  transition: all 0.22s ease;
+  margin-top: 0.25rem;
+}
+
+.btn-login-submit:hover {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(29, 78, 216, 0.45);
+}
+
+.login-theme-teacher .btn-login-submit {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+}
+
+.login-theme-teacher .btn-login-submit:hover {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  box-shadow: 0 8px 22px rgba(5, 150, 105, 0.45);
+}
+
+.login-theme-student .btn-login-submit {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+}
+
+.login-theme-student .btn-login-submit:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  box-shadow: 0 8px 22px rgba(217, 119, 6, 0.45);
+}
+
+.login-theme-parent .btn-login-submit {
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+}
+
+.login-theme-parent .btn-login-submit:hover {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  box-shadow: 0 8px 22px rgba(124, 58, 237, 0.45);
+}
+
+/* Quick Cross-Portal Switcher */
+.login-portal-switch {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.switch-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748B;
+  margin-bottom: 0.45rem;
+}
+
+.switch-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.switch-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  color: #334155;
+  transition: all 0.18s ease;
+}
+
+.switch-chip:hover {
+  background: #0F172A;
+  color: #FFFFFF;
+  border-color: #0F172A;
+  transform: translateY(-1px);
+}
+
+.switch-chip.active {
+  background: #EFF6FF;
+  border-color: #3B82F6;
+  color: #1D4ED8;
+  pointer-events: none;
+}
+
+/* Bottom Footer */
+.login-card-footer {
+  margin-top: 1.25rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+.login-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #1E293B;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.login-back-link:hover {
+  color: #2563EB;
+}
+
+.login-security-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #10B981;
+  font-weight: 700;
+  font-size: 0.74rem;
+}
+
+/* Toast Message */
+.login-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0F172A;
+  color: #FFFFFF;
+  padding: 0.75rem 1.4rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  z-index: 100000;
+  animation: toastFadeIn 0.25s ease forwards;
+}
+
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: translate(-50%, 15px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 960px) {
+  .portal-login-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    max-width: 520px;
+    margin: auto;
+  }
+
+  .login-showcase-panel {
+    padding: 2rem 1.75rem;
+    min-height: 240px;
+  }
+
+  .showcase-features,
+  .showcase-stats-bar,
+  .showcase-footer {
+    display: none;
+  }
+
+  .login-form-panel {
+    padding: 2rem 1.75rem 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .portal-login-overlay {
+    padding: 0.75rem;
+  }
+
+  .portal-login-card {
+    border-radius: 18px;
+  }
+
+  .login-form-panel {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .showcase-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* ==========================================================================
+   Universal Sidebar User Profile Card & Fast Logout
+   Matches Management, Teacher, Student, and Parent Portals
+   ========================================================================== */
+.sidebar-user-card {
+  padding: 0.85rem 1.15rem;
+  border-top: 1px solid var(--color-border, #E2E8F0);
+  background: var(--color-surface, #FFFFFF);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 5;
+}
+
+.user-avatar-mini {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-primary, #1D4ED8);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.user-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  display: block;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--color-text-dark, #0F172A);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.user-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary, #1D4ED8);
+  line-height: 1.25;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-logout {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.25);
+  transform: translateX(2px);
+}
+
+/* Fast Header Signout Button */
+.btn-header-signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #DC2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.btn-header-signout:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+/* ==========================================================================
+   Universal Portal "My Profile" Styles (Teacher, Student, Parent)
+   ========================================================================== */
+/* ==========================================================================
+   MY PROFILE & DASHBOARD PERSONALIZATION (PIXEL-PERFECT ALIGNMENT)
+   ========================================================================== */
+
+.profile-view-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0.5rem 0 2.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 1. Hero Header Banner */
+.profile-hero-banner {
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+}
+
+.profile-hero-avatar {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  border: 3.5px solid rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.profile-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.profile-hero-info h2 {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin: 0;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.profile-hero-info p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.6rem;
+  align-items: center;
+}
+
+.profile-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #FFFFFF;
+  backdrop-filter: blur(4px);
+}
+
+/* 2. Institutional Policy Callout */
+.profile-policy-callout {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-left: 5px solid #2563EB;
+  border-radius: 12px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+.profile-policy-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  background: #DBEAFE;
+  color: #1D4ED8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.profile-policy-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.profile-policy-text h4 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1E3A8A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.profile-policy-text p {
+  font-size: 0.86rem;
+  color: #1E40AF;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.profile-policy-text code {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1D4ED8;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+
+/* 3. Two-Column Grid */
+.profile-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.profile-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1.5px solid #E2E8F0;
+}
+
+.profile-card-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.profile-card-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.profile-card-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.profile-card-subtitle {
+  font-size: 0.84rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* 4. Form Fields & Alignment */
+.profile-card form,
+.profile-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.profile-input,
+.profile-textarea,
+.profile-select {
+  width: 100%;
+  padding: 0.75rem 0.95rem;
+  border-radius: 10px;
+  border: 1.5px solid #CBD5E1;
+  background: #F8FAFC;
+  font-size: 0.9rem;
+  color: #0F172A;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.profile-input:focus,
+.profile-textarea:focus,
+.profile-select:focus {
+  background: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.profile-textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.profile-help {
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+
+.profile-input-locked {
+  background: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+  color: #475569 !important;
+  cursor: not-allowed !important;
+  user-select: none;
+  font-weight: 600;
+}
+
+.locked-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #DC2626;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-save-profile {
+  padding: 0.8rem 1.6rem;
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+.btn-save-profile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(29, 78, 216, 0.4);
+}
+
+.btn-save-teacher {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.btn-save-teacher:hover {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+.btn-save-student {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.btn-save-student:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+}
+
+.btn-save-parent {
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.btn-save-parent:hover {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+}
+
+@media (max-width: 960px) {
+  .profile-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-row-2 {
+    grid-template-columns: 1fr;
+  }
+  .profile-hero-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .profile-hero-info p {
+    justify-content: center;
+  }
+  .profile-badge-row {
+    justify-content: center;
+  }
+}
+
+

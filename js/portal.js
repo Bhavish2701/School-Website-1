@@ -24,55 +24,55 @@ const portalApp = (function () {
     },
     pendingApprovalsCount: 4,
     students: [
-      { admNo: 'SV-2024-082', name: 'G. Sai Teja', class: 'X', section: 'A', rollNo: '1042', parent: 'G. Venkata Rao', phone: '9848123456', attendance: '96.4%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'O+', dob: '14 May 2011', address: 'Plot 42, Sriharipuram, Visakhapatnam' },
-      { admNo: 'SV-2024-091', name: 'P. Hema Latha', class: 'X', section: 'A', rollNo: '1043', parent: 'P. Appala Naidu', phone: '9848234567', attendance: '98.2%', feeStatus: 'Paid', gpa: '10.0', bloodGroup: 'A+', dob: '08 Jan 2011', address: 'Door 12-4, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-2024-115', name: 'K. Rakesh Kumar', class: 'X', section: 'B', rollNo: '1088', parent: 'K. Someswara Rao', phone: '9848345678', attendance: '92.0%', feeStatus: 'Partial', gpa: '9.2', bloodGroup: 'B+', dob: '22 Aug 2011', address: 'Flat 201, Kurmannapalem, Visakhapatnam' },
-      { admNo: 'SV-2023-204', name: 'M. Sravanthi', class: 'IX', section: 'A', rollNo: '912', parent: 'M. Narayana Murthy', phone: '9848456789', attendance: '95.1%', feeStatus: 'Paid', gpa: '9.6', bloodGroup: 'AB+', dob: '17 Mar 2012', address: 'Sector 5, Steel Plant Township, Visakhapatnam' },
-      { admNo: 'SV-2023-228', name: 'B. Tarun Reddy', class: 'IX', section: 'B', rollNo: '955', parent: 'B. Krishna Reddy', phone: '9848567890', attendance: '88.5%', feeStatus: 'Pending', gpa: '8.4', bloodGroup: 'O-', dob: '05 Dec 2012', address: 'Near Rythu Bazar, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-2022-310', name: 'V. Divya Bharathi', class: 'VIII', section: 'A', rollNo: '804', parent: 'V. Satish Kumar', phone: '9848678901', attendance: '97.0%', feeStatus: 'Paid', gpa: '9.5', bloodGroup: 'A-', dob: '11 Jul 2013', address: 'Main Road, Pedagantyada, Visakhapatnam' },
-      { admNo: 'SV-2022-345', name: 'CH. Karthik', class: 'VIII', section: 'B', rollNo: '842', parent: 'CH. Rambabu', phone: '9848789012', attendance: '91.8%', feeStatus: 'Partial', gpa: '8.9', bloodGroup: 'B+', dob: '29 Nov 2013', address: 'Old Post Office St, Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-2021-412', name: 'S. Bhavana', class: 'VII', section: 'A', rollNo: '715', parent: 'S. Prasad', phone: '9848890123', attendance: '96.8%', feeStatus: 'Paid', gpa: '9.7', bloodGroup: 'O+', dob: '03 Feb 2014', address: 'Teachers Colony, Visakhapatnam' },
-      { admNo: 'SV-2020-501', name: 'Y. Manjunath', class: 'VI', section: 'A', rollNo: '601', parent: 'Y. Mohan Rao', phone: '9848901234', attendance: '93.4%', feeStatus: 'Paid', gpa: '9.1', bloodGroup: 'A+', dob: '19 Sep 2014', address: 'BHPV Quarters, Visakhapatnam' },
-      { admNo: 'SV-2019-612', name: 'D. Keerthi', class: 'V', section: 'A', rollNo: '512', parent: 'D. Suresh', phone: '9848012345', attendance: '94.2%', feeStatus: 'Paid', gpa: '9.4', bloodGroup: 'B-', dob: '24 Apr 2015', address: 'BC Road, New Gajuwaka, Visakhapatnam' },
-      { admNo: 'SV-2018-709', name: 'A. Nikhilesh', class: 'IV', section: 'B', rollNo: '419', parent: 'A. Jagannadham', phone: '9848123789', attendance: '90.5%', feeStatus: 'Pending', gpa: '8.8', bloodGroup: 'AB+', dob: '15 Oct 2015', address: 'Kanithi Road, Visakhapatnam' },
-      { admNo: 'SV-2017-814', name: 'T. Siri Varshini', class: 'III', section: 'A', rollNo: '304', parent: 'T. Srinivasa Rao', phone: '9848234890', attendance: '98.5%', feeStatus: 'Paid', gpa: '9.9', bloodGroup: 'O+', dob: '30 Dec 2016', address: 'Sriharipuram Phase 2, Visakhapatnam' },
-      { admNo: 'SV-2017-902', name: 'N. Likhit Sai', class: 'II', section: 'A', rollNo: '208', parent: 'N. Prasad Babu', phone: '9848345901', attendance: '95.0%', feeStatus: 'Paid', gpa: '9.3', bloodGroup: 'A+', dob: '18 May 2017', address: 'Duvvada Station Road, Visakhapatnam' },
-      { admNo: 'SV-2025-018', name: 'K. Tanvi Sree', class: 'I', section: 'A', rollNo: '105', parent: 'K. Ramana', phone: '9848456012', attendance: '97.2%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'B+', dob: '07 Feb 2018', address: 'Scindia Colony, Visakhapatnam' },
-      { admNo: 'SV-2025-045', name: 'R. Aarav Kumar', class: 'PP', section: 'A', rollNo: '042', parent: 'R. Anand', phone: '9848567123', attendance: '92.5%', feeStatus: 'Paid', gpa: '9.0', bloodGroup: 'O+', dob: '12 Nov 2019', address: 'Mindi Village, Gajuwaka, Visakhapatnam' }
+      { admNo: 'SV-0001', name: 'G. Sai Teja', class: 'X', section: 'A', rollNo: '1001', parent: 'G. Venkata Rao', phone: '9848123456', attendance: '96.4%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'O+', dob: '14 May 2011', address: 'Plot 42, Sriharipuram, Visakhapatnam' },
+      { admNo: 'SV-0002', name: 'P. Hema Latha', class: 'X', section: 'A', rollNo: '1002', parent: 'P. Appala Naidu', phone: '9848234567', attendance: '98.2%', feeStatus: 'Paid', gpa: '10.0', bloodGroup: 'A+', dob: '08 Jan 2011', address: 'Door 12-4, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-0003', name: 'K. Rakesh Kumar', class: 'X', section: 'A', rollNo: '1003', parent: 'K. Someswara Rao', phone: '9848345678', attendance: '92.0%', feeStatus: 'Partial', gpa: '9.2', bloodGroup: 'B+', dob: '22 Aug 2011', address: 'Flat 201, Kurmannapalem, Visakhapatnam' },
+      { admNo: 'SV-0004', name: 'M. Sravanthi', class: 'IX', section: 'A', rollNo: '901', parent: 'M. Narayana Murthy', phone: '9848456789', attendance: '95.1%', feeStatus: 'Paid', gpa: '9.6', bloodGroup: 'AB+', dob: '17 Mar 2012', address: 'Sector 5, Steel Plant Township, Visakhapatnam' },
+      { admNo: 'SV-0005', name: 'B. Tarun Reddy', class: 'IX', section: 'A', rollNo: '902', parent: 'B. Krishna Reddy', phone: '9848567890', attendance: '88.5%', feeStatus: 'Pending', gpa: '8.4', bloodGroup: 'O-', dob: '05 Dec 2012', address: 'Near Rythu Bazar, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-0006', name: 'V. Divya Bharathi', class: 'VIII', section: 'A', rollNo: '801', parent: 'V. Satish Kumar', phone: '9848678901', attendance: '97.0%', feeStatus: 'Paid', gpa: '9.5', bloodGroup: 'A-', dob: '11 Jul 2013', address: 'Main Road, Pedagantyada, Visakhapatnam' },
+      { admNo: 'SV-0007', name: 'CH. Karthik', class: 'VIII', section: 'A', rollNo: '802', parent: 'CH. Rambabu', phone: '9848789012', attendance: '91.8%', feeStatus: 'Partial', gpa: '8.9', bloodGroup: 'B+', dob: '29 Nov 2013', address: 'Old Post Office St, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-0008', name: 'S. Bhavana', class: 'VII', section: 'A', rollNo: '701', parent: 'S. Prasad', phone: '9848890123', attendance: '96.8%', feeStatus: 'Paid', gpa: '9.7', bloodGroup: 'O+', dob: '03 Feb 2014', address: 'Teachers Colony, Visakhapatnam' },
+      { admNo: 'SV-0009', name: 'Y. Manjunath', class: 'VI', section: 'A', rollNo: '601', parent: 'Y. Mohan Rao', phone: '9848901234', attendance: '93.4%', feeStatus: 'Paid', gpa: '9.1', bloodGroup: 'A+', dob: '19 Sep 2014', address: 'BHPV Quarters, Visakhapatnam' },
+      { admNo: 'SV-0010', name: 'D. Keerthi', class: 'V', section: 'A', rollNo: '501', parent: 'D. Suresh', phone: '9848012345', attendance: '94.2%', feeStatus: 'Paid', gpa: '9.4', bloodGroup: 'B-', dob: '24 Apr 2015', address: 'BC Road, New Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-0011', name: 'A. Nikhilesh', class: 'IV', section: 'A', rollNo: '401', parent: 'A. Jagannadham', phone: '9848123789', attendance: '90.5%', feeStatus: 'Pending', gpa: '8.8', bloodGroup: 'AB+', dob: '15 Oct 2015', address: 'Kanithi Road, Visakhapatnam' },
+      { admNo: 'SV-0012', name: 'T. Siri Varshini', class: 'III', section: 'A', rollNo: '301', parent: 'T. Srinivasa Rao', phone: '9848234890', attendance: '98.5%', feeStatus: 'Paid', gpa: '9.9', bloodGroup: 'O+', dob: '30 Dec 2016', address: 'Sriharipuram Phase 2, Visakhapatnam' },
+      { admNo: 'SV-0013', name: 'N. Likhit Sai', class: 'II', section: 'A', rollNo: '201', parent: 'N. Prasad Babu', phone: '9848345901', attendance: '95.0%', feeStatus: 'Paid', gpa: '9.3', bloodGroup: 'A+', dob: '18 May 2017', address: 'Duvvada Station Road, Visakhapatnam' },
+      { admNo: 'SV-0014', name: 'K. Tanvi Sree', class: 'I', section: 'A', rollNo: '101', parent: 'K. Ramana', phone: '9848456012', attendance: '97.2%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'B+', dob: '07 Feb 2018', address: 'Scindia Colony, Visakhapatnam' },
+      { admNo: 'SV-0015', name: 'R. Aarav Kumar', class: 'PP', section: 'A', rollNo: '001', parent: 'R. Anand', phone: '9848567123', attendance: '92.5%', feeStatus: 'Paid', gpa: '9.0', bloodGroup: 'O+', dob: '12 Nov 2019', address: 'Mindi Village, Gajuwaka, Visakhapatnam' }
     ],
     admissions: [
-      { appId: 'ADM-2026-081', name: 'K. Sai Tharun', class: 'VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', phone: '9848011223', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review' },
-      { appId: 'ADM-2026-082', name: 'B. Vennela', class: 'VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', phone: '9848022334', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due' },
-      { appId: 'ADM-2026-083', name: 'M. Dinesh Kumar', class: 'IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', phone: '9848033445', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review' },
-      { appId: 'ADM-2026-084', name: 'CH. Charitha', class: 'I', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', phone: '9848044556', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment' },
-      { appId: 'ADM-2026-085', name: 'V. Aditya', class: 'IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', phone: '9848055667', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview' },
-      { appId: 'ADM-2026-086', name: 'S. Harini', class: 'PP', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', phone: '9848066778', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment' }
+      { appId: 'ADM-2026-001', name: 'K. Sai Tharun', class: 'VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', phone: '9848011223', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review' },
+      { appId: 'ADM-2026-002', name: 'B. Vennela', class: 'VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', phone: '9848022334', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due' },
+      { appId: 'ADM-2026-003', name: 'M. Dinesh Kumar', class: 'IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', phone: '9848033445', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review' },
+      { appId: 'ADM-2026-004', name: 'CH. Charitha', class: 'I', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', phone: '9848044556', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment' },
+      { appId: 'ADM-2026-005', name: 'V. Aditya', class: 'IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', phone: '9848055667', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview' },
+      { appId: 'ADM-2026-006', name: 'S. Harini', class: 'PP', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', phone: '9848066778', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment' }
     ],
     transfers: [
-      { tcNo: 'TC-2026-019', name: 'P. Kiran Kumar', admNo: 'SV-2021-382', class: 'Class VIII-B', reason: 'Parent Job Transfer (To Hyderabad)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Issued', date: '18 Sep 2026' },
-      { tcNo: 'TC-2026-020', name: 'R. Divya', admNo: 'SV-2023-519', class: 'Class V-A', reason: 'Relocation to Vijayawada', dues: 'Cleared (No Dues)', conduct: 'Very Good', status: 'Pending Principal Sign', date: '19 Sep 2026' },
-      { tcNo: 'TC-2026-021', name: 'G. Harsha Vardhan', admNo: 'SV-2022-214', class: 'Class IX-A', reason: 'Enrolment in Sports Academy', dues: 'Library Book Pending', conduct: 'Good', status: 'On Hold (Library Due)', date: '17 Sep 2026' },
-      { tcNo: 'TC-2026-022', name: 'A. Deepthi', admNo: 'SV-2020-109', class: 'Class X-B', reason: 'Course Completion (Class X)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Ready for Dispatch', date: '19 Sep 2026' }
+      { tcNo: 'TC-2026-001', name: 'P. Kiran Kumar', admNo: 'SV-0082', class: 'Class VIII-A', reason: 'Parent Job Transfer (To Hyderabad)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Issued', date: '18 Sep 2026' },
+      { tcNo: 'TC-2026-002', name: 'R. Divya', admNo: 'SV-0119', class: 'Class V-A', reason: 'Relocation to Vijayawada', dues: 'Cleared (No Dues)', conduct: 'Very Good', status: 'Pending Principal Sign', date: '19 Sep 2026' },
+      { tcNo: 'TC-2026-003', name: 'G. Harsha Vardhan', admNo: 'SV-0214', class: 'Class IX-A', reason: 'Enrolment in Sports Academy', dues: 'Library Book Pending', conduct: 'Good', status: 'On Hold (Library Due)', date: '17 Sep 2026' },
+      { tcNo: 'TC-2026-004', name: 'A. Deepthi', admNo: 'SV-0309', class: 'Class X-A', reason: 'Course Completion (Class X)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Ready for Dispatch', date: '19 Sep 2026' }
     ],
     classGpaList: [
-      { class: 'Class X', gpa: 9.67, pct: 96.7 },
-      { class: 'Class IX', gpa: 9.00, pct: 90.0 },
-      { class: 'Class VIII', gpa: 9.20, pct: 92.0 },
-      { class: 'Class VII', gpa: 9.15, pct: 91.5 },
-      { class: 'Class VI', gpa: 8.85, pct: 88.5 },
-      { class: 'Class V', gpa: 9.40, pct: 94.0 },
-      { class: 'Class IV', gpa: 8.90, pct: 89.0 },
-      { class: 'Class III', gpa: 9.50, pct: 95.0 },
-      { class: 'Class II', gpa: 9.30, pct: 93.0 },
-      { class: 'Class I', gpa: 9.80, pct: 98.0 }
+      { class: 'Class X-A', gpa: 9.67, pct: 96.7 },
+      { class: 'Class IX-A', gpa: 9.00, pct: 90.0 },
+      { class: 'Class VIII-A', gpa: 9.20, pct: 92.0 },
+      { class: 'Class VII-A', gpa: 9.15, pct: 91.5 },
+      { class: 'Class VI-A', gpa: 8.85, pct: 88.5 },
+      { class: 'Class V-A', gpa: 9.40, pct: 94.0 },
+      { class: 'Class IV-A', gpa: 8.90, pct: 89.0 },
+      { class: 'Class III-A', gpa: 9.50, pct: 95.0 },
+      { class: 'Class II-A', gpa: 9.30, pct: 93.0 },
+      { class: 'Class I-A', gpa: 9.80, pct: 98.0 }
     ],
     topAchievers: [
-      { rank: 1, name: 'P. Hema Latha', class: 'Class X-A', rollNo: '#1043', gpa: '10.0 / 10.0', distinction: 'Distinction (Maths & Sci 100%)', parent: 'P. Appala Naidu', medal: 'gold' },
-      { rank: 2, name: 'T. Siri Varshini', class: 'Class III-A', rollNo: '#304', gpa: '9.9 / 10.0', distinction: 'Primary Wing 1st Ranker', parent: 'T. Srinivasa Rao', medal: 'silver' },
-      { rank: 3, name: 'G. Sai Teja', class: 'Class X-A', rollNo: '#1042', gpa: '9.8 / 10.0', distinction: 'State Olympiad Silver', parent: 'G. Venkata Rao', medal: 'bronze' },
-      { rank: 4, name: 'K. Tanvi Sree', class: 'Class I-A', rollNo: '#105', gpa: '9.8 / 10.0', distinction: 'Class I Topper (All A1)', parent: 'K. Ramana', medal: 'badge' },
-      { rank: 5, name: 'S. Bhavana', class: 'Class VII-A', rollNo: '#715', gpa: '9.7 / 10.0', distinction: 'Best in English & Science', parent: 'S. Prasad', medal: 'badge' },
-      { rank: 6, name: 'M. Sravanthi', class: 'Class IX-A', rollNo: '#912', gpa: '9.6 / 10.0', distinction: 'Class IX Topper', parent: 'M. Narayana Murthy', medal: 'badge' }
+      { rank: 1, name: 'P. Hema Latha', class: 'Class X-A', rollNo: '#1002', gpa: '10.0 / 10.0', distinction: 'Distinction (Maths & Sci 100%)', parent: 'P. Appala Naidu', medal: 'gold' },
+      { rank: 2, name: 'T. Siri Varshini', class: 'Class III-A', rollNo: '#301', gpa: '9.9 / 10.0', distinction: 'Primary Wing 1st Ranker', parent: 'T. Srinivasa Rao', medal: 'silver' },
+      { rank: 3, name: 'G. Sai Teja', class: 'Class X-A', rollNo: '#1001', gpa: '9.8 / 10.0', distinction: 'State Olympiad Silver', parent: 'G. Venkata Rao', medal: 'bronze' },
+      { rank: 4, name: 'K. Tanvi Sree', class: 'Class I-A', rollNo: '#101', gpa: '9.8 / 10.0', distinction: 'Class I Topper (All A1)', parent: 'K. Ramana', medal: 'badge' },
+      { rank: 5, name: 'S. Bhavana', class: 'Class VII-A', rollNo: '#701', gpa: '9.7 / 10.0', distinction: 'Best in English & Science', parent: 'S. Prasad', medal: 'badge' },
+      { rank: 6, name: 'M. Sravanthi', class: 'Class IX-A', rollNo: '#901', gpa: '9.6 / 10.0', distinction: 'Class IX Topper', parent: 'M. Narayana Murthy', medal: 'badge' }
     ],
     faculty: [
       { name: 'Smt. Gorle Varalakshmi', role: 'Principal & Academic Director', qualification: 'M.Sc, M.Ed, M.Phil', exp: '22 Years', subject: 'Administration & Mathematics', status: 'Active', phone: '8106636230', email: 'srividyaschools2017@gmail.com' },
@@ -92,22 +92,24 @@ const portalApp = (function () {
       { receiptNo: 'RCPT-2026-4891', student: 'P. Hema Latha', class: 'Class X-A', term: 'Term 2 Tuition', amount: '₹14,500', mode: 'UPI (PhonePe)', date: 'Today, 11:20 AM', cashier: 'S. Ramu' },
       { receiptNo: 'RCPT-2026-4890', student: 'M. Sravanthi', class: 'Class IX-A', term: 'Term 2 + Computer Fee', amount: '₹16,000', mode: 'Net Banking', date: 'Today, 10:45 AM', cashier: 'S. Ramu' },
       { receiptNo: 'RCPT-2026-4889', student: 'K. Tanvi Sree', class: 'Class I-A', term: 'Term 2 Tuition', amount: '₹11,000', mode: 'Cash', date: 'Today, 09:50 AM', cashier: 'B. Krishna' },
-      { receiptNo: 'RCPT-2026-4888', student: 'CH. Karthik', class: 'Class VIII-B', term: 'Term 1 Balance Due', amount: '₹6,500', mode: 'UPI (GooglePay)', date: 'Yesterday, 04:15 PM', cashier: 'S. Ramu' },
+      { receiptNo: 'RCPT-2026-4888', student: 'CH. Karthik', class: 'Class VIII-A', term: 'Term 1 Balance Due', amount: '₹6,500', mode: 'UPI (GooglePay)', date: 'Yesterday, 04:15 PM', cashier: 'S. Ramu' },
       { receiptNo: 'RCPT-2026-4887', student: 'V. Divya Bharathi', class: 'Class VIII-A', term: 'Term 2 Tuition', amount: '₹13,500', mode: 'Cheque (#881023)', date: 'Yesterday, 02:30 PM', cashier: 'B. Krishna' },
       { receiptNo: 'RCPT-2026-4886', student: 'Y. Manjunath', class: 'Class VI-A', term: 'Annual Transport Fee', amount: '₹8,000', mode: 'UPI (Paytm)', date: 'Sept 17, 11:10 AM', cashier: 'S. Ramu' },
       { receiptNo: 'RCPT-2026-4885', student: 'T. Siri Varshini', class: 'Class III-A', term: 'Term 2 Tuition', amount: '₹12,000', mode: 'Cash', date: 'Sept 17, 10:00 AM', cashier: 'B. Krishna' }
     ],
+    // Total Students across all classes = exactly 855 members (Section A only)
     classAttendance: [
-      { class: 'Class X-A', total: 42, present: 41, absent: 1, leave: 0, pct: '97.6%', teacher: 'Smt. M. Sunitha', status: 'Submitted' },
-      { class: 'Class X-B', total: 40, present: 39, absent: 1, leave: 0, pct: '97.5%', teacher: 'Sri P. Satyanarayana', status: 'Submitted' },
-      { class: 'Class IX-A', total: 44, present: 42, absent: 2, leave: 0, pct: '95.4%', teacher: 'Sri K. Rajesh', status: 'Submitted' },
-      { class: 'Class IX-B', total: 45, present: 43, absent: 1, leave: 1, pct: '95.5%', teacher: 'Smt. S. Lakshmi', status: 'Submitted' },
-      { class: 'Class VIII-A', total: 46, present: 44, absent: 2, leave: 0, pct: '95.6%', teacher: 'Sri R. Venkata Ramana', status: 'Submitted' },
-      { class: 'Class VIII-B', total: 45, present: 43, absent: 1, leave: 1, pct: '95.5%', teacher: 'Sri D. Srinivas', status: 'Submitted' },
-      { class: 'Class VII (A & B)', total: 88, present: 84, absent: 3, leave: 1, pct: '95.4%', teacher: 'Smt. G. Sarada', status: 'Submitted' },
-      { class: 'Class VI (A & B)', total: 92, present: 88, absent: 4, leave: 0, pct: '95.6%', teacher: 'Smt. B. Meenakshi', status: 'Submitted' },
-      { class: 'Classes I - V (Primary)', total: 1120, present: 1060, absent: 52, leave: 8, pct: '94.6%', teacher: 'Primary Wing Leads', status: 'Submitted' },
-      { class: 'Pre-Primary (PP1 & PP2)', total: 888, present: 818, absent: 67, leave: 3, pct: '92.1%', teacher: 'Early Childhood Dept', status: 'Submitted' }
+      { class: 'Class X-A', total: 78, present: 75, absent: 3, leave: 0, pct: '96.2%', teacher: 'Smt. M. Sunitha', status: 'Submitted' },
+      { class: 'Class IX-A', total: 82, present: 79, absent: 3, leave: 0, pct: '96.3%', teacher: 'Sri K. Rajesh', status: 'Submitted' },
+      { class: 'Class VIII-A', total: 84, present: 81, absent: 3, leave: 0, pct: '96.4%', teacher: 'Sri R. Venkata Ramana', status: 'Submitted' },
+      { class: 'Class VII-A', total: 86, present: 83, absent: 3, leave: 0, pct: '96.5%', teacher: 'Smt. G. Sarada', status: 'Submitted' },
+      { class: 'Class VI-A', total: 88, present: 85, absent: 3, leave: 0, pct: '96.6%', teacher: 'Smt. B. Meenakshi', status: 'Submitted' },
+      { class: 'Class V-A', total: 75, present: 72, absent: 3, leave: 0, pct: '96.0%', teacher: 'Smt. K. Anitha', status: 'Submitted' },
+      { class: 'Class IV-A', total: 72, present: 69, absent: 3, leave: 0, pct: '95.8%', teacher: 'Sri P. Satyanarayana', status: 'Submitted' },
+      { class: 'Class III-A', total: 70, present: 68, absent: 2, leave: 0, pct: '97.1%', teacher: 'Sri D. Srinivas', status: 'Submitted' },
+      { class: 'Class II-A', total: 68, present: 66, absent: 2, leave: 0, pct: '97.1%', teacher: 'Smt. S. Lakshmi', status: 'Submitted' },
+      { class: 'Class I-A', total: 66, present: 64, absent: 2, leave: 0, pct: '97.0%', teacher: 'Sri V. Ramesh Babu', status: 'Submitted' },
+      { class: 'Pre-Primary-A', total: 86, present: 80, absent: 6, leave: 0, pct: '93.0%', teacher: 'Early Childhood Wing', status: 'Submitted' }
     ],
     events: [
       { title: 'Quarterly Examinations 2026', date: 'Sept 24 - Oct 01, 2026', tag: 'Exams', desc: 'Comprehensive assessments for Classes I through X as per State Board guidelines.' },
@@ -117,8 +119,8 @@ const portalApp = (function () {
       { title: 'National Mathematics Day Celebration', date: 'Dec 22, 2026', tag: 'Academic', desc: 'Srinivasa Ramanujan memorial quiz competition, mental math olympiad and puzzles.' }
     ],
     disciplineIncidents: [
-      { id: 'DIS-2026-042', student: 'B. Tarun Reddy', class: 'Class IX-B', category: 'Unauthorized Device / Mobile', severity: 'Moderate', description: 'Used mobile phone during biology practical period without authorization.', action: 'Device retained in VP custody; Parent conference scheduled for Monday 10:00 AM.', status: 'Open', date: 'Today, 11:15 AM' },
-      { id: 'DIS-2026-041', student: 'CH. Karthik', class: 'Class VIII-B', category: 'Late Arrival / Gate Breach', severity: 'Minor', description: 'Arrived after 08:45 AM gate closure for 3rd time this week.', action: 'Morning assembly diary note signed; Warning letter dispatched to parents.', status: 'Open', date: 'Today, 08:52 AM' },
+      { id: 'DIS-2026-042', student: 'B. Tarun Reddy', class: 'Class IX-A', category: 'Unauthorized Device / Mobile', severity: 'Moderate', description: 'Used mobile phone during biology practical period without authorization.', action: 'Device retained in VP custody; Parent conference scheduled for Monday 10:00 AM.', status: 'Open', date: 'Today, 11:15 AM' },
+      { id: 'DIS-2026-041', student: 'CH. Karthik', class: 'Class VIII-A', category: 'Late Arrival / Gate Breach', severity: 'Minor', description: 'Arrived after 08:45 AM gate closure for 3rd time this week.', action: 'Morning assembly diary note signed; Warning letter dispatched to parents.', status: 'Open', date: 'Today, 08:52 AM' },
       { id: 'DIS-2026-040', student: 'P. Hema Latha', class: 'Class X-A', category: 'Exemplary Merit / Good Deed', severity: 'Merit', description: 'Achieved 1st Rank in District Mathematics Olympiad & guided peer group.', action: 'Merit certificate awarded in morning assembly by Vice Principal; +20 points.', status: 'Resolved', date: 'Yesterday' }
     ],
     facultyLeaves: [
@@ -636,23 +638,43 @@ const portalApp = (function () {
     renderVPLeaves(state.facultyLeaves);
   }
 
+  // Helpers for sequential admission numbers & Section A enforcement
+  function sortStudentsByAdmNo(arr) {
+    return [...arr].sort((a, b) => a.admNo.localeCompare(b.admNo, undefined, { numeric: true, sensitivity: 'base' }));
+  }
+
+  function getNextAdmissionNumber() {
+    let maxNum = 0;
+    state.students.forEach(s => {
+      const match = s.admNo.match(/(\d+)/);
+      if (match) {
+        const n = parseInt(match[1], 10);
+        if (n > maxNum) maxNum = n;
+      }
+    });
+    return 'SV-' + String(maxNum + 1).padStart(4, '0');
+  }
+
   function renderStudentsTable(list) {
     const tbody = document.getElementById('studentsTableBody');
     if (!tbody) return;
 
+    // Strict ascending order by Admission Number
+    const sortedList = sortStudentsByAdmNo(list);
+
     // Update Showing counter & Tab Badge to strictly match current rows
     const showingEl = document.getElementById('studentShowingCount');
-    if (showingEl) showingEl.textContent = list.length;
+    if (showingEl) showingEl.textContent = sortedList.length;
 
     const allBadge = document.getElementById('allStudentsCountBadge');
-    if (allBadge) allBadge.textContent = list.length;
+    if (allBadge) allBadge.textContent = sortedList.length;
 
-    if (list.length === 0) {
+    if (sortedList.length === 0) {
       tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);"><i class="fa-solid fa-user-slash" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>No student records matched your search query.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = list.map(student => {
+    tbody.innerHTML = sortedList.map(student => {
       let badgeClass = 'badge-success';
       if (student.feeStatus === 'Pending') badgeClass = 'badge-danger';
       if (student.feeStatus === 'Partial') badgeClass = 'badge-warning';
@@ -739,13 +761,16 @@ const portalApp = (function () {
     const grid = document.getElementById('studentProfilesGrid');
     if (!grid) return;
 
+    // Strict ascending order by Admission Number
+    const sortedList = sortStudentsByAdmNo(list);
+
     const showingCount = document.getElementById('profilesShowingCount');
-    if (showingCount) showingCount.textContent = list.length;
+    if (showingCount) showingCount.textContent = sortedList.length;
 
     const profilesBadge = document.getElementById('studentProfilesCountBadge');
-    if (profilesBadge) profilesBadge.textContent = list.length;
+    if (profilesBadge) profilesBadge.textContent = sortedList.length;
 
-    if (list.length === 0) {
+    if (sortedList.length === 0) {
       grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--color-bg-surface); border-radius: 12px; border: 1px solid var(--color-border); color: var(--color-text-muted);">
         <i class="fa-solid fa-id-card-clip" style="font-size: 2rem; margin-bottom: 0.75rem; display:block;"></i>
         No student dossiers matched your search filters.
@@ -753,7 +778,7 @@ const portalApp = (function () {
       return;
     }
 
-    grid.innerHTML = list.map(student => {
+    grid.innerHTML = sortedList.map(student => {
       let badgeClass = 'badge-success';
       if (student.feeStatus === 'Pending') badgeClass = 'badge-danger';
       if (student.feeStatus === 'Partial') badgeClass = 'badge-warning';
@@ -1254,35 +1279,52 @@ const portalApp = (function () {
   function handleNewStudent(e) {
     e.preventDefault();
     const name = document.getElementById('mStudentName')?.value;
-    const admNo = document.getElementById('mAdmNo')?.value;
-    const cls = document.getElementById('mClass')?.value;
-    const section = document.getElementById('mSection')?.value;
-    const parent = document.getElementById('mParentName')?.value;
-    const phone = document.getElementById('mParentPhone')?.value;
+    let admNo = (document.getElementById('mAdmNo')?.value || '').trim();
+    const cls = document.getElementById('mClass')?.value || 'I';
+    const parent = document.getElementById('mParentName')?.value || 'Guardian';
+    const phone = document.getElementById('mParentPhone')?.value || '9848000000';
+    const feeStatus = document.getElementById('mFeeStatus')?.value || 'Paid';
 
-    if (!name || !admNo) {
+    if (!name) {
       showToast('Please fill all mandatory fields', 'warning');
       return;
+    }
+
+    // Format admission number cleanly if user typed unformatted digits like 1052
+    if (!admNo.toUpperCase().startsWith('SV-')) {
+      const num = admNo.replace(/\D/g, '');
+      if (num) {
+        admNo = 'SV-' + num.padStart(4, '0');
+      } else {
+        admNo = getNextAdmissionNumber();
+      }
+    } else {
+      admNo = admNo.toUpperCase();
     }
 
     const newStudent = {
       admNo: admNo,
       name: name,
       class: cls,
-      section: section,
+      section: 'A', // Every class has only Section A
       rollNo: String(Math.floor(100 + Math.random() * 900)),
       parent: parent,
       phone: phone,
       attendance: '100%',
-      feeStatus: 'Paid',
+      feeStatus: feeStatus,
       gpa: '10.0'
     };
 
-    state.students.unshift(newStudent);
+    state.students.push(newStudent);
+    state.students.sort((a, b) => a.admNo.localeCompare(b.admNo, undefined, { numeric: true, sensitivity: 'base' }));
+
     renderStudentsTable(state.students);
+    renderStudentProfiles(state.students);
+    updateStudentTabBadges();
+
     closeModal('addStudentModal');
     e.target.reset();
-    showToast(`Student ${name} successfully enrolled with Adm No: ${admNo}!`, 'success');
+    showToast(`Student ${name} successfully enrolled with Adm No: ${admNo} (Section A)!`, 'success');
   }
 
   // Universal Search
@@ -1293,7 +1335,7 @@ const portalApp = (function () {
     // Search students
     const matchedStudent = state.students.find(s => 
       s.name.toLowerCase().includes(q) || 
-      s.admNo.toLowerCase().includes(q) ||
+      s.admNo.toLowerCase().includes(q) || 
       s.phone.includes(q)
     );
 
@@ -1350,7 +1392,7 @@ const portalApp = (function () {
 
   // Absentee SMS Simulation
   function triggerAbsenteeSMS() {
-    showToast('Sent daily absence notifications to parents of 132 absent students.', 'success');
+    showToast('Sent daily absence notifications to parents of 33 absent students.', 'success');
   }
 
   // Refresh Dashboard
@@ -1362,6 +1404,16 @@ const portalApp = (function () {
   function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+      if (modalId === 'addStudentModal') {
+        const admInput = document.getElementById('mAdmNo');
+        if (admInput) {
+          admInput.value = getNextAdmissionNumber();
+        }
+        const secInput = document.getElementById('mSection');
+        if (secInput) {
+          secInput.value = 'A';
+        }
+      }
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }

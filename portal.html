@@ -683,68 +683,68 @@
           </div>
 
           <!-- 4 Key Executive Indicators:
-               [Students: 2,450] [Teachers: 145] [Attendance: 94.6%] [Fees: 87%] -->
+               [Students: 855] [Teachers: 45] [Attendance: 96.1%] [Fees: 92%] -->
           <div class="metrics-quad">
             
-            <!-- Metric 1: Students 2,450 -->
+            <!-- Metric 1: Students 855 -->
             <div class="metric-card" onclick="portalApp.navigateTo('students')">
               <div class="metric-icon-wrap icon-blue">
                 <i class="fa-solid fa-user-graduate"></i>
               </div>
               <div class="metric-details">
                 <span class="metric-label">Students</span>
-                <div class="metric-value">2,450</div>
+                <div class="metric-value">855</div>
                 <div class="metric-trend trend-up">
                   <i class="fa-solid fa-arrow-trend-up"></i>
-                  <span>+120 new admissions</span>
+                  <span>855 Total Enrolled (Section A Only)</span>
                 </div>
               </div>
               <div class="metric-progress-wrap">
-                <div class="metric-subtext">Pre-Primary to Class X</div>
+                <div class="metric-subtext">Pre-Primary-A to Class X-A (11 Classes)</div>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill fill-blue" style="width: 96%;"></div>
+                  <div class="progress-bar-fill fill-blue" style="width: 100%;"></div>
                 </div>
               </div>
             </div>
 
-            <!-- Metric 2: Teachers 145 -->
+            <!-- Metric 2: Teachers 45 -->
             <div class="metric-card" onclick="portalApp.navigateTo('teachers')">
               <div class="metric-icon-wrap icon-emerald">
                 <i class="fa-solid fa-chalkboard-user"></i>
               </div>
               <div class="metric-details">
                 <span class="metric-label">Teachers</span>
-                <div class="metric-value">145</div>
+                <div class="metric-value">45</div>
                 <div class="metric-trend trend-steady">
                   <i class="fa-solid fa-check"></i>
-                  <span>142 present today (98%)</span>
+                  <span>44 present today (98%)</span>
                 </div>
               </div>
               <div class="metric-progress-wrap">
-                <div class="metric-subtext">1:17 Student-Teacher Ratio</div>
+                <div class="metric-subtext">1:19 Student-Teacher Ratio</div>
                 <div class="progress-bar-bg">
                   <div class="progress-bar-fill fill-emerald" style="width: 98%;"></div>
                 </div>
               </div>
             </div>
 
-            <!-- Metric 3: Attendance 94.6% -->
+            <!-- Metric 3: Attendance 96.1% -->
             <div class="metric-card" onclick="portalApp.navigateTo('attendance')">
               <div class="metric-icon-wrap icon-indigo">
                 <i class="fa-solid fa-clipboard-check"></i>
               </div>
               <div class="metric-details">
                 <span class="metric-label">Attendance</span>
-                <div class="metric-value">94.6%</div>
+                <div class="metric-value">96.1%</div>
                 <div class="metric-trend trend-up">
                   <i class="fa-solid fa-arrow-trend-up"></i>
-                  <span>+1.2% vs last week</span>
+                  <span>+1.5% vs last week</span>
                 </div>
               </div>
               <div class="metric-progress-wrap">
-                <div class="metric-subtext">2,318 of 2,450 present</div>
+                <div class="metric-subtext">822 of 855 present</div>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill fill-indigo" style="width: 94.6%;"></div>
+                  <div class="progress-bar-fill fill-indigo" style="width: 96.1%;"></div>
                 </div>
               </div>
             </div>
@@ -1187,10 +1187,7 @@
                 <div class="filter-group">
                   <label for="studentSectionFilter"><i class="fa-solid fa-layer-group"></i> Section:</label>
                   <select id="studentSectionFilter" class="filter-select" onchange="portalApp.filterStudents()">
-                    <option value="">All Sections</option>
-                    <option value="A">Section A</option>
-                    <option value="B">Section B</option>
-                    <option value="C">Section C</option>
+                    <option value="A" selected>Section A (Single Section)</option>
                   </select>
                 </div>
                 <div class="filter-group">
@@ -1700,22 +1697,22 @@
           <div class="attendance-summary-grid">
             <div class="summary-card">
               <span class="sc-title">Total Enrolled</span>
-              <span class="sc-value">2,450</span>
-              <span class="sc-sub text-muted">All sections</span>
+              <span class="sc-value">855</span>
+              <span class="sc-sub text-muted">Section A (Only Section)</span>
             </div>
             <div class="summary-card">
               <span class="sc-title">Present Today</span>
-              <span class="sc-value text-emerald">2,318</span>
-              <span class="sc-sub text-emerald">94.6% Turnout</span>
+              <span class="sc-value text-emerald">822</span>
+              <span class="sc-sub text-emerald">96.1% Turnout</span>
             </div>
             <div class="summary-card">
               <span class="sc-title">Absentees</span>
-              <span class="sc-value text-red">132</span>
+              <span class="sc-value text-red">33</span>
               <span class="sc-sub text-red">SMS Dispatched</span>
             </div>
             <div class="summary-card">
               <span class="sc-title">On Approved Leave</span>
-              <span class="sc-value text-amber">14</span>
+              <span class="sc-value text-amber">6</span>
               <span class="sc-sub text-amber">Documented</span>
             </div>
           </div>
@@ -1779,7 +1776,7 @@
             <div class="substitution-roster-grid mt-3">
               <div class="sub-card">
                 <div class="sub-card-title">
-                  <span>Class X-B (Physics)</span>
+                  <span>Class X-A (Physics)</span>
                   <span class="sub-period-badge">Period 2 (09:45 AM)</span>
                 </div>
                 <div class="sub-details">
@@ -1869,34 +1866,34 @@
                 <tbody>
                   <tr>
                     <td><strong>Hall 1 (Rooms 101-102)</strong></td>
-                    <td>Class X-A & X-B</td>
+                    <td>Class X-A</td>
                     <td>Smt. M. Sunitha (English)</td>
                     <td>Sri P. Satyanarayana (Maths)</td>
-                    <td>82 Candidates</td>
+                    <td>78 Candidates</td>
                     <td><span class="portal-badge badge-success">Duty Assigned</span></td>
                   </tr>
                   <tr>
                     <td><strong>Hall 2 (Rooms 103-104)</strong></td>
-                    <td>Class IX-A & IX-B</td>
+                    <td>Class IX-A</td>
                     <td>Sri R. Venkata Ramana (Social)</td>
                     <td>Smt. G. Sarada (Telugu)</td>
-                    <td>89 Candidates</td>
+                    <td>82 Candidates</td>
                     <td><span class="portal-badge badge-success">Duty Assigned</span></td>
                   </tr>
                   <tr>
                     <td><strong>Hall 3 (Rooms 201-202)</strong></td>
-                    <td>Class VIII-A & VIII-B</td>
+                    <td>Class VIII-A</td>
                     <td>Sri D. Srinivas (Computers)</td>
                     <td>Smt. B. Meenakshi (Hindi)</td>
-                    <td>91 Candidates</td>
+                    <td>84 Candidates</td>
                     <td><span class="portal-badge badge-success">Duty Assigned</span></td>
                   </tr>
                   <tr>
                     <td><strong>Hall 4 (Rooms 203-204)</strong></td>
-                    <td>Class VII (A & B)</td>
+                    <td>Class VII-A</td>
                     <td>Sri V. Ramesh Babu (PET)</td>
                     <td>Smt. K. Anitha (Primary)</td>
-                    <td>88 Candidates</td>
+                    <td>86 Candidates</td>
                     <td><span class="portal-badge badge-success">Duty Assigned</span></td>
                   </tr>
                 </tbody>
@@ -2133,11 +2130,12 @@
                 <div class="form-group">
                   <label>Recipient Group:</label>
                   <select class="form-control" id="broadcastRecipients">
-                    <option value="all">All Parents & Guardians (2,450)</option>
-                    <option value="class-x">Class X Parents Only (240)</option>
-                    <option value="high-school">High School Parents (Classes VIII-X)</option>
-                    <option value="primary">Primary Parents (Classes I-V)</option>
-                    <option value="teachers">Teaching Staff (145)</option>
+                    <option value="all">All Parents & Guardians (855)</option>
+                    <option value="class-x">Class X Parents Only (78)</option>
+                    <option value="high-school">High School Parents (Classes VIII-X, 244)</option>
+                    <option value="primary">Primary Parents (Classes I-V, 351)</option>
+                    <option value="pre-primary">Pre-Primary Parents (86)</option>
+                    <option value="teachers">Teaching Staff (45)</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -2163,7 +2161,7 @@
                   <div class="feed-content">
                     <div class="feed-title">Quarterly Examination Timetable Released</div>
                     <p>Dear Parents, Sri Vidya High School Quarterly exams commence Sept 24. Collect hall tickets by Monday.</p>
-                    <div class="feed-meta">Dispatched to 2,450 parents • 99.4% Delivery rate • Sept 18, 04:30 PM</div>
+                    <div class="feed-meta">Dispatched to 855 parents • 99.4% Delivery rate • Sept 18, 04:30 PM</div>
                   </div>
                 </div>
 
@@ -2391,7 +2389,9 @@
     <div class="portal-modal">
       <div class="modal-header">
         <h3><i class="fa-solid fa-user-plus text-primary"></i> New Student Admission</h3>
-        <button class="modal-close" onclick="portalApp.closeModal('addStudentModal')">&times;</button>
+        <button class="modal-close-x" onclick="portalApp.closeModal('addStudentModal')" title="Close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
       <form id="newStudentForm" onsubmit="portalApp.handleNewStudent(event)">
         <div class="modal-body">
@@ -2402,7 +2402,7 @@
             </div>
             <div class="form-group">
               <label>Admission No *</label>
-              <input type="text" class="form-control" id="mAdmNo" required placeholder="e.g. SV-2026-142">
+              <input type="text" class="form-control" id="mAdmNo" required placeholder="e.g. SV-0016">
             </div>
           </div>
           <div class="form-row">
@@ -2425,9 +2425,7 @@
             <div class="form-group">
               <label>Section *</label>
               <select class="form-control" id="mSection" required>
-                <option value="A">Section A</option>
-                <option value="B">Section B</option>
-                <option value="C">Section C</option>
+                <option value="A" selected>Section A (Single Section)</option>
               </select>
             </div>
           </div>
@@ -2445,10 +2443,28 @@
             <label>Residential Address</label>
             <input type="text" class="form-control" id="mAddress" placeholder="Street, Area, Mandal, District">
           </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Admission Fee Status
+                <span style="font-size:0.78rem; font-weight:400; color:var(--color-text-muted); margin-left:4px;">(at time of enrolment)</span>
+              </label>
+              <select class="form-control" id="mFeeStatus">
+                <option value="Paid" selected>&#10003; Paid – Fee Collected in Full</option>
+                <option value="Partial">&#9716; Partial – Partial Fee Paid</option>
+                <option value="Pending">&#9888; Pending – Fee Not Yet Paid</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <div class="fee-note-box">
+                <i class="fa-solid fa-circle-info" style="color:var(--color-accent-blue);"></i>
+                <span>Fee status can be updated later from the Fees &amp; Finance module.</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('addStudentModal')">Cancel</button>
-          <button type="submit" class="btn btn-primary">Complete Enrolment</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-check"></i> Complete Enrolment</button>
         </div>
       </form>
     </div>
@@ -2459,7 +2475,9 @@
     <div class="portal-modal">
       <div class="modal-header">
         <h3><i class="fa-solid fa-id-card text-primary"></i> Student Profile Dossier</h3>
-        <button class="modal-close" onclick="portalApp.closeModal('viewStudentModal')">&times;</button>
+        <button class="modal-close-x" onclick="portalApp.closeModal('viewStudentModal')" title="Close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
       <div class="modal-body" id="viewStudentModalBody">
         <!-- Injected dynamically -->
@@ -2476,7 +2494,9 @@
     <div class="portal-modal">
       <div class="modal-header">
         <h3><i class="fa-solid fa-triangle-exclamation text-amber"></i> Log Student Conduct / Disciplinary Incident</h3>
-        <button class="modal-close" onclick="portalApp.closeModal('logIncidentModal')">&times;</button>
+        <button class="modal-close-x" onclick="portalApp.closeModal('logIncidentModal')" title="Close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
       <form id="disciplineIncidentForm" onsubmit="portalApp.handleLogIncident(event)">
         <div class="modal-body">
@@ -2489,13 +2509,16 @@
               <label>Class & Section *</label>
               <select class="form-control" id="incClass" required>
                 <option value="Class X-A">Class X-A</option>
-                <option value="Class X-B">Class X-B</option>
-                <option value="Class IX-A">Class IX-A</option>
-                <option value="Class IX-B" selected>Class IX-B</option>
+                <option value="Class IX-A" selected>Class IX-A</option>
                 <option value="Class VIII-A">Class VIII-A</option>
-                <option value="Class VIII-B">Class VIII-B</option>
-                <option value="Class VII">Class VII</option>
-                <option value="Class VI">Class VI</option>
+                <option value="Class VII-A">Class VII-A</option>
+                <option value="Class VI-A">Class VI-A</option>
+                <option value="Class V-A">Class V-A</option>
+                <option value="Class IV-A">Class IV-A</option>
+                <option value="Class III-A">Class III-A</option>
+                <option value="Class II-A">Class II-A</option>
+                <option value="Class I-A">Class I-A</option>
+                <option value="Pre-Primary-A">Pre-Primary-A</option>
               </select>
             </div>
           </div>
@@ -2543,7 +2566,9 @@
     <div class="portal-modal">
       <div class="modal-header">
         <h3><i class="fa-solid fa-user-clock text-primary"></i> Assign Emergency Faculty Substitution</h3>
-        <button class="modal-close" onclick="portalApp.closeModal('assignSubstitutionModal')">&times;</button>
+        <button class="modal-close-x" onclick="portalApp.closeModal('assignSubstitutionModal')" title="Close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
       <form id="assignSubstitutionForm" onsubmit="portalApp.handleAssignSubstitution(event)">
         <div class="modal-body">
@@ -2559,9 +2584,9 @@
             <div class="form-group">
               <label>Target Class & Period *</label>
               <select class="form-control" id="subClassPeriod" required>
-                <option value="Class X-B (Period 3 - 10:45 AM)">Class X-B (Period 3 - 10:45 AM)</option>
+                <option value="Class X-A (Period 3 - 10:45 AM)">Class X-A (Period 3 - 10:45 AM)</option>
                 <option value="Class IX-A (Period 4 - 11:30 AM)">Class IX-A (Period 4 - 11:30 AM)</option>
-                <option value="Class VIII-B (Period 7 - 02:40 PM)">Class VIII-B (Period 7 - 02:40 PM)</option>
+                <option value="Class VIII-A (Period 7 - 02:40 PM)">Class VIII-A (Period 7 - 02:40 PM)</option>
               </select>
             </div>
           </div>

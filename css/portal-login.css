@@ -349,7 +349,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.stat-pill {
+.login-showcase .stat-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -361,11 +361,11 @@
   color: #E2E8F0;
 }
 
-.stat-pill i {
+.login-showcase .stat-pill i {
   color: #FBBF24;
 }
 
-.stat-pill strong {
+.login-showcase .stat-pill strong {
   color: #FFFFFF;
   font-weight: 700;
 }

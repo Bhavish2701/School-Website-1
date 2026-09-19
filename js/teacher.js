@@ -612,26 +612,212 @@ const teacherApp = (function () {
     const card = document.querySelector('#view-attendance .card');
     if (!card) return;
 
+    let extraDiv = document.getElementById('attendanceSubExtraView');
+    const tableContainer = card.querySelector('.table-container');
+    const visualStrip = card.querySelector('.attendance-visual-strip');
+
     if (subKey === 'mark') {
+      if (extraDiv) extraDiv.style.display = 'none';
+      if (tableContainer) tableContainer.style.display = 'block';
+      if (visualStrip) visualStrip.style.display = 'flex';
       renderAttendanceMarkingTable();
-      showToast('Switched to Daily Attendance Marking Register', 'info');
+      showToast('Showing Daily Register Table & Live Ratio Chart', 'info');
     } else if (subKey === 'history') {
-      showToast('Monthly register: 24 teaching days recorded with 96% attendance', 'info');
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (visualStrip) visualStrip.style.display = 'none';
+      if (!extraDiv) {
+        extraDiv = document.createElement('div');
+        extraDiv.id = 'attendanceSubExtraView';
+        card.appendChild(extraDiv);
+      }
+      extraDiv.style.display = 'block';
+      extraDiv.innerHTML = `
+        <div class="mt-3">
+          <div class="chart-card mb-3">
+            <div class="chart-title-wrap">
+              <h4><i class="fa-solid fa-chart-column text-primary"></i> Class 8A Weekly Attendance Pacing (September 2026)</h4>
+              <span class="portal-badge badge-success">Target: 95.0% Goal Met</span>
+            </div>
+            <div class="bar-chart-container">
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-regular fa-calendar-check text-emerald"></i> Week 1 (Sept 1 – 5): 5 Teaching Days</span>
+                  <span class="bar-value text-emerald">96.5% Presence (40.5 avg present)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-emerald" style="width: 96.5%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-regular fa-calendar-check text-blue"></i> Week 2 (Sept 8 – 12): 5 Teaching Days</span>
+                  <span class="bar-value text-primary">95.2% Presence (40.0 avg present)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-blue" style="width: 95.2%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-regular fa-calendar-check text-emerald"></i> Week 3 (Sept 15 – 19): 5 Teaching Days</span>
+                  <span class="bar-value text-emerald">97.6% Presence (41.0 avg present)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-emerald" style="width: 97.6%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-regular fa-calendar text-purple"></i> Month Pacing Projection (Full Term)</span>
+                  <span class="bar-value" style="color: #8B5CF6;">96.4% Expected Cumulative</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-purple" style="width: 96.4%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.switchSubTab('attendance', 'mark')">
+            <i class="fa-solid fa-arrow-left"></i> Return to Daily Register
+          </button>
+        </div>
+      `;
+      showToast('Loaded Monthly Attendance Pacing Bar Graph', 'info');
     } else if (subKey === 'report') {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (visualStrip) visualStrip.style.display = 'none';
+      if (!extraDiv) {
+        extraDiv = document.createElement('div');
+        extraDiv.id = 'attendanceSubExtraView';
+        card.appendChild(extraDiv);
+      }
+      extraDiv.style.display = 'block';
       const class8A = state.students.filter(s => s.class === '8A');
       const absentees = class8A.filter(s => s.att === 'A' || s.att === 'L');
+      extraDiv.innerHTML = `
+        <div class="mt-3">
+          <div class="card-header-bar mb-2">
+            <h4><i class="fa-solid fa-user-xmark text-danger"></i> Today's Absentee & Late Arrivals Log</h4>
+            <span class="portal-badge badge-danger">${absentees.length} Students Requiring Attention</span>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="text-center">Roll #</th>
+                  <th>Student Name</th>
+                  <th class="text-center">Status</th>
+                  <th>Parent Contact</th>
+                  <th>Reason / Note</th>
+                  <th class="text-center">Follow-up Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${absentees.map(s => `
+                  <tr>
+                    <td class="text-center"><strong>#${s.roll}</strong></td>
+                    <td><strong>${s.name}</strong></td>
+                    <td class="text-center"><span class="portal-badge ${s.att === 'L' ? 'badge-warning' : 'badge-danger'}">${s.att === 'L' ? 'Late Arrival' : 'Absent'}</span></td>
+                    <td><a href="tel:${s.phone}">${s.phone}</a></td>
+                    <td><span class="text-muted text-sm">${s.remarks}</span></td>
+                    <td class="text-center"><button type="button" class="btn btn-primary btn-sm" onclick="teacherApp.showToast('Automated attendance SMS dispatched to ${s.name} parent (${s.phone})', 'success')"><i class="fa-solid fa-paper-plane"></i> Send SMS</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm mt-3" onclick="teacherApp.switchSubTab('attendance', 'mark')">
+            <i class="fa-solid fa-arrow-left"></i> Return to Daily Register
+          </button>
+        </div>
+      `;
       showToast(`Showing Absentee Summary (${absentees.length} records)`, 'warning');
     }
   }
 
   function renderExaminationsSubTab(subKey) {
+    const card = document.querySelector('#view-examinations .card');
+    if (!card) return;
+
+    let extraDiv = document.getElementById('examSubExtraView');
+    const tableContainer = card.querySelector('.table-container');
+
     if (subKey === 'enter-marks') {
+      if (extraDiv) extraDiv.style.display = 'none';
+      if (tableContainer) tableContainer.style.display = 'block';
       renderMarksEntryTable();
       showToast('Loaded Marks Entry Grid', 'info');
+    } else if (subKey === 'grade' || subKey === 'results') {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (!extraDiv) {
+        extraDiv = document.createElement('div');
+        extraDiv.id = 'examSubExtraView';
+        card.appendChild(extraDiv);
+      }
+      extraDiv.style.display = 'block';
+      extraDiv.innerHTML = `
+        <div class="mt-3">
+          <div class="chart-card mb-3">
+            <div class="chart-title-wrap">
+              <h4><i class="fa-solid fa-chart-column text-primary"></i> Class 8A CBSE / State Grade Distribution Bar Graph</h4>
+              <span class="portal-badge badge-success">42 Students Evaluated</span>
+            </div>
+            <div class="bar-chart-container">
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-solid fa-medal text-emerald"></i> Grade A1 (91% – 100%): 45 to 50 Marks</span>
+                  <span class="bar-value text-emerald">18 Students (42.9%)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-emerald" style="width: 42.9%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-solid fa-award text-blue"></i> Grade A2 (81% – 90%): 40 to 44 Marks</span>
+                  <span class="bar-value text-primary">10 Students (23.8%)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-blue" style="width: 23.8%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-solid fa-circle-check" style="color: #8B5CF6;"></i> Grade B1 (71% – 80%): 35 to 39 Marks</span>
+                  <span class="bar-value" style="color: #8B5CF6;">8 Students (19.0%)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-purple" style="width: 19.0%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-solid fa-circle-check text-amber"></i> Grade B2 (61% – 70%): 30 to 34 Marks</span>
+                  <span class="bar-value text-amber">4 Students (9.5%)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-amber" style="width: 9.5%;"></div>
+                </div>
+              </div>
+              <div class="bar-chart-row">
+                <div class="bar-header">
+                  <span class="bar-label"><i class="fa-solid fa-triangle-exclamation text-red"></i> Grade C1 (51% – 60%): Remedial</span>
+                  <span class="bar-value" style="color: #EF4444;">2 Students (4.8%)</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-red" style="width: 4.8%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.switchSubTab('examinations', 'enter-marks')">
+            <i class="fa-solid fa-arrow-left"></i> Return to Marks Entry
+          </button>
+        </div>
+      `;
+      showToast('Loaded Grade Distribution Bar Graph', 'info');
     } else if (subKey === 'create') {
       showToast('Assessment form ready for new examination entry', 'info');
-    } else if (subKey === 'grade' || subKey === 'results') {
-      showToast('Class 8A Grade Analytics: 28 Distinction, 11 First Class, 3 Remedial', 'info');
     }
   }
 
@@ -867,6 +1053,7 @@ const teacherApp = (function () {
 
   function updateAttendanceBadges() {
     const class8A = state.students.filter(s => s.class === '8A');
+    const total = class8A.length || 42;
     const present = class8A.filter(s => s.att === 'P').length;
     const absent = class8A.filter(s => s.att === 'A').length;
     const late = class8A.filter(s => s.att === 'L').length;
@@ -876,13 +1063,48 @@ const teacherApp = (function () {
     const aBadge = document.getElementById('absentCountBadge');
     const lBadge = document.getElementById('lateCountBadge');
 
-    if (enrolledEl) enrolledEl.textContent = class8A.length;
+    if (enrolledEl) enrolledEl.textContent = total;
     if (pBadge) pBadge.innerHTML = `<i class="fa-solid fa-check"></i> Present: ${present}`;
     if (aBadge) aBadge.innerHTML = `<i class="fa-solid fa-xmark"></i> Absent: ${absent}`;
     if (lBadge) lBadge.innerHTML = `<i class="fa-solid fa-clock"></i> Late: ${late}`;
 
+    // Calculate exact percentages
+    const presPct = ((present / total) * 100).toFixed(1);
+    const absPct = ((absent / total) * 100).toFixed(1);
+    const latePct = ((late / total) * 100).toFixed(1);
+
+    // Update Live Attendance Donut Chart and Breakdown Bar
+    const donutEl = document.getElementById('attLiveDonut');
+    if (donutEl) {
+      const pEnd = parseFloat(presPct);
+      const aEnd = pEnd + parseFloat(absPct);
+      donutEl.style.background = `conic-gradient(#10B981 0% ${pEnd}%, #EF4444 ${pEnd}% ${aEnd}%, #F59E0B ${aEnd}% 100%)`;
+    }
+
+    const rateText = document.getElementById('attLiveRateText');
+    if (rateText) rateText.textContent = `${Math.round(presPct)}%`;
+
+    const summaryText = document.getElementById('attLiveSummaryText');
+    if (summaryText) {
+      summaryText.textContent = `${present} Present (${presPct}%) • ${absent} Absent (${absPct}%) • ${late} Late (${latePct}%)`;
+    }
+
+    const pPctEl = document.getElementById('attLivePresentPct');
+    const aPctEl = document.getElementById('attLiveAbsentPct');
+    const lPctEl = document.getElementById('attLiveLatePct');
+    if (pPctEl) pPctEl.textContent = `${presPct}%`;
+    if (aPctEl) aPctEl.textContent = `${absPct}%`;
+    if (lPctEl) lPctEl.textContent = `${latePct}%`;
+
+    const pBar = document.getElementById('attLivePresentBar');
+    const aBar = document.getElementById('attLiveAbsentBar');
+    const lBar = document.getElementById('attLiveLateBar');
+    if (pBar) pBar.style.width = `${presPct}%`;
+    if (aBar) aBar.style.width = `${absPct}%`;
+    if (lBar) lBar.style.width = `${latePct}%`;
+
     // Update attendance rate in metric card
-    const pct = ((present + (late * 0.5)) / class8A.length * 100).toFixed(0);
+    const pct = ((present + (late * 0.5)) / total * 100).toFixed(0);
     const rateEl = document.getElementById('dashboardAttRate');
     if (rateEl) rateEl.textContent = `${pct}%`;
   }

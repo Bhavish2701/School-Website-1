@@ -24,21 +24,55 @@ const portalApp = (function () {
     },
     pendingApprovalsCount: 4,
     students: [
-      { admNo: 'SV-2024-082', name: 'G. Sai Teja', class: 'X', section: 'A', rollNo: '1042', parent: 'G. Venkata Rao', phone: '9848123456', attendance: '96.4%', feeStatus: 'Paid', gpa: '9.8' },
-      { admNo: 'SV-2024-091', name: 'P. Hema Latha', class: 'X', section: 'A', rollNo: '1043', parent: 'P. Appala Naidu', phone: '9848234567', attendance: '98.2%', feeStatus: 'Paid', gpa: '10.0' },
-      { admNo: 'SV-2024-115', name: 'K. Rakesh Kumar', class: 'X', section: 'B', rollNo: '1088', parent: 'K. Someswara Rao', phone: '9848345678', attendance: '92.0%', feeStatus: 'Partial', gpa: '9.2' },
-      { admNo: 'SV-2023-204', name: 'M. Sravanthi', class: 'IX', section: 'A', rollNo: '912', parent: 'M. Narayana Murthy', phone: '9848456789', attendance: '95.1%', feeStatus: 'Paid', gpa: '9.6' },
-      { admNo: 'SV-2023-228', name: 'B. Tarun Reddy', class: 'IX', section: 'B', rollNo: '955', parent: 'B. Krishna Reddy', phone: '9848567890', attendance: '88.5%', feeStatus: 'Pending', gpa: '8.4' },
-      { admNo: 'SV-2022-310', name: 'V. Divya Bharathi', class: 'VIII', section: 'A', rollNo: '804', parent: 'V. Satish Kumar', phone: '9848678901', attendance: '97.0%', feeStatus: 'Paid', gpa: '9.5' },
-      { admNo: 'SV-2022-345', name: 'CH. Karthik', class: 'VIII', section: 'B', rollNo: '842', parent: 'CH. Rambabu', phone: '9848789012', attendance: '91.8%', feeStatus: 'Partial', gpa: '8.9' },
-      { admNo: 'SV-2021-412', name: 'S. Bhavana', class: 'VII', section: 'A', rollNo: '715', parent: 'S. Prasad', phone: '9848890123', attendance: '96.8%', feeStatus: 'Paid', gpa: '9.7' },
-      { admNo: 'SV-2020-501', name: 'Y. Manjunath', class: 'VI', section: 'A', rollNo: '601', parent: 'Y. Mohan Rao', phone: '9848901234', attendance: '93.4%', feeStatus: 'Paid', gpa: '9.1' },
-      { admNo: 'SV-2019-612', name: 'D. Keerthi', class: 'V', section: 'A', rollNo: '512', parent: 'D. Suresh', phone: '9848012345', attendance: '94.2%', feeStatus: 'Paid', gpa: '9.4' },
-      { admNo: 'SV-2018-709', name: 'A. Nikhilesh', class: 'IV', section: 'B', rollNo: '419', parent: 'A. Jagannadham', phone: '9848123789', attendance: '90.5%', feeStatus: 'Pending', gpa: '8.8' },
-      { admNo: 'SV-2017-814', name: 'T. Siri Varshini', class: 'III', section: 'A', rollNo: '304', parent: 'T. Srinivasa Rao', phone: '9848234890', attendance: '98.5%', feeStatus: 'Paid', gpa: '9.9' },
-      { admNo: 'SV-2017-902', name: 'N. Likhit Sai', class: 'II', section: 'A', rollNo: '208', parent: 'N. Prasad Babu', phone: '9848345901', attendance: '95.0%', feeStatus: 'Paid', gpa: '9.3' },
-      { admNo: 'SV-2025-018', name: 'K. Tanvi Sree', class: 'I', section: 'A', rollNo: '105', parent: 'K. Ramana', phone: '9848456012', attendance: '97.2%', feeStatus: 'Paid', gpa: '9.8' },
-      { admNo: 'SV-2025-045', name: 'R. Aarav Kumar', class: 'PP', section: 'A', rollNo: '042', parent: 'R. Anand', phone: '9848567123', attendance: '92.5%', feeStatus: 'Paid', gpa: '9.0' }
+      { admNo: 'SV-2024-082', name: 'G. Sai Teja', class: 'X', section: 'A', rollNo: '1042', parent: 'G. Venkata Rao', phone: '9848123456', attendance: '96.4%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'O+', dob: '14 May 2011', address: 'Plot 42, Sriharipuram, Visakhapatnam' },
+      { admNo: 'SV-2024-091', name: 'P. Hema Latha', class: 'X', section: 'A', rollNo: '1043', parent: 'P. Appala Naidu', phone: '9848234567', attendance: '98.2%', feeStatus: 'Paid', gpa: '10.0', bloodGroup: 'A+', dob: '08 Jan 2011', address: 'Door 12-4, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-2024-115', name: 'K. Rakesh Kumar', class: 'X', section: 'B', rollNo: '1088', parent: 'K. Someswara Rao', phone: '9848345678', attendance: '92.0%', feeStatus: 'Partial', gpa: '9.2', bloodGroup: 'B+', dob: '22 Aug 2011', address: 'Flat 201, Kurmannapalem, Visakhapatnam' },
+      { admNo: 'SV-2023-204', name: 'M. Sravanthi', class: 'IX', section: 'A', rollNo: '912', parent: 'M. Narayana Murthy', phone: '9848456789', attendance: '95.1%', feeStatus: 'Paid', gpa: '9.6', bloodGroup: 'AB+', dob: '17 Mar 2012', address: 'Sector 5, Steel Plant Township, Visakhapatnam' },
+      { admNo: 'SV-2023-228', name: 'B. Tarun Reddy', class: 'IX', section: 'B', rollNo: '955', parent: 'B. Krishna Reddy', phone: '9848567890', attendance: '88.5%', feeStatus: 'Pending', gpa: '8.4', bloodGroup: 'O-', dob: '05 Dec 2012', address: 'Near Rythu Bazar, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-2022-310', name: 'V. Divya Bharathi', class: 'VIII', section: 'A', rollNo: '804', parent: 'V. Satish Kumar', phone: '9848678901', attendance: '97.0%', feeStatus: 'Paid', gpa: '9.5', bloodGroup: 'A-', dob: '11 Jul 2013', address: 'Main Road, Pedagantyada, Visakhapatnam' },
+      { admNo: 'SV-2022-345', name: 'CH. Karthik', class: 'VIII', section: 'B', rollNo: '842', parent: 'CH. Rambabu', phone: '9848789012', attendance: '91.8%', feeStatus: 'Partial', gpa: '8.9', bloodGroup: 'B+', dob: '29 Nov 2013', address: 'Old Post Office St, Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-2021-412', name: 'S. Bhavana', class: 'VII', section: 'A', rollNo: '715', parent: 'S. Prasad', phone: '9848890123', attendance: '96.8%', feeStatus: 'Paid', gpa: '9.7', bloodGroup: 'O+', dob: '03 Feb 2014', address: 'Teachers Colony, Visakhapatnam' },
+      { admNo: 'SV-2020-501', name: 'Y. Manjunath', class: 'VI', section: 'A', rollNo: '601', parent: 'Y. Mohan Rao', phone: '9848901234', attendance: '93.4%', feeStatus: 'Paid', gpa: '9.1', bloodGroup: 'A+', dob: '19 Sep 2014', address: 'BHPV Quarters, Visakhapatnam' },
+      { admNo: 'SV-2019-612', name: 'D. Keerthi', class: 'V', section: 'A', rollNo: '512', parent: 'D. Suresh', phone: '9848012345', attendance: '94.2%', feeStatus: 'Paid', gpa: '9.4', bloodGroup: 'B-', dob: '24 Apr 2015', address: 'BC Road, New Gajuwaka, Visakhapatnam' },
+      { admNo: 'SV-2018-709', name: 'A. Nikhilesh', class: 'IV', section: 'B', rollNo: '419', parent: 'A. Jagannadham', phone: '9848123789', attendance: '90.5%', feeStatus: 'Pending', gpa: '8.8', bloodGroup: 'AB+', dob: '15 Oct 2015', address: 'Kanithi Road, Visakhapatnam' },
+      { admNo: 'SV-2017-814', name: 'T. Siri Varshini', class: 'III', section: 'A', rollNo: '304', parent: 'T. Srinivasa Rao', phone: '9848234890', attendance: '98.5%', feeStatus: 'Paid', gpa: '9.9', bloodGroup: 'O+', dob: '30 Dec 2016', address: 'Sriharipuram Phase 2, Visakhapatnam' },
+      { admNo: 'SV-2017-902', name: 'N. Likhit Sai', class: 'II', section: 'A', rollNo: '208', parent: 'N. Prasad Babu', phone: '9848345901', attendance: '95.0%', feeStatus: 'Paid', gpa: '9.3', bloodGroup: 'A+', dob: '18 May 2017', address: 'Duvvada Station Road, Visakhapatnam' },
+      { admNo: 'SV-2025-018', name: 'K. Tanvi Sree', class: 'I', section: 'A', rollNo: '105', parent: 'K. Ramana', phone: '9848456012', attendance: '97.2%', feeStatus: 'Paid', gpa: '9.8', bloodGroup: 'B+', dob: '07 Feb 2018', address: 'Scindia Colony, Visakhapatnam' },
+      { admNo: 'SV-2025-045', name: 'R. Aarav Kumar', class: 'PP', section: 'A', rollNo: '042', parent: 'R. Anand', phone: '9848567123', attendance: '92.5%', feeStatus: 'Paid', gpa: '9.0', bloodGroup: 'O+', dob: '12 Nov 2019', address: 'Mindi Village, Gajuwaka, Visakhapatnam' }
+    ],
+    admissions: [
+      { appId: 'ADM-2026-081', name: 'K. Sai Tharun', class: 'VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', phone: '9848011223', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review' },
+      { appId: 'ADM-2026-082', name: 'B. Vennela', class: 'VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', phone: '9848022334', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due' },
+      { appId: 'ADM-2026-083', name: 'M. Dinesh Kumar', class: 'IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', phone: '9848033445', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review' },
+      { appId: 'ADM-2026-084', name: 'CH. Charitha', class: 'I', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', phone: '9848044556', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment' },
+      { appId: 'ADM-2026-085', name: 'V. Aditya', class: 'IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', phone: '9848055667', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview' },
+      { appId: 'ADM-2026-086', name: 'S. Harini', class: 'PP', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', phone: '9848066778', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment' }
+    ],
+    transfers: [
+      { tcNo: 'TC-2026-019', name: 'P. Kiran Kumar', admNo: 'SV-2021-382', class: 'Class VIII-B', reason: 'Parent Job Transfer (To Hyderabad)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Issued', date: '18 Sep 2026' },
+      { tcNo: 'TC-2026-020', name: 'R. Divya', admNo: 'SV-2023-519', class: 'Class V-A', reason: 'Relocation to Vijayawada', dues: 'Cleared (No Dues)', conduct: 'Very Good', status: 'Pending Principal Sign', date: '19 Sep 2026' },
+      { tcNo: 'TC-2026-021', name: 'G. Harsha Vardhan', admNo: 'SV-2022-214', class: 'Class IX-A', reason: 'Enrolment in Sports Academy', dues: 'Library Book Pending', conduct: 'Good', status: 'On Hold (Library Due)', date: '17 Sep 2026' },
+      { tcNo: 'TC-2026-022', name: 'A. Deepthi', admNo: 'SV-2020-109', class: 'Class X-B', reason: 'Course Completion (Class X)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Ready for Dispatch', date: '19 Sep 2026' }
+    ],
+    classGpaList: [
+      { class: 'Class X', gpa: 9.67, pct: 96.7 },
+      { class: 'Class IX', gpa: 9.00, pct: 90.0 },
+      { class: 'Class VIII', gpa: 9.20, pct: 92.0 },
+      { class: 'Class VII', gpa: 9.15, pct: 91.5 },
+      { class: 'Class VI', gpa: 8.85, pct: 88.5 },
+      { class: 'Class V', gpa: 9.40, pct: 94.0 },
+      { class: 'Class IV', gpa: 8.90, pct: 89.0 },
+      { class: 'Class III', gpa: 9.50, pct: 95.0 },
+      { class: 'Class II', gpa: 9.30, pct: 93.0 },
+      { class: 'Class I', gpa: 9.80, pct: 98.0 }
+    ],
+    topAchievers: [
+      { rank: 1, name: 'P. Hema Latha', class: 'Class X-A', rollNo: '#1043', gpa: '10.0 / 10.0', distinction: 'Distinction (Maths & Sci 100%)', parent: 'P. Appala Naidu', medal: 'gold' },
+      { rank: 2, name: 'T. Siri Varshini', class: 'Class III-A', rollNo: '#304', gpa: '9.9 / 10.0', distinction: 'Primary Wing 1st Ranker', parent: 'T. Srinivasa Rao', medal: 'silver' },
+      { rank: 3, name: 'G. Sai Teja', class: 'Class X-A', rollNo: '#1042', gpa: '9.8 / 10.0', distinction: 'State Olympiad Silver', parent: 'G. Venkata Rao', medal: 'bronze' },
+      { rank: 4, name: 'K. Tanvi Sree', class: 'Class I-A', rollNo: '#105', gpa: '9.8 / 10.0', distinction: 'Class I Topper (All A1)', parent: 'K. Ramana', medal: 'badge' },
+      { rank: 5, name: 'S. Bhavana', class: 'Class VII-A', rollNo: '#715', gpa: '9.7 / 10.0', distinction: 'Best in English & Science', parent: 'S. Prasad', medal: 'badge' },
+      { rank: 6, name: 'M. Sravanthi', class: 'Class IX-A', rollNo: '#912', gpa: '9.6 / 10.0', distinction: 'Class IX Topper', parent: 'M. Narayana Murthy', medal: 'badge' }
     ],
     faculty: [
       { name: 'Smt. Gorle Varalakshmi', role: 'Principal & Academic Director', qualification: 'M.Sc, M.Ed, M.Phil', exp: '22 Years', subject: 'Administration & Mathematics', status: 'Active', phone: '8106636230', email: 'srividyaschools2017@gmail.com' },
@@ -516,12 +550,13 @@ const portalApp = (function () {
     const moduleSection = document.getElementById(`view-${moduleKey}`);
     if (!moduleSection) return;
 
+    // Toggle active class on tab buttons
     const tabStrip = moduleSection.querySelector('.tab-strip');
     if (tabStrip) {
       const buttons = tabStrip.querySelectorAll('.tab-btn');
       buttons.forEach(btn => {
-        const text = btn.textContent.toLowerCase();
-        if (text.includes(subKey.toLowerCase())) {
+        const btnSub = btn.getAttribute('data-sub');
+        if (btnSub === subKey || (btn.textContent && btn.textContent.toLowerCase().includes(subKey.toLowerCase()))) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -529,11 +564,70 @@ const portalApp = (function () {
       });
     }
 
+    // Toggle subview containers for students module
+    if (moduleKey === 'students') {
+      const subviews = moduleSection.querySelectorAll('.student-subview');
+      subviews.forEach(sv => {
+        if (sv.id === `subview-students-${subKey}`) {
+          sv.style.display = 'block';
+          sv.classList.add('active');
+        } else {
+          sv.style.display = 'none';
+          sv.classList.remove('active');
+        }
+      });
+
+      // Render content based on selected subtab
+      if (subKey === 'all') {
+        renderStudentsTable(state.students);
+      } else if (subKey === 'profiles') {
+        renderStudentProfiles(state.students);
+      } else if (subKey === 'admissions') {
+        renderAdmissionsQueue(state.admissions);
+      } else if (subKey === 'transfers') {
+        renderTransfersTable(state.transfers);
+      } else if (subKey === 'performance') {
+        renderAcademicPerformance();
+      }
+
+      updateStudentTabBadges();
+    }
+
     showToast(`Switched view to ${moduleKey} → ${subKey}`, 'info');
+  }
+
+  function updateStudentTabBadges() {
+    // Dynamic counts that strictly match list length
+    const allBadge = document.getElementById('allStudentsCountBadge');
+    if (allBadge) allBadge.textContent = state.students.length;
+
+    const totalCountEl = document.getElementById('studentTotalCount');
+    if (totalCountEl) totalCountEl.textContent = state.students.length;
+
+    const profilesBadge = document.getElementById('studentProfilesCountBadge');
+    if (profilesBadge) profilesBadge.textContent = state.students.length;
+
+    const admBadge = document.getElementById('admissionsCountBadge');
+    if (admBadge) admBadge.textContent = state.admissions.length;
+
+    const admStatCount = document.getElementById('admQueueStatCount');
+    if (admStatCount) admStatCount.textContent = state.admissions.length;
+
+    const tcBadge = document.getElementById('transfersCountBadge');
+    if (tcBadge) tcBadge.textContent = state.transfers.length;
+
+    const tcStatCount = document.getElementById('tcQueueStatCount');
+    if (tcStatCount) tcStatCount.textContent = state.transfers.length;
   }
 
   function renderAllTables() {
     renderStudentsTable(state.students);
+    renderStudentProfiles(state.students);
+    renderAdmissionsQueue(state.admissions);
+    renderTransfersTable(state.transfers);
+    renderAcademicPerformance();
+    updateStudentTabBadges();
+
     renderStaffGrid(state.faculty);
     renderFeeTransactions(state.feeTransactions);
     renderAttendanceClasses(state.classAttendance);
@@ -546,8 +640,15 @@ const portalApp = (function () {
     const tbody = document.getElementById('studentsTableBody');
     if (!tbody) return;
 
+    // Update Showing counter & Tab Badge to strictly match current rows
+    const showingEl = document.getElementById('studentShowingCount');
+    if (showingEl) showingEl.textContent = list.length;
+
+    const allBadge = document.getElementById('allStudentsCountBadge');
+    if (allBadge) allBadge.textContent = list.length;
+
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);">No student records matched your search query.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);"><i class="fa-solid fa-user-slash" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>No student records matched your search query.</td></tr>`;
       return;
     }
 
@@ -616,6 +717,309 @@ const portalApp = (function () {
     });
 
     renderStudentsTable(filtered);
+  }
+
+  function resetStudentFilters() {
+    const searchInput = document.getElementById('studentFilterInput');
+    const classSelect = document.getElementById('studentClassFilter');
+    const sectionSelect = document.getElementById('studentSectionFilter');
+    const feeSelect = document.getElementById('studentFeeFilter');
+
+    if (searchInput) searchInput.value = '';
+    if (classSelect) classSelect.value = '';
+    if (sectionSelect) sectionSelect.value = '';
+    if (feeSelect) feeSelect.value = '';
+
+    renderStudentsTable(state.students);
+    showToast('Filters reset to default view', 'info');
+  }
+
+  // Student Profiles Subview
+  function renderStudentProfiles(list) {
+    const grid = document.getElementById('studentProfilesGrid');
+    if (!grid) return;
+
+    const showingCount = document.getElementById('profilesShowingCount');
+    if (showingCount) showingCount.textContent = list.length;
+
+    const profilesBadge = document.getElementById('studentProfilesCountBadge');
+    if (profilesBadge) profilesBadge.textContent = list.length;
+
+    if (list.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--color-bg-surface); border-radius: 12px; border: 1px solid var(--color-border); color: var(--color-text-muted);">
+        <i class="fa-solid fa-id-card-clip" style="font-size: 2rem; margin-bottom: 0.75rem; display:block;"></i>
+        No student dossiers matched your search filters.
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(student => {
+      let badgeClass = 'badge-success';
+      if (student.feeStatus === 'Pending') badgeClass = 'badge-danger';
+      if (student.feeStatus === 'Partial') badgeClass = 'badge-warning';
+
+      return `
+        <div class="student-profile-card">
+          <div class="profile-card-top">
+            <div class="profile-card-avatar">${student.name.charAt(0)}</div>
+            <div class="profile-card-identity">
+              <h4>${student.name}</h4>
+              <div class="profile-card-tags">
+                <span class="profile-tag tag-primary">Class ${student.class}-${student.section}</span>
+                <span class="profile-tag">#${student.rollNo}</span>
+                <span class="profile-tag tag-gpa">GPA: ${student.gpa}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-card-stats">
+            <div class="profile-stat-box">
+              <span class="stat-label">Attendance Rate</span>
+              <span class="stat-val text-emerald">${student.attendance}</span>
+            </div>
+            <div class="profile-stat-box">
+              <span class="stat-label">Fee Clearance</span>
+              <span class="stat-val"><span class="portal-badge ${badgeClass}">${student.feeStatus}</span></span>
+            </div>
+          </div>
+
+          <div class="profile-card-details">
+            <div class="profile-detail-row">
+              <span class="label"><i class="fa-solid fa-id-badge"></i> Adm No:</span>
+              <span class="val text-primary"><strong>${student.admNo}</strong></span>
+            </div>
+            <div class="profile-detail-row">
+              <span class="label"><i class="fa-solid fa-user-shield"></i> Parent:</span>
+              <span class="val">${student.parent}</span>
+            </div>
+            <div class="profile-detail-row">
+              <span class="label"><i class="fa-solid fa-phone"></i> Contact:</span>
+              <span class="val"><a href="tel:${student.phone}" class="phone-link"><i class="fa-solid fa-phone"></i> ${student.phone}</a></span>
+            </div>
+          </div>
+
+          <div class="profile-card-actions">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.viewStudentProfile('${student.admNo}')">
+              <i class="fa-regular fa-eye"></i> View Full Dossier
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="portalApp.showToast('Generating official ID Card for ${student.name}', 'success')">
+              <i class="fa-solid fa-print"></i> ID Card
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filterStudentProfiles() {
+    const query = (document.getElementById('profileSearchInput')?.value || '').toLowerCase().trim();
+    const classVal = document.getElementById('profileClassFilter')?.value || '';
+
+    const filtered = state.students.filter(s => {
+      const matchQuery = !query ||
+        s.name.toLowerCase().includes(query) ||
+        s.admNo.toLowerCase().includes(query) ||
+        s.parent.toLowerCase().includes(query) ||
+        s.rollNo.includes(query);
+
+      const matchClass = !classVal || s.class === classVal;
+
+      return matchQuery && matchClass;
+    });
+
+    renderStudentProfiles(filtered);
+  }
+
+  // Admissions Queue Subview
+  function renderAdmissionsQueue(list) {
+    const tbody = document.getElementById('admissionsTableBody');
+    if (!tbody) return;
+
+    const countBadge = document.getElementById('admissionsCountBadge');
+    if (countBadge) countBadge.textContent = list.length;
+
+    const statCount = document.getElementById('admQueueStatCount');
+    if (statCount) statCount.textContent = list.length;
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);"><i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>All admissions applications have been processed and confirmed.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(item => `
+      <tr id="adm-row-${item.appId}">
+        <td><strong class="text-primary">${item.appId}</strong></td>
+        <td>
+          <div class="user-cell">
+            <div class="cell-avatar">${item.name.charAt(0)}</div>
+            <div>
+              <strong>${item.name}</strong>
+            </div>
+          </div>
+        </td>
+        <td><strong>Class ${item.class}</strong></td>
+        <td>${item.prevSchool}</td>
+        <td>
+          <div>${item.parent}</div>
+          <a href="tel:${item.phone}" class="phone-link"><i class="fa-solid fa-phone"></i> ${item.phone}</a>
+        </td>
+        <td><span class="portal-badge badge-success">${item.score}</span></td>
+        <td><span class="portal-badge ${item.docStatus === 'Verified' ? 'badge-success' : 'badge-warning'}">${item.docStatus}</span></td>
+        <td><span class="portal-badge ${item.status.includes('Approved') ? 'badge-success' : 'badge-warning'}">${item.status}</span></td>
+        <td>
+          <div class="table-action-btns">
+            <button class="btn btn-primary btn-sm" onclick="portalApp.approveAdmission('${item.appId}')" title="Approve & Grant Enrolment">
+              <i class="fa-solid fa-check"></i> Approve
+            </button>
+            <button class="action-icon-btn" onclick="portalApp.reviewAdmissionDocs('${item.appId}')" title="Review Verified Certificates">
+              <i class="fa-regular fa-file-lines"></i>
+            </button>
+            <button class="action-icon-btn" onclick="portalApp.rejectAdmission('${item.appId}')" title="Reject Application" style="color:var(--color-accent-red);">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function approveAdmission(appId) {
+    const applicant = state.admissions.find(a => a.appId === appId);
+    if (applicant) {
+      applicant.status = 'Approved - Admission Confirmed';
+      renderAdmissionsQueue(state.admissions);
+      showToast(`Admission approved for ${applicant.name} (Class ${applicant.class}). Welcome kit triggered!`, 'success');
+    }
+  }
+
+  function reviewAdmissionDocs(appId) {
+    const applicant = state.admissions.find(a => a.appId === appId);
+    if (applicant) {
+      showToast(`Document Verification for ${applicant.name}: Birth Certificate, Previous Marks Card & TC verified successfully.`, 'info');
+    }
+  }
+
+  function rejectAdmission(appId) {
+    const index = state.admissions.findIndex(a => a.appId === appId);
+    if (index > -1) {
+      const name = state.admissions[index].name;
+      state.admissions.splice(index, 1);
+      renderAdmissionsQueue(state.admissions);
+      updateStudentTabBadges();
+      showToast(`Application ${appId} for ${name} removed from queue.`, 'warning');
+    }
+  }
+
+  // Transfers (TC) Subview
+  function renderTransfersTable(list) {
+    const tbody = document.getElementById('transfersTableBody');
+    if (!tbody) return;
+
+    const countBadge = document.getElementById('transfersCountBadge');
+    if (countBadge) countBadge.textContent = list.length;
+
+    const statCount = document.getElementById('tcQueueStatCount');
+    if (statCount) statCount.textContent = list.length;
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);">No active Transfer Certificate requests.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(item => `
+      <tr>
+        <td><strong class="text-primary">${item.tcNo}</strong></td>
+        <td><strong>${item.name}</strong></td>
+        <td><small class="text-muted">${item.admNo}</small></td>
+        <td>${item.class}</td>
+        <td>${item.reason}</td>
+        <td>
+          <span class="portal-badge ${item.dues.includes('Cleared') ? 'badge-success' : 'badge-warning'}">
+            ${item.dues}
+          </span>
+        </td>
+        <td><strong>${item.conduct}</strong></td>
+        <td>
+          <span class="portal-badge ${item.status === 'Issued' ? 'badge-success' : item.status === 'On Hold (Library Due)' ? 'badge-danger' : 'badge-warning'}">
+            ${item.status}
+          </span>
+        </td>
+        <td>
+          <div class="table-action-btns">
+            <button class="btn btn-primary btn-sm" onclick="portalApp.printTC('${item.tcNo}')" title="Print Official TC Document">
+              <i class="fa-solid fa-print"></i> Print TC
+            </button>
+            <button class="action-icon-btn" onclick="portalApp.downloadTCPdf('${item.tcNo}')" title="Download Signed PDF">
+              <i class="fa-solid fa-file-arrow-down"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function printTC(tcNo) {
+    const tc = state.transfers.find(t => t.tcNo === tcNo);
+    if (tc) {
+      showToast(`Dispatching ${tc.tcNo} for ${tc.name} to Institutional Laser Printer...`, 'success');
+    }
+  }
+
+  function downloadTCPdf(tcNo) {
+    showToast(`Downloading certified digital TC copy for ${tcNo}...`, 'info');
+  }
+
+  // Academic Performance & Charts Subview
+  function renderAcademicPerformance() {
+    // 1. Render Bar Chart
+    const barContainer = document.getElementById('classGpaBarChart');
+    if (barContainer && state.classGpaList) {
+      barContainer.innerHTML = state.classGpaList.map(item => {
+        const heightPct = Math.round((item.gpa / 10.0) * 100);
+        return `
+          <div class="v-bar-col">
+            <div class="v-bar-pillar" style="height: ${heightPct}%;" title="${item.class}: ${item.gpa} GPA (${item.pct}%)">
+              <span class="v-bar-val">${item.gpa}</span>
+            </div>
+            <span class="v-bar-label">${item.class.replace('Class ', '')}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 2. Render Top Achievers Leaderboard
+    const achieversTbody = document.getElementById('achieversTableBody');
+    if (achieversTbody && state.topAchievers) {
+      achieversTbody.innerHTML = state.topAchievers.map(achiever => {
+        let medalIcon = '<i class="fa-solid fa-award" style="color: #64748B;"></i>';
+        if (achiever.medal === 'gold') medalIcon = '<i class="fa-solid fa-medal" style="color: #EAB308; font-size: 1.15rem;"></i> Rank 1 (Gold)';
+        else if (achiever.medal === 'silver') medalIcon = '<i class="fa-solid fa-medal" style="color: #94A3B8; font-size: 1.15rem;"></i> Rank 2 (Silver)';
+        else if (achiever.medal === 'bronze') medalIcon = '<i class="fa-solid fa-medal" style="color: #B45309; font-size: 1.15rem;"></i> Rank 3 (Bronze)';
+        else medalIcon = `<span class="portal-badge badge-primary">Rank ${achiever.rank}</span>`;
+
+        return `
+          <tr>
+            <td><strong>${medalIcon}</strong></td>
+            <td>
+              <div class="user-cell">
+                <div class="cell-avatar">${achiever.name.charAt(0)}</div>
+                <strong>${achiever.name}</strong>
+              </div>
+            </td>
+            <td><strong>${achiever.class}</strong></td>
+            <td>${achiever.rollNo}</td>
+            <td><strong class="text-emerald">${achiever.gpa}</strong></td>
+            <td><span class="portal-badge badge-success">${achiever.distinction}</span></td>
+            <td>${achiever.parent}</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="portalApp.showToast('Generating Merit Certificate for ${achiever.name}', 'success')">
+                <i class="fa-solid fa-certificate"></i> Merit Cert
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
   function renderStaffGrid(list) {
@@ -840,6 +1244,10 @@ const portalApp = (function () {
     `;
 
     openModal('viewStudentModal');
+  }
+
+  function printStudentDossier() {
+    showToast('Dispatching Student Dossier to institutional print spooler...', 'success');
   }
 
   // New Student Admission Form Handler
@@ -1214,7 +1622,15 @@ const portalApp = (function () {
     switchSubTab,
     handleApproval,
     filterStudents,
+    resetStudentFilters,
+    filterStudentProfiles,
     viewStudentProfile,
+    printStudentDossier,
+    approveAdmission,
+    reviewAdmissionDocs,
+    rejectAdmission,
+    printTC,
+    downloadTCPdf,
     handleNewStudent,
     handleBroadcast,
     sendFeeReminders,

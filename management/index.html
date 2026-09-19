@@ -1138,77 +1138,378 @@
           </div>
 
           <!-- Sub-tab Selector -->
-          <div class="tab-strip">
-            <button class="tab-btn active" onclick="portalApp.switchSubTab('students', 'all')">All Students (2,450)</button>
-            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'profiles')">Student Profiles</button>
-            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'admissions')">Admissions Queue (18)</button>
-            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'transfers')">Transfers (TC)</button>
-            <button class="tab-btn" onclick="portalApp.switchSubTab('students', 'performance')">Academic Performance</button>
+          <div class="tab-strip" id="studentsTabStrip">
+            <button type="button" class="tab-btn active" data-sub="all" onclick="portalApp.switchSubTab('students', 'all')">
+              <i class="fa-solid fa-users"></i> All Students (<span id="allStudentsCountBadge">15</span>)
+            </button>
+            <button type="button" class="tab-btn" data-sub="profiles" onclick="portalApp.switchSubTab('students', 'profiles')">
+              <i class="fa-solid fa-address-card"></i> Student Profiles (<span id="studentProfilesCountBadge">15</span>)
+            </button>
+            <button type="button" class="tab-btn" data-sub="admissions" onclick="portalApp.switchSubTab('students', 'admissions')">
+              <i class="fa-solid fa-user-plus"></i> Admissions Queue (<span id="admissionsCountBadge">6</span>)
+            </button>
+            <button type="button" class="tab-btn" data-sub="transfers" onclick="portalApp.switchSubTab('students', 'transfers')">
+              <i class="fa-solid fa-file-contract"></i> Transfers (TC) (<span id="transfersCountBadge">4</span>)
+            </button>
+            <button type="button" class="tab-btn" data-sub="performance" onclick="portalApp.switchSubTab('students', 'performance')">
+              <i class="fa-solid fa-chart-pie"></i> Academic Performance
+            </button>
           </div>
 
-          <!-- Filter Toolbar -->
-          <div class="filter-toolbar">
-            <div class="filter-group search-group">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="studentFilterInput" placeholder="Filter by name, admission ID, class..." onkeyup="portalApp.filterStudents()">
+          <!-- ==========================================
+               SUB-VIEW 1: ALL STUDENTS TABLE
+               ========================================== -->
+          <div class="student-subview active" id="subview-students-all">
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-left-controls">
+                <div class="filter-group search-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="studentFilterInput" placeholder="Filter by name, admission ID, parent, phone..." onkeyup="portalApp.filterStudents()">
+                </div>
+                <div class="filter-group">
+                  <label for="studentClassFilter"><i class="fa-solid fa-graduation-cap"></i> Class:</label>
+                  <select id="studentClassFilter" class="filter-select" onchange="portalApp.filterStudents()">
+                    <option value="">All Classes</option>
+                    <option value="X">Class X</option>
+                    <option value="IX">Class IX</option>
+                    <option value="VIII">Class VIII</option>
+                    <option value="VII">Class VII</option>
+                    <option value="VI">Class VI</option>
+                    <option value="V">Class V</option>
+                    <option value="IV">Class IV</option>
+                    <option value="III">Class III</option>
+                    <option value="II">Class II</option>
+                    <option value="I">Class I</option>
+                    <option value="PP">Pre-Primary</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="studentSectionFilter"><i class="fa-solid fa-layer-group"></i> Section:</label>
+                  <select id="studentSectionFilter" class="filter-select" onchange="portalApp.filterStudents()">
+                    <option value="">All Sections</option>
+                    <option value="A">Section A</option>
+                    <option value="B">Section B</option>
+                    <option value="C">Section C</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="studentFeeFilter"><i class="fa-solid fa-receipt"></i> Fee Status:</label>
+                  <select id="studentFeeFilter" class="filter-select" onchange="portalApp.filterStudents()">
+                    <option value="">All Statuses</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Partial">Partial</option>
+                    <option value="Pending">Pending</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-right-stats">
+                <span class="filter-count-pill">
+                  <i class="fa-solid fa-filter"></i> Showing <strong id="studentShowingCount">15</strong> of <strong id="studentTotalCount">15</strong>
+                </span>
+                <button type="button" class="btn-filter-reset" onclick="portalApp.resetStudentFilters()" title="Reset all filters">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+              </div>
             </div>
-            <div class="filter-group">
-              <label>Class:</label>
-              <select id="studentClassFilter" onchange="portalApp.filterStudents()">
-                <option value="">All Classes</option>
-                <option value="X">Class X</option>
-                <option value="IX">Class IX</option>
-                <option value="VIII">Class VIII</option>
-                <option value="VII">Class VII</option>
-                <option value="VI">Class VI</option>
-                <option value="V">Class V</option>
-                <option value="IV">Class IV</option>
-                <option value="III">Class III</option>
-                <option value="II">Class II</option>
-                <option value="I">Class I</option>
-                <option value="PP">Pre-Primary</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>Section:</label>
-              <select id="studentSectionFilter" onchange="portalApp.filterStudents()">
-                <option value="">All Sections</option>
-                <option value="A">Section A</option>
-                <option value="B">Section B</option>
-                <option value="C">Section C</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>Fee Status:</label>
-              <select id="studentFeeFilter" onchange="portalApp.filterStudents()">
-                <option value="">All Statuses</option>
-                <option value="Paid">Paid</option>
-                <option value="Partial">Partial</option>
-                <option value="Pending">Pending</option>
-              </select>
+
+            <!-- Students Data Table -->
+            <div class="table-container">
+              <table class="data-table" id="studentsTable">
+                <thead>
+                  <tr>
+                    <th>Adm No.</th>
+                    <th>Student Name</th>
+                    <th>Class & Sec</th>
+                    <th>Roll No</th>
+                    <th>Parent / Guardian</th>
+                    <th>Contact</th>
+                    <th>Attendance</th>
+                    <th>Fee Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <!-- Populated via portal.js -->
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <!-- Students Data Table -->
-          <div class="table-container">
-            <table class="data-table" id="studentsTable">
-              <thead>
-                <tr>
-                  <th>Adm No.</th>
-                  <th>Student Name</th>
-                  <th>Class & Sec</th>
-                  <th>Roll No</th>
-                  <th>Parent / Guardian</th>
-                  <th>Contact</th>
-                  <th>Attendance</th>
-                  <th>Fee Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="studentsTableBody">
-                <!-- Populated via portal.js -->
-              </tbody>
-            </table>
+          <!-- ==========================================
+               SUB-VIEW 2: STUDENT PROFILES DOSSIERS
+               ========================================== -->
+          <div class="student-subview" id="subview-students-profiles" style="display:none;">
+            <!-- Profiles Filter Toolbar -->
+            <div class="filter-toolbar">
+              <div class="filter-left-controls">
+                <div class="filter-group search-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="profileSearchInput" placeholder="Search profiles by student name, roll number, or parent..." onkeyup="portalApp.filterStudentProfiles()">
+                </div>
+                <div class="filter-group">
+                  <label for="profileClassFilter"><i class="fa-solid fa-graduation-cap"></i> Filter Class:</label>
+                  <select id="profileClassFilter" class="filter-select" onchange="portalApp.filterStudentProfiles()">
+                    <option value="">All Classes</option>
+                    <option value="X">Class X</option>
+                    <option value="IX">Class IX</option>
+                    <option value="VIII">Class VIII</option>
+                    <option value="VII">Class VII</option>
+                    <option value="VI">Class VI</option>
+                    <option value="V">Class V</option>
+                    <option value="IV">Class IV</option>
+                    <option value="III">Class III</option>
+                    <option value="II">Class II</option>
+                    <option value="I">Class I</option>
+                    <option value="PP">Pre-Primary</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-right-stats">
+                <span class="filter-count-pill">
+                  <i class="fa-solid fa-id-card"></i> Profiles Listed: <strong id="profilesShowingCount">15</strong>
+                </span>
+              </div>
+            </div>
+
+            <!-- Profiles Grid -->
+            <div class="student-profiles-grid" id="studentProfilesGrid">
+              <!-- Rendered via portal.js -->
+            </div>
+          </div>
+
+          <!-- ==========================================
+               SUB-VIEW 3: ADMISSIONS QUEUE
+               ========================================== -->
+          <div class="student-subview" id="subview-students-admissions" style="display:none;">
+            <!-- Admissions Summary Stats Bar -->
+            <div class="admissions-overview-bar">
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-blue"><i class="fa-solid fa-user-clock"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count" id="admQueueStatCount">6</div>
+                  <div class="adm-label">Pending Queue Applications</div>
+                </div>
+              </div>
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count">5</div>
+                  <div class="adm-label">Entrance Exam Cleared</div>
+                </div>
+              </div>
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-amber"><i class="fa-solid fa-file-circle-check"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count">3</div>
+                  <div class="adm-label">Ready for Final Enrolment</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Admissions Table -->
+            <div class="table-container">
+              <table class="data-table" id="admissionsTable">
+                <thead>
+                  <tr>
+                    <th>App No.</th>
+                    <th>Applicant Student</th>
+                    <th>Class Applied</th>
+                    <th>Previous School</th>
+                    <th>Parent & Contact</th>
+                    <th>Entrance Score</th>
+                    <th>Docs Status</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admissionsTableBody">
+                  <!-- Rendered via portal.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ==========================================
+               SUB-VIEW 4: TRANSFERS (TC)
+               ========================================== -->
+          <div class="student-subview" id="subview-students-transfers" style="display:none;">
+            <!-- Transfers Summary Stats Bar -->
+            <div class="admissions-overview-bar">
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-blue"><i class="fa-solid fa-file-export"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count" id="tcQueueStatCount">4</div>
+                  <div class="adm-label">Active TC Records</div>
+                </div>
+              </div>
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-green"><i class="fa-solid fa-stamp"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count">3</div>
+                  <div class="adm-label">Cleared for Issue</div>
+                </div>
+              </div>
+              <div class="adm-stat-card">
+                <div class="adm-stat-icon icon-amber"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="adm-stat-info">
+                  <div class="adm-count">1</div>
+                  <div class="adm-label">Pending Dues Clearance</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transfers Table -->
+            <div class="table-container">
+              <table class="data-table" id="transfersTable">
+                <thead>
+                  <tr>
+                    <th>TC Ref No.</th>
+                    <th>Student Name</th>
+                    <th>Adm No.</th>
+                    <th>Class</th>
+                    <th>Reason for Leaving</th>
+                    <th>Dues Clearance</th>
+                    <th>Conduct</th>
+                    <th>TC Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="transfersTableBody">
+                  <!-- Rendered via portal.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ==========================================
+               SUB-VIEW 5: ACADEMIC PERFORMANCE (CHARTS)
+               ========================================== -->
+          <div class="student-subview" id="subview-students-performance" style="display:none;">
+            <!-- Performance Executive Banner -->
+            <div class="perf-header-banner">
+              <div class="perf-banner-title">
+                <h3><i class="fa-solid fa-award"></i> Academic Performance & Grade Analytics</h3>
+                <p>Comprehensive overview of CBSE examination metrics, GPA distributions, and class benchmarks.</p>
+              </div>
+              <div class="perf-kpi-row">
+                <div class="perf-kpi-item">
+                  <div class="perf-kpi-num">9.38</div>
+                  <div class="perf-kpi-label">School Avg GPA</div>
+                </div>
+                <div class="perf-kpi-item">
+                  <div class="perf-kpi-num">100%</div>
+                  <div class="perf-kpi-label">CBSE Pass Rate</div>
+                </div>
+                <div class="perf-kpi-item">
+                  <div class="perf-kpi-num">28</div>
+                  <div class="perf-kpi-label">10.0 CGPA Stars</div>
+                </div>
+                <div class="perf-kpi-item">
+                  <div class="perf-kpi-num">76%</div>
+                  <div class="perf-kpi-label">Distinction Tier</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dual Charts: Pie/Donut Chart + Vertical Bar Graph -->
+            <div class="charts-dual-grid">
+              <!-- Chart 1: Donut/Pie Chart -->
+              <div class="chart-panel-card">
+                <div class="chart-panel-header">
+                  <h4><i class="fa-solid fa-chart-pie text-primary"></i> Grade Tier Distribution (Donut Chart)</h4>
+                  <span class="portal-badge badge-success">Academic Year 2025-26</span>
+                </div>
+                <div class="donut-chart-box">
+                  <div class="donut-svg-wrapper">
+                    <svg viewBox="0 0 100 100">
+                      <!-- Base track -->
+                      <circle cx="50" cy="50" r="35" fill="none" stroke="#E2E8F0" stroke-width="18"></circle>
+                      <!-- A1 Grade (44%) -->
+                      <circle class="donut-segment" cx="50" cy="50" r="35" stroke="#10B981" stroke-dasharray="96.76 123.15" stroke-dashoffset="0" title="A1 Distinction: 44%"></circle>
+                      <!-- A2 Grade (32%) -->
+                      <circle class="donut-segment" cx="50" cy="50" r="35" stroke="#2563EB" stroke-dasharray="70.37 149.54" stroke-dashoffset="-96.76" title="A2 Merit: 32%"></circle>
+                      <!-- B1 Grade (16%) -->
+                      <circle class="donut-segment" cx="50" cy="50" r="35" stroke="#F59E0B" stroke-dasharray="35.19 184.72" stroke-dashoffset="-167.13" title="B1 First Class: 16%"></circle>
+                      <!-- B2 Grade (8%) -->
+                      <circle class="donut-segment" cx="50" cy="50" r="35" stroke="#8B5CF6" stroke-dasharray="17.59 202.32" stroke-dashoffset="-202.32" title="B2 Second Class: 8%"></circle>
+                    </svg>
+                    <div class="donut-hole-center">
+                      <div class="donut-hole-val">100%</div>
+                      <div class="donut-hole-sub">Pass Rate</div>
+                    </div>
+                  </div>
+                  <div class="donut-legend-list">
+                    <div class="donut-legend-item">
+                      <div class="legend-label-col">
+                        <span class="legend-dot" style="background:#10B981;"></span>
+                        <span>A1 Distinction (91–100%)</span>
+                      </div>
+                      <div class="legend-num-col">44% (132)</div>
+                    </div>
+                    <div class="donut-legend-item">
+                      <div class="legend-label-col">
+                        <span class="legend-dot" style="background:#2563EB;"></span>
+                        <span>A2 Merit (81–90%)</span>
+                      </div>
+                      <div class="legend-num-col">32% (96)</div>
+                    </div>
+                    <div class="donut-legend-item">
+                      <div class="legend-label-col">
+                        <span class="legend-dot" style="background:#F59E0B;"></span>
+                        <span>B1 First Class (71–80%)</span>
+                      </div>
+                      <div class="legend-num-col">16% (48)</div>
+                    </div>
+                    <div class="donut-legend-item">
+                      <div class="legend-label-col">
+                        <span class="legend-dot" style="background:#8B5CF6;"></span>
+                        <span>B2 Second Class (61–70%)</span>
+                      </div>
+                      <div class="legend-num-col">8% (24)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chart 2: Vertical Bar Graph -->
+              <div class="chart-panel-card">
+                <div class="chart-panel-header">
+                  <h4><i class="fa-solid fa-chart-column text-primary"></i> Class-wise GPA Benchmark (Bar Graph)</h4>
+                  <span class="portal-badge badge-primary">Benchmark: 9.0+</span>
+                </div>
+                <div class="v-bar-chart-container" id="classGpaBarChart">
+                  <!-- Rendered dynamically via portal.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Academic Achievers Leaderboard -->
+            <div class="card-header-flex" style="padding: 1rem 0; margin-bottom: 0.5rem;">
+              <h3 style="margin: 0; font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: var(--color-text-dark);">
+                <i class="fa-solid fa-trophy" style="color: #F59E0B;"></i> Board & School Top Rankers (Exemplary Merit)
+              </h3>
+              <span class="portal-badge badge-success">Top Achievers</span>
+            </div>
+            <div class="table-container">
+              <table class="data-table" id="achieversTable">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Roll No</th>
+                    <th>GPA / Score</th>
+                    <th>Distinctions</th>
+                    <th>Parent / Guardian</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="achieversTableBody">
+                  <!-- Rendered via portal.js -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 

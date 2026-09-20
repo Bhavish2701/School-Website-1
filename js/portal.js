@@ -23,9 +23,9 @@ const portalApp = (function () {
       settings: 'profile'
     },
     pendingApprovalsCount: 4,
-    // All 855 students are loaded from js/student-roster.js (window.STUDENT_ROSTER)
+    // All 500 students are loaded from js/student-roster.js (window.STUDENT_ROSTER)
     // Fallback to empty array if roster script failed to load
-    students: (window.STUDENT_ROSTER && window.STUDENT_ROSTER.length === 855)
+    students: (window.STUDENT_ROSTER && window.STUDENT_ROSTER.length === 500)
       ? window.STUDENT_ROSTER
       : [],
 
@@ -75,7 +75,25 @@ const portalApp = (function () {
       { name: 'Smt. G. Sarada', role: 'Faculty - First Language (Telugu)', qualification: 'M.A (Telugu Lit), TPT', exp: '13 Years', subject: 'Telugu Language & Literature', status: 'Present', phone: '9848077887', email: 'sarada.g@srividya.edu' },
       { name: 'Smt. B. Meenakshi', role: 'Faculty - Second Language (Hindi)', qualification: 'M.A (Hindi), HPT', exp: '10 Years', subject: 'Hindi Rashtrabhasha', status: 'Present', phone: '9848088998', email: 'meenakshi.b@srividya.edu' },
       { name: 'Sri V. Ramesh Babu', role: 'Physical Education Director (PET)', qualification: 'M.P.Ed, NIS Coach', exp: '12 Years', subject: 'Sports, Athletics & Yoga', status: 'Present', phone: '9848099009', email: 'ramesh.pet@srividya.edu' },
-      { name: 'Smt. K. Anitha', role: 'Primary Wing Coordinator', qualification: 'B.Sc, B.Ed', exp: '10 Years', subject: 'Primary Mathematics & EVS', status: 'Present', phone: '9848100110', email: 'anitha.k@srividya.edu' }
+      { name: 'Smt. K. Anitha', role: 'Primary Wing Coordinator', qualification: 'B.Sc, B.Ed', exp: '10 Years', subject: 'Primary Mathematics & EVS', status: 'Present', phone: '9848100110', email: 'anitha.k@srividya.edu' },
+      { name: 'Sri B. Narayana', role: 'Class Teacher - Class X', qualification: 'M.Sc (Chemistry), B.Ed', exp: '11 Years', subject: 'Chemistry & Physical Science', status: 'Present', phone: '9848111221', email: 'narayana.b@srividya.edu' },
+      { name: 'Smt. T. Padmavathi', role: 'Class Teacher - Class IX', qualification: 'M.A (Telugu), B.Ed', exp: '9 Years', subject: 'Telugu & Sanskrit', status: 'Present', phone: '9848122332', email: 'padmavathi.t@srividya.edu' },
+      { name: 'Sri M. Raju', role: 'Class Teacher - Class VIII', qualification: 'M.Sc (Maths), B.Ed', exp: '7 Years', subject: 'Mathematics', status: 'Present', phone: '9848133443', email: 'raju.m@srividya.edu' },
+      { name: 'Smt. V. Jyothsna', role: 'Class Teacher - Class VII', qualification: 'M.A (English), B.Ed', exp: '8 Years', subject: 'English & Social Studies', status: 'Present', phone: '9848144554', email: 'jyothsna.v@srividya.edu' },
+      { name: 'Sri CH. Venkateswara Rao', role: 'Class Teacher - Class VI', qualification: 'M.Sc (Physics), B.Ed', exp: '10 Years', subject: 'Science & Technology', status: 'Present', phone: '9848155665', email: 'venkat.ch@srividya.edu' },
+      { name: 'Smt. N. Sirisha', role: 'Class Teacher - Class V', qualification: 'B.Sc, B.Ed', exp: '6 Years', subject: 'EVS & Primary Science', status: 'Present', phone: '9848166776', email: 'sirisha.n@srividya.edu' },
+      { name: 'Sri A. Prasad', role: 'Class Teacher - Class IV', qualification: 'B.Sc, B.Ed', exp: '5 Years', subject: 'Maths & EVS', status: 'Present', phone: '9848177887', email: 'prasad.a@srividya.edu' },
+      { name: 'Smt. R. Kavitha', role: 'Class Teacher - Class III', qualification: 'B.A, B.Ed', exp: '7 Years', subject: 'Language & Arts', status: 'Present', phone: '9848188998', email: 'kavitha.r@srividya.edu' },
+      { name: 'Sri S. Gopal', role: 'Class Teacher - Class II', qualification: 'B.Sc, D.Ed', exp: '8 Years', subject: 'Primary General Studies', status: 'Present', phone: '9848199009', email: 'gopal.s@srividya.edu' },
+      { name: 'Smt. Y. Anusha', role: 'Class Teacher - Class I', qualification: 'B.A, D.Ed', exp: '5 Years', subject: 'Primary Foundations', status: 'Present', phone: '9848200110', email: 'anusha.y@srividya.edu' },
+      { name: 'Smt. D. Meena', role: 'Pre-Primary Wing Teacher', qualification: 'B.Ed (Early Childhood)', exp: '6 Years', subject: 'Kindergarten & Play Activities', status: 'Present', phone: '9848211221', email: 'meena.d@srividya.edu' },
+      { name: 'Sri K. Srinath', role: 'Pre-Primary Wing Teacher', qualification: 'B.Ed (Early Childhood)', exp: '4 Years', subject: 'Phonics & Motor Skills', status: 'Present', phone: '9848222332', email: 'srinath.k@srividya.edu' },
+      { name: 'Smt. P. Swapna', role: 'Drawing & Arts Teacher', qualification: 'M.F.A (Fine Arts)', exp: '9 Years', subject: 'Drawing, Craft & Aesthetics', status: 'Present', phone: '9848233443', email: 'swapna.p@srividya.edu' },
+      { name: 'Sri G. Ranga Rao', role: 'School Librarian', qualification: 'M.Lib.Sc', exp: '14 Years', subject: 'Library Management & Reading', status: 'Present', phone: '9848244554', email: 'ranga.g@srividya.edu' },
+      { name: 'Smt. M. Vijaya', role: 'Office Administrator', qualification: 'B.Com', exp: '12 Years', subject: 'Accounts & Records', status: 'Present', phone: '9848255665', email: 'vijaya.m@srividya.edu' },
+      { name: 'Sri B. Kishore', role: 'Accounts Clerk', qualification: 'B.Com, Tally', exp: '6 Years', subject: 'Fee Management & Billing', status: 'Present', phone: '9848266776', email: 'kishore.b@srividya.edu' },
+      { name: 'Sri V. Suresh Babu', role: 'Lab Assistant - Science', qualification: 'B.Sc (Chemistry)', exp: '5 Years', subject: 'Lab Setup & Equipment', status: 'Present', phone: '9848277887', email: 'suresh.v@srividya.edu' },
+      { name: 'Smt. CH. Saranya', role: 'Counsellor & Welfare Officer', qualification: 'M.A (Psychology), B.Ed', exp: '7 Years', subject: 'Student Welfare & Counselling', status: 'Present', phone: '9848288998', email: 'saranya.ch@srividya.edu' }
     ],
     feeTransactions: [
       { receiptNo: 'RCPT-2026-4891', student: 'P. Hema Latha', class: 'Class X-A', term: 'Term 2 Tuition', amount: '₹14,500', mode: 'UPI (PhonePe)', date: 'Today, 11:20 AM', cashier: 'S. Ramu' },
@@ -88,17 +106,17 @@ const portalApp = (function () {
     ],
     // Total Students across all classes = exactly 855 members (Section A only)
     classAttendance: [
-      { class: 'Class X-A', total: 78, present: 75, absent: 3, leave: 0, pct: '96.2%', teacher: 'Smt. M. Sunitha', status: 'Submitted' },
-      { class: 'Class IX-A', total: 82, present: 79, absent: 3, leave: 0, pct: '96.3%', teacher: 'Sri K. Rajesh', status: 'Submitted' },
-      { class: 'Class VIII-A', total: 84, present: 81, absent: 3, leave: 0, pct: '96.4%', teacher: 'Sri R. Venkata Ramana', status: 'Submitted' },
-      { class: 'Class VII-A', total: 86, present: 83, absent: 3, leave: 0, pct: '96.5%', teacher: 'Smt. G. Sarada', status: 'Submitted' },
-      { class: 'Class VI-A', total: 88, present: 85, absent: 3, leave: 0, pct: '96.6%', teacher: 'Smt. B. Meenakshi', status: 'Submitted' },
-      { class: 'Class V-A', total: 75, present: 72, absent: 3, leave: 0, pct: '96.0%', teacher: 'Smt. K. Anitha', status: 'Submitted' },
-      { class: 'Class IV-A', total: 72, present: 69, absent: 3, leave: 0, pct: '95.8%', teacher: 'Sri P. Satyanarayana', status: 'Submitted' },
-      { class: 'Class III-A', total: 70, present: 68, absent: 2, leave: 0, pct: '97.1%', teacher: 'Sri D. Srinivas', status: 'Submitted' },
-      { class: 'Class II-A', total: 68, present: 66, absent: 2, leave: 0, pct: '97.1%', teacher: 'Smt. S. Lakshmi', status: 'Submitted' },
-      { class: 'Class I-A', total: 66, present: 64, absent: 2, leave: 0, pct: '97.0%', teacher: 'Sri V. Ramesh Babu', status: 'Submitted' },
-      { class: 'Pre-Primary-A', total: 86, present: 80, absent: 6, leave: 0, pct: '93.0%', teacher: 'Early Childhood Wing', status: 'Submitted' }
+      { class: 'Class X-A', total: 44, present: 42, absent: 2, leave: 0, pct: '95.5%', teacher: 'Sri B. Narayana', status: 'Submitted' },
+      { class: 'Class IX-A', total: 44, present: 42, absent: 2, leave: 0, pct: '95.5%', teacher: 'Smt. T. Padmavathi', status: 'Submitted' },
+      { class: 'Class VIII-A', total: 44, present: 43, absent: 1, leave: 0, pct: '97.7%', teacher: 'Sri M. Raju', status: 'Submitted' },
+      { class: 'Class VII-A', total: 46, present: 44, absent: 2, leave: 0, pct: '95.7%', teacher: 'Smt. V. Jyothsna', status: 'Submitted' },
+      { class: 'Class VI-A', total: 46, present: 44, absent: 2, leave: 0, pct: '95.7%', teacher: 'Sri CH. Venkateswara Rao', status: 'Submitted' },
+      { class: 'Class V-A', total: 44, present: 43, absent: 1, leave: 0, pct: '97.7%', teacher: 'Smt. N. Sirisha', status: 'Submitted' },
+      { class: 'Class IV-A', total: 44, present: 42, absent: 2, leave: 0, pct: '95.5%', teacher: 'Sri A. Prasad', status: 'Submitted' },
+      { class: 'Class III-A', total: 44, present: 43, absent: 1, leave: 0, pct: '97.7%', teacher: 'Smt. R. Kavitha', status: 'Submitted' },
+      { class: 'Class II-A', total: 46, present: 44, absent: 2, leave: 0, pct: '95.7%', teacher: 'Sri S. Gopal', status: 'Submitted' },
+      { class: 'Class I-A', total: 48, present: 46, absent: 2, leave: 0, pct: '95.8%', teacher: 'Smt. Y. Anusha', status: 'Submitted' },
+      { class: 'Pre-Primary-A', total: 50, present: 48, absent: 2, leave: 0, pct: '96.0%', teacher: 'Smt. D. Meena', status: 'Submitted' }
     ],
     events: [
       { title: 'Quarterly Examinations 2026', date: 'Sept 24 - Oct 01, 2026', tag: 'Exams', desc: 'Comprehensive assessments for Classes I through X as per State Board guidelines.' },

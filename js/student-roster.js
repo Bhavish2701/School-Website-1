@@ -1,7 +1,7 @@
-﻿/**
+/**
  * Sri Vidya E.M High School -- Full Student Roster
- * Total Students: 855 | Section A Only | Classes PP through X
- * Admission Numbers: SV-0001 to SV-0855
+ * Total Students: 500 | Section A Only | Classes PP through X
+ * Admission Numbers: SV-0001 to SV-0500
  */
 (function () {
   'use strict';
@@ -83,19 +83,20 @@
     };
   }
 
-  // Class distribution: 75+78+80+80+80+80+75+75+72+70+90 = 855
+  // Class distribution totalling exactly 500 students
+  // X:44, IX:44, VIII:44, VII:46, VI:46, V:44, IV:44, III:44, II:46, I:48, PP:50 = 500
   var CLASS_CONFIG = [
-    { cls: 'X',    count: 75, startRoll: 1001, yrOff: 14 },
-    { cls: 'IX',   count: 78, startRoll: 901,  yrOff: 13 },
-    { cls: 'VIII', count: 80, startRoll: 801,  yrOff: 12 },
-    { cls: 'VII',  count: 80, startRoll: 701,  yrOff: 11 },
-    { cls: 'VI',   count: 80, startRoll: 601,  yrOff: 10 },
-    { cls: 'V',    count: 80, startRoll: 501,  yrOff: 9  },
-    { cls: 'IV',   count: 75, startRoll: 401,  yrOff: 8  },
-    { cls: 'III',  count: 75, startRoll: 301,  yrOff: 7  },
-    { cls: 'II',   count: 72, startRoll: 201,  yrOff: 6  },
-    { cls: 'I',    count: 70, startRoll: 101,  yrOff: 5  },
-    { cls: 'PP',   count: 90, startRoll: 1,    yrOff: 4  }
+    { cls: 'X',    count: 44, startRoll: 1001, yrOff: 14 },
+    { cls: 'IX',   count: 44, startRoll: 901,  yrOff: 13 },
+    { cls: 'VIII', count: 44, startRoll: 801,  yrOff: 12 },
+    { cls: 'VII',  count: 46, startRoll: 701,  yrOff: 11 },
+    { cls: 'VI',   count: 46, startRoll: 601,  yrOff: 10 },
+    { cls: 'V',    count: 44, startRoll: 501,  yrOff: 9  },
+    { cls: 'IV',   count: 44, startRoll: 401,  yrOff: 8  },
+    { cls: 'III',  count: 44, startRoll: 301,  yrOff: 7  },
+    { cls: 'II',   count: 46, startRoll: 201,  yrOff: 6  },
+    { cls: 'I',    count: 48, startRoll: 101,  yrOff: 5  },
+    { cls: 'PP',   count: 50, startRoll: 1,    yrOff: 4  }
   ];
 
   var roster = [];
@@ -127,6 +128,7 @@
       roster.push({
         admNo: 'SV-' + String(admNum).padStart(4, '0'),
         name: name,
+        gender: isMale ? 'male' : 'female',
         class: cfg.cls,
         section: 'A',
         rollNo: String(cfg.startRoll + i),
@@ -144,6 +146,6 @@
   });
 
   window.STUDENT_ROSTER = roster;
-  console.info('[SriVidya] Student Roster loaded: ' + roster.length + ' students. From ' +
+  console.info('[SriVidya] Student Roster loaded: ' + roster.length + ' students (target: 500). From ' +
     roster[0].admNo + ' to ' + roster[roster.length - 1].admNo);
 }());

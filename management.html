@@ -510,19 +510,19 @@
           </div>
 
           <!-- Quick Link to Teacher Portal -->
-          <a href="/teacher" style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Teacher Portal">
+          <a href="teacher-portal.html" style="background: var(--color-accent-green-subtle); color: var(--color-accent-green); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Teacher Portal">
             <i class="fa-solid fa-chalkboard-user"></i>
             <span>Teacher Portal</span>
           </a>
 
           <!-- Quick Link to Student Portal -->
-          <a href="/student" style="background: var(--color-accent-blue-subtle); color: var(--color-primary); border: 1px solid rgba(37, 99, 235, 0.35); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Student Academic Dashboard (Rahul)">
+          <a href="student-portal.html" style="background: var(--color-accent-blue-subtle); color: var(--color-primary); border: 1px solid rgba(37, 99, 235, 0.35); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Student Academic Dashboard (Rahul)">
             <i class="fa-solid fa-graduation-cap"></i>
             <span>Student Portal</span>
           </a>
 
           <!-- Quick Link to Parent Portal -->
-          <a href="/parent" style="background: var(--color-accent-purple-subtle); color: var(--color-accent-purple); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Parent Portal (Multi-Child)">
+          <a href="parent-portal.html" style="background: var(--color-accent-purple-subtle); color: var(--color-accent-purple); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.45rem 0.85rem; border-radius: var(--radius-full); text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" title="Open Dedicated Parent Portal (Multi-Child)">
             <i class="fa-solid fa-users"></i>
             <span>Parent Portal</span>
           </a>
@@ -686,44 +686,44 @@
                [Students: 2,450] [Teachers: 145] [Attendance: 94.6%] [Fees: 87%] -->
           <div class="metrics-quad">
             
-            <!-- Metric 1: Students 2,450 -->
+            <!-- Metric 1: Students 500 -->
             <div class="metric-card" onclick="portalApp.navigateTo('students')">
               <div class="metric-icon-wrap icon-blue">
                 <i class="fa-solid fa-user-graduate"></i>
               </div>
               <div class="metric-details">
                 <span class="metric-label">Students</span>
-                <div class="metric-value">2,450</div>
+                <div class="metric-value">500</div>
                 <div class="metric-trend trend-up">
                   <i class="fa-solid fa-arrow-trend-up"></i>
-                  <span>+120 new admissions</span>
+                  <span>500 Total Enrolled (Section A Only)</span>
                 </div>
               </div>
               <div class="metric-progress-wrap">
-                <div class="metric-subtext">Pre-Primary to Class X</div>
+                <div class="metric-subtext">Pre-Primary-A to Class X-A (11 Classes)</div>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill fill-blue" style="width: 96%;"></div>
+                  <div class="progress-bar-fill fill-blue" style="width: 100%;"></div>
                 </div>
               </div>
             </div>
 
-            <!-- Metric 2: Teachers 145 -->
+            <!-- Metric 2: Teachers 30 -->
             <div class="metric-card" onclick="portalApp.navigateTo('teachers')">
               <div class="metric-icon-wrap icon-emerald">
                 <i class="fa-solid fa-chalkboard-user"></i>
               </div>
               <div class="metric-details">
                 <span class="metric-label">Teachers</span>
-                <div class="metric-value">145</div>
+                <div class="metric-value">30</div>
                 <div class="metric-trend trend-steady">
                   <i class="fa-solid fa-check"></i>
-                  <span>142 present today (98%)</span>
+                  <span>29 present today (97%)</span>
                 </div>
               </div>
               <div class="metric-progress-wrap">
                 <div class="metric-subtext">1:17 Student-Teacher Ratio</div>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill fill-emerald" style="width: 98%;"></div>
+                  <div class="progress-bar-fill fill-emerald" style="width: 97%;"></div>
                 </div>
               </div>
             </div>
@@ -742,7 +742,7 @@
                 </div>
               </div>
               <div class="metric-progress-wrap">
-                <div class="metric-subtext">2,318 of 2,450 present</div>
+                <div class="metric-subtext">481 of 500 present</div>
                 <div class="progress-bar-bg">
                   <div class="progress-bar-fill fill-indigo" style="width: 94.6%;"></div>
                 </div>
@@ -2591,6 +2591,8 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Student Roster Data (must load before portal.js) -->
+  <script src="js/student-roster.js"></script>
   <!-- Portal Logic Script -->
   <script src="js/portal.js"></script>
   <!-- Portal Auth Script -->

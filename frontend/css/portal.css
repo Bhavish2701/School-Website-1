@@ -1482,8 +1482,8 @@ body {
 }
 
 .perf-metric-box.highlight {
-  background: var(--color-primary-subtle);
-  border-color: var(--color-primary-tint);
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border);
 }
 
 .perf-num {
@@ -1494,7 +1494,7 @@ body {
 }
 
 .perf-metric-box.highlight .perf-num {
-  color: var(--color-primary);
+  color: var(--color-text-dark);
 }
 
 .perf-desc {
@@ -8084,4 +8084,24 @@ input:disabled + .perm-slider {
   background: #0F172A !important;
   border: 1px solid var(--color-border, #243048) !important;
   color: #FFFFFF !important;
+}
+
+
+/* Uniform Academic Performance & Stat Metric Boxes in Dark Theme */
+[data-theme="dark"] .perf-metric-box,
+[data-theme="dark"] .perf-metric-box.highlight {
+  background: var(--color-bg-subtle, #1E293B) !important;
+  border-color: var(--color-border, #243048) !important;
+}
+[data-theme="dark"] .perf-metric-box .perf-num,
+[data-theme="dark"] .perf-metric-box.highlight .perf-num {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .perf-metric-box .perf-desc,
+[data-theme="dark"] .perf-metric-box.highlight .perf-desc {
+  color: var(--color-text-main, #E2E8F0) !important;
+}
+[data-theme="dark"] .perf-metric-box .perf-sub,
+[data-theme="dark"] .perf-metric-box.highlight .perf-sub {
+  color: var(--color-text-muted, #94A3B8) !important;
 }

@@ -1197,7 +1197,7 @@ var teacherApp = (function () {
           <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
             <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Subject Average</span>
             <div class="metric-value text-primary" style="font-size: 1.5rem; font-weight: 800; margin: 4px 0;">${cls.avgScore}</div>
-            <span class="metric-sub" style="font-size: 0.78rem; color: #2563eb;">Top: ${cls.topper}</span>
+            <span class="metric-sub" style="font-size: 0.78rem; color: #059669;">Top: ${cls.topper}</span>
           </div>
           <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
             <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Curriculum Progress</span>
@@ -1407,7 +1407,7 @@ var teacherApp = (function () {
     const attPct = classStudents.length ? ((presentCount / classStudents.length) * 100).toFixed(1) : '95.0';
 
     banner.innerHTML = `
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #2563eb; padding: 1.15rem 1.5rem; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #059669; padding: 1.15rem 1.5rem; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
         <div>
           <div style="display: flex; align-items: center; gap: 10px;">
             <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a;">

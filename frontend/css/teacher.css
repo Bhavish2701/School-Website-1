@@ -1998,3 +1998,33 @@ body {
     justify-content: center;
   }
 }
+
+/* Class Quick Selector Pills */
+.btn-class-pill {
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.btn-class-pill:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-bg-subtle);
+}
+.btn-class-pill.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+.btn-class-pill.active i {
+  color: #fff !important;
+}

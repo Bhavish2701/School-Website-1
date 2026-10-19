@@ -29,10 +29,10 @@ var teacherApp = (function () {
       todayAttendancePct: '96%'
     },
     classes: [
-      { id: '8a', name: 'Class 8A', isClassTeacher: true, strength: 42, room: 'Room 204', avgScore: '86.4%' },
-      { id: '9b', name: 'Class 9B', isClassTeacher: false, strength: 40, room: 'Room 208', avgScore: '82.1%' },
-      { id: '7c', name: 'Class 7C', isClassTeacher: false, strength: 38, room: 'Room 112', avgScore: '89.0%' },
-      { id: '10a', name: 'Class 10A Remedial', isClassTeacher: false, strength: 32, room: 'Lab 2', avgScore: '78.5%' }
+      { id: '8a', code: '8A', name: 'Class 8A', isClassTeacher: true, roleTitle: 'Class Teacher & Subject Faculty', subject: 'Mathematics', strength: 42, room: 'Room 204 (2nd Floor, Main Block)', timing: 'Period 1 (08:45 AM - 09:30 AM)', avgScore: '86.4%', topper: 'V. Divya Bharathi (49/50)' },
+      { id: '9b', code: '9B', name: 'Class 9B', isClassTeacher: false, roleTitle: 'Subject Teacher', subject: 'Mathematics', strength: 40, room: 'Room 208 (2nd Floor, High School Wing)', timing: 'Period 3 (10:45 AM - 11:30 AM)', avgScore: '82.1%', topper: 'P. Lavanya (48/50)' },
+      { id: '7c', code: '7C', name: 'Class 7C', isClassTeacher: false, roleTitle: 'Subject Teacher', subject: 'Mathematics', strength: 38, room: 'Room 112 (1st Floor, Middle Wing)', timing: 'Period 5 (01:15 PM - 02:00 PM)', avgScore: '89.0%', topper: 'S. Bhavana (48/50)' },
+      { id: '10a', code: '10A', name: 'Class 10A', isClassTeacher: false, roleTitle: 'Remedial Faculty', subject: 'Mathematics (Remedial & Board Exam Prep)', strength: 32, room: 'Mathematics Lab 2 (Ground Floor)', timing: 'Period 7 (03:00 PM - 03:45 PM)', avgScore: '78.5%', topper: 'K. Sai Tharun (45/50)' }
     ],
     pendingTasks: [
       { id: 1, title: 'Evaluate Class 8A Math Unit Test 2 Answer Sheets', meta: 'Due Today (05:00 PM) • 42 Papers', badge: 'due-today', badgeText: 'Due Today', done: false },
@@ -90,31 +90,121 @@ var teacherApp = (function () {
       { roll: 841, name: 'CH. Karthik', class: '8A', phone: '9848789012', att: 'L', marks: 39, remarks: 'Arrived late today (Gate pass #44)' },
       { roll: 842, name: 'Y. Tharun', class: '8A', phone: '9848123012', att: 'A', marks: 32, remarks: 'Absent today (Uninformed - SMS sent)' },
 
-      // Class 9B (Roll 901 to 912)
-      { roll: 901, name: 'G. Sai Teja', class: '9B', phone: '9848123456', att: 'P', marks: 46, remarks: 'Strong fundamentals in polynomials' },
-      { roll: 902, name: 'M. Sravanthi', class: '9B', phone: '9848456789', att: 'P', marks: 45, remarks: 'Polite, attentive and regular' },
-      { roll: 903, name: 'K. Rakesh', class: '9B', phone: '9848456790', att: 'P', marks: 42, remarks: 'Good algebra practice' },
-      { roll: 904, name: 'P. Lavanya', class: '9B', phone: '9848456791', att: 'P', marks: 48, remarks: 'Subject topper in 9B' },
-      { roll: 905, name: 'S. Varun', class: '9B', phone: '9848456792', att: 'P', marks: 39, remarks: 'Regular homework submission' },
-      { roll: 906, name: 'B. Haritha', class: '9B', phone: '9848456793', att: 'P', marks: 44, remarks: 'Neat geometry constructions' },
-      { roll: 907, name: 'N. Sandeep', class: '9B', phone: '9848456794', att: 'A', marks: 36, remarks: 'Absent today' },
-      { roll: 908, name: 'T. Manasa', class: '9B', phone: '9848456795', att: 'P', marks: 43, remarks: 'Good classroom response' },
-      { roll: 909, name: 'V. Naresh', class: '9B', phone: '9848456796', att: 'P', marks: 41, remarks: 'Consistent worker' },
-      { roll: 910, name: 'J. Priyanka', class: '9B', phone: '9848456797', att: 'P', marks: 47, remarks: 'Very active learner' },
-      { roll: 911, name: 'R. Ajay Kumar', class: '9B', phone: '9848456798', att: 'P', marks: 38, remarks: 'Improving in quadratic equations' },
-      { roll: 912, name: 'D. Keerthi', class: '9B', phone: '9848456799', att: 'P', marks: 45, remarks: 'High accuracy in tests' },
+      // Class 9B (Exactly 40 Students)
+      {"roll":901,"name":"G. Sai Teja","class":"9B","phone":"9848450901","att":"P","marks":34,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":902,"name":"M. Sravanthi","class":"9B","phone":"9848450902","att":"P","marks":41,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":903,"name":"K. Rakesh","class":"9B","phone":"9848450903","att":"P","marks":48,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":904,"name":"P. Lavanya","class":"9B","phone":"9848450904","att":"P","marks":39,"remarks":"Active participation in math group discussions"},
+      {"roll":905,"name":"S. Varun","class":"9B","phone":"9848450905","att":"P","marks":46,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":906,"name":"B. Haritha","class":"9B","phone":"9848450906","att":"P","marks":37,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":907,"name":"N. Sandeep","class":"9B","phone":"9848450907","att":"A","marks":44,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":908,"name":"T. Manasa","class":"9B","phone":"9848450908","att":"P","marks":35,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":909,"name":"V. Naresh","class":"9B","phone":"9848450909","att":"P","marks":42,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":910,"name":"J. Priyanka","class":"9B","phone":"9848450910","att":"P","marks":49,"remarks":"Active participation in math group discussions"},
+      {"roll":911,"name":"R. Ajay Kumar","class":"9B","phone":"9848450911","att":"P","marks":40,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":912,"name":"D. Keerthi","class":"9B","phone":"9848450912","att":"P","marks":47,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":913,"name":"A. Sai Kiran","class":"9B","phone":"9848450913","att":"P","marks":38,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":914,"name":"C. Meghana","class":"9B","phone":"9848450914","att":"P","marks":45,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":915,"name":"E. Rohith","class":"9B","phone":"9848450915","att":"L","marks":36,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":916,"name":"G. Pavani","class":"9B","phone":"9848450916","att":"P","marks":43,"remarks":"Active participation in math group discussions"},
+      {"roll":917,"name":"H. Yashwanth","class":"9B","phone":"9848450917","att":"P","marks":34,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":918,"name":"K. Divya","class":"9B","phone":"9848450918","att":"P","marks":41,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":919,"name":"L. Pradeep","class":"9B","phone":"9848450919","att":"P","marks":48,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":920,"name":"M. Sneha","class":"9B","phone":"9848450920","att":"P","marks":39,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":921,"name":"N. Vinay","class":"9B","phone":"9848450921","att":"P","marks":46,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":922,"name":"P. Anusha","class":"9B","phone":"9848450922","att":"P","marks":37,"remarks":"Active participation in math group discussions"},
+      {"roll":923,"name":"R. Karthikeya","class":"9B","phone":"9848450923","att":"P","marks":44,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":924,"name":"S. Sushma","class":"9B","phone":"9848450924","att":"A","marks":35,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":925,"name":"T. Abhinav","class":"9B","phone":"9848450925","att":"P","marks":42,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":926,"name":"V. Pranitha","class":"9B","phone":"9848450926","att":"P","marks":49,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":927,"name":"Y. Bharath","class":"9B","phone":"9848450927","att":"P","marks":40,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":928,"name":"A. Deepa","class":"9B","phone":"9848450928","att":"P","marks":47,"remarks":"Active participation in math group discussions"},
+      {"roll":929,"name":"B. Harish","class":"9B","phone":"9848450929","att":"P","marks":38,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":930,"name":"C. Jyothika","class":"9B","phone":"9848450930","att":"P","marks":45,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":931,"name":"D. Kalyan","class":"9B","phone":"9848450931","att":"P","marks":36,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":932,"name":"G. Likitha","class":"9B","phone":"9848450932","att":"P","marks":43,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":933,"name":"K. Manoj","class":"9B","phone":"9848450933","att":"P","marks":34,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":934,"name":"M. Nandini","class":"9B","phone":"9848450934","att":"P","marks":41,"remarks":"Active participation in math group discussions"},
+      {"roll":935,"name":"P. Rahul","class":"9B","phone":"9848450935","att":"P","marks":48,"remarks":"Very good problem-solving speed and step clarity"},
+      {"roll":936,"name":"R. Sahithi","class":"9B","phone":"9848450936","att":"P","marks":39,"remarks":"Shows dedication and punctuality in daily work"},
+      {"roll":937,"name":"S. Tarun","class":"9B","phone":"9848450937","att":"P","marks":46,"remarks":"Strong fundamentals in polynomials and algebra"},
+      {"roll":938,"name":"T. Varshini","class":"9B","phone":"9848450938","att":"P","marks":37,"remarks":"Polite, attentive and regular in homework"},
+      {"roll":939,"name":"V. Vamsi","class":"9B","phone":"9848450939","att":"P","marks":44,"remarks":"High accuracy in coordinate geometry calculations"},
+      {"roll":940,"name":"Y. Alekhya","class":"9B","phone":"9848450940","att":"P","marks":35,"remarks":"Active participation in math group discussions"},
 
-      // Class 7C (Roll 701 to 710)
-      { roll: 701, name: 'S. Bhavana', class: '7C', phone: '9848890123', att: 'P', marks: 48, remarks: 'High accuracy in fractions and decimals' },
-      { roll: 702, name: 'M. Rohit', class: '7C', phone: '9848890124', att: 'P', marks: 42, remarks: 'Good mental arithmetic' },
-      { roll: 703, name: 'A. Pranathi', class: '7C', phone: '9848890125', att: 'P', marks: 46, remarks: 'Excellent homework notebook' },
-      { roll: 704, name: 'K. Vinay', class: '7C', phone: '9848890126', att: 'P', marks: 39, remarks: 'Active in class activities' },
-      { roll: 705, name: 'G. Sirisha', class: '7C', phone: '9848890127', att: 'P', marks: 44, remarks: 'Prompt assignment submissions' },
-      { roll: 706, name: 'B. Dhanush', class: '7C', phone: '9848890128', att: 'P', marks: 37, remarks: 'Needs extra practice in division' },
-      { roll: 707, name: 'CH. Monica', class: '7C', phone: '9848890129', att: 'A', marks: 41, remarks: 'Absent today' },
-      { roll: 708, name: 'T. Abhinav', class: '7C', phone: '9848890130', att: 'P', marks: 45, remarks: 'Strong fundamentals' },
-      { roll: 709, name: 'V. Geethika', class: '7C', phone: '9848890131', att: 'P', marks: 47, remarks: 'Class topper potential' },
-      { roll: 710, name: 'Y. Charan', class: '7C', phone: '9848890132', att: 'P', marks: 40, remarks: 'Disciplined and attentive' }
+      // Class 7C (Exactly 38 Students)
+      {"roll":701,"name":"S. Bhavana","class":"7C","phone":"9848890701","att":"P","marks":36,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":702,"name":"M. Rohit","class":"7C","phone":"9848890702","att":"P","marks":41,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":703,"name":"A. Pranathi","class":"7C","phone":"9848890703","att":"P","marks":46,"remarks":"Quick mental math and active classroom response"},
+      {"roll":704,"name":"B. Sumanth","class":"7C","phone":"9848890704","att":"P","marks":37,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":705,"name":"C. Tanuja","class":"7C","phone":"9848890705","att":"A","marks":42,"remarks":"Very well behaved and disciplined student"},
+      {"roll":706,"name":"D. Charan Teja","class":"7C","phone":"9848890706","att":"P","marks":47,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":707,"name":"E. Gayathri","class":"7C","phone":"9848890707","att":"P","marks":38,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":708,"name":"G. Hemanth","class":"7C","phone":"9848890708","att":"P","marks":43,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":709,"name":"K. Ishwarya","class":"7C","phone":"9848890709","att":"P","marks":48,"remarks":"Quick mental math and active classroom response"},
+      {"roll":710,"name":"L. Jagadeesh","class":"7C","phone":"9848890710","att":"P","marks":39,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":711,"name":"M. Keerthana","class":"7C","phone":"9848890711","att":"P","marks":44,"remarks":"Very well behaved and disciplined student"},
+      {"roll":712,"name":"N. Lohith","class":"7C","phone":"9848890712","att":"L","marks":49,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":713,"name":"P. Moulya","class":"7C","phone":"9848890713","att":"P","marks":40,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":714,"name":"R. Niharika","class":"7C","phone":"9848890714","att":"P","marks":45,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":715,"name":"S. Omprakash","class":"7C","phone":"9848890715","att":"P","marks":36,"remarks":"Quick mental math and active classroom response"},
+      {"roll":716,"name":"T. Pallavi","class":"7C","phone":"9848890716","att":"P","marks":41,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":717,"name":"V. Rajesh","class":"7C","phone":"9848890717","att":"P","marks":46,"remarks":"Very well behaved and disciplined student"},
+      {"roll":718,"name":"Y. Sahiti","class":"7C","phone":"9848890718","att":"P","marks":37,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":719,"name":"A. Tejas","class":"7C","phone":"9848890719","att":"P","marks":42,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":720,"name":"B. Usha","class":"7C","phone":"9848890720","att":"P","marks":47,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":721,"name":"C. Vikas","class":"7C","phone":"9848890721","att":"A","marks":38,"remarks":"Quick mental math and active classroom response"},
+      {"roll":722,"name":"D. Yamini","class":"7C","phone":"9848890722","att":"P","marks":43,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":723,"name":"G. Akhila","class":"7C","phone":"9848890723","att":"P","marks":48,"remarks":"Very well behaved and disciplined student"},
+      {"roll":724,"name":"H. Balaji","class":"7C","phone":"9848890724","att":"P","marks":39,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":725,"name":"K. Chaitra","class":"7C","phone":"9848890725","att":"P","marks":44,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":726,"name":"M. Deepak","class":"7C","phone":"9848890726","att":"P","marks":49,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":727,"name":"N. Eswari","class":"7C","phone":"9848890727","att":"P","marks":40,"remarks":"Quick mental math and active classroom response"},
+      {"roll":728,"name":"P. Farooq","class":"7C","phone":"9848890728","att":"P","marks":45,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":729,"name":"R. Geetha","class":"7C","phone":"9848890729","att":"P","marks":36,"remarks":"Very well behaved and disciplined student"},
+      {"roll":730,"name":"S. Harsha","class":"7C","phone":"9848890730","att":"P","marks":41,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":731,"name":"T. Indrani","class":"7C","phone":"9848890731","att":"P","marks":46,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":732,"name":"V. Jayanth","class":"7C","phone":"9848890732","att":"P","marks":37,"remarks":"Excellent homework notebook and neat handwriting"},
+      {"roll":733,"name":"Y. Kushal","class":"7C","phone":"9848890733","att":"P","marks":42,"remarks":"Quick mental math and active classroom response"},
+      {"roll":734,"name":"A. Lavanya","class":"7C","phone":"9848890734","att":"P","marks":47,"remarks":"Showing steady improvement in geometry theorems"},
+      {"roll":735,"name":"B. Mahesh","class":"7C","phone":"9848890735","att":"P","marks":38,"remarks":"Very well behaved and disciplined student"},
+      {"roll":736,"name":"C. Navya","class":"7C","phone":"9848890736","att":"P","marks":43,"remarks":"Good focus and prompt submission of assignments"},
+      {"roll":737,"name":"D. Pavan","class":"7C","phone":"9848890737","att":"P","marks":48,"remarks":"High accuracy in fractions and decimal arithmetic"},
+      {"roll":738,"name":"G. Rupa","class":"7C","phone":"9848890738","att":"P","marks":39,"remarks":"Excellent homework notebook and neat handwriting"},
+
+      // Class 10A Remedial (Exactly 32 Students)
+      {"roll":1001,"name":"K. Sai Tharun","class":"10A","phone":"9848911001","att":"P","marks":32,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1002,"name":"B. Vennela","class":"10A","phone":"9848911002","att":"P","marks":41,"remarks":"Board exam preparation: Improving step-by-step problem writing"},
+      {"roll":1003,"name":"M. Dinesh Kumar","class":"10A","phone":"9848911003","att":"A","marks":33,"remarks":"Great commitment shown in afternoon remedial sessions"},
+      {"roll":1004,"name":"V. Aditya","class":"10A","phone":"9848911004","att":"P","marks":42,"remarks":"Clarifies doubts regularly, formula retention is improving"},
+      {"roll":1005,"name":"P. Hema Latha","class":"10A","phone":"9848911005","att":"P","marks":34,"remarks":"Steady progress in weekly remedial math drills"},
+      {"roll":1006,"name":"T. Siri Varshini","class":"10A","phone":"9848911006","att":"P","marks":43,"remarks":"Very responsive to one-on-one coaching and practice papers"},
+      {"roll":1007,"name":"G. Sai Teja","class":"10A","phone":"9848911007","att":"P","marks":35,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1008,"name":"K. Tanvi Sree","class":"10A","phone":"9848911008","att":"P","marks":44,"remarks":"Board exam preparation: Improving step-by-step problem writing"},
+      {"roll":1009,"name":"S. Bhavana","class":"10A","phone":"9848911009","att":"P","marks":36,"remarks":"Great commitment shown in afternoon remedial sessions"},
+      {"roll":1010,"name":"M. Sravanthi","class":"10A","phone":"9848911010","att":"L","marks":45,"remarks":"Clarifies doubts regularly, formula retention is improving"},
+      {"roll":1011,"name":"A. Naveen","class":"10A","phone":"9848911011","att":"P","marks":37,"remarks":"Steady progress in weekly remedial math drills"},
+      {"roll":1012,"name":"CH. Rithwik","class":"10A","phone":"9848911012","att":"P","marks":46,"remarks":"Very responsive to one-on-one coaching and practice papers"},
+      {"roll":1013,"name":"D. Sai Charan","class":"10A","phone":"9848911013","att":"P","marks":38,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1014,"name":"G. Swetha","class":"10A","phone":"9848911014","att":"P","marks":47,"remarks":"Board exam preparation: Improving step-by-step problem writing"},
+      {"roll":1015,"name":"K. Bharat","class":"10A","phone":"9848911015","att":"P","marks":39,"remarks":"Great commitment shown in afternoon remedial sessions"},
+      {"roll":1016,"name":"M. Harish","class":"10A","phone":"9848911016","att":"P","marks":48,"remarks":"Clarifies doubts regularly, formula retention is improving"},
+      {"roll":1017,"name":"N. Pooja","class":"10A","phone":"9848911017","att":"P","marks":40,"remarks":"Steady progress in weekly remedial math drills"},
+      {"roll":1018,"name":"P. Srikanth","class":"10A","phone":"9848911018","att":"P","marks":32,"remarks":"Very responsive to one-on-one coaching and practice papers"},
+      {"roll":1019,"name":"R. Madhuri","class":"10A","phone":"9848911019","att":"A","marks":41,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1020,"name":"S. Vishnu","class":"10A","phone":"9848911020","att":"P","marks":33,"remarks":"Board exam preparation: Improving step-by-step problem writing"},
+      {"roll":1021,"name":"T. Anusha","class":"10A","phone":"9848911021","att":"P","marks":42,"remarks":"Great commitment shown in afternoon remedial sessions"},
+      {"roll":1022,"name":"V. Karthik","class":"10A","phone":"9848911022","att":"P","marks":34,"remarks":"Clarifies doubts regularly, formula retention is improving"},
+      {"roll":1023,"name":"Y. Deepa","class":"10A","phone":"9848911023","att":"P","marks":43,"remarks":"Steady progress in weekly remedial math drills"},
+      {"roll":1024,"name":"A. Sunil","class":"10A","phone":"9848911024","att":"P","marks":35,"remarks":"Very responsive to one-on-one coaching and practice papers"},
+      {"roll":1025,"name":"B. Rohini","class":"10A","phone":"9848911025","att":"P","marks":44,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1026,"name":"C. Prasad","class":"10A","phone":"9848911026","att":"P","marks":36,"remarks":"Board exam preparation: Improving step-by-step problem writing"},
+      {"roll":1027,"name":"D. Sireesha","class":"10A","phone":"9848911027","att":"P","marks":45,"remarks":"Great commitment shown in afternoon remedial sessions"},
+      {"roll":1028,"name":"G. Naveena","class":"10A","phone":"9848911028","att":"P","marks":37,"remarks":"Clarifies doubts regularly, formula retention is improving"},
+      {"roll":1029,"name":"K. Ramu","class":"10A","phone":"9848911029","att":"P","marks":46,"remarks":"Steady progress in weekly remedial math drills"},
+      {"roll":1030,"name":"M. Bindu","class":"10A","phone":"9848911030","att":"P","marks":38,"remarks":"Very responsive to one-on-one coaching and practice papers"},
+      {"roll":1031,"name":"P. Santosh","class":"10A","phone":"9848911031","att":"P","marks":47,"remarks":"Remedial focus: Practicing quadratic equations & trigonometry"},
+      {"roll":1032,"name":"R. Kalyani","class":"10A","phone":"9848911032","att":"P","marks":39,"remarks":"Board exam preparation: Improving step-by-step problem writing"}
     ],
     homework: [
       { id: 1, class: 'Class 8A', title: 'Chapter 2: Linear Equations Exercise 2.3', due: 'Sept 22, 2026', desc: 'Solve questions 1 through 8 in homework notebook. Step-by-step verification required.' },
@@ -1044,22 +1134,43 @@ var teacherApp = (function () {
     const overviewEl = document.getElementById('classOverviewContent');
     if (!overviewEl) return;
 
-    const cls = state.classes.find(c => c.id === classKey);
+    // Highlight active button in tab strip
+    const tabStrip = document.querySelector('#view-my-classes .tab-strip');
+    if (tabStrip) {
+      tabStrip.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('onclick')?.includes(`'${classKey}'`)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    const cls = state.classes.find(c => c.id === classKey) || state.classes[0];
     if (!cls) return;
 
-    const classCode = cls.name.replace('Class ', '').split(' ')[0];
+    const classCode = cls.code || cls.name.replace('Class ', '').split(' ')[0];
     const classStudents = state.students.filter(s => s.class === classCode);
 
     overviewEl.innerHTML = `
-      <div class="card p-4">
-        <div class="card-header-bar">
+      <div class="card p-4 mb-4" style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+        <div class="card-header-bar" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div>
-            <h3>${cls.name} — Detailed Section Dashboard</h3>
-            <p class="text-muted text-sm mt-1">${cls.isClassTeacher ? '⭐ You are the Class Teacher' : 'Subject Teacher (Mathematics)'} • ${cls.room} • ${cls.strength} Students Enrolled</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h3 style="margin: 0; font-size: 1.35rem; color: #0f172a;"><i class="fa-solid fa-shapes text-primary"></i> ${cls.name} &mdash; Section Dashboard</h3>
+              <span class="portal-badge ${cls.isClassTeacher ? 'badge-success' : 'badge-primary'}" style="font-size: 0.82rem; padding: 4px 10px;">
+                ${cls.isClassTeacher ? '⭐ Class Teacher Assigned' : '📘 Subject Teacher'}
+              </span>
+            </div>
+            <p class="text-muted text-sm mt-1" style="margin-bottom: 0;">
+              <strong>Subject:</strong> ${cls.subject} &bull; 
+              <strong>Classroom:</strong> ${cls.room} &bull; 
+              <strong>Schedule:</strong> ${cls.timing}
+            </p>
           </div>
           <div class="d-flex gap-2">
-            <button class="btn btn-primary btn-sm" onclick="teacherApp.openModal('markAttendanceModal')">
-              <i class="fa-solid fa-clipboard-user"></i> Mark Attendance
+            <button class="btn btn-primary btn-sm" onclick="teacherApp.navigateTo('students'); teacherApp.selectStudentClass('${classCode}');">
+              <i class="fa-solid fa-user-graduate"></i> View Students List
             </button>
             <button class="btn btn-secondary btn-sm" onclick="teacherApp.openModal('createHomeworkModal')">
               <i class="fa-solid fa-file-pen"></i> Assign Homework
@@ -1067,32 +1178,95 @@ var teacherApp = (function () {
           </div>
         </div>
 
-        <div class="metrics-quad mt-3">
-          <div class="metric-card">
-            <span class="metric-label">Total Strength</span>
-            <div class="metric-value">${cls.strength}</div>
-            <span class="metric-sub">Full active roster</span>
+        <!-- Class Details Metrics Bar -->
+        <div class="metrics-quad mt-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+          <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
+            <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Total Enrolled</span>
+            <div class="metric-value" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 4px 0;">${classStudents.length} Students</div>
+            <span class="metric-sub" style="font-size: 0.78rem; color: #64748b;">Active Section Roster</span>
           </div>
-          <div class="metric-card">
-            <span class="metric-label">Attendance Today</span>
-            <div class="metric-value text-emerald">95.2%</div>
-            <span class="metric-sub">2 Absentees</span>
+          <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
+            <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Today's Attendance</span>
+            <div class="metric-value text-emerald" style="font-size: 1.5rem; font-weight: 800; margin: 4px 0;">
+              ${((classStudents.filter(s => s.att === 'P').length / (classStudents.length || 1)) * 100).toFixed(1)}%
+            </div>
+            <span class="metric-sub" style="font-size: 0.78rem; color: #059669;">
+              ${classStudents.filter(s => s.att === 'P').length} Present &bull; ${classStudents.filter(s => s.att === 'A').length} Absent
+            </span>
           </div>
-          <div class="metric-card">
-            <span class="metric-label">Section Math Avg</span>
-            <div class="metric-value text-primary">${cls.avgScore}</div>
-            <span class="metric-sub">Term 1 Assessment</span>
+          <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
+            <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Subject Average</span>
+            <div class="metric-value text-primary" style="font-size: 1.5rem; font-weight: 800; margin: 4px 0;">${cls.avgScore}</div>
+            <span class="metric-sub" style="font-size: 0.78rem; color: #2563eb;">Top: ${cls.topper}</span>
           </div>
-          <div class="metric-card">
-            <span class="metric-label">Syllabus Pacing</span>
-            <div class="metric-value text-amber">84%</div>
-            <span class="metric-sub">On target for Quarterly</span>
+          <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
+            <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Curriculum Progress</span>
+            <div class="metric-value text-amber" style="font-size: 1.5rem; font-weight: 800; margin: 4px 0;">86%</div>
+            <span class="metric-sub" style="font-size: 0.78rem; color: #d97706;">Term 1 Syllabus Completed</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Class Students Details Table -->
+      <div class="card p-4">
+        <div class="card-header-bar mb-3" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h4 style="margin: 0; font-size: 1.15rem; color: #0f172a;">
+              <i class="fa-solid fa-user-graduate text-primary"></i> ${cls.name} &mdash; Enrolled Student Details (${classStudents.length} Students)
+            </h4>
+            <p class="text-muted text-xs mt-1">Complete individual student credentials, attendance record, and parent contact details.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="teacherApp.navigateTo('students'); teacherApp.selectStudentClass('${classCode}');">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in Student Roster
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 80px;">Roll No</th>
+                <th>Student Name</th>
+                <th class="text-center" style="width: 100px;">Class</th>
+                <th>Parent Phone</th>
+                <th class="text-center" style="width: 110px;">Attendance</th>
+                <th class="text-center" style="width: 110px;">Maths Score</th>
+                <th class="text-center" style="width: 90px;">Grade</th>
+                <th class="text-center" style="width: 100px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${classStudents.map(s => {
+                const grade = s.marks >= 45 ? 'A1' : (s.marks >= 40 ? 'A2' : (s.marks >= 35 ? 'B1' : 'B2'));
+                const attPct = s.att === 'P' ? '96%' : (s.att === 'L' ? '91%' : '86%');
+                return `
+                  <tr>
+                    <td class="text-center"><strong>#${s.roll}</strong></td>
+                    <td><strong>${s.name}</strong></td>
+                    <td class="text-center"><span class="portal-badge badge-primary">${cls.name}</span></td>
+                    <td><a href="tel:${s.phone}" style="color: var(--color-primary); text-decoration: none;"><i class="fa-solid fa-phone text-xs"></i> ${s.phone}</a></td>
+                    <td class="text-center">
+                      <span class="portal-badge ${s.att === 'P' ? 'badge-success' : (s.att === 'L' ? 'badge-warning' : 'badge-danger')}">
+                        ${attPct}
+                      </span>
+                    </td>
+                    <td class="text-center"><strong>${s.marks} / 50</strong></td>
+                    <td class="text-center"><span class="portal-badge ${grade.startsWith('A') ? 'badge-success' : 'badge-primary'}">${grade}</span></td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.viewStudentDossier(${s.roll})" title="View Student Dossier">
+                        <i class="fa-regular fa-id-badge"></i> Dossier
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
         </div>
       </div>
     `;
 
-    showToast(`Loaded ${cls.name} Overview`, 'info');
+    showToast(`Loaded ${cls.name} Class & Student Details (${classStudents.length} Students)`, 'info');
   }
 
   function renderAll() {
@@ -1178,8 +1352,95 @@ var teacherApp = (function () {
     }).join('');
   }
 
+  
+  function selectStudentClass(classCode) {
+    const select = document.getElementById('studentClassFilterSelect');
+    if (select) select.value = classCode;
+
+    // Update active pill
+    document.querySelectorAll('.btn-class-pill').forEach(btn => {
+      if (btn.id === 'btnClassPill-' + classCode) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    renderClassInfoBanner(classCode);
+    filterStudentList();
+  }
+
+  function renderClassInfoBanner(classCode) {
+    const banner = document.getElementById('studentClassInfoBanner');
+    if (!banner) return;
+
+    if (classCode === 'ALL') {
+      banner.innerHTML = `
+        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; padding: 1.15rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.1);">
+          <div>
+            <div style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-chalkboard-user text-amber"></i> All Assigned Teaching Classes (Combined Roster)
+            </div>
+            <div style="font-size: 0.84rem; color: #94a3b8; margin-top: 4px;">
+              Faculty: Ms. Anjali &bull; Total 4 Sections: Class 8A (Class Teacher), Class 9B (Maths), Class 7C (Maths), Class 10A (Remedial)
+            </div>
+          </div>
+          <div style="display: flex; gap: 20px;">
+            <div style="text-align: right;">
+              <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase;">Total Students</div>
+              <div style="font-size: 1.35rem; font-weight: 800; color: #38bdf8;">${state.students.length} Students</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase;">Average Attendance</div>
+              <div style="font-size: 1.35rem; font-weight: 800; color: #4ade80;">95.4%</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const cls = state.classes.find(c => c.code === classCode || c.name.includes(classCode)) || state.classes[0];
+    const classStudents = state.students.filter(s => s.class === classCode);
+    const presentCount = classStudents.filter(s => s.att === 'P').length;
+    const absentCount = classStudents.filter(s => s.att === 'A').length;
+    const attPct = classStudents.length ? ((presentCount / classStudents.length) * 100).toFixed(1) : '95.0';
+
+    banner.innerHTML = `
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #2563eb; padding: 1.15rem 1.5rem; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a;">
+              <i class="fa-solid fa-graduation-cap text-primary"></i> ${cls.name} &mdash; Class Details &amp; Active Roster
+            </h3>
+            <span class="portal-badge ${cls.isClassTeacher ? 'badge-success' : 'badge-primary'}" style="font-size: 0.78rem;">
+              ${cls.isClassTeacher ? '⭐ Class Teacher Section' : '📘 Subject Class'}
+            </span>
+          </div>
+          <div style="font-size: 0.83rem; color: #64748b; margin-top: 5px;">
+            <span><i class="fa-solid fa-door-open"></i> ${cls.room}</span> &bull; 
+            <span><i class="fa-regular fa-clock"></i> ${cls.timing}</span> &bull; 
+            <span><i class="fa-solid fa-book"></i> ${cls.subject}</span> &bull; 
+            <span><i class="fa-solid fa-trophy text-amber"></i> Top Scorer: <strong>${cls.topper}</strong></span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="text-align: right;">
+            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Enrolled Strength</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">${classStudents.length} Students</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Today's Attendance</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #059669;">${attPct}% (${presentCount} Present, ${absentCount} Absent)</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function filterStudentList() {
     const filterVal = document.getElementById('studentClassFilterSelect')?.value || '8A';
+    renderClassInfoBanner(filterVal);
     if (!filterVal || filterVal === 'ALL') {
       renderStudentsList(state.students);
       return;
@@ -1970,6 +2231,11 @@ var teacherApp = (function () {
     }
   }
 
+  function resetProfile() {
+    loadSavedProfile();
+    showToast('Profile form reset to saved values', 'info');
+  }
+
   function saveProfile(e) {
     if (e && e.preventDefault) e.preventDefault();
     const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
@@ -2148,6 +2414,8 @@ var teacherApp = (function () {
     switchClassTab,
     toggleTask,
     filterStudentList,
+    selectStudentClass,
+    renderClassInfoBanner,
     filterDashboardStudents,
     setAttendance,
     markAllPresent,

@@ -1590,6 +1590,19 @@ const portalApp = (function () {
 
     state.activeModule = moduleKey;
 
+    try {
+      sessionStorage.setItem('sv_mgmt_last_module', moduleKey);
+      localStorage.setItem('sv_mgmt_last_module', moduleKey);
+      if (subKey) {
+        sessionStorage.setItem('sv_mgmt_last_sub', subKey);
+        localStorage.setItem('sv_mgmt_last_sub', subKey);
+      }
+      const targetHash = subKey ? `${moduleKey}-${subKey}` : moduleKey;
+      if (window.location.hash.replace('#', '') !== targetHash) {
+        history.replaceState(null, '', '#' + targetHash);
+      }
+    } catch (e) {}
+
     // Update sidebar active class
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {

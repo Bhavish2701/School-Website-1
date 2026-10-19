@@ -366,17 +366,36 @@ var teacherApp = (function () {
   function setupHashRouting() {
     function handleHash() {
       const hash = window.location.hash.replace('#', '');
+      let mod = null;
+      let sub = null;
+
       if (hash) {
         if (hash === 'security' || hash === 'change-password' || hash === 'password') {
           navigateTo('security');
           return;
         }
-        const parts = hash.split('-');
-        const mod = parts[0];
-        const sub = parts[1] || null;
-        if (document.getElementById(`view-${mod}`)) {
-          navigateTo(mod, sub);
+        if (hash.startsWith('profile-')) {
+          const profTab = hash.replace('profile-', '');
+          navigateTo('profile');
+          switchProfileTab(profTab);
+          return;
         }
+        const parts = hash.split('-');
+        mod = parts[0];
+        sub = parts.slice(1).join('-') || null;
+      } else {
+        mod = sessionStorage.getItem('sv_teacher_last_module') || localStorage.getItem('sv_teacher_last_module') || 'dashboard';
+        sub = sessionStorage.getItem('sv_teacher_last_sub') || localStorage.getItem('sv_teacher_last_sub') || null;
+      }
+
+      if (document.getElementById(`view-${mod}`)) {
+        navigateTo(mod, sub);
+        if (mod === 'profile') {
+          const lastProfTab = sessionStorage.getItem('sv_teacher_last_profile_tab') || localStorage.getItem('sv_teacher_last_profile_tab') || 'personal';
+          switchProfileTab(lastProfTab);
+        }
+      } else {
+        navigateTo('dashboard');
       }
     }
     window.addEventListener('hashchange', handleHash);
@@ -393,6 +412,22 @@ var teacherApp = (function () {
     if (!view) return;
 
     state.activeModule = moduleKey;
+
+    try {
+      sessionStorage.setItem('sv_teacher_last_module', moduleKey);
+      localStorage.setItem('sv_teacher_last_module', moduleKey);
+      if (subKey) {
+        sessionStorage.setItem('sv_teacher_last_sub', subKey);
+        localStorage.setItem('sv_teacher_last_sub', subKey);
+      } else {
+        sessionStorage.removeItem('sv_teacher_last_sub');
+        localStorage.removeItem('sv_teacher_last_sub');
+      }
+      const targetHash = (subKey && subKey !== 'security') ? `${moduleKey}-${subKey}` : (subKey === 'security' ? 'security' : moduleKey);
+      if (window.location.hash.replace('#', '') !== targetHash) {
+        history.replaceState(null, '', '#' + targetHash);
+      }
+    } catch (e) {}
 
     // Active sidebar class
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -1646,6 +1681,15 @@ var teacherApp = (function () {
   function switchProfileTab(tabId) {
     if (tabId === 'identity' || tabId === 'bank') tabId = 'identity-bank';
     if (tabId === 'password' || tabId === 'change-password') tabId = 'security';
+
+    try {
+      sessionStorage.setItem('sv_teacher_last_profile_tab', tabId);
+      localStorage.setItem('sv_teacher_last_profile_tab', tabId);
+      const targetHash = (tabId === 'security') ? 'security' : `profile-${tabId}`;
+      if (window.location.hash.replace('#', '') !== targetHash) {
+        history.replaceState(null, '', '#' + targetHash);
+      }
+    } catch (e) {}
     document.querySelectorAll('.prof-tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.prof-tab-content').forEach(c => c.style.display = 'none');
 

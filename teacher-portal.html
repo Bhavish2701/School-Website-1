@@ -1761,6 +1761,15 @@
       if (tabId === 'identity' || tabId === 'bank') tabId = 'identity-bank';
       if (tabId === 'password' || tabId === 'change-password') tabId = 'security';
 
+      try {
+        sessionStorage.setItem('sv_teacher_last_profile_tab', tabId);
+        localStorage.setItem('sv_teacher_last_profile_tab', tabId);
+        var targetHash = (tabId === 'security') ? 'security' : ('profile-' + tabId);
+        if (window.location.hash.replace('#', '') !== targetHash) {
+          history.replaceState(null, '', '#' + targetHash);
+        }
+      } catch (e) {}
+
       document.querySelectorAll('.prof-tab-btn').forEach(function(btn) { btn.classList.remove('active'); });
       document.querySelectorAll('.prof-tab-content').forEach(function(c) { c.style.display = 'none'; });
 

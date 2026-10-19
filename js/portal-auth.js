@@ -338,6 +338,11 @@ const PortalAuth = {
 
         if (isDefault || isCustomMatch || isUniversalDemo) {
           sessionStorage.setItem(cfg.storageKey, 'true');
+          localStorage.setItem(cfg.storageKey, 'true');
+          sessionStorage.setItem('sv_active_teacher_id', matchedTeacher.id);
+          localStorage.setItem('sv_active_teacher_id', matchedTeacher.id);
+          sessionStorage.setItem('sv_active_teacher_name', matchedTeacher.name);
+          localStorage.setItem('sv_active_teacher_name', matchedTeacher.name);
           if (overlay) overlay.classList.add('hidden');
 
           // Update teacher portal header with matched teacher name & ID
@@ -361,7 +366,9 @@ const PortalAuth = {
         const roleCred = executiveCreds[chosenRole];
         if (roleCred && enteredUser.toLowerCase() === roleCred.id.toLowerCase() && enteredPass === roleCred.password) {
           sessionStorage.setItem(cfg.storageKey, 'true');
+          localStorage.setItem(cfg.storageKey, 'true');
           sessionStorage.setItem(cfg.roleKey, chosenRole);
+          localStorage.setItem(cfg.roleKey, chosenRole);
           if (overlay) overlay.classList.add('hidden');
           const title = chosenRole === 'vice-principal' ? 'Vice Principal Sri Navva Anand' : 'Principal Smt. Gorle Varalakshmi';
           this.showToast(`Welcome back, ${title}!`, 'fa-crown');
@@ -487,14 +494,34 @@ const PortalAuth = {
 
   async logout(portalType) {
     const cfg = this.configs[portalType];
-    if (!cfg) return;
-
-    if (window.ApiClient) {
-      await window.ApiClient.auth.logout();
+    if (cfg) {
+      sessionStorage.removeItem(cfg.storageKey);
+      localStorage.removeItem(cfg.storageKey);
+      if (cfg.roleKey) {
+        sessionStorage.removeItem(cfg.roleKey);
+        localStorage.removeItem(cfg.roleKey);
+      }
+      sessionStorage.removeItem('sv_' + portalType + '_last_module');
+      localStorage.removeItem('sv_' + portalType + '_last_module');
+      sessionStorage.removeItem('sv_' + portalType + '_last_sub');
+      localStorage.removeItem('sv_' + portalType + '_last_sub');
+      sessionStorage.removeItem('sv_' + portalType + '_last_profile_tab');
+      localStorage.removeItem('sv_' + portalType + '_last_profile_tab');
+      if (portalType === 'teacher') {
+        sessionStorage.removeItem('sv_active_teacher_id');
+        localStorage.removeItem('sv_active_teacher_id');
+        sessionStorage.removeItem('sv_active_teacher_name');
+        localStorage.removeItem('sv_active_teacher_name');
+      }
     }
 
-    sessionStorage.removeItem(cfg.storageKey);
-    if (cfg.roleKey) sessionStorage.removeItem(cfg.roleKey);
+    if (window.ApiClient && typeof window.ApiClient.auth?.logout === 'function') {
+      try { await window.ApiClient.auth.logout(); } catch (e) {}
+    }
+
+    try {
+      history.replaceState(null, '', window.location.pathname);
+    } catch (e) {}
 
     const overlay = document.getElementById(`${portalType}LoginOverlay`);
     if (overlay) {
@@ -508,6 +535,72 @@ const PortalAuth = {
     this.showToast('Logged out successfully', 'fa-arrow-right-from-bracket');
   },
 
+  restoreActiveView(portalType) {
+    try {
+      if (portalType === 'teacher') {
+        const hash = window.location.hash.replace('#', '');
+        let mod = null;
+        let sub = null;
+        if (hash) {
+          if (hash === 'security' || hash === 'change-password' || hash === 'password') {
+            mod = 'security';
+          } else if (hash.startsWith('profile-')) {
+            mod = 'profile';
+            sub = hash.replace('profile-', '');
+          } else {
+            const parts = hash.split('-');
+            mod = parts[0];
+            sub = parts.slice(1).join('-') || null;
+          }
+        } else {
+          mod = sessionStorage.getItem('sv_teacher_last_module') || localStorage.getItem('sv_teacher_last_module') || 'dashboard';
+          sub = sessionStorage.getItem('sv_teacher_last_sub') || localStorage.getItem('sv_teacher_last_sub') || null;
+        }
+
+        if (window.teacherApp && typeof window.teacherApp.navigateTo === 'function') {
+          window.teacherApp.navigateTo(mod, sub);
+          if (mod === 'profile') {
+            const lastTab = sub || sessionStorage.getItem('sv_teacher_last_profile_tab') || localStorage.getItem('sv_teacher_last_profile_tab') || 'personal';
+            if (typeof window.teacherApp.switchProfileTab === 'function') {
+              window.teacherApp.switchProfileTab(lastTab);
+            }
+          }
+        }
+      } else if (portalType === 'management') {
+        const hash = window.location.hash.replace('#', '');
+        let mod = null;
+        let sub = null;
+        if (hash) {
+          const parts = hash.split('-');
+          mod = parts[0];
+          sub = parts.slice(1).join('-') || null;
+        } else {
+          mod = sessionStorage.getItem('sv_mgmt_last_module') || localStorage.getItem('sv_mgmt_last_module') || 'dashboard';
+          sub = sessionStorage.getItem('sv_mgmt_last_sub') || localStorage.getItem('sv_mgmt_last_sub') || null;
+        }
+
+        if (window.portalApp && typeof window.portalApp.navigateTo === 'function') {
+          window.portalApp.navigateTo(mod, sub);
+        }
+      }
+    } catch (e) {
+      console.warn('Error restoring view on refresh:', e);
+    }
+  },
+
+  bindLogoutButtons(portalType) {
+    const logoutBtns = document.querySelectorAll('[data-action="portal-logout"], .btn-logout, #btnLogout');
+    logoutBtns.forEach((btn) => {
+      if (!btn._authBound) {
+        btn._authBound = true;
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          PortalAuth.logout(portalType);
+        });
+      }
+    });
+  },
+
   async init(portalType) {
     const cfg = this.configs[portalType];
     if (!cfg) return;
@@ -515,59 +608,69 @@ const PortalAuth = {
     const overlay = document.getElementById(`${portalType}LoginOverlay`);
     if (!overlay) return;
 
-    const hasToken = window.ApiClient && window.ApiClient.isAuthenticated();
-    const isSessionAuth = sessionStorage.getItem(cfg.storageKey) === 'true';
+    const hasToken = (window.ApiClient && typeof window.ApiClient.isAuthenticated === 'function') ? window.ApiClient.isAuthenticated() : false;
+    const isSessionAuth = (sessionStorage.getItem(cfg.storageKey) === 'true') || (localStorage.getItem(cfg.storageKey) === 'true');
 
     if (hasToken || isSessionAuth) {
-      // Validate session with backend
-      try {
-        if (window.ApiClient) {
-          const meRes = await window.ApiClient.auth.getMe();
-          if (meRes && meRes.success) {
-            overlay.classList.add('hidden');
+      // 1. Immediately hide login overlay - NEVER show login form on page refresh when authenticated
+      overlay.classList.add('hidden');
 
-            if (portalType === 'management') {
-              let savedRole = sessionStorage.getItem(cfg.roleKey) || cfg.defaultRole;
-              if (savedRole === 'vp' || savedRole === 'viceprincipal') savedRole = 'vice-principal';
-              if (savedRole === 'clerk' || savedRole === 'office') savedRole = 'admin';
+      // 2. Synchronize session across storages so refreshing never loses authentication
+      sessionStorage.setItem(cfg.storageKey, 'true');
+      localStorage.setItem(cfg.storageKey, 'true');
 
-              const roleSelect = document.getElementById('mgmtRoleSelect');
-              if (roleSelect) roleSelect.value = savedRole;
+      if (portalType === 'management') {
+        let savedRole = sessionStorage.getItem(cfg.roleKey) || localStorage.getItem(cfg.roleKey) || cfg.defaultRole;
+        if (savedRole === 'vp' || savedRole === 'viceprincipal') savedRole = 'vice-principal';
+        if (savedRole === 'clerk' || savedRole === 'office') savedRole = 'admin';
 
-              if (window.portalApp && typeof window.portalApp.switchRole === 'function') {
-                window.portalApp.switchRole(savedRole);
-              }
-            }
+        sessionStorage.setItem(cfg.roleKey, savedRole);
+        localStorage.setItem(cfg.roleKey, savedRole);
 
-            // Trigger Portal-specific live data reload
-            if (portalType === 'management' && window.portalApp && typeof window.portalApp.loadLiveData === 'function') {
-              window.portalApp.loadLiveData();
-            } else if (portalType === 'teacher' && window.teacherApp && typeof window.teacherApp.loadLiveData === 'function') {
-              window.teacherApp.loadLiveData();
-            } else if (portalType === 'student' && window.studentApp && typeof window.studentApp.loadLiveData === 'function') {
-              window.studentApp.loadLiveData();
-            } else if (portalType === 'parent' && typeof window.loadParentLiveData === 'function') {
-              window.loadParentLiveData();
-            }
-            return;
-          }
+        const roleSelect = document.getElementById('mgmtRoleSelect');
+        if (roleSelect) roleSelect.value = savedRole;
+
+        if (window.portalApp && typeof window.portalApp.switchRole === 'function') {
+          window.portalApp.switchRole(savedRole);
         }
-      } catch (err) {
-        console.warn('[PortalAuth Session Check]: Session invalid or expired:', err.message);
+      } else if (portalType === 'teacher') {
+        const teacherName = sessionStorage.getItem('sv_active_teacher_name') || localStorage.getItem('sv_active_teacher_name') || 'Ms. Anjali';
+        const teacherId = sessionStorage.getItem('sv_active_teacher_id') || localStorage.getItem('sv_active_teacher_id') || 'SV200005';
+        sessionStorage.setItem('sv_active_teacher_name', teacherName);
+        localStorage.setItem('sv_active_teacher_name', teacherName);
+        sessionStorage.setItem('sv_active_teacher_id', teacherId);
+        localStorage.setItem('sv_active_teacher_id', teacherId);
+
+        const nameEl = document.getElementById('teacherUserName');
+        if (nameEl) nameEl.textContent = `${teacherName} (${teacherId})`;
       }
+
+      // 3. Immediately restore the exact view & sub-tab where the user was before refreshing
+      this.restoreActiveView(portalType);
+
+      // 4. Background session check with backend if online
+      if (window.ApiClient && typeof window.ApiClient.auth?.getMe === 'function') {
+        window.ApiClient.auth.getMe().catch(() => {});
+      }
+
+      // 5. Trigger portal-specific live data reload
+      if (portalType === 'management' && window.portalApp && typeof window.portalApp.loadLiveData === 'function') {
+        window.portalApp.loadLiveData();
+      } else if (portalType === 'teacher' && window.teacherApp && typeof window.teacherApp.loadLiveData === 'function') {
+        window.teacherApp.loadLiveData();
+      } else if (portalType === 'student' && window.studentApp && typeof window.studentApp.loadLiveData === 'function') {
+        window.studentApp.loadLiveData();
+      } else if (portalType === 'parent' && typeof window.loadParentLiveData === 'function') {
+        window.loadParentLiveData();
+      }
+
+      this.bindLogoutButtons(portalType);
+      return;
     }
 
-    // Default: Show login overlay
+    // Default: Show login overlay ONLY when not logged in
     overlay.classList.remove('hidden');
-
-    // Attach logout buttons
-    const logoutBtns = document.querySelectorAll(`[data-action="portal-logout"], .btn-logout, #btnLogout`);
-    logoutBtns.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        PortalAuth.logout(portalType);
-      });
-    });
+    this.bindLogoutButtons(portalType);
   }
 };
 

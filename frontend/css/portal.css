@@ -7965,3 +7965,15 @@ input:disabled + .perm-slider {
   background: rgba(239, 68, 68, 0.2) !important;
   color: #EF4444 !important;
 }
+
+
+/* Base Card Component */
+.card {
+  background: var(--color-bg-card, var(--color-bg-surface, #FFFFFF));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-text-main);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}

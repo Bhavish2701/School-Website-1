@@ -1347,7 +1347,7 @@ var teacherApp = (function () {
     const classStudents = state.students.filter(s => s.class === classCode);
 
     overviewEl.innerHTML = `
-      <div class="card p-4 mb-4" style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div class="card p-4 mb-4" style="padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.03); box-sizing: border-box;">
         <div class="card-header-bar" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -1402,7 +1402,7 @@ var teacherApp = (function () {
       </div>
 
       <!-- Class Students Details Table -->
-      <div class="card p-4">
+      <div class="card p-4" style="padding: 1.5rem; box-sizing: border-box;">
         <div class="card-header-bar mb-3" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div>
             <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-text-dark);">

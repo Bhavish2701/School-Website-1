@@ -62,7 +62,8 @@
 [data-theme="dark"] {
   --color-primary: #3B82F6;
   --color-primary-hover: #60A5FA;
-  --color-primary-dark: #93C5FD;
+  --color-primary-dark: #0B132B;
+  --color-primary-light: #93C5FD;
   --color-primary-subtle: rgba(59, 130, 246, 0.15);
   --color-primary-tint: rgba(59, 130, 246, 0.25);
 
@@ -7976,4 +7977,111 @@ input:disabled + .perm-slider {
   color: var(--color-text-main);
   padding: 1.5rem;
   box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   Executive Dashboard Dark Mode Color Harmony & Contrast
+   ========================================================================== */
+[data-theme="dark"] .welcome-banner {
+  background: linear-gradient(135deg, #0B132B 0%, #172554 45%, #1E3A8A 100%) !important;
+  border: 1px solid #243048 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="dark"] .welcome-badge {
+  background: rgba(59, 130, 246, 0.2) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  color: #93C5FD !important;
+}
+
+[data-theme="dark"] .welcome-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .welcome-subtitle {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .welcome-meta .meta-pill {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #E2E8F0 !important;
+}
+
+[data-theme="dark"] .sidebar-role-indicator {
+  background: rgba(30, 58, 138, 0.25) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .sidebar-role-indicator .role-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .sidebar-role-indicator .role-holder {
+  color: #93C5FD !important;
+}
+
+[data-theme="dark"] .role-pill-btn {
+  background: var(--color-bg-card, #151F32);
+  border-color: var(--color-border, #243048);
+  color: var(--color-text-main, #E2E8F0);
+}
+
+[data-theme="dark"] .role-pill-btn i {
+  background: var(--color-bg-subtle, #1E293B);
+  color: #94A3B8;
+}
+
+[data-theme="dark"] .role-pill-btn .role-btn-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .role-pill-btn .role-btn-name {
+  color: #94A3B8;
+}
+
+[data-theme="dark"] .role-pill-btn .role-btn-tag {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94A3B8;
+}
+
+[data-theme="dark"] .role-pill-btn:hover {
+  border-color: #3B82F6;
+  background: rgba(59, 130, 246, 0.12);
+}
+
+[data-theme="dark"] .role-pill-btn:hover i {
+  color: #60A5FA;
+  background: rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .role-pill-btn.active {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  border-color: #3B82F6 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.5) !important;
+}
+
+[data-theme="dark"] .role-pill-btn.active i {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .role-pill-btn.active .role-btn-title,
+[data-theme="dark"] .role-pill-btn.active .role-btn-name {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .role-pill-btn.active .role-btn-tag {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+[data-theme="dark"] .toast {
+  background: #0F172A !important;
+  border: 1px solid var(--color-border, #243048) !important;
+  color: #FFFFFF !important;
 }

@@ -24,6 +24,7 @@
 
   --color-bg-base: #F8FAFC;
   --color-bg-surface: #FFFFFF;
+  --color-surface: #FFFFFF;
   --color-bg-subtle: #F1F5F9;
   --color-bg-card: #FFFFFF;
   --color-border: #E2E8F0;
@@ -64,6 +65,7 @@
 
   --color-bg-base: #0B1120;
   --color-bg-surface: #151F32;
+  --color-surface: #151F32;
   --color-bg-subtle: #1E293B;
   --color-bg-card: #151F32;
   --color-border: #243048;
@@ -2146,3 +2148,41 @@ body {
   border-color: var(--color-primary);
   color: #ffffff !important;
 }
+
+/* Sidebar User Card with Dark Theme support */
+.sidebar-user-card {
+  padding: 0.85rem 1.15rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 5;
+  transition: background 0.22s ease, border-color 0.22s ease;
+}
+
+[data-theme="dark"] .sidebar-user-card {
+  background: var(--color-bg-surface, #151F32) !important;
+  border-top-color: var(--color-border, #243048) !important;
+}
+
+[data-theme="dark"] .sidebar-user-card .user-name {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .sidebar-user-card .user-badge {
+  color: var(--color-primary-light, #10B981) !important;
+}
+
+[data-theme="dark"] .sidebar-user-card .btn-logout {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .sidebar-user-card .btn-logout:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #EF4444 !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+

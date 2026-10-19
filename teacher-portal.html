@@ -320,12 +320,12 @@
 
       <!-- Sidebar Footer User Card -->
       <div class="sidebar-user-card" onclick="teacherApp.navigateTo('profile')" style="cursor: pointer;" title="View & Edit My Profile">
-        <div class="user-avatar-mini" id="teacherUserAvatar" style="background: #059669;">
+        <div class="user-avatar-mini" id="teacherUserAvatar">
           <i class="fa-solid fa-chalkboard-user"></i>
         </div>
         <div class="user-meta">
           <span class="user-name" id="teacherUserName">Ms. Anjali</span>
-          <span class="user-badge" id="teacherUserDesignation" style="color: #059669;">Class Teacher (8A)</span>
+          <span class="user-badge" id="teacherUserDesignation">Class Teacher (8A)</span>
         </div>
         <button type="button" class="btn-logout" data-action="portal-logout" onclick="event.stopPropagation(); PortalAuth.logout('teacher')" title="Fast Logout from Teacher Portal">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -706,7 +706,7 @@
                   <span style="color: #F59E0B;"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i> Late: <span id="attLiveLatePct">2.4%</span></span>
                   <span style="color: #EF4444;"><i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i> Absent: <span id="attLiveAbsentPct">4.8%</span></span>
                 </div>
-                <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #e2e8f0;">
+                <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--color-bg-subtle, #e2e8f0);">
                   <div id="attLivePresentBar" style="width: 92.9%; background: #10B981; transition: width 0.4s ease;"></div>
                   <div id="attLiveLateBar" style="width: 2.4%; background: #F59E0B; transition: width 0.4s ease;"></div>
                   <div id="attLiveAbsentBar" style="width: 4.8%; background: #EF4444; transition: width 0.4s ease;"></div>

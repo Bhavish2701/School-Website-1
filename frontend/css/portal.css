@@ -25,6 +25,7 @@
 
   --color-bg-base: #F8FAFC;
   --color-bg-surface: #FFFFFF;
+  --color-surface: #FFFFFF;
   --color-bg-subtle: #F1F5F9;
   --color-bg-card: #FFFFFF;
   --color-border: #E2E8F0;
@@ -67,6 +68,7 @@
 
   --color-bg-base: #0B1120;
   --color-bg-surface: #151F32;
+  --color-surface: #151F32;
   --color-bg-subtle: #1E293B;
   --color-bg-card: #151F32;
   --color-border: #243048;
@@ -7942,4 +7944,24 @@ input:disabled + .perm-slider {
   display: flex;
   gap: 10px;
   justify-content: center;
+}
+
+
+/* Universal Dark Mode for Sidebar User Card */
+[data-theme="dark"] .sidebar-user-card {
+  background: var(--color-bg-surface, #151F32) !important;
+  border-top-color: var(--color-border, #243048) !important;
+}
+[data-theme="dark"] .sidebar-user-card .user-name {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .sidebar-user-card .user-badge {
+  color: #60A5FA !important;
+}
+[data-theme="dark"] .sidebar-user-card .btn-logout {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .sidebar-user-card .btn-logout:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #EF4444 !important;
 }

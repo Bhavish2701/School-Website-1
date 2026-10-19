@@ -455,35 +455,70 @@ var teacherApp = (function () {
 
   function setupHashRouting() {
     function handleHash() {
-      const hash = window.location.hash.replace('#', '');
+      const rawHash = (window.location.hash || '').replace('#', '').trim();
       let mod = null;
       let sub = null;
 
-      if (hash) {
-        if (hash === 'security' || hash === 'change-password' || hash === 'password') {
-          navigateTo('security');
+      if (rawHash) {
+        if (rawHash === 'security' || rawHash === 'change-password' || rawHash === 'password') {
+          navigateTo('profile', 'security');
           return;
         }
-        if (hash.startsWith('profile-')) {
-          const profTab = hash.replace('profile-', '');
-          navigateTo('profile');
-          switchProfileTab(profTab);
+        if (rawHash.startsWith('profile-') || rawHash.startsWith('prof-')) {
+          const profTab = rawHash.replace('profile-', '').replace('prof-', '');
+          navigateTo('profile', profTab);
           return;
         }
-        const parts = hash.split('-');
-        mod = parts[0];
-        sub = parts.slice(1).join('-') || null;
+
+        // Sublink aliases and prefixes
+        if (rawHash.startsWith('my-classes')) {
+          mod = 'my-classes';
+          sub = rawHash.replace('my-classes-', '').replace('my-classes', '') || null;
+        } else if (rawHash.startsWith('class-')) {
+          mod = 'my-classes';
+          sub = rawHash.replace('class-', '');
+        } else if (rawHash.startsWith('students-')) {
+          mod = 'students';
+          sub = rawHash.replace('students-', '');
+        } else if (rawHash.startsWith('attendance-')) {
+          mod = 'attendance';
+          sub = rawHash.replace('attendance-', '');
+        } else if (rawHash.startsWith('academics-')) {
+          mod = 'academics';
+          sub = rawHash.replace('academics-', '');
+        } else if (rawHash.startsWith('examinations-')) {
+          mod = 'examinations';
+          sub = rawHash.replace('examinations-', '');
+        } else if (rawHash.startsWith('exams-')) {
+          mod = 'examinations';
+          sub = rawHash.replace('exams-', '');
+        } else if (rawHash.startsWith('timetable-')) {
+          mod = 'timetable';
+          sub = rawHash.replace('timetable-', '');
+        } else if (rawHash.startsWith('comm-')) {
+          mod = 'communication';
+          sub = rawHash.replace('comm-', '');
+        } else if (rawHash.startsWith('communication-')) {
+          mod = 'communication';
+          sub = rawHash.replace('communication-', '');
+        } else if (rawHash.startsWith('leave-')) {
+          mod = 'leave';
+          sub = rawHash.replace('leave-', '');
+        } else if (rawHash.startsWith('reports-')) {
+          mod = 'reports';
+          sub = rawHash.replace('reports-', '');
+        } else {
+          const parts = rawHash.split('-');
+          mod = parts[0];
+          sub = parts.slice(1).join('-') || null;
+        }
       } else {
         mod = sessionStorage.getItem('sv_teacher_last_module') || localStorage.getItem('sv_teacher_last_module') || 'dashboard';
         sub = sessionStorage.getItem('sv_teacher_last_sub') || localStorage.getItem('sv_teacher_last_sub') || null;
       }
 
-      if (document.getElementById(`view-${mod}`)) {
+      if (document.getElementById('view-' + mod)) {
         navigateTo(mod, sub);
-        if (mod === 'profile') {
-          const lastProfTab = sessionStorage.getItem('sv_teacher_last_profile_tab') || localStorage.getItem('sv_teacher_last_profile_tab') || 'personal';
-          switchProfileTab(lastProfTab);
-        }
       } else {
         navigateTo('dashboard');
       }
@@ -492,14 +527,152 @@ var teacherApp = (function () {
     handleHash();
   }
 
+  
+  // =========================================================================
+  // PRINCIPAL & VICE PRINCIPAL FACULTY ACCESS GOVERNANCE ENGINE
+  // =========================================================================
+  const DEFAULT_FACULTY_MODULE_PERMS = {
+    'dashboard': true,
+    'my-classes': true,
+    'students': true,
+    'attendance': true,
+    'academics': true,
+    'examinations': true,
+    'timetable': true,
+    'communication': true,
+    'leave': true,
+    'reports': true,
+    'profile': true
+  };
+
+  function getFacultyPermissions(teacherId) {
+    try {
+      const activeId = teacherId || sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+      const stored = localStorage.getItem('sv_teacher_permissions_' + activeId);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Map granular keys to module keys
+        return {
+          'dashboard': true,
+          'my-classes': parsed.class_sections !== false,
+          'students': parsed.view_students !== false || parsed.student_profiles !== false,
+          'attendance': parsed.mark_attendance !== false || parsed.view_attendance !== false,
+          'academics': parsed.homework_assignments !== false || parsed.study_materials !== false,
+          'examinations': parsed.enter_marks !== false || parsed.create_exams !== false,
+          'timetable': parsed.view_timetable !== false,
+          'communication': parsed.send_announcements !== false,
+          'leave': parsed.apply_leave !== false,
+          'reports': parsed.enter_marks !== false || parsed.student_profiles !== false,
+          'profile': true
+        };
+      }
+    } catch (e) {}
+    return Object.assign({}, DEFAULT_FACULTY_MODULE_PERMS);
+  }
+
+  function checkModuleAccess(moduleKey) {
+    if (moduleKey === 'dashboard' || moduleKey === 'profile') return true;
+    const perms = getFacultyPermissions();
+    return perms[moduleKey] !== false;
+  }
+
+  function renderAccessLockedScreen(moduleKey) {
+    const view = document.getElementById('view-' + moduleKey);
+    if (!view) return;
+
+    const titles = {
+      'my-classes': 'Class & Section Roster Management',
+      'students': 'Student Profiles & Dossiers',
+      'attendance': 'Daily Attendance Register',
+      'academics': 'Academic Lesson Plans & Materials',
+      'examinations': 'Examinations & Marks Tabulation',
+      'timetable': 'Master Teaching Timetable',
+      'communication': 'Parent Broadcasts & Communication',
+      'leave': 'Leave Applications & History',
+      'reports': 'Student Performance Analytics'
+    };
+
+    const modTitle = titles[moduleKey] || moduleKey;
+    const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+
+    view.innerHTML = `
+      <div class="card p-5 text-center mt-3" style="max-width: 680px; margin: 2rem auto; border: 2px dashed #cbd5e1; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.03);">
+        <div style="width: 70px; height: 70px; margin: 0 auto 1.25rem; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <span class="portal-badge badge-danger mb-2" style="font-size: 0.8rem; padding: 4px 12px;">Restricted Access</span>
+        <h3 style="color: #0f172a; margin: 0.5rem 0 0.75rem 0; font-size: 1.4rem;">${modTitle} is Locked</h3>
+        <p style="color: #64748b; font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem;">
+          Access to this module is governed by the <strong>Principal &amp; Vice Principal</strong> via the Executive Governance Center.
+          Your faculty account (<strong>${activeTeacherId}</strong>) has not been assigned active permissions for this capability.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" onclick="teacherApp.requestModuleAccess('${moduleKey}')" style="background: #059669; border-color: #059669;">
+            <i class="fa-solid fa-paper-plane"></i> Request Access from Principal
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="teacherApp.navigateTo('dashboard')">
+            <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+          </button>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #94a3b8;">
+          <i class="fa-solid fa-shield-halved"></i> Institutional Policy Matrix &bull; Sri Vidya E.M High School
+        </div>
+      </div>
+    `;
+  }
+
+  function requestModuleAccess(moduleKey) {
+    const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+    try {
+      const reqs = JSON.parse(localStorage.getItem('sv_faculty_access_requests') || '[]');
+      reqs.push({
+        teacherId: activeTeacherId,
+        module: moduleKey,
+        time: new Date().toLocaleString(),
+        status: 'PENDING_EXECUTIVE_APPROVAL'
+      });
+      localStorage.setItem('sv_faculty_access_requests', JSON.stringify(reqs));
+    } catch (e) {}
+
+    showToast('Access request sent to Principal Dr. M. R. Krishna and Vice Principal!', 'success');
+  }
+
+  function unlockAllTeacherModulesForFaculty() {
+    const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+    const allUnlocked = {
+      mark_attendance: true,
+      view_attendance: true,
+      class_sections: true,
+      enter_marks: true,
+      create_exams: true,
+      student_profiles: true,
+      homework_assignments: true,
+      study_materials: true,
+      view_timetable: true,
+      send_announcements: true,
+      apply_leave: true,
+      view_students: true
+    };
+    try {
+      localStorage.setItem('sv_teacher_permissions_' + activeTeacherId, JSON.stringify(allUnlocked));
+      showToast('All teaching modules authorized and unlocked by Executive Administration!', 'success');
+      navigateTo(state.activeModule || 'dashboard');
+    } catch (e) {}
+  }
+
   function navigateTo(moduleKey, subKey) {
     if (moduleKey === 'security' || moduleKey === 'change-password' || moduleKey === 'password') {
       moduleKey = 'profile';
       subKey = 'security';
     }
 
-    const view = document.getElementById(`view-${moduleKey}`);
+    const view = document.getElementById('view-' + moduleKey);
     if (!view) return;
+
+    // Verify Access Permissions set by Principal / Vice Principal
+    if (!checkModuleAccess(moduleKey)) {
+      renderAccessLockedScreen(moduleKey);
+    }
 
     state.activeModule = moduleKey;
 
@@ -519,10 +692,10 @@ var teacherApp = (function () {
       }
     } catch (e) {}
 
-    // Active sidebar class
+    // Active sidebar highlight & auto-open submenu
     document.querySelectorAll('.nav-item').forEach(item => {
       const itemMod = item.getAttribute('data-module');
-      if (itemMod === moduleKey || (subKey === 'security' && itemMod === 'security')) {
+      if (itemMod === moduleKey) {
         item.classList.add('active');
         item.classList.add('open');
       } else {
@@ -555,12 +728,17 @@ var teacherApp = (function () {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (subKey) switchSubTab(moduleKey, subKey);
+    if (moduleKey === 'my-classes') {
+      const targetClass = subKey || '8a';
+      switchClassTab(targetClass);
+    } else if (subKey) {
+      switchSubTab(moduleKey, subKey);
+    }
   }
 
   function switchSubTab(moduleKey, subKey) {
     state.activeSubTab[moduleKey] = subKey;
-    const view = document.getElementById(`view-${moduleKey}`);
+    const view = document.getElementById('view-' + moduleKey);
     if (!view) return;
 
     // Update tab strip active buttons
@@ -568,7 +746,8 @@ var teacherApp = (function () {
     if (strip) {
       strip.querySelectorAll('.tab-btn').forEach(btn => {
         const text = btn.textContent.toLowerCase();
-        if (text.includes(subKey.toLowerCase())) {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        if (text.includes(subKey.toLowerCase()) || onclickAttr.includes(`'${subKey}'`)) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -577,7 +756,9 @@ var teacherApp = (function () {
     }
 
     // Module-specific interactive subtab rendering
-    if (moduleKey === 'academics') {
+    if (moduleKey === 'my-classes') {
+      switchClassTab(subKey);
+    } else if (moduleKey === 'academics') {
       renderAcademicsSubTab(subKey);
     } else if (moduleKey === 'students') {
       renderStudentsSubTab(subKey);
@@ -590,9 +771,9 @@ var teacherApp = (function () {
     } else if (moduleKey === 'communication') {
       renderCommunicationSubTab(subKey);
     } else if (moduleKey === 'leave') {
-      if (subKey === 'apply') {
-        openModal('applyLeaveModal');
-      }
+      renderLeaveSubTab(subKey);
+    } else if (moduleKey === 'reports') {
+      renderReportsSubTab(subKey);
     }
   }
 
@@ -1117,6 +1298,19 @@ var teacherApp = (function () {
 
   function renderTimetableSubTab(subKey) {
     showToast(`Viewing timetable: ${subKey === 'class' ? 'Class 8A All Subjects' : 'Ms. Anjali Schedule'}`, 'info');
+  }
+
+  
+  function renderLeaveSubTab(subKey) {
+    if (subKey === 'apply') {
+      openModal('applyLeaveModal');
+    } else if (subKey === 'status') {
+      showToast('Showing Recent Leave Applications History', 'info');
+    }
+  }
+
+  function renderReportsSubTab(subKey) {
+    showToast('Loaded Class 8A Academic Performance Reports', 'info');
   }
 
   function renderCommunicationSubTab(subKey) {
@@ -2410,6 +2604,10 @@ var teacherApp = (function () {
     init,
     loadLiveData,
     navigateTo,
+    checkModuleAccess,
+    requestModuleAccess,
+    unlockAllTeacherModulesForFaculty,
+    getFacultyPermissions,
     switchSubTab,
     switchClassTab,
     toggleTask,

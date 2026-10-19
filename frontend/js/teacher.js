@@ -601,7 +601,7 @@ var teacherApp = (function () {
           <i class="fa-solid fa-lock"></i>
         </div>
         <span class="portal-badge badge-danger mb-2" style="font-size: 0.8rem; padding: 4px 12px;">Restricted Access</span>
-        <h3 style="color: #0f172a; margin: 0.5rem 0 0.75rem 0; font-size: 1.4rem;">${modTitle} is Locked</h3>
+        <h3 style="color: var(--color-text-dark); margin: 0.5rem 0 0.75rem 0; font-size: 1.4rem;">${modTitle} is Locked</h3>
         <p style="color: #64748b; font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem;">
           Access to this module is governed by the <strong>Principal &amp; Vice Principal</strong> via the Executive Governance Center.
           Your faculty account (<strong>${activeTeacherId}</strong>) has not been assigned active permissions for this capability.
@@ -1351,7 +1351,7 @@ var teacherApp = (function () {
         <div class="card-header-bar" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <h3 style="margin: 0; font-size: 1.35rem; color: #0f172a;"><i class="fa-solid fa-shapes text-primary"></i> ${cls.name} &mdash; Section Dashboard</h3>
+              <h3 style="margin: 0; font-size: 1.35rem; color: var(--color-text-dark);"><i class="fa-solid fa-shapes text-primary"></i> ${cls.name} &mdash; Section Dashboard</h3>
               <span class="portal-badge ${cls.isClassTeacher ? 'badge-success' : 'badge-primary'}" style="font-size: 0.82rem; padding: 4px 10px;">
                 ${cls.isClassTeacher ? '⭐ Class Teacher Assigned' : '📘 Subject Teacher'}
               </span>
@@ -1376,7 +1376,7 @@ var teacherApp = (function () {
         <div class="metrics-quad mt-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
           <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
             <span class="metric-label" style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 600;">Total Enrolled</span>
-            <div class="metric-value" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 4px 0;">${classStudents.length} Students</div>
+            <div class="metric-value" style="font-size: 1.5rem; font-weight: 800; color: var(--color-text-dark); margin: 4px 0;">${classStudents.length} Students</div>
             <span class="metric-sub" style="font-size: 0.78rem; color: #64748b;">Active Section Roster</span>
           </div>
           <div class="metric-card" style="padding: 1rem; background: var(--color-bg-subtle); border-radius: 8px;">
@@ -1405,7 +1405,7 @@ var teacherApp = (function () {
       <div class="card p-4">
         <div class="card-header-bar mb-3" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h4 style="margin: 0; font-size: 1.15rem; color: #0f172a;">
+            <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-text-dark);">
               <i class="fa-solid fa-user-graduate text-primary"></i> ${cls.name} &mdash; Enrolled Student Details (${classStudents.length} Students)
             </h4>
             <p class="text-muted text-xs mt-1">Complete individual student credentials, attendance record, and parent contact details.</p>
@@ -1570,23 +1570,23 @@ var teacherApp = (function () {
 
     if (classCode === 'ALL') {
       banner.innerHTML = `
-        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; padding: 1.15rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.1);">
+        <div class="class-all-banner">
           <div>
             <div style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
               <i class="fa-solid fa-chalkboard-user text-amber"></i> All Assigned Teaching Classes (Combined Roster)
             </div>
-            <div style="font-size: 0.84rem; color: #94a3b8; margin-top: 4px;">
+            <div style="font-size: 0.84rem; opacity: 0.9; margin-top: 4px;">
               Faculty: Ms. Anjali &bull; Total 4 Sections: Class 8A (Class Teacher), Class 9B (Maths), Class 7C (Maths), Class 10A (Remedial)
             </div>
           </div>
           <div style="display: flex; gap: 20px;">
             <div style="text-align: right;">
-              <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase;">Total Students</div>
-              <div style="font-size: 1.35rem; font-weight: 800; color: #38bdf8;">${state.students.length} Students</div>
+              <div style="font-size: 0.72rem; opacity: 0.85; text-transform: uppercase;">Total Students</div>
+              <div style="font-size: 1.35rem; font-weight: 800; color: #ffffff;">${state.students.length} Students</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase;">Average Attendance</div>
-              <div style="font-size: 1.35rem; font-weight: 800; color: #4ade80;">95.4%</div>
+              <div style="font-size: 0.72rem; opacity: 0.85; text-transform: uppercase;">Average Attendance</div>
+              <div style="font-size: 1.35rem; font-weight: 800; color: #a7f3d0;">95.4%</div>
             </div>
           </div>
         </div>
@@ -1601,17 +1601,17 @@ var teacherApp = (function () {
     const attPct = classStudents.length ? ((presentCount / classStudents.length) * 100).toFixed(1) : '95.0';
 
     banner.innerHTML = `
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #059669; padding: 1.15rem 1.5rem; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+      <div class="class-info-card">
         <div>
           <div style="display: flex; align-items: center; gap: 10px;">
-            <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a;">
+            <h3>
               <i class="fa-solid fa-graduation-cap text-primary"></i> ${cls.name} &mdash; Class Details &amp; Active Roster
             </h3>
             <span class="portal-badge ${cls.isClassTeacher ? 'badge-success' : 'badge-primary'}" style="font-size: 0.78rem;">
               ${cls.isClassTeacher ? '⭐ Class Teacher Section' : '📘 Subject Class'}
             </span>
           </div>
-          <div style="font-size: 0.83rem; color: #64748b; margin-top: 5px;">
+          <div class="class-subtext">
             <span><i class="fa-solid fa-door-open"></i> ${cls.room}</span> &bull; 
             <span><i class="fa-regular fa-clock"></i> ${cls.timing}</span> &bull; 
             <span><i class="fa-solid fa-book"></i> ${cls.subject}</span> &bull; 
@@ -1620,12 +1620,12 @@ var teacherApp = (function () {
         </div>
         <div style="display: flex; align-items: center; gap: 20px;">
           <div style="text-align: right;">
-            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Enrolled Strength</div>
-            <div style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">${classStudents.length} Students</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-muted); text-transform: uppercase; font-weight: 600;">Enrolled Strength</div>
+            <div class="class-metric-val">${classStudents.length} Students</div>
           </div>
           <div style="text-align: right;">
-            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Today's Attendance</div>
-            <div style="font-size: 1.25rem; font-weight: 800; color: #059669;">${attPct}% (${presentCount} Present, ${absentCount} Absent)</div>
+            <div style="font-size: 0.72rem; color: var(--color-text-muted); text-transform: uppercase; font-weight: 600;">Today's Attendance</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #10b981;">${attPct}% (${presentCount} Present, ${absentCount} Absent)</div>
           </div>
         </div>
       </div>

@@ -1,0 +1,120 @@
+# ==============================================================================
+# Production Docker Compose Deployment
+# Stack: Nginx (Reverse Proxy & SSL) -> Express API -> MongoDB
+# CRITICAL: MongoDB is NOT bound to host ports and remains strictly internal.
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. MongoDB Database (INTERNAL NETWORK ONLY - NO PUBLIC PORTS EXPOSED)
+  # ----------------------------------------------------------------------------
+  mongodb:
+    image: mongo:7.0-jammy
+    container_name: srividya_mongodb_prod
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-srividya_school_db}
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - school_internal_network
+    # Notice: DO NOT expose host ports (e.g. "27017:27017" is intentionally omitted)
+    expose:
+      - "27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: '1.5'
+
+  # ----------------------------------------------------------------------------
+  # 2. Node.js + Express REST API Backend
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: srividya_backend_prod
+    restart: always
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - school_internal_network
+    expose:
+      - "5000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:5000/api/v1/health/live', (r) => { if (r.statusCode !== 200) process.exit(1); })"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+          cpus: '1.5'
+
+  # ----------------------------------------------------------------------------
+  # 3. Nginx Reverse Proxy (Cloudflare Edge -> Nginx -> Express)
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: srividya_nginx_prod
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ../:/var/www/html:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - school_internal_network
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+
+# ------------------------------------------------------------------------------
+# Isolated Internal Network & Persistent Volumes
+# ------------------------------------------------------------------------------
+networks:
+  school_internal_network:
+    driver: bridge
+    internal: false # allows Nginx to bind public ports while MongoDB remains unmapped
+
+volumes:
+  mongo_data:
+    driver: local
+  mongo_config:
+    driver: local
+  nginx_logs:
+    driver: local

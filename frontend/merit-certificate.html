@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merit Certificate | Sri Vidya E.M. High School</title>
+  <meta name="description" content="Official Merit Certificate - Sri Vidya E.M. High School, Est. 2017">
+  <link rel="icon" type="image/jpeg" href="assets/images/school-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --navy: #0d1b40;
+      --gold: #b8860b;
+      --gold-lt: #d4af37;
+      --gold-hl: #f5d870;
+      --cream: #fefaf0;
+      --cream-dk: #f5edda;
+      --border-gold: #c9a227;
+      --text-dark: #1a1a2e;
+      --text-body: #2d2d2d;
+      --text-muted: #6b6b6b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Inter', sans-serif;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ---------- CONTROLS ---------- */
+    .control-panel {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.4rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn.primary {
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .ctrl-btn.primary:hover { box-shadow: 0 6px 20px rgba(212,175,55,0.6); transform: translateY(-2px); }
+
+    .ctrl-btn.secondary {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .ctrl-btn.secondary:hover { background: rgba(255,255,255,0.2); }
+
+    /* Toast Notification */
+    .cert-toast {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(13, 27, 64, 0.95);
+      color: #f5d870;
+      border: 1.5px solid #d4af37;
+      padding: 0.65rem 1.4rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cert-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ---------- CERT WRAPPER ---------- */
+    .certificate-wrapper { width: 880px; max-width: 98vw; }
+
+    .cert-frame-outer {
+      position: relative;
+      padding: 6px;
+      background: linear-gradient(135deg, #d4af37, #b8860b, #f5d870, #b8860b, #d4af37);
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px rgba(180,130,30,0.4), 0 25px 70px rgba(0,0,0,0.75), 0 0 120px rgba(180,130,30,0.12);
+    }
+
+    .cert-frame-inner {
+      background: var(--cream);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Inner double-rule border */
+    .cert-frame-inner::before {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(180,130,30,0.35);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .certificate {
+      position: relative;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    /* Watermark */
+    .watermark-logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px; height: 350px;
+      object-fit: contain;
+      opacity: 0.045;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Corner ornaments */
+    .corner-ornament {
+      position: absolute;
+      width: 90px; height: 90px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .corner-ornament.tl { top: 6px; left: 6px; }
+    .corner-ornament.tr { top: 6px; right: 6px; transform: scaleX(-1); }
+    .corner-ornament.bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+    .corner-ornament.br { bottom: 6px; right: 6px; transform: scale(-1,-1); }
+
+    /* Content */
+    .cert-content {
+      position: relative;
+      z-index: 1;
+      padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+    }
+
+    /* ---------- HEADER ---------- */
+    .cert-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid var(--border-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-school-logo {
+      width: 90px; height: 90px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 3px solid var(--border-gold);
+      box-shadow: 0 0 0 4px rgba(180,130,30,0.12), 0 4px 12px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      background: #fff;
+    }
+
+    .cert-school-info { flex: 1; text-align: center; }
+
+    .school-est {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.15rem;
+    }
+
+    .school-name-main {
+      font-family: 'Cinzel', serif;
+      font-size: 1.75rem; font-weight: 900;
+      color: var(--navy);
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .school-name-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 2.5px; text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    .school-address-line {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.82rem; color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .school-motto {
+      font-family: 'EB Garamond', serif;
+      font-style: italic; font-size: 0.8rem;
+      color: var(--gold); margin-top: 0.2rem;
+    }
+
+    .header-cert-number { text-align: right; flex-shrink: 0; min-width: 105px; }
+    .cert-no-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .cert-no-value { font-family: 'Cinzel', serif; font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-top: 0.15rem; }
+
+    /* ---------- DIVIDERS ---------- */
+    .gold-divider {
+      display: flex; align-items: center; gap: 0.75rem; margin: 0.65rem 0;
+    }
+
+    .gold-divider::before, .gold-divider::after {
+      content: ''; flex: 1; height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+    }
+
+    .divider-star { color: var(--gold-lt); font-size: 0.9rem; }
+
+    /* ---------- TITLE BLOCK ---------- */
+    .cert-title-block { text-align: center; margin: 0.4rem 0 0.8rem; }
+
+    .cert-type-label {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+    }
+
+    .cert-main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.6rem; font-weight: 900;
+      color: var(--navy);
+      letter-spacing: 4px; text-transform: uppercase;
+      line-height: 1; margin: 0.15rem 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    .cert-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic; font-size: 1rem;
+      color: var(--text-muted); letter-spacing: 1px;
+    }
+
+    /* ---------- RANK MEDAL ---------- */
+    .rank-medal-container { display: flex; justify-content: center; margin: 0.4rem 0 0.6rem; }
+
+    .rank-medal {
+      display: inline-flex;
+      align-items: center; gap: 0.6rem;
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 100%);
+      color: #fff;
+      padding: 0.45rem 1.75rem;
+      border-radius: 50px;
+      border: 2px solid var(--border-gold);
+      box-shadow: 0 4px 14px rgba(13,27,64,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .rank-medal .medal-icon { font-size: 1.25rem; }
+    .rank-medal .medal-text { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 2px; }
+
+    /* ---------- CITATION ---------- */
+    .citation-text {
+      text-align: center;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem; color: var(--text-body); line-height: 1.7;
+      margin: 0.2rem 0 0.6rem;
+    }
+
+    /* ---------- AWARDEE ---------- */
+    .awardee-block { text-align: center; margin: 0.5rem 0; }
+
+    .to-label {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.82rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 2px;
+    }
+
+    .awardee-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.75rem; font-weight: 700; font-style: italic;
+      color: var(--navy); line-height: 1.1; margin: 0.1rem 0;
+      display: inline-block;
+    }
+
+    .awardee-name::after {
+      content: '';
+      display: block; height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold-lt) 25%, var(--gold-lt) 75%, transparent 100%);
+      margin-top: 0.15rem; border-radius: 2px;
+    }
+
+    /* ---------- DETAIL PILLS ---------- */
+    .details-row {
+      display: flex; justify-content: center;
+      gap: 1.5rem; margin: 0.65rem 0; flex-wrap: wrap;
+    }
+
+    .detail-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(13,27,64,0.05);
+      border: 1px solid rgba(180,130,30,0.3);
+      border-radius: 50px; padding: 0.32rem 0.95rem;
+    }
+
+    .detail-pill .dp-icon { color: var(--gold); font-size: 0.8rem; }
+    .detail-pill .dp-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+    .detail-pill .dp-value { font-family: 'EB Garamond', serif; font-size: 0.9rem; font-weight: 700; color: var(--navy); }
+
+    /* ---------- ACHIEVEMENT BANNER ---------- */
+    .achievement-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 100%);
+      border: 2px solid var(--border-gold);
+      border-radius: 6px; padding: 0.7rem 2rem;
+      text-align: center; margin: 0.65rem 0;
+      position: relative; overflow: hidden;
+    }
+
+    .achievement-banner::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.018) 10px, rgba(255,255,255,0.018) 20px);
+    }
+
+    .ach-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-lt); margin-bottom: 0.15rem; position: relative; }
+    .ach-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #fff; position: relative; }
+    .ach-score { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 900; color: var(--gold-hl); margin-top: 0.2rem; letter-spacing: 2px; position: relative; }
+
+    /* ---------- BODY TEXT ---------- */
+    .cert-body-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.97rem; color: var(--text-body);
+      line-height: 1.78; text-align: center; margin: 0.45rem 0;
+    }
+
+    /* ---------- SIGNATURES ---------- */
+    .sign-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem; margin-top: 0.9rem; align-items: end;
+    }
+
+    .sign-block { text-align: center; }
+    .sign-svg-area { height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.35rem; }
+    .sign-line { border-top: 1.5px solid var(--navy); width: 170px; margin: 0 auto 0.3rem; }
+    .sign-name { font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 700; color: var(--navy); letter-spacing: 1px; text-transform: uppercase; }
+    .sign-title { font-family: 'EB Garamond', serif; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.05rem; }
+
+    /* Official Seal */
+    .seal-container { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+    .official-seal {
+      width: 105px; height: 105px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 0 2px rgba(180,130,30,0.3), 0 4px 18px rgba(0,0,0,0.28);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 0.5rem; position: relative; overflow: hidden;
+    }
+
+    .official-seal::before {
+      content: ''; position: absolute; inset: 5px;
+      border-radius: 50%; border: 1.5px dashed rgba(212,175,55,0.45);
+    }
+
+    .seal-logo {
+      width: 46px; height: 46px; object-fit: contain;
+      border-radius: 50%; position: relative; z-index: 1;
+    }
+
+    .seal-text-ring {
+      font-family: 'Cinzel', serif;
+      font-size: 0.46rem; font-weight: 700;
+      color: var(--gold-lt);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      text-align: center; line-height: 1.3;
+      position: relative; z-index: 1;
+    }
+
+    /* ---------- FOOTER BAND ---------- */
+    .cert-footer-band {
+      margin-top: 0.75rem; padding: 0.85rem 1.25rem;
+      background: linear-gradient(90deg, var(--navy) 0%, #1e3a8a 50%, var(--navy) 100%);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-top: 2.5px solid var(--border-gold);
+    }
+
+    .footer-left { display: flex; flex-direction: column; gap: 0.2rem; }
+
+    .footer-contact {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.78rem; color: rgba(255,255,255,0.8);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .footer-contact i { color: var(--gold-lt); font-size: 0.72rem; }
+
+    .footer-center { text-align: center; flex: 1; }
+    .footer-stamp-text { font-family: 'Cinzel', serif; font-size: 0.65rem; font-weight: 700; color: var(--gold-lt); letter-spacing: 2px; text-transform: uppercase; }
+    .footer-verify-text { font-size: 0.6rem; color: rgba(255,255,255,0.45); margin-top: 0.15rem; font-style: italic; }
+
+    .footer-right { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+    .qr-container {
+      width: 76px; height: 76px; background: #fff;
+      padding: 4px; border-radius: 4px; border: 2px solid var(--gold-lt);
+    }
+
+    .qr-container canvas, .qr-container img { width: 100% !important; height: 100% !important; }
+    .qr-label { font-size: 0.58rem; color: var(--gold-lt); font-weight: 700; letter-spacing: 1px; }
+
+    /* ---------- PRINT STYLES (FULL-HEIGHT SINGLE A4 PAGE) ---------- */
+    @page {
+      size: A4 portrait;
+      margin: 4mm 5mm;
+    }
+
+    @media print {
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-sizing: border-box !important;
+      }
+
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 289mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+      }
+
+      .control-panel, .cert-toast {
+        display: none !important;
+      }
+
+      .certificate-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        min-height: 288mm !important;
+        max-height: 288mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .cert-frame-outer {
+        box-shadow: none !important;
+        padding: 4px !important;
+        border-radius: 4px !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        max-height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .cert-frame-inner {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .cert-frame-inner::before {
+        inset: 8px !important;
+      }
+
+      .certificate {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .certificate, .cert-content, .cert-header, .cert-title-block, .awardee-block, .achievement-banner, .cert-body-text, .sign-row, .cert-footer-band {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .cert-content {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        padding: 1.3rem 2.8rem 0.6rem 2.8rem !important;
+      }
+
+      /* Header */
+      .cert-header {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 1.1rem !important;
+        padding-bottom: 0.8rem !important;
+        margin-bottom: 0.15rem !important;
+        border-bottom: 1.5px solid var(--border-gold) !important;
+      }
+
+      .cert-school-logo {
+        width: 76px !important;
+        height: 76px !important;
+        border-width: 2.5px !important;
+      }
+
+      .school-est {
+        font-size: 0.68rem !important;
+        letter-spacing: 2px !important;
+      }
+
+      .school-name-main {
+        font-size: 1.75rem !important;
+        letter-spacing: 3px !important;
+      }
+
+      .school-name-sub {
+        font-size: 0.88rem !important;
+        letter-spacing: 2px !important;
+        margin-top: 0.1rem !important;
+      }
+
+      .school-address-line {
+        font-size: 0.78rem !important;
+        margin-top: 0.2rem !important;
+      }
+
+      .school-motto {
+        font-size: 0.78rem !important;
+        margin-top: 0.15rem !important;
+      }
+
+      .header-cert-number {
+        min-width: 105px !important;
+        text-align: right !important;
+      }
+
+      .cert-no-label {
+        font-size: 0.58rem !important;
+      }
+
+      .cert-no-value {
+        font-size: 0.82rem !important;
+      }
+
+      /* Dividers */
+      .gold-divider {
+        margin: 0.4rem 0 !important;
+      }
+
+      .divider-star {
+        font-size: 0.85rem !important;
+      }
+
+      /* Title */
+      .cert-title-block {
+        margin: 0.2rem 0 0.4rem !important;
+      }
+
+      .cert-type-label {
+        font-size: 0.78rem !important;
+        letter-spacing: 2.5px !important;
+      }
+
+      .cert-main-title {
+        font-size: 2.5rem !important;
+        letter-spacing: 4px !important;
+        margin: 0.1rem 0 !important;
+      }
+
+      .cert-subtitle {
+        font-size: 0.95rem !important;
+      }
+
+      /* Medal */
+      .rank-medal-container {
+        margin: 0.25rem 0 0.4rem !important;
+      }
+
+      .rank-medal {
+        padding: 0.35rem 1.6rem !important;
+      }
+
+      .rank-medal .medal-icon {
+        font-size: 1.2rem !important;
+      }
+
+      .rank-medal .medal-text {
+        font-size: 0.85rem !important;
+        letter-spacing: 2px !important;
+      }
+
+      /* Citation */
+      .citation-text {
+        font-size: 1.02rem !important;
+        line-height: 1.5 !important;
+        margin: 0.15rem 0 0.35rem !important;
+      }
+
+      /* Awardee */
+      .awardee-block {
+        margin: 0.25rem 0 !important;
+      }
+
+      .to-label {
+        font-size: 0.78rem !important;
+      }
+
+      .awardee-name {
+        font-size: 2.65rem !important;
+        margin: 0.08rem 0 !important;
+      }
+
+      /* Detail pills */
+      .details-row {
+        gap: 1rem !important;
+        margin: 0.45rem 0 !important;
+      }
+
+      .detail-pill {
+        padding: 0.28rem 0.9rem !important;
+      }
+
+      .detail-pill .dp-icon {
+        font-size: 0.78rem !important;
+      }
+
+      .detail-pill .dp-label {
+        font-size: 0.62rem !important;
+      }
+
+      .detail-pill .dp-value {
+        font-size: 0.88rem !important;
+      }
+
+      /* Achievement banner */
+      .achievement-banner {
+        padding: 0.6rem 1.8rem !important;
+        margin: 0.45rem 0 !important;
+      }
+
+      .ach-label {
+        font-size: 0.6rem !important;
+        letter-spacing: 2px !important;
+      }
+
+      .ach-text {
+        font-size: 1.1rem !important;
+      }
+
+      .ach-score {
+        font-size: 1.1rem !important;
+        margin-top: 0.15rem !important;
+      }
+
+      /* Body text */
+      .cert-body-text {
+        font-size: 0.94rem !important;
+        line-height: 1.65 !important;
+        margin: 0.35rem 0 !important;
+      }
+
+      /* Signatures row: STRICTLY 3-columns horizontal */
+      .sign-row {
+        display: grid !important;
+        grid-template-columns: 1fr auto 1fr !important;
+        gap: 1rem !important;
+        margin-top: 0.5rem !important;
+        align-items: end !important;
+      }
+
+      .sign-block {
+        text-align: center !important;
+      }
+
+      .sign-svg-area {
+        height: 52px !important;
+        margin-bottom: 0.25rem !important;
+      }
+
+      .sign-svg-area svg {
+        max-height: 48px !important;
+        width: auto !important;
+      }
+
+      .sign-line {
+        width: 155px !important;
+        margin: 0 auto 0.25rem !important;
+      }
+
+      .sign-name {
+        font-size: 0.78rem !important;
+      }
+
+      .sign-title {
+        font-size: 0.72rem !important;
+      }
+
+      .seal-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin: 0 !important;
+      }
+
+      .official-seal {
+        width: 90px !important;
+        height: 90px !important;
+        padding: 0.35rem !important;
+      }
+
+      .seal-logo {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      .seal-text-ring {
+        font-size: 0.42rem !important;
+        letter-spacing: 1.2px !important;
+      }
+
+      /* Footer band */
+      .cert-footer-band {
+        margin-top: 0 !important;
+        padding: 0.65rem 1.3rem !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+      }
+
+      .footer-contact {
+        font-size: 0.72rem !important;
+        gap: 0.35rem !important;
+      }
+
+      .footer-stamp-text {
+        font-size: 0.62rem !important;
+      }
+
+      .footer-verify-text {
+        font-size: 0.56rem !important;
+      }
+
+      .qr-container {
+        width: 66px !important;
+        height: 66px !important;
+        padding: 3px !important;
+      }
+
+      .qr-label {
+        font-size: 0.54rem !important;
+      }
+    }
+
+    /* Screen-only responsive adjustments */
+    @media screen and (max-width: 920px) {
+      .cert-content { padding: 1.5rem 1.5rem 1rem; }
+      .cert-main-title { font-size: 1.8rem; letter-spacing: 2px; }
+      .awardee-name { font-size: 2rem; }
+      .sign-row { grid-template-columns: 1fr; gap: 1.5rem; }
+      .seal-container { margin: 0 auto; }
+      .cert-header { flex-direction: column; text-align: center; }
+      .header-cert-number { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONTROLS -->
+  <div class="control-panel">
+    <button class="ctrl-btn primary" onclick="window.print()">
+      <i class="fa-solid fa-print"></i> Print / Save as PDF
+    </button>
+    <button class="ctrl-btn secondary" id="refreshBtn" onclick="regenerateCert()">
+      <i class="fa-solid fa-rotate" id="refreshIcon"></i> Refresh QR Code
+    </button>
+    <a href="portal.html" class="ctrl-btn secondary" id="backBtn" onclick="goBackToPortal(event)" style="text-decoration:none;">
+      <i class="fa-solid fa-arrow-left"></i> Back to Portal
+    </a>
+  </div>
+
+  <!-- CERTIFICATE -->
+  <div class="certificate-wrapper">
+    <div class="cert-frame-outer">
+      <div class="cert-frame-inner">
+        <div class="certificate" id="certificateDocument">
+
+          <!-- WATERMARK -->
+          <img src="assets/images/school-logo.jpg" alt="" class="watermark-logo"
+               onerror="this.style.display='none'">
+
+          <!-- CORNER ORNAMENTS -->
+          <div class="corner-ornament tl">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 8 L38 8" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 L8 38" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 Q8 32 32 32" stroke="#d4af37" stroke-width="1.2" fill="none"/>
+              <path d="M8 8 Q8 22 22 22" stroke="#d4af37" stroke-width="0.8" fill="none" opacity="0.6"/>
+              <circle cx="8" cy="8" r="3.5" fill="#d4af37"/>
+              <circle cx="38" cy="8" r="2" fill="#d4af37" opacity="0.5"/>
+              <circle cx="8" cy="38" r="2" fill="#d4af37" opacity="0.5"/>
+              <path d="M14 8 L14 20" stroke="#d4af37" stroke-width="0.6" opacity="0.45"/>
+              <path d="M8 14 L20 14" stroke="#d4af37" stroke-width="0.6" opacity="0.45"/>
+              <path d="M20 8 L20 14" stroke="#d4af37" stroke-width="0.6" opacity="0.35"/>
+              <path d="M8 20 L14 20" stroke="#d4af37" stroke-width="0.6" opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="corner-ornament tr">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 8 L38 8" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 L8 38" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 Q8 32 32 32" stroke="#d4af37" stroke-width="1.2" fill="none"/>
+              <path d="M8 8 Q8 22 22 22" stroke="#d4af37" stroke-width="0.8" fill="none" opacity="0.6"/>
+              <circle cx="8" cy="8" r="3.5" fill="#d4af37"/>
+              <circle cx="38" cy="8" r="2" fill="#d4af37" opacity="0.5"/>
+              <circle cx="8" cy="38" r="2" fill="#d4af37" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="corner-ornament bl">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 8 L38 8" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 L8 38" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 Q8 32 32 32" stroke="#d4af37" stroke-width="1.2" fill="none"/>
+              <circle cx="8" cy="8" r="3.5" fill="#d4af37"/>
+              <circle cx="38" cy="8" r="2" fill="#d4af37" opacity="0.5"/>
+              <circle cx="8" cy="38" r="2" fill="#d4af37" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="corner-ornament br">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 8 L38 8" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 L8 38" stroke="#b8860b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 8 Q8 32 32 32" stroke="#d4af37" stroke-width="1.2" fill="none"/>
+              <circle cx="8" cy="8" r="3.5" fill="#d4af37"/>
+              <circle cx="38" cy="8" r="2" fill="#d4af37" opacity="0.5"/>
+              <circle cx="8" cy="38" r="2" fill="#d4af37" opacity="0.5"/>
+            </svg>
+          </div>
+
+          <!-- CONTENT -->
+          <div class="cert-content">
+
+            <!-- === HEADER === -->
+            <div class="cert-header">
+              <img src="assets/images/school-logo.jpg" alt="Sri Vidya Logo" class="cert-school-logo"
+                   onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\'%3E%3Ccircle cx=\'45\' cy=\'45\' r=\'43\' fill=\'%230d1b40\' stroke=\'%23b8860b\' stroke-width=\'2\'/%3E%3Ctext x=\'45\' y=\'52\' text-anchor=\'middle\' font-size=\'26\' fill=\'%23d4af37\' font-weight=\'bold\'%3ESV%3C/text%3E%3C/svg%3E'">
+
+              <div class="cert-school-info">
+                <div class="school-est">Established 2017 &bull; AP Govt. Recognized &bull; CBSE Affiliated</div>
+                <div class="school-name-main">Sri Vidya</div>
+                <div class="school-name-sub">English Medium High School</div>
+                <div class="school-address-line">
+                  <i class="fa-solid fa-location-dot" style="color:#b8860b;font-size:0.7rem;"></i>
+                  Guntur District, Andhra Pradesh &nbsp;&bull;&nbsp;
+                  <i class="fa-solid fa-phone" style="color:#b8860b;font-size:0.7rem;"></i>
+                  +91 93985 78584
+                </div>
+                <div class="school-motto">&ldquo;Vidyathe Vijayam &mdash; Knowledge Brings Victory&rdquo;</div>
+              </div>
+
+              <div class="header-cert-number">
+                <div class="cert-no-label">Certificate No.</div>
+                <div class="cert-no-value" id="certNumberDisplay">MC-2025-001</div>
+                <div class="cert-no-label" style="margin-top:0.4rem;">Issued On</div>
+                <div class="cert-no-value" id="certDateDisplay" style="font-size:0.72rem;"></div>
+              </div>
+            </div>
+
+            <!-- DIVIDER -->
+            <div class="gold-divider">
+              <span class="divider-star">&#10022;</span>
+              <span class="divider-star">&#10022;</span>
+              <span class="divider-star">&#10022;</span>
+            </div>
+
+            <!-- TITLE -->
+            <div class="cert-title-block">
+              <div class="cert-type-label">Sri Vidya E.M. High School Proudly Presents</div>
+              <div class="cert-main-title">Merit Certificate</div>
+              <div class="cert-subtitle">Academic Excellence &amp; Outstanding Achievement Award</div>
+            </div>
+
+            <!-- RANK MEDAL -->
+            <div class="rank-medal-container">
+              <div class="rank-medal" id="rankMedal">
+                <span class="medal-icon" id="rankIcon">&#127945;</span>
+                <span class="medal-text" id="rankText">RANK 1 &mdash; GOLD DISTINCTION</span>
+              </div>
+            </div>
+
+            <!-- CITATION -->
+            <p class="citation-text">This is to certify with great honour and distinguished pride that</p>
+
+            <!-- AWARDEE -->
+            <div class="awardee-block">
+              <div class="to-label">&mdash; The Student &mdash;</div>
+              <div class="awardee-name" id="awardeeName">P. Hema Latha</div>
+            </div>
+
+            <!-- DETAIL PILLS -->
+            <div class="details-row">
+              <div class="detail-pill">
+                <i class="fa-solid fa-school dp-icon"></i>
+                <span class="dp-label">Class</span>
+                <span class="dp-value" id="detailClass">X-A</span>
+              </div>
+              <div class="detail-pill">
+                <i class="fa-solid fa-hashtag dp-icon"></i>
+                <span class="dp-label">Roll No.</span>
+                <span class="dp-value" id="detailRoll">#1002</span>
+              </div>
+              <div class="detail-pill">
+                <i class="fa-solid fa-calendar-days dp-icon"></i>
+                <span class="dp-label">Academic Year</span>
+                <span class="dp-value">2024 &ndash; 25</span>
+              </div>
+              <div class="detail-pill">
+                <i class="fa-solid fa-star dp-icon"></i>
+                <span class="dp-label">GPA / Score</span>
+                <span class="dp-value" id="detailScore">10.0 / 10.0</span>
+              </div>
+            </div>
+
+            <!-- ACHIEVEMENT BANNER -->
+            <div class="achievement-banner">
+              <div class="ach-label">&#9733; &nbsp; Distinction &amp; Special Achievement &nbsp; &#9733;</div>
+              <div class="ach-text" id="achText">Distinction in Mathematics &amp; Science (100%)</div>
+              <div class="ach-score" id="achScore">GPA: 10.0 / 10.0 &nbsp;&bull;&nbsp; BOARD &amp; SCHOOL TOPPER</div>
+            </div>
+
+            <!-- BODY TEXT -->
+            <p class="cert-body-text" id="certBody">
+              has demonstrated <strong>exemplary academic excellence</strong>, intellectual merit, and extraordinary dedication
+              throughout the academic year 2024&ndash;25. This student has brought exceptional honour and pride to
+              <em>Sri Vidya E.M. High School</em> through sheer brilliance, hard work and unwavering perseverance.
+              We extend our heartfelt congratulations and wish continued success in all future endeavours.
+            </p>
+
+            <!-- DIVIDER -->
+            <div class="gold-divider">
+              <span class="divider-star">&#10022;</span>
+              <span class="divider-star">&#10022;</span>
+              <span class="divider-star">&#10022;</span>
+            </div>
+
+            <!-- SIGNATURES -->
+            <div class="sign-row">
+
+              <!-- Class Teacher -->
+              <div class="sign-block">
+                <div class="sign-svg-area">
+                  <svg width="170" height="60" viewBox="0 0 170 60" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10,45 C28,42 35,18 55,22 S78,46 100,40 S122,18 148,26 S158,44 165,40"
+                          stroke="#0d1b40" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+                    <path d="M18,50 C55,46 95,50 135,47"
+                          stroke="#b8860b" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.5"/>
+                  </svg>
+                </div>
+                <div class="sign-line"></div>
+                <div class="sign-name" id="ctName">Class Teacher</div>
+                <div class="sign-title" id="ctTitle">Class Teacher &ndash; X-A</div>
+              </div>
+
+              <!-- Official Seal -->
+              <div class="seal-container">
+                <div class="official-seal">
+                  <img src="assets/images/school-logo.jpg" alt="Seal" class="seal-logo"
+                       onerror="this.style.display='none'">
+                  <div class="seal-text-ring">SRI VIDYA<br>E.M. SCHOOL<br>EST. 2017</div>
+                </div>
+                <div style="font-size:0.58rem;color:var(--text-muted);margin-top:0.2rem;font-style:italic;">Official Seal</div>
+              </div>
+
+              <!-- Principal Signature -->
+              <div class="sign-block">
+                <div class="sign-svg-area">
+                  <svg width="170" height="60" viewBox="0 0 170 60" xmlns="http://www.w3.org/2000/svg">
+                    <!-- G -->
+                    <path d="M10,30 C8,17 18,8 30,10 S42,20 38,30 S28,38 24,30 L29,28" stroke="#0d1b40" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- V -->
+                    <path d="M45,12 L57,36 L68,12" stroke="#0d1b40" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- flowing middle -->
+                    <path d="M70,22 C80,8 90,40 100,22 S112,8 122,22" stroke="#0d1b40" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- tail flourish -->
+                    <path d="M120,22 C134,16 150,30 162,24" stroke="#0d1b40" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <!-- underline -->
+                    <path d="M8,48 C55,44 110,50 162,46" stroke="#b8860b" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.65"/>
+                    <!-- dot -->
+                    <circle cx="78" cy="8" r="2.8" fill="#0d1b40" opacity="0.55"/>
+                  </svg>
+                </div>
+                <div class="sign-line"></div>
+                <div class="sign-name">Gorle Varalakshmi</div>
+                <div class="sign-title">Principal, Sri Vidya E.M. High School</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- FOOTER BAND -->
+          <div class="cert-footer-band">
+            <div class="footer-left">
+              <div class="footer-contact">
+                <i class="fa-solid fa-envelope"></i>
+                srividyaschool2017@gmail.com
+              </div>
+              <div class="footer-contact">
+                <i class="fa-solid fa-phone"></i>
+                +91 93985 78584 &nbsp;|&nbsp; Principal: 8106636230
+              </div>
+              <div class="footer-contact">
+                <i class="fa-solid fa-location-dot"></i>
+                Guntur District, Andhra Pradesh &ndash; 522001
+              </div>
+            </div>
+
+            <div class="footer-center">
+              <div class="footer-stamp-text">&#10022; Authenticated &amp; Officially Issued &#10022;</div>
+              <div style="color:rgba(255,255,255,0.75);font-size:0.68rem;margin-top:0.25rem;font-family:'EB Garamond',serif;">
+                Cert. No: <strong id="footerCertNo" style="color:#f5d870;">MC-2025-001</strong>
+                &nbsp;&bull;&nbsp; Issued: <span id="footerDate" style="color:#f5d870;"></span>
+              </div>
+              <div class="footer-verify-text">Scan QR Code to verify this certificate online</div>
+            </div>
+
+            <div class="footer-right">
+              <div class="qr-container" id="qrcode"></div>
+              <div class="qr-label">VERIFY CERT</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STUDENTS = [
+      { name:'P. Hema Latha',   cls:'X-A',   roll:'#1002', rank:1, icon:'\u{1F947}', rankLabel:'RANK 1 — GOLD DISTINCTION',  score:'10.0 / 10.0', dist:'Distinction in Mathematics &amp; Science (100%)', ct:'Smt. T. Lakshmi',    certN:'001' },
+      { name:'T. Siri Varshini',cls:'III-A',  roll:'#301',  rank:2, icon:'\u{1F948}', rankLabel:'RANK 2 — SILVER MERIT',      score:'9.9 / 10.0',  dist:'Primary Wing 1st Ranker — Outstanding Excellence',ct:'Smt. M. Padmavathi',certN:'002' },
+      { name:'G. Sai Teja',     cls:'X-A',   roll:'#1001', rank:3, icon:'\u{1F949}', rankLabel:'RANK 3 — BRONZE HONOUR',     score:'9.8 / 10.0',  dist:'State Olympiad Silver Medallist – Science',          ct:'Smt. T. Lakshmi',   certN:'003' },
+      { name:'K. Tanvi Sree',   cls:'I-A',   roll:'#101',  rank:4, icon:'\u2B50',    rankLabel:'RANK 4 — MERIT DISTINCTION', score:'9.8 / 10.0',  dist:'Class I Topper – All A1 Grades Achieved',            ct:'Smt. B. Saraswathi',certN:'004' },
+      { name:'S. Bhavana',      cls:'VII-A', roll:'#701',  rank:5, icon:'\u2B50',    rankLabel:'RANK 5 — MERIT DISTINCTION', score:'9.7 / 10.0',  dist:'Best in English &amp; Science – Dual Subject Excellence',ct:'Sri. N. Rao',    certN:'005' },
+      { name:'M. Sravanthi',    cls:'IX-A',  roll:'#901',  rank:6, icon:'\u2B50',    rankLabel:'RANK 6 — MERIT DISTINCTION', score:'9.6 / 10.0',  dist:'Class IX Topper – Academic Merit Award',             ct:'Smt. P. Kalyani',   certN:'006' }
+    ];
+
+    let currentIdx = 0;
+
+    function getToday() {
+      return new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+    }
+
+    function bodyText(s) {
+      const bodies = [
+        'has demonstrated <strong>exemplary academic excellence</strong>, intellectual merit, and extraordinary dedication throughout the academic year 2024&ndash;25, securing the prestigious <em>Gold Rank</em>. This student has brought exceptional honour to <em>Sri Vidya E.M. High School</em> through sheer brilliance and hard work. We extend our heartfelt congratulations and wish a future filled with continued distinction.',
+        'has demonstrated <strong>commendable academic excellence</strong> and outstanding intellectual prowess throughout the academic year 2024&ndash;25, earning the coveted <em>Silver Merit Rank</em>. This young scholar has brought immense pride to <em>Sri Vidya E.M. High School</em>. We congratulate this achiever and extend our warmest wishes for future glory.',
+        'has exemplified <strong>remarkable academic achievement</strong> and exceptional talent throughout the academic year 2024&ndash;25, earning the <em>Bronze Honour Rank</em> and State Olympiad recognition. This student embodies the spirit of <em>Sri Vidya E.M. High School</em> — excellence, perseverance and passion. Wishing continued triumphs ahead.',
+      ];
+      return bodies[s.rank - 1] || 'has demonstrated <strong>outstanding academic excellence</strong> and meritorious performance throughout the academic year 2024&ndash;25. This achiever has upheld the highest standards of scholarship and integrity, making <em>Sri Vidya E.M. High School</em> proud. We congratulate and wish continued success in all future endeavours.';
+    }
+
+    function showToast(msg) {
+      let toast = document.getElementById('certToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'certToast';
+        toast.className = 'cert-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#4ade80;"></i> ' + msg;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 2200);
+    }
+
+    function goBackToPortal(e) {
+      if (e) e.preventDefault();
+      // If window was opened by script / target=_blank from portal tab
+      if (window.opener && !window.opener.closed) {
+        try {
+          window.opener.focus();
+          window.close();
+          return;
+        } catch(err) {}
+      }
+      // If there is history within the same site, go back
+      if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+        window.history.back();
+        return;
+      }
+      // Otherwise navigate directly to portal.html
+      window.location.href = 'portal.html';
+    }
+
+    function renderCert(idx) {
+      const s = STUDENTS[idx];
+      const certNo = 'MC-2025-' + s.certN;
+      const today  = getToday();
+      const origin = window.location.origin || 'http://localhost:8080';
+      const pathname = window.location.pathname.replace(/\/+$/, '') || '/merit-certificate.html';
+      const qrUrl  = origin + pathname + '?cert=' + certNo + '&name=' + encodeURIComponent(s.name) + '&rank=' + s.rank + '&ts=' + Date.now();
+
+      document.getElementById('certNumberDisplay').textContent = certNo;
+      document.getElementById('certDateDisplay').textContent   = today;
+      document.getElementById('awardeeName').textContent       = s.name;
+      document.getElementById('detailClass').textContent       = s.cls;
+      document.getElementById('detailRoll').textContent        = s.roll;
+      document.getElementById('detailScore').textContent       = s.score;
+      document.getElementById('achText').innerHTML             = s.dist;
+      document.getElementById('achScore').innerHTML            = 'GPA: ' + s.score + ' &nbsp;&bull;&nbsp; ' + s.rankLabel;
+      document.getElementById('rankIcon').textContent          = String.fromCodePoint(...[...s.icon].map(c => c.codePointAt(0)));
+      document.getElementById('rankText').textContent          = s.rankLabel;
+      document.getElementById('certBody').innerHTML            = bodyText(s);
+      document.getElementById('ctName').textContent            = s.ct;
+      document.getElementById('ctTitle').textContent           = 'Class Teacher – ' + s.cls;
+      document.getElementById('footerCertNo').textContent      = certNo;
+      document.getElementById('footerDate').textContent        = today;
+
+      // QR Code with robust fallback
+      const qrEl = document.getElementById('qrcode');
+      qrEl.innerHTML = '';
+      let generated = false;
+      if (typeof QRCode !== 'undefined') {
+        try {
+          new QRCode(qrEl, { text: qrUrl, width: 68, height: 68, colorDark: '#0d1b40', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+          generated = true;
+        } catch(e) {
+          generated = false;
+        }
+      }
+      if (!generated) {
+        const fallbackImg = new Image();
+        fallbackImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=0d1b40&data=' + encodeURIComponent(qrUrl);
+        fallbackImg.alt = 'QR Code';
+        fallbackImg.style.width = '100%';
+        fallbackImg.style.height = '100%';
+        fallbackImg.onerror = function() {
+          qrEl.innerHTML = '<div style="padding:4px;font-size:0.5rem;color:#b8860b;font-weight:700;text-align:center;">VERIFIED<br>' + certNo + '</div>';
+        };
+        qrEl.appendChild(fallbackImg);
+      }
+    }
+
+    function regenerateCert() {
+      const icon = document.getElementById('refreshIcon');
+      if (icon) icon.classList.add('fa-spin');
+
+      const qrBox = document.querySelector('.qr-container');
+      if (qrBox) {
+        qrBox.style.transition = 'all 0.3s ease';
+        qrBox.style.boxShadow = '0 0 16px #d4af37';
+        qrBox.style.transform = 'scale(1.08)';
+      }
+
+      renderCert(currentIdx);
+      showToast('QR Code & Certificate refreshed successfully!');
+
+      setTimeout(() => {
+        if (qrBox) {
+          qrBox.style.boxShadow = 'none';
+          qrBox.style.transform = 'scale(1)';
+        }
+        if (icon) icon.classList.remove('fa-spin');
+      }, 600);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      let targetIdx = 0;
+      if (params.has('idx')) {
+        const parsedIdx = parseInt(params.get('idx'), 10);
+        if (!isNaN(parsedIdx) && parsedIdx >= 0 && parsedIdx < STUDENTS.length) {
+          targetIdx = parsedIdx;
+        }
+      } else if (params.has('cert')) {
+        const c = params.get('cert').toLowerCase();
+        const found = STUDENTS.findIndex(s => ('MC-2025-' + s.certN).toLowerCase() === c || s.certN.toLowerCase() === c);
+        if (found !== -1) targetIdx = found;
+      } else if (params.has('name')) {
+        const n = params.get('name').toLowerCase();
+        const found = STUDENTS.findIndex(s => s.name.toLowerCase().includes(n));
+        if (found !== -1) targetIdx = found;
+      }
+      currentIdx = targetIdx;
+      renderCert(targetIdx);
+    });
+  </script>
+</body>
+</html>

@@ -3,7 +3,6 @@
  * Clean URLs:
  *   - /management -> portal.html
  *   - /teacher    -> teacher-portal.html
- *   - /student    -> student-portal.html
  *   - /           -> index.html
  */
 const http = require('http');
@@ -12,7 +11,8 @@ const path = require('path');
 const url = require('url');
 
 const PORT = parseInt(process.env.PORT || process.argv[2] || '8080', 10);
-const ROOT = __dirname;
+const FRONTEND_DIR = path.join(__dirname, 'frontend');
+const ROOT = fs.existsSync(FRONTEND_DIR) ? FRONTEND_DIR : __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -27,7 +27,8 @@ const MIME_TYPES = {
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.pdf': 'application/pdf'
 };
 
 const server = http.createServer((req, res) => {
@@ -39,14 +40,12 @@ const server = http.createServer((req, res) => {
     pathname = '/portal.html';
   } else if (clean === '/teacher' || clean === '/teacher-portal.html' || clean === '/teacher.html') {
     pathname = '/teacher-portal.html';
-  } else if (clean === '/student' || clean === '/student-portal.html' || clean === '/student.html') {
-    pathname = '/student-portal.html';
-  } else if (clean === '/parent' || clean === '/parent-portal.html' || clean === '/parent.html') {
-    pathname = '/parent-portal.html';
+  } else if (clean === '/tc' || clean === '/transfer-certificate' || clean === '/transfer-certificate.html') {
+    pathname = '/transfer-certificate.html';
   } else if (clean === '' || clean === '/') {
     pathname = '/index.html';
-  } else if (pathname.startsWith('/management/') || pathname.startsWith('/teacher/') || pathname.startsWith('/student/') || pathname.startsWith('/parent/')) {
-    pathname = pathname.replace(/^\/(?:management|teacher|student|parent)/, '');
+  } else if (pathname.startsWith('/management/') || pathname.startsWith('/teacher/')) {
+    pathname = pathname.replace(/^\/(?:management|teacher)/, '');
   }
 
   const filePath = path.join(ROOT, pathname);
@@ -72,5 +71,4 @@ server.listen(PORT, () => {
   console.log(`Node Server running at http://localhost:${PORT}/`);
   console.log(`  Management: http://localhost:${PORT}/management`);
   console.log(`  Teacher:    http://localhost:${PORT}/teacher`);
-  console.log(`  Student:    http://localhost:${PORT}/student`);
 });

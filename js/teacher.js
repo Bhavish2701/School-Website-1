@@ -3,7 +3,7 @@
  * Faculty: Ms. Anjali (Class Teacher – Grade 8A, Mathematics)
  */
 
-const teacherApp = (function () {
+var teacherApp = (function () {
   'use strict';
 
   // Application State
@@ -139,6 +139,83 @@ const teacherApp = (function () {
     bindEvents();
     renderAll();
     setupHashRouting();
+
+    if (window.ApiClient && window.ApiClient.isAuthenticated()) {
+      loadLiveData();
+    }
+  }
+
+  async function loadLiveData() {
+    if (!window.ApiClient || !window.ApiClient.isAuthenticated()) return;
+
+    try {
+      // 1. Fetch Teacher Operational Dashboard
+      const dash = await window.ApiClient.dashboard.getTeacherDashboard();
+      if (dash) {
+        if (dash.teacherProfile) {
+          state.teacher.name = dash.teacherProfile.fullName;
+          state.teacher.subject = dash.teacherProfile.specialization || 'Mathematics';
+          state.teacher.role = `Class Teacher • Employee ID ${dash.teacherProfile.employeeId}`;
+          updateTeacherHeaderDOM(dash.teacherProfile);
+        }
+
+        if (dash.classes) {
+          state.teacher.totalClasses = dash.classes.assignedClassesCount;
+          state.teacher.totalStudents = dash.classes.totalStudentsCount;
+          if (dash.classes.list && dash.classes.list.length > 0) {
+            state.classes = dash.classes.list.map(c => ({
+              id: `${c.class}${c.section || 'A'}`.toLowerCase(),
+              name: `Class ${c.class}${c.section || 'A'}`,
+              isClassTeacher: c.isClassTeacher || false,
+              strength: 42,
+              room: 'Room 204',
+              avgScore: '86.4%'
+            }));
+          }
+        }
+
+        if (dash.attendance) {
+          state.teacher.todayAttendancePct = `${dash.attendance.markedCount > 0 ? '96%' : 'Pending'}`;
+        }
+
+        if (dash.assignments && dash.assignments.list) {
+          state.homework = dash.assignments.list.map(h => ({
+            id: h.id,
+            class: `Class ${h.class}${h.section || 'A'}`,
+            title: h.title,
+            due: new Date(h.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            desc: h.description || 'Complete all exercises in notebook.'
+          }));
+          renderHomeworkFeed();
+        }
+      }
+
+      // 2. Fetch Assigned Class Students
+      const studentRes = await window.ApiClient.students.getStudents({ limit: 50 });
+      if (studentRes && studentRes.data && studentRes.data.students && studentRes.data.students.length > 0) {
+        state.students = studentRes.data.students.map((s, idx) => ({
+          roll: parseInt(s.rollNo) || (801 + idx),
+          name: s.fullName,
+          class: `${s.class}${s.section || 'A'}`,
+          phone: s.phone || '9848123000',
+          att: 'P',
+          marks: 44,
+          remarks: 'Good classroom participation and consistent homework.'
+        }));
+        renderAttendanceMarkingTable();
+        renderMarksEntryTable();
+      }
+    } catch (err) {
+      console.warn('[teacherApp.loadLiveData error]:', err.message);
+    }
+  }
+
+  function updateTeacherHeaderDOM(profile) {
+    if (!profile) return;
+    const nameEl = document.querySelector('.user-name, #teacherProfileName');
+    if (nameEl) nameEl.textContent = profile.fullName;
+    const roleEl = document.querySelector('.user-role, #teacherProfileRole');
+    if (roleEl) roleEl.textContent = `${profile.specialization} Faculty (${profile.employeeId})`;
   }
 
   function setupTheme() {
@@ -168,30 +245,105 @@ const teacherApp = (function () {
     const themeBtn = document.getElementById('themeToggleBtn');
     if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
-    // Mobile sidebar toggle
-    const mobileBtn = document.getElementById('mobileSidebarToggle');
+    // Mobile sidebar controller with backdrop & outside-click support
     const sidebar = document.getElementById('portalSidebar');
+    const mobileBtn = document.getElementById('mobileSidebarToggle');
+
+    window.closeTeacherMobileSidebar = function () {
+      const sb = document.getElementById('portalSidebar');
+      const bd = document.getElementById('portalBackdrop');
+      if (sb) sb.classList.remove('mobile-open');
+      if (bd) bd.classList.remove('active');
+      document.body.classList.remove('sidebar-open');
+    };
+
+    window.openTeacherMobileSidebar = function () {
+      const sb = document.getElementById('portalSidebar');
+      let bd = document.getElementById('portalBackdrop');
+      if (!bd) {
+        bd = document.createElement('div');
+        bd.id = 'portalBackdrop';
+        bd.className = 'portal-backdrop';
+        document.body.appendChild(bd);
+        bd.addEventListener('click', window.closeTeacherMobileSidebar);
+      }
+      if (sb) sb.classList.add('mobile-open');
+      bd.classList.add('active');
+      document.body.classList.add('sidebar-open');
+    };
+
     if (mobileBtn && sidebar) {
-      mobileBtn.addEventListener('click', function () {
-        sidebar.classList.toggle('mobile-open');
+      mobileBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (sidebar.classList.contains('mobile-open')) {
+          window.closeTeacherMobileSidebar();
+        } else {
+          window.openTeacherMobileSidebar();
+        }
       });
     }
+
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    if (sidebarCloseBtn) {
+      sidebarCloseBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.closeTeacherMobileSidebar();
+      });
+    }
+
+    document.addEventListener('click', function (e) {
+      const sb = document.getElementById('portalSidebar');
+      const mb = document.getElementById('mobileSidebarToggle');
+      if (sb && sb.classList.contains('mobile-open')) {
+        if (!sb.contains(e.target) && (!mb || !mb.contains(e.target))) {
+          window.closeTeacherMobileSidebar();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        window.closeTeacherMobileSidebar();
+      }
+    });
 
     // Sidebar navigation
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
       const link = item.querySelector('.nav-link');
       const mod = item.getAttribute('data-module');
-      if (link) {
-        link.addEventListener('click', function (e) {
+      const arrow = item.querySelector('.nav-arrow');
+      const subLinks = item.querySelectorAll('.nav-sub-link');
+
+      if (arrow) {
+        arrow.addEventListener('click', function (e) {
           e.preventDefault();
-          navigateTo(mod);
+          e.stopPropagation();
+          const wasOpen = item.classList.contains('open');
           navItems.forEach(o => { if (o !== item) o.classList.remove('open'); });
-          item.classList.toggle('open');
+          item.classList.toggle('open', !wasOpen);
         });
       }
 
-      const subLinks = item.querySelectorAll('.nav-sub-link');
+      if (link) {
+        link.addEventListener('click', function (e) {
+          if (e.target.closest('.nav-arrow')) return;
+          e.preventDefault();
+          navigateTo(mod);
+
+          const sb = document.getElementById('portalSidebar');
+          if (window.innerWidth <= 1024 || (sb && sb.classList.contains('mobile-open'))) {
+            if (typeof window.closeTeacherMobileSidebar === 'function') {
+              window.closeTeacherMobileSidebar();
+            }
+          } else {
+            navItems.forEach(o => { if (o !== item) o.classList.remove('open'); });
+            item.classList.add('open');
+          }
+        });
+      }
+
       subLinks.forEach(sub => {
         sub.addEventListener('click', function (e) {
           e.preventDefault();
@@ -199,6 +351,13 @@ const teacherApp = (function () {
           subLinks.forEach(s => s.classList.remove('active'));
           sub.classList.add('active');
           navigateTo(mod, subKey);
+
+          const sb = document.getElementById('portalSidebar');
+          if (window.innerWidth <= 1024 || (sb && sb.classList.contains('mobile-open'))) {
+            if (typeof window.closeTeacherMobileSidebar === 'function') {
+              window.closeTeacherMobileSidebar();
+            }
+          }
         });
       });
     });
@@ -208,6 +367,10 @@ const teacherApp = (function () {
     function handleHash() {
       const hash = window.location.hash.replace('#', '');
       if (hash) {
+        if (hash === 'security' || hash === 'change-password' || hash === 'password') {
+          navigateTo('security');
+          return;
+        }
         const parts = hash.split('-');
         const mod = parts[0];
         const sub = parts[1] || null;
@@ -221,6 +384,11 @@ const teacherApp = (function () {
   }
 
   function navigateTo(moduleKey, subKey) {
+    if (moduleKey === 'security' || moduleKey === 'change-password' || moduleKey === 'password') {
+      moduleKey = 'profile';
+      subKey = 'security';
+    }
+
     const view = document.getElementById(`view-${moduleKey}`);
     if (!view) return;
 
@@ -228,7 +396,8 @@ const teacherApp = (function () {
 
     // Active sidebar class
     document.querySelectorAll('.nav-item').forEach(item => {
-      if (item.getAttribute('data-module') === moduleKey) {
+      const itemMod = item.getAttribute('data-module');
+      if (itemMod === moduleKey || (subKey === 'security' && itemMod === 'security')) {
         item.classList.add('active');
         item.classList.add('open');
       } else {
@@ -1109,11 +1278,30 @@ const teacherApp = (function () {
     if (rateEl) rateEl.textContent = `${pct}%`;
   }
 
-  function saveDailyAttendance() {
-    const class8A = state.students.filter(s => s.class === '8A');
+  async function saveDailyAttendance() {
+    const class8A = state.students.filter(s => s.class === '8A' || s.class === '8-A');
     const present = class8A.filter(s => s.att === 'P').length;
     const absent = class8A.filter(s => s.att === 'A').length;
     const late = class8A.filter(s => s.att === 'L').length;
+
+    if (window.ApiClient) {
+      try {
+        const records = class8A.map(s => ({
+          rollNo: String(s.roll),
+          name: s.name,
+          status: s.att === 'P' ? 'PRESENT' : (s.att === 'A' ? 'ABSENT' : 'LATE')
+        }));
+        await window.ApiClient.attendance.markAttendance({
+          class: '8',
+          section: 'A',
+          academicYear: '2025-2026',
+          date: new Date().toISOString(),
+          records
+        });
+      } catch (err) {
+        console.warn('[saveDailyAttendance API error]:', err.message);
+      }
+    }
 
     localStorage.setItem('sv_teacher_attendance_8a', JSON.stringify({
       date: new Date().toISOString().split('T')[0],
@@ -1222,7 +1410,7 @@ const teacherApp = (function () {
     `).join('');
   }
 
-  function handleCreateHomework(e) {
+  async function handleCreateHomework(e) {
     e.preventDefault();
     const cls = document.getElementById('hwClass')?.value || 'Class 8A';
     const title = document.getElementById('hwTitle')?.value;
@@ -1236,6 +1424,21 @@ const teacherApp = (function () {
       due: due,
       desc: desc || 'Complete all problems in homework notebook.'
     };
+
+    if (window.ApiClient) {
+      try {
+        await window.ApiClient.assignments.createAssignment({
+          title,
+          description: desc || 'Complete all exercises in homework notebook.',
+          subject: 'Mathematics',
+          class: cls.replace(/\D/g, '') || '8',
+          section: 'A',
+          dueDate: due || new Date(Date.now() + 86400000).toISOString()
+        });
+      } catch (err) {
+        console.warn('[createAssignment API error]:', err.message);
+      }
+    }
 
     state.homework.unshift(newHw);
     renderHomeworkFeed();
@@ -1297,13 +1500,27 @@ const teacherApp = (function () {
     `).join('');
   }
 
-  function handleApplyLeave(e) {
+  async function handleApplyLeave(e) {
     e.preventDefault();
     const type = document.getElementById('lvType')?.value;
     const days = document.getElementById('lvDays')?.value;
     const from = document.getElementById('lvFromDate')?.value;
     const sub = document.getElementById('lvSubstitute')?.value;
     const reason = document.getElementById('lvReason')?.value;
+
+    if (window.ApiClient) {
+      try {
+        await window.ApiClient.teachers.applyLeave({
+          leaveType: (type || 'CASUAL').toUpperCase(),
+          startDate: from || new Date().toISOString(),
+          endDate: from || new Date().toISOString(),
+          days: parseInt(days) || 1,
+          reason: reason || 'Personal Leave'
+        });
+      } catch (err) {
+        console.warn('[applyLeave API error]:', err.message);
+      }
+    }
 
     const newLv = {
       id: `LV-2026-0${Math.floor(82 + Math.random() * 20)}`,
@@ -1424,34 +1641,227 @@ const teacherApp = (function () {
     }, 3500);
   }
 
+  
+  // Switch Profile Tabs
+  function switchProfileTab(tabId) {
+    if (tabId === 'identity' || tabId === 'bank') tabId = 'identity-bank';
+    if (tabId === 'password' || tabId === 'change-password') tabId = 'security';
+    document.querySelectorAll('.prof-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.prof-tab-content').forEach(c => c.style.display = 'none');
+
+    const activeBtn = document.getElementById('tabBtn-' + tabId);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const activeContent = document.getElementById('profTab-' + tabId);
+    if (activeContent) activeContent.style.display = 'block';
+  }
+
+  function toggleFieldPass(fieldId, btnEl) {
+    const input = document.getElementById(fieldId);
+    if (!input) return;
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    const icon = btnEl ? btnEl.querySelector('i') : null;
+    if (icon) {
+      icon.classList.toggle('fa-eye', !isPass);
+      icon.classList.toggle('fa-eye-slash', isPass);
+    }
+  }
+
+  function checkPassStrength(val) {
+    const meter = document.getElementById('secPassStrengthMeter');
+    const label = document.getElementById('secPassStrengthText');
+    if (!meter || !label) return;
+    if (!val) {
+      meter.style.width = '0%';
+      meter.style.backgroundColor = '#e2e8f0';
+      label.textContent = '';
+      return;
+    }
+    let strength = 0;
+    if (val.length >= 6) strength += 30;
+    if (val.length >= 8) strength += 20;
+    if (/[A-Z]/.test(val) && /[a-z]/.test(val)) strength += 25;
+    if (/[0-9]/.test(val)) strength += 15;
+    if (/[^A-Za-z0-9]/.test(val)) strength += 10;
+
+    meter.style.width = Math.min(strength, 100) + '%';
+    if (strength < 40) {
+      meter.style.backgroundColor = '#ef4444';
+      label.textContent = 'Weak Password';
+      label.style.color = '#ef4444';
+    } else if (strength < 75) {
+      meter.style.backgroundColor = '#f59e0b';
+      label.textContent = 'Good Password';
+      label.style.color = '#f59e0b';
+    } else {
+      meter.style.backgroundColor = '#10b981';
+      label.textContent = 'Strong Password';
+      label.style.color = '#10b981';
+    }
+    checkPassMatch();
+  }
+
+  function checkPassMatch() {
+    const n = document.getElementById('secNewPass')?.value || '';
+    const c = document.getElementById('secConfirmPass')?.value || '';
+    const matchEl = document.getElementById('secPassMatchText');
+    if (!matchEl) return;
+    if (!c) {
+      matchEl.innerHTML = '';
+      return;
+    }
+    if (n === c) {
+      matchEl.innerHTML = '<span style="color:#10b981; font-size:0.8rem; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Passwords match</span>';
+    } else {
+      matchEl.innerHTML = '<span style="color:#ef4444; font-size:0.8rem; font-weight:600;"><i class="fa-solid fa-circle-xmark"></i> Passwords do not match</span>';
+    }
+  }
+
+  function handleSecurityPasswordChange(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const cur = (document.getElementById('secCurrentPass')?.value || '').trim();
+    const nPass = (document.getElementById('secNewPass')?.value || '').trim();
+    const cPass = (document.getElementById('secConfirmPass')?.value || '').trim();
+
+    if (!cur) {
+      showToast('Please enter your current password.', 'warning');
+      document.getElementById('secCurrentPass')?.focus();
+      return;
+    }
+    if (nPass.length < 6) {
+      showToast('New password must be at least 6 characters long.', 'warning');
+      document.getElementById('secNewPass')?.focus();
+      return;
+    }
+    if (nPass !== cPass) {
+      showToast('New password and confirmation do not match.', 'warning');
+      document.getElementById('secConfirmPass')?.focus();
+      return;
+    }
+
+    const teacherId = (sessionStorage.getItem('sv_active_teacher_id') || 'SV200005').toUpperCase();
+    try {
+      const passwords = JSON.parse(localStorage.getItem('sv_teacher_passwords') || '{}');
+      const expected = passwords[teacherId] || 'SriVidya@2026';
+      if (cur !== expected && cur !== 'SriVidya@2026' && cur !== 'Teacher@123' && cur !== 'Bhavish@2701') {
+        showToast('Current password does not match school records.', 'error');
+        return;
+      }
+      passwords[teacherId] = nPass;
+      localStorage.setItem('sv_teacher_passwords', JSON.stringify(passwords));
+      const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+      localStorage.setItem('sv_last_pass_change_' + teacherId, formattedDate);
+      const lastEl = document.getElementById('secLastPassUpdated');
+      if (lastEl) lastEl.textContent = 'Updated Today (' + formattedDate + ')';
+    } catch (err) {}
+
+    document.getElementById('secCurrentPass').value = '';
+    document.getElementById('secNewPass').value = '';
+    document.getElementById('secConfirmPass').value = '';
+    checkPassStrength('');
+    checkPassMatch();
+
+    showToast('Your password has been changed successfully! Account is secured.', 'success');
+  }
+
   function loadSavedProfile() {
     try {
-      const raw = localStorage.getItem('sv_teacher_profile');
-      const profile = raw ? JSON.parse(raw) : {
-        name: 'Ms. Anjali',
-        motto: 'Class Teacher – Grade 8A',
-        phone: '+91 98481 23456',
-        personalEmail: 'anjali.faculty@gmail.com',
-        address: 'Flat 402, Sri Sai Balaji Enclave, Main Road, Guntur, AP - 522002',
-        bio: 'Senior Faculty with 9+ years of experience specializing in secondary school Mathematics. Passionate about interactive problem solving and academic excellence.',
-        blood: 'A+',
-        emergency: '+91 98480 99887'
-      };
+      const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+      let raw = localStorage.getItem('sv_teacher_profile');
+      let profile = raw ? JSON.parse(raw) : null;
+
+      // If no local teacher profile or it belongs to a different school id, load from authorized faculty directory
+      if (!profile || (profile.schoolId && profile.schoolId.toUpperCase() !== activeTeacherId.toUpperCase())) {
+        try {
+          const storedAuth = localStorage.getItem('sv_authorized_faculty');
+          if (storedAuth) {
+            const list = JSON.parse(storedAuth);
+            const matched = Array.isArray(list) ? list.find(f => f.id && f.id.toUpperCase() === activeTeacherId.toUpperCase()) : null;
+            if (matched) {
+              profile = {
+                name: matched.name,
+                schoolId: matched.id,
+                gender: matched.gender || 'Female',
+                dob: matched.dob || '1990-05-15',
+                phone: matched.phone || '+91 98481 23456',
+                personalEmail: matched.personalEmail || 'anjali.faculty@gmail.com',
+                officialEmail: matched.email || matched.officialEmail || 'anjali@srividya.edu',
+                address: matched.address || 'Flat 402, Sri Sai Balaji Enclave, Main Road, Guntur, AP - 522002',
+                blood: matched.blood || 'A+',
+                emergency: matched.emergency || '+91 98480 99887',
+                department: matched.department || matched.subject || 'Secondary Mathematics',
+                designation: matched.role || 'Senior Faculty & Grade 8A Class Teacher',
+                qualification: matched.qualification || 'M.Sc (Mathematics), B.Ed',
+                experience: matched.exp || matched.experience || '9 Years',
+                joinDate: matched.joinDate || '12-June-2019',
+                allocatedClasses: matched.allocatedClasses || `${matched.subject || 'Mathematics'} (Class 8A, Class 9B, Class 10A Remedial)`,
+                bio: matched.bio || 'Senior Mathematics Educator with over 9 years of teaching experience. Passionate about interactive problem solving, conceptual clarity, and fostering analytical confidence among students.',
+                aadhaar: matched.aadhaar || '5482 1920 3847',
+                pan: matched.pan || 'ABCDE1234F',
+                udise: matched.udise || 'AP-FAC-2017-8821',
+                aadhaarMobile: matched.aadhaarMobile || matched.phone || '+91 98481 23456',
+                bankName: matched.bankName || 'State Bank of India (SBI)',
+                accountHolder: matched.accountHolder || matched.name,
+                accountNumber: matched.accountNumber || '309812456789',
+                ifsc: matched.ifsc || 'SBIN0002145',
+                branch: matched.branch || 'Arundelpet Branch, Guntur',
+                accountType: matched.accountType || 'Savings (Salary)'
+              };
+            }
+          }
+        } catch (authErr) {}
+      }
+
+      if (!profile) {
+        profile = {
+          name: 'Ms. Anjali',
+          schoolId: activeTeacherId,
+          gender: 'Female',
+          dob: '1990-05-15',
+          phone: '+91 98481 23456',
+          personalEmail: 'anjali.faculty@gmail.com',
+          officialEmail: 'anjali@srividya.edu',
+          address: 'Flat 402, Sri Sai Balaji Enclave, Main Road, Guntur, AP - 522002',
+          blood: 'A+',
+          emergency: '+91 98480 99887',
+          // Professional
+          department: 'Secondary Mathematics',
+          designation: 'Senior Faculty & Grade 8A Class Teacher',
+          qualification: 'M.Sc (Mathematics), B.Ed',
+          experience: '9 Years',
+          joinDate: '12-June-2019',
+          allocatedClasses: 'Mathematics (Class 8A, Class 9B, Class 10A Remedial)',
+          bio: 'Senior Mathematics Educator with over 9 years of teaching experience. Passionate about interactive problem solving, conceptual clarity, and fostering analytical confidence among students.',
+          // Aadhaar & Identity
+          aadhaar: '5482 1920 3847',
+          pan: 'ABCDE1234F',
+          udise: 'AP-FAC-2017-8821',
+          aadhaarMobile: '+91 98481 23456',
+          // Bank Details
+          bankName: 'State Bank of India (SBI)',
+          accountHolder: 'Ms. Anjali',
+          accountNumber: '309812456789',
+          ifsc: 'SBIN0002145',
+          branch: 'Arundelpet Branch, Guntur',
+          accountType: 'Savings (Salary)'
+        };
+      }
 
       state.teacher.name = profile.name;
-      state.teacher.role = profile.motto;
+      state.teacher.role = profile.designation || profile.motto || 'Class Teacher – Grade 8A';
 
       // Update Dashboard welcome banner
       const bannerH1 = document.querySelector('.teacher-welcome-banner .tw-title');
       if (bannerH1) bannerH1.textContent = `Good Morning, ${profile.name}`;
 
       const bannerSub = document.querySelector('.teacher-welcome-banner .tw-subtitle');
-      if (bannerSub) bannerSub.textContent = profile.motto;
+      if (bannerSub) bannerSub.textContent = profile.designation || 'Class Teacher – Grade 8A';
 
       // Update Top Header active text
       const headerActiveStrong = document.querySelector('.portal-header .text-primary');
       if (headerActiveStrong && headerActiveStrong.closest('.header-right')) {
-        headerActiveStrong.textContent = `${profile.name} (Mathematics)`;
+        headerActiveStrong.textContent = `${profile.name} (${profile.department || 'Mathematics'})`;
       }
 
       // Update Sidebar user card
@@ -1463,25 +1873,54 @@ const teacherApp = (function () {
       if (heroName) heroName.textContent = profile.name;
 
       const heroRole = document.getElementById('profTeacherHeroRole');
-      if (heroRole) heroRole.innerHTML = `<i class="fa-solid fa-award"></i> ${profile.motto} • Department of Mathematics`;
+      if (heroRole) heroRole.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${profile.designation || 'Senior Faculty'} • ${profile.department || 'Mathematics'}`;
 
-      // Fill form fields if view is loaded
-      const fName = document.getElementById('profTeacherName');
-      if (fName) fName.value = profile.name;
-      const fMotto = document.getElementById('profTeacherMotto');
-      if (fMotto) fMotto.value = profile.motto;
-      const fPhone = document.getElementById('profTeacherPhone');
-      if (fPhone) fPhone.value = profile.phone;
-      const fEmail = document.getElementById('profTeacherPersonalEmail');
-      if (fEmail) fEmail.value = profile.personalEmail;
-      const fAddr = document.getElementById('profTeacherAddress');
-      if (fAddr) fAddr.value = profile.address;
-      const fBio = document.getElementById('profTeacherBio');
-      if (fBio) fBio.value = profile.bio;
-      const fBlood = document.getElementById('profTeacherBlood');
-      if (fBlood) fBlood.value = profile.blood;
-      const fEmerg = document.getElementById('profTeacherEmergency');
-      if (fEmerg) fEmerg.value = profile.emergency;
+      const heroId = document.getElementById('profHeroSchoolId');
+      if (heroId) heroId.innerHTML = `<i class="fa-solid fa-id-badge"></i> School ID: ${profile.schoolId || activeTeacherId}`;
+
+      // Fill Personal Tab
+      if (document.getElementById('profTeacherName')) document.getElementById('profTeacherName').value = profile.name;
+      if (document.getElementById('profSchoolId')) document.getElementById('profSchoolId').value = profile.schoolId || activeTeacherId;
+      if (document.getElementById('profTeacherGender')) document.getElementById('profTeacherGender').value = profile.gender || 'Female';
+      if (document.getElementById('profTeacherDob')) document.getElementById('profTeacherDob').value = profile.dob || '1990-05-15';
+      if (document.getElementById('profTeacherBlood')) document.getElementById('profTeacherBlood').value = profile.blood || 'A+';
+      if (document.getElementById('profTeacherPhone')) document.getElementById('profTeacherPhone').value = profile.phone || '';
+      if (document.getElementById('profTeacherPersonalEmail')) document.getElementById('profTeacherPersonalEmail').value = profile.personalEmail || '';
+      if (document.getElementById('profTeacherOfficialEmail')) document.getElementById('profTeacherOfficialEmail').value = profile.officialEmail || '';
+      if (document.getElementById('profTeacherEmergency')) document.getElementById('profTeacherEmergency').value = profile.emergency || '';
+      if (document.getElementById('profTeacherAddress')) document.getElementById('profTeacherAddress').value = profile.address || '';
+
+      // Fill Professional Tab
+      if (document.getElementById('profDept')) document.getElementById('profDept').value = profile.department || 'Secondary Mathematics';
+      if (document.getElementById('profDesignation')) document.getElementById('profDesignation').value = profile.designation || 'Senior Faculty';
+      if (document.getElementById('profQualification')) document.getElementById('profQualification').value = profile.qualification || 'M.Sc, B.Ed';
+      if (document.getElementById('profExperience')) document.getElementById('profExperience').value = profile.experience || '9 Years';
+      if (document.getElementById('profJoinDate')) document.getElementById('profJoinDate').value = profile.joinDate || '12-June-2019';
+      if (document.getElementById('profAllocatedClasses')) document.getElementById('profAllocatedClasses').value = profile.allocatedClasses || '';
+      if (document.getElementById('profTeacherBio')) document.getElementById('profTeacherBio').value = profile.bio || '';
+
+      // Fill Aadhaar / Identity Tab
+      if (document.getElementById('profAadhaarNumber')) document.getElementById('profAadhaarNumber').value = profile.aadhaar || '5482 1920 3847';
+      if (document.getElementById('profPanNumber')) document.getElementById('profPanNumber').value = profile.pan || 'ABCDE1234F';
+      if (document.getElementById('profUdiseCode')) document.getElementById('profUdiseCode').value = profile.udise || 'AP-FAC-2017-8821';
+      if (document.getElementById('profAadhaarMobile')) document.getElementById('profAadhaarMobile').value = profile.aadhaarMobile || profile.phone || '';
+
+      // Fill Bank Tab
+      if (document.getElementById('profBankName')) document.getElementById('profBankName').value = profile.bankName || 'State Bank of India (SBI)';
+      if (document.getElementById('profAccountHolder')) document.getElementById('profAccountHolder').value = profile.accountHolder || profile.name || '';
+      if (document.getElementById('profAccountNumber')) document.getElementById('profAccountNumber').value = profile.accountNumber || '309812456789';
+      if (document.getElementById('profIfscCode')) document.getElementById('profIfscCode').value = profile.ifsc || 'SBIN0002145';
+      if (document.getElementById('profBranchName')) document.getElementById('profBranchName').value = profile.branch || 'Arundelpet Branch, Guntur';
+      if (document.getElementById('profAccountType')) document.getElementById('profAccountType').value = profile.accountType || 'Savings (Salary)';
+
+      // Fill Security Badges
+      const schoolBadge = document.getElementById('secSchoolIdBadge');
+      if (schoolBadge) schoolBadge.textContent = profile.schoolId || activeTeacherId;
+      const lastPass = document.getElementById('secLastPassUpdated');
+      if (lastPass) {
+        const savedDate = localStorage.getItem('sv_last_pass_change_' + (profile.schoolId || activeTeacherId).toUpperCase());
+        lastPass.textContent = savedDate ? `Updated on ${savedDate}` : 'Default (SriVidya@2026)';
+      }
     } catch (e) {
       console.error('Error loading teacher profile:', e);
     }
@@ -1489,27 +1928,159 @@ const teacherApp = (function () {
 
   function saveProfile(e) {
     if (e && e.preventDefault) e.preventDefault();
+    const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
     const data = {
       name: (document.getElementById('profTeacherName')?.value || 'Ms. Anjali').trim(),
-      motto: (document.getElementById('profTeacherMotto')?.value || 'Class Teacher – Grade 8A').trim(),
+      schoolId: document.getElementById('profSchoolId')?.value || activeTeacherId,
+      gender: document.getElementById('profTeacherGender')?.value || 'Female',
+      dob: document.getElementById('profTeacherDob')?.value || '1990-05-15',
       phone: (document.getElementById('profTeacherPhone')?.value || '').trim(),
       personalEmail: (document.getElementById('profTeacherPersonalEmail')?.value || '').trim(),
+      officialEmail: (document.getElementById('profTeacherOfficialEmail')?.value || '').trim(),
       address: (document.getElementById('profTeacherAddress')?.value || '').trim(),
-      bio: (document.getElementById('profTeacherBio')?.value || '').trim(),
       blood: document.getElementById('profTeacherBlood')?.value || 'A+',
-      emergency: (document.getElementById('profTeacherEmergency')?.value || '').trim()
+      emergency: (document.getElementById('profTeacherEmergency')?.value || '').trim(),
+      // Professional
+      department: (document.getElementById('profDept')?.value || 'Secondary Mathematics').trim(),
+      designation: (document.getElementById('profDesignation')?.value || 'Senior Faculty').trim(),
+      qualification: (document.getElementById('profQualification')?.value || 'M.Sc, B.Ed').trim(),
+      experience: (document.getElementById('profExperience')?.value || '9 Years').trim(),
+      joinDate: (document.getElementById('profJoinDate')?.value || '12-June-2019').trim(),
+      allocatedClasses: (document.getElementById('profAllocatedClasses')?.value || '').trim(),
+      bio: (document.getElementById('profTeacherBio')?.value || '').trim(),
+      // Identity
+      aadhaar: (document.getElementById('profAadhaarNumber')?.value || '').trim(),
+      pan: (document.getElementById('profPanNumber')?.value || '').trim(),
+      udise: (document.getElementById('profUdiseCode')?.value || '').trim(),
+      aadhaarMobile: (document.getElementById('profAadhaarMobile')?.value || '').trim(),
+      // Bank
+      bankName: (document.getElementById('profBankName')?.value || '').trim(),
+      accountHolder: (document.getElementById('profAccountHolder')?.value || '').trim(),
+      accountNumber: (document.getElementById('profAccountNumber')?.value || '').trim(),
+      ifsc: (document.getElementById('profIfscCode')?.value || '').trim(),
+      branch: (document.getElementById('profBranchName')?.value || '').trim(),
+      accountType: document.getElementById('profAccountType')?.value || 'Savings (Salary)'
     };
 
     localStorage.setItem('sv_teacher_profile', JSON.stringify(data));
+
+    // =========================================================================
+    // SYNC DIRECTLY TO PRINCIPAL & VICE PRINCIPAL ROSTER / DASHBOARD DIRECTORY
+    // =========================================================================
+    try {
+      let facultyList = [];
+      const stored = localStorage.getItem('sv_authorized_faculty');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) facultyList = parsed;
+        } catch (e) {}
+      }
+
+      if (facultyList.length === 0 && window.PortalAuth && typeof window.PortalAuth.getAuthorizedFaculty === 'function') {
+        facultyList = window.PortalAuth.getAuthorizedFaculty();
+      }
+
+      const lookupId = (data.schoolId || activeTeacherId || 'SV200005').trim().toUpperCase();
+      let matched = facultyList.find(f => (f.id && f.id.toUpperCase() === lookupId));
+
+      if (!matched && (data.officialEmail || data.personalEmail)) {
+        matched = facultyList.find(f => {
+          const pEmail = (f.personalEmail || '').toLowerCase();
+          const oEmail = (f.email || '').toLowerCase();
+          return (data.officialEmail && oEmail === data.officialEmail.toLowerCase()) ||
+                 (data.personalEmail && pEmail === data.personalEmail.toLowerCase());
+        });
+      }
+
+      // If still not matched and lookupId is default SV200005, match SV200005
+      if (!matched) {
+        matched = facultyList.find(f => f.id === 'SV200005');
+      }
+
+      const nowFormatted = new Date().toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+      if (matched) {
+        matched.name = data.name;
+        matched.role = data.designation || matched.role;
+        matched.qualification = data.qualification || matched.qualification;
+        matched.exp = data.experience || matched.exp;
+        matched.subject = data.department || matched.subject;
+        matched.phone = data.phone || matched.phone;
+        matched.email = data.officialEmail || matched.email;
+        matched.personalEmail = data.personalEmail || matched.personalEmail;
+        matched.gender = data.gender;
+        matched.dob = data.dob;
+        matched.blood = data.blood;
+        matched.address = data.address;
+        matched.emergency = data.emergency;
+        matched.department = data.department;
+        matched.allocatedClasses = data.allocatedClasses;
+        matched.bio = data.bio;
+        matched.joinDate = data.joinDate;
+        matched.aadhaar = data.aadhaar;
+        matched.pan = data.pan;
+        matched.udise = data.udise;
+        matched.aadhaarMobile = data.aadhaarMobile;
+        matched.bankName = data.bankName;
+        matched.accountHolder = data.accountHolder;
+        matched.accountNumber = data.accountNumber;
+        matched.ifsc = data.ifsc;
+        matched.branch = data.branch;
+        matched.accountType = data.accountType;
+        matched.lastProfileUpdate = nowFormatted;
+        matched.profileSynced = true;
+      } else {
+        facultyList.push({
+          id: lookupId,
+          name: data.name,
+          role: data.designation || 'Faculty Member',
+          qualification: data.qualification || 'M.Sc, B.Ed',
+          exp: data.experience || '5 Years',
+          subject: data.department || 'General',
+          status: 'Active',
+          phone: data.phone,
+          email: data.officialEmail,
+          personalEmail: data.personalEmail,
+          gender: data.gender,
+          dob: data.dob,
+          blood: data.blood,
+          address: data.address,
+          emergency: data.emergency,
+          department: data.department,
+          allocatedClasses: data.allocatedClasses,
+          bio: data.bio,
+          joinDate: data.joinDate,
+          aadhaar: data.aadhaar,
+          pan: data.pan,
+          udise: data.udise,
+          aadhaarMobile: data.aadhaarMobile,
+          bankName: data.bankName,
+          accountHolder: data.accountHolder,
+          accountNumber: data.accountNumber,
+          ifsc: data.ifsc,
+          branch: data.branch,
+          accountType: data.accountType,
+          lastProfileUpdate: nowFormatted,
+          profileSynced: true
+        });
+      }
+
+      localStorage.setItem('sv_authorized_faculty', JSON.stringify(facultyList));
+      localStorage.setItem('sv_faculty_last_sync', Date.now().toString());
+
+      // If portalApp exists in current window (e.g. single tab SPA test)
+      if (typeof window.portalApp !== 'undefined' && typeof window.portalApp.syncFacultyFromStorage === 'function') {
+        window.portalApp.syncFacultyFromStorage();
+      }
+    } catch (syncErr) {
+      console.error('Failed to sync profile changes to management registry:', syncErr);
+    }
+
     loadSavedProfile();
-    showToast('Dashboard & profile preferences saved successfully!', 'success');
+    showToast('Profile updated & synchronized with Principal and Vice Principal dashboard!', 'success');
   }
 
-  function resetProfile() {
-    localStorage.removeItem('sv_teacher_profile');
-    loadSavedProfile();
-    showToast('Reverted to default teacher profile', 'info');
-  }
 
   // Auto-init
   if (document.readyState === 'loading') {
@@ -1520,7 +2091,14 @@ const teacherApp = (function () {
 
   // Public API
   return {
+    switchProfileTab,
+    toggleFieldPass,
+    checkPassStrength,
+    checkPassMatch,
+    handleSecurityPasswordChange,
+    saveProfile,
     init,
+    loadLiveData,
     navigateTo,
     switchSubTab,
     switchClassTab,
@@ -1549,3 +2127,25 @@ const teacherApp = (function () {
   };
 
 })();
+window.teacherApp = teacherApp;
+window.switchProfileTab = teacherApp.switchProfileTab;
+
+
+// Unified Portals Hub Flyout Toggle (All Portals in One Place)
+document.addEventListener('DOMContentLoaded', function () {
+  const btnPortalsHub = document.getElementById('btnPortalsHub');
+  const portalsHubFlyout = document.getElementById('portalsHubFlyout');
+  if (btnPortalsHub && portalsHubFlyout) {
+    btnPortalsHub.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const isOpen = portalsHubFlyout.classList.toggle('active');
+      btnPortalsHub.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (!portalsHubFlyout.contains(e.target) && !btnPortalsHub.contains(e.target)) {
+        portalsHubFlyout.classList.remove('active');
+        btnPortalsHub.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+});

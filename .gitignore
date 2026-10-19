@@ -6,8 +6,16 @@ __pycache__/
 # Extracted duplicate nested directory
 School-Website-1-main/
 
+# Dependencies
+node_modules/
+backend/node_modules/
+
 # IDE / OS files
 .DS_Store
-Thumbs.db
 .vscode/
 .idea/
+
+# Environment files
+.env
+backend/.env
+

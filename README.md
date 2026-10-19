@@ -26,8 +26,6 @@ Official website and unified digital portal ecosystem for **Sri Vidya E.M. High 
 | **Public Website** | `/` or `/index.html` | Multilingual website (English, Telugu, Hindi) with live admissions, notices, downloads, curriculum, faculty roster, and gallery |
 | **Management Portal** | `/management` | Unified ERP for Principal (Full Access) & Vice Principal (Role-restricted academic & discipline operations) |
 | **Teacher Portal** | `/teacher` | Faculty dashboard for Grade 8A (Ms. Anjali) — attendance, marks entry, timetable, homework, and syllabus tracking |
-| **Student Portal** | `/student` | Personalized student dashboard for Grade 10-A (Rahul) — timetable, assignments, hall ticket, report cards, and fee status |
-| **Parent Portal** | `/parent` | Dedicated parent dashboard with multi-child switcher (Rahul 8A, Sneha 5B, Aditya UKG), live fee payment, attendance alerts, and direct messaging |
 
 ---
 
@@ -51,24 +49,15 @@ Then visit: [http://localhost:8080/](http://localhost:8080/)
 ```
 ├── assets/                  # Logos, icons, campus images, lab photos
 ├── css/                     # Global styles, portal themes, responsive layouts
-│   ├── style.css            # Public website stylesheet (light/dark mode, responsive header)
-│   └── parent.css           # Dedicated parent portal stylesheet
+│   └── style.css            # Public website stylesheet (light/dark mode, responsive header)
 ├── js/                      # Interactive client-side logic
 │   ├── app.js               # Public website routing, language translation, modals
 │   ├── management.js        # Management portal logic & permission matrix
-│   ├── teacher.js           # Teacher portal logic & grade recording
-│   ├── student.js           # Student portal academic tracking
-│   └── parent.js            # Parent portal multi-child state & fee payment
+│   └── teacher.js           # Teacher portal logic & grade recording
 ├── images/                  # Gallery and campus assets
-├── management/index.html    # Management clean route handler
-├── teacher/index.html       # Teacher clean route handler
-├── student/index.html       # Student clean route handler
-├── parent/index.html        # Parent clean route handler
 ├── index.html               # Main public portal
-├── management-portal.html   # Principal & Vice Principal ERP
+├── portal.html              # Principal & Vice Principal ERP (Management Portal)
 ├── teacher-portal.html      # Teacher Portal
-├── student-portal.html      # Student Portal
-├── parent-portal.html       # Parent Portal
 ├── server.py                # Threaded HTTP server supporting clean URLs
 └── server.js                # Node HTTP server supporting clean URLs
 ```

@@ -13,7 +13,13 @@ import sys
 import urllib.parse
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
-DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if os.path.isdir(os.path.join(BASE_DIR, 'frontend')):
+    DIRECTORY = os.path.join(BASE_DIR, 'frontend')
+elif os.path.isdir(os.path.join(BASE_DIR, 'fronted')):
+    DIRECTORY = os.path.join(BASE_DIR, 'fronted')
+else:
+    DIRECTORY = BASE_DIR
 
 class CleanURLRequestHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -31,18 +37,16 @@ class CleanURLRequestHandler(http.server.SimpleHTTPRequestHandler):
         path = parsed.path
         clean_path = path.rstrip('/')
 
-        # Clean routing for management, teacher, student, and parent
+        # Clean routing for management and teacher
         if clean_path in ('/management', '/portal.html', '/management.html'):
             self.path = '/portal.html'
         elif clean_path in ('/teacher', '/teacher-portal.html', '/teacher.html'):
             self.path = '/teacher-portal.html'
-        elif clean_path in ('/student', '/student-portal.html', '/student.html'):
-            self.path = '/student-portal.html'
-        elif clean_path in ('/parent', '/parent-portal.html', '/parent.html'):
-            self.path = '/parent-portal.html'
+        elif clean_path in ('/tc', '/transfer-certificate', '/transfer-certificate.html'):
+            self.path = '/transfer-certificate.html'
         elif clean_path in ('', '/'):
             self.path = '/index.html'
-        elif path.startswith(('/management/', '/teacher/', '/student/', '/parent/')):
+        elif path.startswith(('/management/', '/teacher/')):
             sub = path.split('/', 2)[-1]
             self.path = '/' + sub
 

@@ -229,6 +229,17 @@ var teacherApp = (function () {
     bindEvents();
     renderAll();
     setupHashRouting();
+    applyTeacherDynamicPermissions();
+
+    // Listen for real-time permission modifications made by Principal, Vice Principal, or HOD
+    window.addEventListener('storage', function(e) {
+      if (e.key && (e.key.startsWith('sv_teacher_permissions') || e.key === 'sv_executive_restrictions')) {
+        applyTeacherDynamicPermissions();
+        if (state.activeModule && !checkModuleAccess(state.activeModule)) {
+          navigateTo('dashboard');
+        }
+      }
+    });
 
     if (window.ApiClient && window.ApiClient.isAuthenticated()) {
       loadLiveData();
@@ -570,6 +581,114 @@ var teacherApp = (function () {
     return Object.assign({}, DEFAULT_FACULTY_MODULE_PERMS);
   }
 
+  function getRawTeacherPermissions(teacherId) {
+    const activeId = teacherId || sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+    try {
+      const stored = localStorage.getItem('sv_teacher_permissions_' + activeId);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return {
+      mark_attendance: true,
+      view_attendance: true,
+      class_sections: true,
+      enter_marks: true,
+      create_exams: false,
+      student_profiles: true,
+      homework_assignments: true,
+      study_materials: true,
+      view_timetable: true,
+      send_announcements: true,
+      apply_leave: true,
+      view_students: true
+    };
+  }
+
+  function applyTeacherDynamicPermissions() {
+    const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+    const modAccess = getFacultyPermissions(activeTeacherId);
+    const granular = getRawTeacherPermissions(activeTeacherId);
+
+    // 1. Sidebar Modules: When turned off, completely hide option; when turned on, show option!
+    const navItems = document.querySelectorAll('#teacherSidebarMenu .nav-item[data-module]');
+    navItems.forEach(item => {
+      const mod = item.getAttribute('data-module');
+      if (mod === 'dashboard' || mod === 'profile') {
+        item.style.display = '';
+        return;
+      }
+      const isAllowed = modAccess[mod] !== false;
+      item.style.display = isAllowed ? '' : 'none';
+    });
+
+    // Cleanly toggle sidebar section titles if all child modules in section are hidden
+    const sectionTitles = document.querySelectorAll('#teacherSidebarMenu .nav-section-title');
+    if (sectionTitles && sectionTitles.length >= 3) {
+      // Section 1: TEACHER WORKSPACE
+      const s1Mods = ['dashboard', 'my-classes', 'students', 'attendance', 'academics', 'examinations', 'timetable'];
+      const s1Visible = s1Mods.some(m => m === 'dashboard' || modAccess[m] !== false);
+      sectionTitles[0].style.display = s1Visible ? '' : 'none';
+
+      // Section 2: CONNECT & LEAVE
+      const s2Mods = ['communication', 'leave', 'reports'];
+      const s2Visible = s2Mods.some(m => modAccess[m] !== false);
+      sectionTitles[1].style.display = s2Visible ? '' : 'none';
+    }
+
+    // 2. Submenus inside modules: hide options that are turned off
+    const attMarkSub = document.querySelector('#teacherSidebarMenu a[data-sub="mark"]');
+    if (attMarkSub) attMarkSub.style.display = (granular.mark_attendance !== false ? '' : 'none');
+
+    const attHistSub = document.querySelector('#teacherSidebarMenu a[data-sub="history"]');
+    if (attHistSub) attHistSub.style.display = (granular.view_attendance !== false ? '' : 'none');
+
+    const examCreateSub = document.querySelector('#teacherSidebarMenu a[data-sub="create"]');
+    if (examCreateSub) examCreateSub.style.display = (granular.create_exams !== false ? '' : 'none');
+
+    const examEnterSub = document.querySelector('#teacherSidebarMenu a[data-sub="enter-marks"]');
+    if (examEnterSub) examEnterSub.style.display = (granular.enter_marks !== false ? '' : 'none');
+
+    const examGradeSub = document.querySelector('#teacherSidebarMenu a[data-sub="grade"]');
+    if (examGradeSub) examGradeSub.style.display = (granular.enter_marks !== false ? '' : 'none');
+
+    const hwSub = document.querySelector('#teacherSidebarMenu a[data-sub="homework"]');
+    if (hwSub) hwSub.style.display = (granular.homework_assignments !== false ? '' : 'none');
+
+    const assignSub = document.querySelector('#teacherSidebarMenu a[data-sub="assignments"]');
+    if (assignSub) assignSub.style.display = (granular.homework_assignments !== false ? '' : 'none');
+
+    const matSub = document.querySelector('#teacherSidebarMenu a[data-sub="materials"]');
+    if (matSub) matSub.style.display = (granular.study_materials !== false ? '' : 'none');
+
+    const leaveApplySub = document.querySelector('#teacherSidebarMenu a[data-sub="apply"]');
+    if (leaveApplySub) leaveApplySub.style.display = (granular.apply_leave !== false ? '' : 'none');
+
+    // 3. Teacher Dashboard Actions & Metric Cards
+    // Welcome Banner Quick Mark Attendance
+    const quickAttBtn = document.querySelector('.teacher-welcome-banner button[onclick*="markAttendanceModal"]');
+    if (quickAttBtn) quickAttBtn.style.display = (granular.mark_attendance !== false ? '' : 'none');
+
+    // Today's classes schedule buttons
+    document.querySelectorAll('.schedule-actions button[onclick*="markAttendanceModal"]').forEach(b => {
+      b.style.display = (granular.mark_attendance !== false ? '' : 'none');
+    });
+    document.querySelectorAll('.schedule-actions button[onclick*="homework"]').forEach(b => {
+      b.style.display = (granular.homework_assignments !== false ? '' : 'none');
+    });
+    document.querySelectorAll('.schedule-actions button[onclick*="materials"]').forEach(b => {
+      b.style.display = (granular.study_materials !== false ? '' : 'none');
+    });
+
+    // Metric Cards on Dashboard
+    const myClassesCard = document.querySelector('.metrics-quad .metric-card[onclick*="my-classes"]');
+    if (myClassesCard) myClassesCard.style.display = (granular.class_sections !== false ? '' : 'none');
+
+    const studentsCard = document.querySelector('.metrics-quad .metric-card[onclick*="students"]');
+    if (studentsCard) studentsCard.style.display = (granular.view_students !== false || granular.student_profiles !== false ? '' : 'none');
+
+    const attCard = document.querySelector('.metrics-quad .metric-card[onclick*="attendance"]');
+    if (attCard) attCard.style.display = (granular.mark_attendance !== false || granular.view_attendance !== false ? '' : 'none');
+  }
+
   function checkModuleAccess(moduleKey) {
     if (moduleKey === 'dashboard' || moduleKey === 'profile') return true;
     const perms = getFacultyPermissions();
@@ -671,6 +790,11 @@ var teacherApp = (function () {
 
     // Verify Access Permissions set by Principal / Vice Principal
     if (!checkModuleAccess(moduleKey)) {
+      showToast(`Access restricted: Module '${moduleKey}' is turned off for your faculty account by School Leadership.`, 'error');
+      if (moduleKey !== 'dashboard') {
+        navigateTo('dashboard');
+        return;
+      }
       renderAccessLockedScreen(moduleKey);
     }
 
@@ -2608,6 +2732,8 @@ var teacherApp = (function () {
     requestModuleAccess,
     unlockAllTeacherModulesForFaculty,
     getFacultyPermissions,
+    getRawTeacherPermissions,
+    applyTeacherDynamicPermissions,
     switchSubTab,
     switchClassTab,
     toggleTask,

@@ -39,7 +39,18 @@
   --color-text-dark: #0F172A;        /* Dark Navy for headings */
   --color-text-white: #FFFFFF;
 
-  /* Accent Blue & Cyan */
+  /* Accent Colors (Red, Green, Amber, Blue, Teal) */
+  --color-accent-red: #DC2626;
+  --color-accent-red-hover: #B91C1C;
+  --color-accent-red-subtle: #FEF2F2;
+
+  --color-accent-green: #10B981;
+  --color-accent-green-hover: #059669;
+  --color-accent-green-subtle: #ECFDF5;
+
+  --color-accent-amber: #D97706;
+  --color-accent-amber-subtle: #FEF3C7;
+
   --color-accent-blue: #0284C7;
   --color-accent-blue-subtle: #E0F2FE;
   --color-accent-teal: #0D9488;
@@ -72,8 +83,9 @@
   --color-primary: #3B82F6;          /* Bright Blue */
   --color-primary-hover: #60A5FA;
   --color-primary-dark: #93C5FD;
-  --color-primary-subtle: rgba(59, 130, 246, 0.12);
-  --color-primary-tint: rgba(59, 130, 246, 0.22);
+  --color-primary-light: #60A5FA;
+  --color-primary-subtle: rgba(59, 130, 246, 0.15);
+  --color-primary-tint: rgba(59, 130, 246, 0.25);
 
   --color-bg-base: #0B1120;          /* Deep Slate Midnight */
   --color-bg-surface: #151F32;       /* Slate Card Surface */
@@ -91,6 +103,24 @@
   --color-text-muted: #94A3B8;
   --color-text-dark: #F8FAFC;
   --color-text-white: #FFFFFF;
+
+  /* Accent Colors for Dark Mode (Vibrant & High Contrast on Midnight Dark) */
+  --color-accent-red: #F87171;
+  --color-accent-red-hover: #EF4444;
+  --color-accent-red-subtle: rgba(239, 68, 68, 0.18);
+
+  --color-accent-green: #34D399;
+  --color-accent-green-hover: #10B981;
+  --color-accent-green-subtle: rgba(16, 185, 129, 0.18);
+
+  --color-accent-amber: #FBBF24;
+  --color-accent-amber-subtle: rgba(245, 158, 11, 0.18);
+
+  --color-accent-blue: #38BDF8;
+  --color-accent-blue-subtle: rgba(56, 189, 248, 0.15);
+
+  --color-accent-teal: #2DD4BF;
+  --color-accent-teal-subtle: rgba(45, 212, 191, 0.15);
 
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.5);
@@ -253,6 +283,11 @@ button, input, select, textarea {
   color: #0F172A;
   background-color: #FFFFFF;
   font-weight: 600;
+}
+
+[data-theme="dark"] .lang-select option {
+  color: var(--color-text-main);
+  background-color: var(--color-bg-surface);
 }
 
 .header-lang-wrap {
@@ -680,10 +715,22 @@ button, input, select, textarea {
   border-color: #BFDBFE;
 }
 
+[data-theme="dark"] .item-mgmt:hover .portal-drop-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93C5FD;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
 .item-teacher:hover .portal-drop-badge {
   background: #D1FAE5;
   color: #065F46;
   border-color: #A7F3D0;
+}
+
+[data-theme="dark"] .item-teacher:hover .portal-drop-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6EE7B7;
+  border-color: rgba(16, 185, 129, 0.4);
 }
 
 .item-student:hover .portal-drop-badge {
@@ -692,10 +739,22 @@ button, input, select, textarea {
   border-color: #FDE68A;
 }
 
+[data-theme="dark"] .item-student:hover .portal-drop-badge {
+  background: rgba(245, 158, 11, 0.2);
+  color: #FDE047;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
 .item-parent:hover .portal-drop-badge {
   background: #EDE9FE;
   color: #6D28D9;
   border-color: #DDD6FE;
+}
+
+[data-theme="dark"] .item-parent:hover .portal-drop-badge {
+  background: rgba(168, 85, 247, 0.2);
+  color: #D8B4FE;
+  border-color: rgba(168, 85, 247, 0.4);
 }
 
 /* Responsive Navbar Adjustments */
@@ -2519,8 +2578,19 @@ button, input, select, textarea {
 }
 
 .contact-card.highlight {
-  background: linear-gradient(135deg, var(--color-primary-subtle) 0%, #FFFFFF 100%);
+  background: linear-gradient(135deg, var(--color-primary-subtle) 0%, var(--color-bg-surface) 100%);
   border-color: var(--color-primary-tint);
+}
+
+[data-theme="dark"] .contact-card.highlight {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.16) 0%, var(--color-bg-surface) 100%);
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .contact-card.highlight:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
 }
 
 .contact-icon {
@@ -2541,14 +2611,29 @@ button, input, select, textarea {
   color: var(--color-primary-hover);
 }
 
+[data-theme="dark"] .contact-card.red .contact-icon {
+  background-color: var(--color-accent-red-subtle);
+  color: var(--color-accent-red);
+}
+
 .contact-card.green .contact-icon {
   background-color: var(--color-accent-teal-subtle);
   color: var(--color-accent-teal);
 }
 
+[data-theme="dark"] .contact-card.green .contact-icon {
+  background-color: var(--color-accent-green-subtle);
+  color: var(--color-accent-green);
+}
+
 .contact-icon.gold {
   background-color: #FEF3C7;
   color: #D97706;
+}
+
+[data-theme="dark"] .contact-icon.gold {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #FBBF24;
 }
 
 .contact-card h4 {
@@ -2768,6 +2853,29 @@ button, input, select, textarea {
   height: 100%;
   min-height: 420px;
   border: 0;
+  transition: filter 0.3s ease;
+}
+
+/* Elegant dark-mode Google Maps treatment */
+[data-theme="dark"] .map-embed-wrapper {
+  background-color: #0F172A;
+  border-color: #243048;
+}
+
+[data-theme="dark"] .map-embed-wrapper iframe {
+  filter: invert(90%) hue-rotate(180deg) contrast(95%);
+}
+
+[data-theme="dark"] .school-route-showcase {
+  background-color: var(--color-bg-surface);
+  border-color: #243048;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .map-badge {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .school-route-details {
@@ -2797,6 +2905,16 @@ button, input, select, textarea {
 .location-item:hover {
   background: var(--color-bg-surface);
   border-color: var(--color-primary-tint);
+}
+
+[data-theme="dark"] .location-item {
+  background: #111A2E;
+  border-color: #1E293B;
+}
+
+[data-theme="dark"] .location-item:hover {
+  background: #18233A;
+  border-color: #3B82F6;
 }
 
 .location-item-icon {
@@ -2869,6 +2987,17 @@ button, input, select, textarea {
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
   padding: 0.75rem 0.85rem;
+  transition: var(--transition);
+}
+
+[data-theme="dark"] .transit-card {
+  background: #111A2E;
+  border-color: #1E293B;
+}
+
+[data-theme="dark"] .transit-card:hover {
+  background: #18233A;
+  border-color: #3B82F6;
 }
 
 .transit-icon {
@@ -2880,6 +3009,7 @@ button, input, select, textarea {
   justify-content: center;
   font-size: 1rem;
   flex-shrink: 0;
+  transition: var(--transition);
 }
 
 .transit-icon.bus {
@@ -2887,9 +3017,19 @@ button, input, select, textarea {
   color: #3730A3;
 }
 
+[data-theme="dark"] .transit-icon.bus {
+  background: rgba(99, 102, 241, 0.2);
+  color: #A5B4FC;
+}
+
 .transit-icon.train {
   background: #FEE2E2;
   color: #991B1B;
+}
+
+[data-theme="dark"] .transit-icon.train {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
 }
 
 .transit-icon.van {
@@ -2897,9 +3037,19 @@ button, input, select, textarea {
   color: #92400E;
 }
 
+[data-theme="dark"] .transit-icon.van {
+  background: rgba(245, 158, 11, 0.2);
+  color: #FDE047;
+}
+
 .transit-icon.car {
   background: #D1FAE5;
   color: #065F46;
+}
+
+[data-theme="dark"] .transit-icon.car {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6EE7B7;
 }
 
 .transit-card h6 {
@@ -3415,16 +3565,34 @@ button, input, select, textarea {
   color: #991B1B;
 }
 
+[data-theme="dark"] .notice-doc-callout.urgent {
+  border-left-color: var(--color-accent-red);
+  background-color: var(--color-accent-red-subtle);
+  color: #FCA5A5;
+}
+
 .notice-doc-callout.academic {
   border-left-color: #0284C7;
   background-color: #F0F9FF;
   color: #075985;
 }
 
+[data-theme="dark"] .notice-doc-callout.academic {
+  border-left-color: var(--color-accent-blue);
+  background-color: var(--color-accent-blue-subtle);
+  color: #7DD3FC;
+}
+
 .notice-doc-callout.success {
   border-left-color: #10B981;
   background-color: #ECFDF5;
   color: #065F46;
+}
+
+[data-theme="dark"] .notice-doc-callout.success {
+  border-left-color: var(--color-accent-green);
+  background-color: var(--color-accent-green-subtle);
+  color: #6EE7B7;
 }
 
 .notice-table-responsive {

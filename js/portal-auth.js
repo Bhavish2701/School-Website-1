@@ -72,39 +72,17 @@ const PortalAuth = {
   handleMgmtRoleChange(role) {
     const userInput = document.getElementById('managementLoginUser');
     const passInput = document.getElementById('managementLoginPass');
-    const titleEl = document.getElementById('mgmtCredsRoleTitle');
-    const badgeEl = document.getElementById('mgmtCredsBadge');
-    const userValEl = document.getElementById('mgmtCredsUserVal');
-    const passValEl = document.getElementById('mgmtCredsPassVal');
-    const userLabelEl = document.getElementById('mgmtCredsUserLabel');
-
-    let u = 'principal';
-    let p = 'Principal@123';
-    let title = 'Principal';
-    let badge = 'Executive';
-    let label = 'Username / ID:';
-
-    if (role === 'vice-principal' || role === 'vp') {
-      u = 'viceprincipal';
-      p = 'VicePrincipal@123';
-      title = 'Vice Principal';
-      badge = 'Academic Head';
-      label = 'Username / ID:';
-    } else if (role === 'admin' || role === 'clerk' || role === 'office') {
-      u = 'SV-OFFICE-01';
-      p = 'Office@123';
-      title = 'Office Administrator / Clerk';
-      badge = 'Assigned School ID';
-      label = 'School Clerk ID:';
+    if (userInput) {
+      userInput.value = '';
+      if (role === 'admin' || role === 'clerk' || role === 'office') {
+        userInput.placeholder = 'Enter assigned Clerk / School ID (e.g. SV-OFFICE-01)';
+      } else {
+        userInput.placeholder = 'Enter username or official email';
+      }
     }
-
-    if (userInput) userInput.value = u;
-    if (passInput) passInput.value = p;
-    if (titleEl) titleEl.textContent = title;
-    if (badgeEl) badgeEl.textContent = badge;
-    if (userValEl) userValEl.textContent = u;
-    if (passValEl) passValEl.textContent = p;
-    if (userLabelEl) userLabelEl.textContent = label;
+    if (passInput) {
+      passInput.value = '';
+    }
   },
 
   togglePassword(inputId, btnEl) {

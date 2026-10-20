@@ -1112,6 +1112,8 @@ const portalApp = (function () {
       console.warn("renderAllTables error:", err);
     }
     bindEvents();
+    renderExecutiveRestrictionsBanner();
+    updateClerkFacultyAttSummary();
     setupHashRouting();
 
     const pBackdrop = document.getElementById('portalBackdrop');
@@ -1379,17 +1381,34 @@ const portalApp = (function () {
     // Office / Clerk has the dedicated Office Administration & Records Desk Dashboard.
     const principalDash = document.getElementById('roleDashboardPrincipal');
     const adminDash = document.getElementById('roleDashboardAdmin');
+    const vpPermissionsBar = document.getElementById('vpPermissionsBar');
+    const officePermissionsBar = document.getElementById('officePermissionsBar');
+    const metricCardFees = document.getElementById('metricCardFees');
+    const metricCardVPDiscipline = document.getElementById('metricCardVPDiscipline');
 
-    const isLeadershipRole = (roleKey === 'principal' || roleKey === 'vice-principal');
-
-    if (principalDash) {
-      principalDash.style.display = isLeadershipRole ? 'block' : 'none';
+    if (roleKey === 'admin') {
+      if (principalDash) principalDash.style.display = 'none';
+      if (adminDash) adminDash.style.display = 'block';
+      if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
+      if (officePermissionsBar) officePermissionsBar.style.display = 'block';
+    } else if (roleKey === 'vice-principal') {
+      if (principalDash) principalDash.style.display = 'block';
+      if (adminDash) adminDash.style.display = 'none';
+      if (vpPermissionsBar) vpPermissionsBar.style.display = 'block';
+      if (officePermissionsBar) officePermissionsBar.style.display = 'none';
+      if (metricCardFees) metricCardFees.style.display = 'none';
+      if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'flex';
+    } else { // principal
+      if (principalDash) principalDash.style.display = 'block';
+      if (adminDash) adminDash.style.display = 'none';
+      if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
+      if (officePermissionsBar) officePermissionsBar.style.display = 'none';
+      if (metricCardFees) metricCardFees.style.display = 'flex';
+      if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'none';
     }
-    if (adminDash) {
-      adminDash.style.display = (roleKey === 'admin') ? 'block' : 'none';
-    }
 
-    // Update breadcrumb if on dashboard
+    renderExecutiveRestrictionsBanner();
+
     const crumb = document.getElementById('currentPageCrumb');
     if (crumb && state.activeModule === 'dashboard') {
       crumb.textContent = `${config.title} Dashboard`;
@@ -1447,44 +1466,81 @@ const portalApp = (function () {
     // Modules restricted for Office / Clerk
     const CLERK_RESTRICTED = ['teachers', 'academics', 'timetable', 'examinations', 'discipline', 'leaves', 'events', 'reports', 'settings'];
 
-    // Sidebar items access control: Office/Clerk keeps the exact SAME navigation bar as Principal & VP
+    // Sidebar items dynamic visibility: when turned off, DO NOT show option; when turned on, show option!
     const allNavItems = document.querySelectorAll('.sidebar-menu .nav-item[data-module]');
     const clerkPerms = getClerkPermissions();
 
     allNavItems.forEach(item => {
       const mod = item.getAttribute('data-module');
-      item.style.display = ''; // ALWAYS VISIBLE for everybody!
 
       // Remove any previous lock badges
       const existingLock = item.querySelector('.nav-lock-badge');
       if (existingLock) existingLock.remove();
 
-      if (role === 'admin' && mod !== 'dashboard') {
-        const isAllowed = clerkPerms[mod] !== false;
-        if (!isAllowed) {
-          const navLink = item.querySelector('.nav-link');
-          if (navLink && !navLink.querySelector('.nav-lock-badge')) {
-            const lockBadge = document.createElement('span');
-            lockBadge.className = 'nav-sub-badge nav-lock-badge';
-            lockBadge.title = 'Access Restricted: Requires Principal or Vice Principal Authorization';
-            lockBadge.innerHTML = '<i class="fa-solid fa-lock" style="font-size:0.65rem; color:#94a3b8;"></i>';
-            navLink.appendChild(lockBadge);
-          }
+      if (role === 'admin') {
+        if (mod === 'dashboard') {
+          item.style.display = '';
+        } else {
+          const isAllowed = clerkPerms[mod] !== false;
+          // Hide option completely when turned off, show only when turned on
+          item.style.display = isAllowed ? '' : 'none';
         }
+      } else {
+        // Principal and Vice Principal have unrestricted visibility across all domains
+        item.style.display = '';
       }
     });
 
-    // Section titles in sidebar
+    // Cleanly toggle sidebar section titles if all child items are hidden
     const navSectionTitles = document.querySelectorAll('.sidebar-menu .nav-section-title');
     if (navSectionTitles && navSectionTitles.length >= 2) {
       if (role === 'admin') {
         navSectionTitles[0].textContent = 'OFFICE & DESK MODULES';
         navSectionTitles[1].textContent = 'COMMUNICATION & NOTICES';
+
+        const sec1Mods = ['dashboard', 'students', 'teachers', 'academics', 'attendance', 'timetable', 'examinations', 'discipline', 'leaves', 'fees'];
+        const hasSec1Visible = sec1Mods.some(m => m === 'dashboard' || clerkPerms[m] !== false);
+        navSectionTitles[0].style.display = hasSec1Visible ? '' : 'none';
+
+        const sec2Mods = ['communication', 'events', 'reports', 'settings'];
+        const hasSec2Visible = sec2Mods.some(m => clerkPerms[m] !== false);
+        navSectionTitles[1].style.display = hasSec2Visible ? '' : 'none';
       } else {
         navSectionTitles[0].textContent = 'CORE MODULES';
         navSectionTitles[1].textContent = 'ENGAGEMENT & ADMINISTRATION';
+        navSectionTitles[0].style.display = '';
+        navSectionTitles[1].style.display = '';
       }
     }
+
+    // Filter Office/Clerk Desk Dashboard elements dynamically according to active permissions
+    if (role === 'admin') {
+      const adminDash = document.getElementById('roleDashboardAdmin');
+      if (adminDash) {
+        // Fee Counter metric & card
+        const feeMetrics = adminDash.querySelectorAll('.metric-card[onclick*="fees"]');
+        feeMetrics.forEach(c => c.style.display = (clerkPerms.fees !== false ? '' : 'none'));
+
+        // Admissions & TC metrics & cards
+        const studentMetrics = adminDash.querySelectorAll('.metric-card[onclick*="students"]');
+        studentMetrics.forEach(c => c.style.display = (clerkPerms.students !== false ? '' : 'none'));
+
+        // Overview stream cards
+        adminDash.querySelectorAll('.overview-card').forEach(c => {
+          if (c.textContent.includes('Fee Counter') || c.textContent.includes('Receipts')) {
+            c.style.display = (clerkPerms.fees !== false ? '' : 'none');
+          }
+          if (c.textContent.includes('Admissions Processing') || c.textContent.includes('New Admissions')) {
+            c.style.display = (clerkPerms.students !== false ? '' : 'none');
+          }
+        });
+      }
+    } else if (role === 'principal' || role === 'vice-principal') {
+      // Render active executive restrictions banner for Executive leadership
+      renderExecutiveRestrictionsBanner();
+    }
+
+
 
     if (approvalsCard) {
       const titleBadge = approvalsCard.querySelector('.card-header-badge');
@@ -1496,16 +1552,12 @@ const portalApp = (function () {
     }
 
     // Role-specific Metric 4 & Governance Display
-    if (role === 'vice-principal' || role === 'principal') {
-      // Both Principal and Vice Principal have identical executive dashboard & full unrestricted access
-      if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
+    if (role === 'vice-principal') {
+      if (vpPermissionsBar) vpPermissionsBar.style.display = 'block';
       if (officePermissionsBar) officePermissionsBar.style.display = 'none';
+      if (metricCardFees) metricCardFees.style.display = 'none';
+      if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'flex';
 
-      // Both show the same 4th Metric: Fee Collections
-      if (metricCardFees) metricCardFees.style.display = 'flex';
-      if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'none';
-
-      // Full Unrestricted Fee Collection & Financial Reports
       if (feesLimitedBanner) feesLimitedBanner.style.display = 'none';
       if (sidebarFeesBadge) sidebarFeesBadge.style.display = 'none';
       if (collectFeeBtn) {
@@ -1514,7 +1566,6 @@ const portalApp = (function () {
         collectFeeBtn.title = 'Open Fee Collection Counter';
       }
 
-      // Full Institutional Configuration & Settings Access
       if (settingsLockedBanner) settingsLockedBanner.style.display = 'none';
       if (settingsFormCard) settingsFormCard.classList.remove('perm-locked');
       if (saveSettingsBtn) {
@@ -1530,8 +1581,43 @@ const portalApp = (function () {
 
       if (approvalsCard) {
         const titleBadge = approvalsCard.querySelector('.card-header-badge');
-        if (titleBadge) titleBadge.textContent = `${state.pendingApprovalsCount} Requiring Executive Action`;
+        if (titleBadge) titleBadge.textContent = `${state.pendingApprovalsCount} Requiring VP Action`;
       }
+
+      renderExecutiveRestrictionsBanner();
+    } else if (role === 'principal') {
+      if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
+      if (officePermissionsBar) officePermissionsBar.style.display = 'none';
+      if (metricCardFees) metricCardFees.style.display = 'flex';
+      if (metricCardVPDiscipline) metricCardVPDiscipline.style.display = 'none';
+
+      if (feesLimitedBanner) feesLimitedBanner.style.display = 'none';
+      if (sidebarFeesBadge) sidebarFeesBadge.style.display = 'none';
+      if (collectFeeBtn) {
+        collectFeeBtn.disabled = false;
+        collectFeeBtn.style.opacity = '1';
+        collectFeeBtn.title = 'Open Fee Collection Counter';
+      }
+
+      if (settingsLockedBanner) settingsLockedBanner.style.display = 'none';
+      if (settingsFormCard) settingsFormCard.classList.remove('perm-locked');
+      if (saveSettingsBtn) {
+        saveSettingsBtn.disabled = false;
+        saveSettingsBtn.style.opacity = '1';
+        saveSettingsBtn.title = 'Save Configuration';
+      }
+
+      if (navDisciplineBadge) {
+        navDisciplineBadge.style.display = 'inline-block';
+        navDisciplineBadge.textContent = 'Active';
+      }
+
+      if (approvalsCard) {
+        const titleBadge = approvalsCard.querySelector('.card-header-badge');
+        if (titleBadge) titleBadge.textContent = `${state.pendingApprovalsCount} Requiring Principal Action`;
+      }
+
+      renderExecutiveRestrictionsBanner();
     } else if (role === 'admin') {
       // Admin / Office Clerk Mode: Distinct Desk Dashboard & Tailored Options Access
       if (vpPermissionsBar) vpPermissionsBar.style.display = 'none';
@@ -1584,6 +1670,14 @@ const portalApp = (function () {
     const isClerk = (state.currentRole === 'admin');
     const clerkPerms = getClerkPermissions();
     const isRestrictedForClerk = isClerk && !clerkPerms[moduleKey];
+
+    if (isClerk && moduleKey !== 'dashboard' && clerkPerms[moduleKey] === false) {
+      showToast(`Module '${moduleKey}' is turned off for Office/Clerk by Principal & Vice Principal.`, 'error');
+      if (state.activeModule !== 'dashboard') {
+        navigateTo('dashboard');
+      }
+      return;
+    }
 
     const targetView = document.getElementById(`view-${moduleKey}`);
     if (!targetView) return;
@@ -5016,12 +5110,68 @@ const portalApp = (function () {
     printWin.document.close();
   }
 
+  function getSavedFacultyAttendance(attDate) {
+    try {
+      const saved = localStorage.getItem('sv_faculty_attendance_' + attDate);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return {};
+  }
+
+  function populateStaffAttendanceChecklist() {
+    const container = document.getElementById('staffAttendanceChecklist');
+    if (!container) return;
+
+    const list = state.faculty || [];
+    const dateInput = document.getElementById('staffAttDate');
+    const attDate = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().split('T')[0];
+    const savedAtt = getSavedFacultyAttendance(attDate);
+
+    container.innerHTML = list.map((f, idx) => {
+      const currentStatus = savedAtt[f.id] || f.status || (idx === 4 ? 'Leave' : (idx === 7 ? 'Late' : 'Present'));
+      return `
+        <div class="staff-att-row" data-id="${f.id}">
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="teacher-id-badge" style="font-size:0.75rem; padding:1px 6px;">${f.id}</span>
+              <strong style="font-size:0.88rem; color:var(--color-text-dark);">${f.name}</strong>
+            </div>
+            <small class="text-muted" style="font-size:0.75rem;">${f.role} &bull; ${f.subject || ''}</small>
+          </div>
+          <div class="staff-att-btn-group">
+            <button type="button" class="btn-att-opt ${currentStatus === 'Present' ? 'active-p' : ''}" data-id="${f.id}" data-val="Present" onclick="portalApp.setIndividualStaffStatus('${f.id}', 'Present')" title="Mark Present">P</button>
+            <button type="button" class="btn-att-opt ${currentStatus === 'Late' ? 'active-l' : ''}" data-id="${f.id}" data-val="Late" onclick="portalApp.setIndividualStaffStatus('${f.id}', 'Late')" title="Mark Late Arrival">L</button>
+            <button type="button" class="btn-att-opt ${currentStatus === 'Leave' ? 'active-od' : ''}" data-id="${f.id}" data-val="Leave" onclick="portalApp.setIndividualStaffStatus('${f.id}', 'Leave')" title="Mark On Leave / OD">OD</button>
+            <button type="button" class="btn-att-opt ${currentStatus === 'Absent' ? 'active-a' : ''}" data-id="${f.id}" data-val="Absent" onclick="portalApp.setIndividualStaffStatus('${f.id}', 'Absent')" title="Mark Unscheduled Absent">A</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function setIndividualStaffStatus(facultyId, status) {
+    document.querySelectorAll(`.btn-att-opt[data-id="${facultyId}"]`).forEach(btn => {
+      btn.classList.remove('active-p', 'active-l', 'active-od', 'active-a');
+      const val = btn.getAttribute('data-val');
+      if (val === status) {
+        if (status === 'Present') btn.classList.add('active-p');
+        else if (status === 'Late') btn.classList.add('active-l');
+        else if (status === 'Leave') btn.classList.add('active-od');
+        else if (status === 'Absent') btn.classList.add('active-a');
+      }
+    });
+
+    const fac = (state.faculty || []).find(f => f.id === facultyId);
+    if (fac) fac.status = status;
+  }
+
   function setAllStaffAttendance(status = 'Present') {
     (state.faculty || []).forEach(f => {
       f.status = status;
+      setIndividualStaffStatus(f.id, status);
     });
-    renderStaffGrid(state.faculty);
-    showToast(`All institutional staff marked as ${status} for today's session`, 'success');
+    if (typeof renderStaffGrid === 'function') renderStaffGrid(state.faculty);
+    showToast(`Office Checklist: All institutional staff marked as ${status}`, 'info');
   }
 
   function bulkMarkAllStaffPresent() {
@@ -5059,6 +5209,11 @@ const portalApp = (function () {
   }
 
   function openTeacherAttendanceModal() {
+    const dateInput = document.getElementById('staffAttDate');
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().split('T')[0];
+    }
+    populateStaffAttendanceChecklist();
     openModal('teacherAttendanceModal');
   }
 
@@ -6319,8 +6474,51 @@ const portalApp = (function () {
 
   function handleSaveStaffAttendance(e) {
     if (e && e.preventDefault) e.preventDefault();
-    showToast('Daily staff attendance verified and synced with biometric server', 'success');
+    const dateInput = document.getElementById('staffAttDate');
+    const attDate = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().split('T')[0];
+    const session = document.getElementById('staffAttSession')?.value || 'Full Day';
+    const records = {};
+
+    (state.faculty || []).forEach(f => {
+      const activeBtn = document.querySelector(`.btn-att-opt[data-id="${f.id}"][class*="active-"]`);
+      const val = activeBtn ? activeBtn.getAttribute('data-val') : (f.status || 'Present');
+      records[f.id] = val;
+      f.status = val;
+    });
+
+    try {
+      localStorage.setItem('sv_faculty_attendance_' + attDate, JSON.stringify(records));
+      localStorage.setItem('sv_faculty_attendance_last_sync', Date.now().toString());
+    } catch (err) {}
+
+    renderStaffAttendanceTable();
+    if (typeof renderStaffGrid === 'function') renderStaffGrid(state.faculty);
+    updateClerkFacultyAttSummary();
     closeModal('teacherAttendanceModal');
+    showToast('Daily Faculty Attendance officially verified and recorded by School Office / Clerk Department!', 'success');
+  }
+
+  function updateClerkFacultyAttSummary() {
+    const list = state.faculty || [];
+    const present = list.filter(f => !f.status || f.status === 'Present' || f.status === 'Late').length;
+    const total = list.length || 30;
+    const leave = list.filter(f => f.status === 'Leave').length;
+    const absent = list.filter(f => f.status === 'Absent').length;
+
+    const sumEl = document.getElementById('clerkFacultyAttSummary');
+    if (sumEl) sumEl.textContent = `${present} / ${total} Present`;
+
+    const totEl = document.getElementById('attTotalStaff');
+    if (totEl) totEl.textContent = total;
+
+    const presEl = document.getElementById('attPresentStaff');
+    if (presEl) presEl.textContent = present;
+
+    const leaveEl = document.getElementById('attLeaveStaff');
+    if (leaveEl) leaveEl.textContent = leave;
+
+    const absEl = document.getElementById('attAbsentStaff');
+    if (absEl) absEl.textContent = absent;
   }
 
   function handleSaveSingleStaffAttendance(e) {
@@ -7320,31 +7518,42 @@ const portalApp = (function () {
     if (!tbody) return;
 
     const list = (state.faculty || []);
+    const dateInput = document.getElementById('staffAttDate');
+    const attDate = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().split('T')[0];
+    const saved = getSavedFacultyAttendance(attDate);
+
     tbody.innerHTML = list.map((s, idx) => {
-      const isAbsent = idx === 4;
-      const isLate = idx === 7 || idx === 15;
-      const timeIn = isAbsent ? '—' : isLate ? '08:46 AM' : '08:32 AM';
+      const curStatus = saved[s.id] || s.status || (idx === 4 ? 'Leave' : (idx === 7 ? 'Late' : 'Present'));
+      const isAbsent = (curStatus === 'Absent');
+      const isLeave = (curStatus === 'Leave');
+      const isLate = (curStatus === 'Late');
+      const timeIn = (isAbsent || isLeave) ? '—' : (isLate ? '08:48 AM' : '08:30 AM');
+
       let statusBadge = '<span class="portal-badge badge-success"><i class="fa-solid fa-circle-check"></i> Present</span>';
-      if (isAbsent) statusBadge = '<span class="portal-badge badge-warning"><i class="fa-solid fa-bed"></i> On Medical Leave</span>';
+      if (isAbsent) statusBadge = '<span class="portal-badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Absent</span>';
+      else if (isLeave) statusBadge = '<span class="portal-badge badge-warning"><i class="fa-solid fa-bed"></i> On Medical Leave</span>';
       else if (isLate) statusBadge = '<span class="portal-badge badge-amber"><i class="fa-solid fa-clock"></i> Late Arrival</span>';
 
       return `
         <tr>
           <td>
-            <strong>${s.name}</strong><br>
-            <small class="text-muted">${s.phone}</small>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="teacher-id-badge" style="font-size:0.75rem; padding:1px 6px;">${s.id}</span>
+              <strong>${s.name}</strong>
+            </div>
+            <small class="text-muted">${s.phone || '8106636230'}</small>
           </td>
-          <td><span class="portal-badge badge-primary">${s.qualification}</span></td>
+          <td><span class="portal-badge badge-primary">${s.qualification || 'M.Sc, B.Ed'}</span></td>
           <td>
             <strong>${s.role}</strong><br>
-            <small class="text-muted">${s.subject}</small>
+            <small class="text-muted">${s.subject || ''}</small>
           </td>
           <td><strong>${timeIn}</strong></td>
           <td>${statusBadge}</td>
-          <td><small class="text-primary font-weight-bold">GATE-BIO-0${(idx % 2) + 1} (Sync OK)</small></td>
+          <td><small class="text-primary font-weight-bold"><i class="fa-solid fa-id-badge"></i> Office Verified</small></td>
           <td>
-            <button class="btn btn-secondary btn-sm" onclick="portalApp.viewStaffLeaveDossier('${s.name}')" title="Dossier">
-              <i class="fa-solid fa-user-check"></i> Dossier
+            <button class="btn btn-secondary btn-sm" onclick="portalApp.openTeacherAttendanceModal()" title="Update Attendance for Faculty">
+              <i class="fa-solid fa-pen-to-square"></i> Mark Register
             </button>
           </td>
         </tr>
@@ -7479,6 +7688,547 @@ const portalApp = (function () {
   // GRANULAR ACCESS CONTROL & PERMISSIONS ENGINE (EXECUTIVE GOVERNANCE)
   // =========================================================================
 
+  // EXECUTIVE OPERATIONAL RESTRICTIONS & INSTITUTIONAL SECURITY
+  const DEFAULT_EXECUTIVE_RESTRICTIONS = {
+    // Principal Statutory Jurisdiction
+    freeze_marks: true,              // Freeze Marks Alteration after terminal exams
+    dual_tc_approval: true,          // Dual-Executive Signoff for Transfer Certificates
+    fee_concession_cap: true,        // Clerk Fee Concession Ceiling (Max ₹2,000 without Principal)
+    cash_handover_audit: true,       // Cashier Shift Closing Physical Audit
+    dossier_delete_protection: true, // Permanent Student Dossier Deletion PIN Protection
+    timetable_master_lock: true,     // Master Timetable modification locked
+
+    // Vice Principal Operational Jurisdiction
+    seal_question_papers: true,      // 24-Hour Confidential Question Paper Seal
+    leave_escalation_cap: true,      // Leaves >2 Days require Principal signoff (VP max 2 days)
+    sms_broadcast_gate: true,        // Parent Mass SMS Executive Preview Gate
+    gate_late_auto_summons: true,    // Automated Parent Summons on 3 Late Gate Passes
+    sub_master_protocol: true,       // Emergency Faculty Substitution Mandatory Logging
+    discipline_escalation: true      // Disciplinary Hearing & Detention VP Jurisdiction
+  };
+
+  const PRINCIPAL_RESTRICTIONS_DEFS = [
+    {
+      key: 'freeze_marks',
+      title: 'Freeze Academic Marks & Terminal Scores',
+      icon: 'fa-lock',
+      desc: 'Disallow teachers and clerks from modifying or overwriting Unit Test and Terminal examination marks once finalized.',
+      warning: 'Requires Principal Override Token to alter'
+    },
+    {
+      key: 'dual_tc_approval',
+      title: 'Dual Executive Signoff for Transfer Certificates (TC)',
+      icon: 'fa-signature',
+      desc: 'Mandates formal dual authorization: both Principal Smt. Gorle Varalakshmi and Vice Principal Sri Navva Anand must sign off before TC release.',
+      warning: 'Prevents single-desk unauthorized dispatch'
+    },
+    {
+      key: 'fee_concession_cap',
+      title: 'Fee Concession Ceiling Cap (Max ₹2,000)',
+      icon: 'fa-hand-holding-dollar',
+      desc: 'Office and accounts staff cannot grant fee waivers or concessions exceeding ₹2,000 without Principal written approval.',
+      warning: 'High-value waivers strictly escalated to Principal'
+    },
+    {
+      key: 'cash_handover_audit',
+      title: 'Cashier Shift Closing Daily Audit Verification',
+      icon: 'fa-cash-register',
+      desc: 'Requires end-of-day physical cash till reconciliation before fee counter batch closure and ERP sync.',
+      warning: 'Enforces cash counter transparency'
+    },
+    {
+      key: 'dossier_delete_protection',
+      title: 'Permanent Student Dossier Deletion Armored PIN',
+      icon: 'fa-shield-halved',
+      desc: 'Prevents accidental or malicious permanent deletion of student academic records and disciplinary files.',
+      warning: 'Statutory Student Records Shield'
+    },
+    {
+      key: 'timetable_master_lock',
+      title: 'Master Curriculum & Timetable Structural Lock',
+      icon: 'fa-table-cells',
+      desc: 'Freezes core bell timings, period durations, and room assignments against unauthorized department modifications.',
+      warning: 'Principal Master Schedule Lock'
+    }
+  ];
+
+  const VICE_PRINCIPAL_RESTRICTIONS_DEFS = [
+    {
+      key: 'seal_question_papers',
+      title: 'Confidential Exam Question Paper 24-Hour Seal',
+      icon: 'fa-file-shield',
+      desc: 'Locks official examination blueprints and question papers from faculty portal views until exactly 24 hours prior to scheduled exam time.',
+      warning: 'Confidential Exam Security Enforced'
+    },
+    {
+      key: 'leave_escalation_cap',
+      title: 'Faculty Leave Sanction Escalation (3+ Days)',
+      icon: 'fa-calendar-check',
+      desc: 'Vice Principal can approve short leaves up to 2 days; leaves for 3 or more days strictly escalate to Principal executive sanction.',
+      warning: 'VP Scope: <= 2 Days • Principal Scope: 3+ Days'
+    },
+    {
+      key: 'sms_broadcast_gate',
+      title: 'Campus Mass SMS & Circular Dispatch Gate',
+      icon: 'fa-comment-sms',
+      desc: 'Blocks office desk from broadcasting bulk DLT SMS or circulars to parents without mandatory Vice Principal clearance.',
+      warning: 'DLT Gate: Requires VP Preview Signoff'
+    },
+    {
+      key: 'gate_late_auto_summons',
+      title: 'Automated Gate Late-Coming Parent Summons',
+      icon: 'fa-person-walking-dashed-line-arrow-right',
+      desc: 'Automatically generates a Vice Principal parent summons conference when a student records 3 late arrival gate slips.',
+      warning: 'Campus Discipline Rule 4A'
+    },
+    {
+      key: 'sub_master_protocol',
+      title: 'Emergency Faculty Substitution Mandatory Logging',
+      icon: 'fa-user-clock',
+      desc: 'Strictly mandates logging all zero-period and emergency faculty substitutions through the VP Academic Desk before period commencement.',
+      warning: 'Zero-Period Academic Continuity'
+    },
+    {
+      key: 'discipline_escalation',
+      title: 'Student Conduct Disciplinary Hearing Jurisdiction',
+      icon: 'fa-scale-balanced',
+      desc: 'All moderate and high severity classroom conduct incidents and mobile device confiscations are referred to Vice Principal investigation.',
+      warning: 'VP Disciplinary Tribunal Authority'
+    }
+  ];
+
+  function getExecutiveRestrictions() {
+    try {
+      const saved = localStorage.getItem('sv_executive_restrictions');
+      if (saved) return Object.assign({}, DEFAULT_EXECUTIVE_RESTRICTIONS, JSON.parse(saved));
+    } catch (e) {}
+    return Object.assign({}, DEFAULT_EXECUTIVE_RESTRICTIONS);
+  }
+
+  function saveExecutiveRestrictions(restrictions) {
+    try {
+      localStorage.setItem('sv_executive_restrictions', JSON.stringify(restrictions));
+      renderExecutiveRestrictionsForm();
+      renderExecutiveRestrictionsBanner();
+      showToast('Institutional executive restrictions updated and enforced across all dashboards!', 'success');
+    } catch (e) {
+      console.error('Error saving executive restrictions:', e);
+    }
+  }
+
+  function toggleExecutiveRestriction(key, value) {
+    const current = getExecutiveRestrictions();
+    current[key] = value;
+    saveExecutiveRestrictions(current);
+  }
+
+  function enforceAllExecutiveRestrictions() {
+    const full = {};
+    Object.keys(DEFAULT_EXECUTIVE_RESTRICTIONS).forEach(k => full[k] = true);
+    saveExecutiveRestrictions(full);
+  }
+
+  function resetExecutiveRestrictions() {
+    saveExecutiveRestrictions(Object.assign({}, DEFAULT_EXECUTIVE_RESTRICTIONS));
+  }
+
+  function enforcePrincipalRestrictions() {
+    const current = getExecutiveRestrictions();
+    PRINCIPAL_RESTRICTIONS_DEFS.forEach(d => current[d.key] = true);
+    saveExecutiveRestrictions(current);
+    showToast('Enforced all Principal statutory governance policies!', 'success');
+  }
+
+  function resetPrincipalRestrictions() {
+    const current = getExecutiveRestrictions();
+    PRINCIPAL_RESTRICTIONS_DEFS.forEach(d => current[d.key] = DEFAULT_EXECUTIVE_RESTRICTIONS[d.key]);
+    saveExecutiveRestrictions(current);
+    showToast('Reset Principal policies to institutional defaults.', 'info');
+  }
+
+  function enforceVicePrincipalRestrictions() {
+    const current = getExecutiveRestrictions();
+    VICE_PRINCIPAL_RESTRICTIONS_DEFS.forEach(d => current[d.key] = true);
+    saveExecutiveRestrictions(current);
+    showToast('Enforced all Vice Principal operational policies!', 'success');
+  }
+
+  function resetVicePrincipalRestrictions() {
+    const current = getExecutiveRestrictions();
+    VICE_PRINCIPAL_RESTRICTIONS_DEFS.forEach(d => current[d.key] = DEFAULT_EXECUTIVE_RESTRICTIONS[d.key]);
+    saveExecutiveRestrictions(current);
+    showToast('Reset Vice Principal policies to operational defaults.', 'info');
+  }
+
+  function renderExecutiveRestrictionsBanner() {
+    const banner = document.getElementById('execRestrictionsBanner');
+    const container = document.getElementById('execRestrictionsBadgeRow');
+    const titleEl = document.getElementById('execRestrictionsTitle');
+    const badgeEl = document.getElementById('execRestrictionsRoleBadge');
+    const subtitleEl = document.getElementById('execRestrictionsSubtitle');
+    const iconBox = document.getElementById('execRestrictionsIconBox');
+    if (!container) return;
+
+    const restr = getExecutiveRestrictions();
+    const isVP = (state.currentRole === 'vice-principal');
+
+    if (banner) {
+      banner.classList.toggle('vp-theme', isVP);
+    }
+
+    if (iconBox) {
+      iconBox.innerHTML = isVP
+        ? '<i class="fa-solid fa-scale-balanced"></i>'
+        : '<i class="fa-solid fa-landmark"></i>';
+    }
+
+    if (titleEl) {
+      titleEl.textContent = isVP
+        ? 'Vice Principal Operational Restrictions & Academic Governance'
+        : 'Principal Executive Restrictions & Institutional Governance';
+    }
+
+    if (badgeEl) {
+      badgeEl.className = isVP ? 'portal-badge badge-purple' : 'portal-badge badge-primary';
+      badgeEl.innerHTML = isVP
+        ? '<i class="fa-solid fa-user-check"></i> Vice Principal Jurisdiction'
+        : '<i class="fa-solid fa-user-tie"></i> Principal Jurisdiction';
+    }
+
+    if (subtitleEl) {
+      subtitleEl.textContent = isVP
+        ? 'Campus academic & discipline policies enforced by Vice Principal Sri Navva Anand. Examination locks and student conduct policies configured here take immediate effect.'
+        : 'Campus-wide institutional policies enforced by Principal Smt. Gorle Varalakshmi. Modules restricted here are dynamically hidden from teacher & clerk dashboards.';
+    }
+
+    const activeList = isVP ? VICE_PRINCIPAL_RESTRICTIONS_DEFS : PRINCIPAL_RESTRICTIONS_DEFS;
+
+    container.innerHTML = activeList.map(b => {
+      const isEnforced = restr[b.key] !== false;
+      return `
+        <span class="erb-badge ${isEnforced ? 'restricted-policy' : 'neutral-policy'}" title="${b.title}: ${isEnforced ? 'Active & Enforced' : 'Unlocked / Normal'}">
+          <i class="fa-solid ${b.icon}"></i> ${b.title.split(' ')[0]}: ${isEnforced ? 'ENFORCED' : 'OFF'}
+        </span>
+      `;
+    }).join('');
+  }
+
+  function openExecutiveRestrictions() {
+    navigateTo('settings');
+    switchSubTab('settings', 'permissions');
+    switchPermissionsSubTab('executive');
+  }
+
+  function renderPrincipalRestrictionsForm() {
+    const container = document.getElementById('principalRestrictionsGrid');
+    if (!container) return;
+    const restr = getExecutiveRestrictions();
+
+    container.innerHTML = PRINCIPAL_RESTRICTIONS_DEFS.map(d => {
+      const isEnforced = restr[d.key] !== false;
+      return `
+        <div class="perm-card ${isEnforced ? 'enabled' : 'disabled'}">
+          <div class="perm-card-header">
+            <div class="perm-icon-wrap" style="background: rgba(37, 99, 235, 0.1); color: var(--color-primary);"><i class="fa-solid ${d.icon}"></i></div>
+            <div class="perm-info">
+              <h4>${d.title}</h4>
+              <p>${d.desc}</p>
+            </div>
+            <div class="perm-switch-wrap">
+              <label class="perm-switch">
+                <input type="checkbox" id="exec_perm_${d.key}" ${isEnforced ? 'checked' : ''} onchange="portalApp.toggleExecutiveRestriction('${d.key}', this.checked)">
+                <span class="perm-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="perm-card-footer">
+            <span class="perm-status-badge ${isEnforced ? 'badge-allowed' : 'badge-denied'}">
+              <i class="fa-solid ${isEnforced ? 'fa-lock' : 'fa-lock-open'}"></i> ${isEnforced ? 'Principal Policy Enforced' : 'Restriction Lifted'}
+            </span>
+            <span class="text-xs text-muted" style="margin-left:auto;"><i class="fa-solid fa-circle-info"></i> ${d.warning}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderVicePrincipalRestrictionsForm() {
+    const container = document.getElementById('vicePrincipalRestrictionsGrid');
+    if (!container) return;
+    const restr = getExecutiveRestrictions();
+
+    container.innerHTML = VICE_PRINCIPAL_RESTRICTIONS_DEFS.map(d => {
+      const isEnforced = restr[d.key] !== false;
+      return `
+        <div class="perm-card ${isEnforced ? 'enabled' : 'disabled'}">
+          <div class="perm-card-header">
+            <div class="perm-icon-wrap" style="background: rgba(99, 102, 241, 0.12); color: #6366f1;"><i class="fa-solid ${d.icon}"></i></div>
+            <div class="perm-info">
+              <h4>${d.title}</h4>
+              <p>${d.desc}</p>
+            </div>
+            <div class="perm-switch-wrap">
+              <label class="perm-switch">
+                <input type="checkbox" id="exec_perm_${d.key}" ${isEnforced ? 'checked' : ''} onchange="portalApp.toggleExecutiveRestriction('${d.key}', this.checked)">
+                <span class="perm-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="perm-card-footer">
+            <span class="perm-status-badge ${isEnforced ? 'badge-allowed' : 'badge-denied'}">
+              <i class="fa-solid ${isEnforced ? 'fa-lock' : 'fa-lock-open'}"></i> ${isEnforced ? 'VP Policy Enforced' : 'Restriction Lifted'}
+            </span>
+            <span class="text-xs text-muted" style="margin-left:auto;"><i class="fa-solid fa-circle-info"></i> ${d.warning}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderExecutiveRestrictionsForm() {
+    renderPrincipalRestrictionsForm();
+    renderVicePrincipalRestrictionsForm();
+  }
+
+  // HOD (HEAD OF DEPARTMENT) PERMISSION DELEGATION SYSTEM
+  const HOD_DEPARTMENTS = {
+    science: {
+      key: 'science',
+      name: 'Physical & Biological Sciences',
+      hodId: 'SV200005',
+      hodName: 'Sri K. Rajesh',
+      hodRole: 'Science HOD (Physics & Chemistry)',
+      faculty: ['SV200005', 'SV200006', 'SV200010'] // Rajesh, Lakshmi, Venkatesh
+    },
+    maths: {
+      key: 'maths',
+      name: 'Mathematics Department',
+      hodId: 'SV200004',
+      hodName: 'Smt. P. Sunitha',
+      hodRole: 'Mathematics HOD',
+      faculty: ['SV200004', 'SV200002', 'SV200011'] // Sunitha, Anjali, Suresh
+    },
+    english_lang: {
+      key: 'english_lang',
+      name: 'English & Languages Department',
+      hodId: 'SV200003',
+      hodName: 'Sri D. Suresh',
+      hodRole: 'English & Languages HOD',
+      faculty: ['SV200003', 'SV200008', 'SV200009'] // Suresh, Ramana (Telugu), Sunitha (Hindi)
+    },
+    social: {
+      key: 'social',
+      name: 'Social Sciences & Humanities',
+      hodId: 'SV200007',
+      hodName: 'Smt. B. Padmavati',
+      hodRole: 'Social Studies HOD',
+      faculty: ['SV200007', 'SV200012'] // Padmavati, Prasad
+    },
+    computers: {
+      key: 'computers',
+      name: 'Computer Science & ICT',
+      hodId: 'SV200008',
+      hodName: 'Sri Ch. Ramesh',
+      hodRole: 'Computer Lab & ICT Incharge',
+      faculty: ['SV200008']
+    }
+  };
+
+  let currentHodDeptKey = 'science';
+  let currentHodTeacherId = 'SV200006'; // default Smt. M. Lakshmi under Rajesh
+
+  function initHodDelegationView() {
+    onHodDeptChange(currentHodDeptKey);
+  }
+
+  function onHodDeptChange(deptKey) {
+    currentHodDeptKey = deptKey;
+    const dept = HOD_DEPARTMENTS[deptKey] || HOD_DEPARTMENTS.science;
+
+    // 1. Populate teacher dropdown with faculty under this HOD
+    const select = document.getElementById('permHodTeacherSelect');
+    if (select) {
+      select.innerHTML = dept.faculty.map(fid => {
+        const fac = state.faculty.find(f => f.id === fid) || { id: fid, name: fid, subject: dept.name, role: 'Faculty' };
+        const isHod = (fid === dept.hodId);
+        return `<option value="${fid}" ${fid === currentHodTeacherId ? 'selected' : ''}>${fac.id} — ${fac.name} (${fac.subject || fac.role})${isHod ? ' [DEPT HOD]' : ''}</option>`;
+      }).join('');
+
+      // If currentHodTeacherId not in this dept, pick first
+      if (!dept.faculty.includes(currentHodTeacherId)) {
+        currentHodTeacherId = dept.faculty[0];
+        select.value = currentHodTeacherId;
+      }
+    }
+
+    // 2. Render HOD Lead & Scope Card
+    const cardEl = document.getElementById('hodDeptScopeCard');
+    if (cardEl) {
+      cardEl.innerHTML = `
+        <div class="teacher-perm-profile" style="border-left: 4px solid var(--color-primary);">
+          <div class="t-perm-avatar" style="background:var(--color-primary); color:#fff;"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="t-perm-meta">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3>${dept.name}</h3>
+              <span class="portal-badge badge-primary"><i class="fa-solid fa-award"></i> HOD: ${dept.hodName} (${dept.hodId})</span>
+            </div>
+            <div class="t-perm-sub">${dept.hodRole} &bull; Total ${dept.faculty.length} Faculty Members Reporting</div>
+            <div class="t-perm-contact" style="color:var(--color-text-muted);">
+              <i class="fa-solid fa-circle-info text-primary"></i> 
+              <strong>HOD Authority Scope:</strong> Delegated permission authority over academic lesson plans, question paper drafts, homework, and marks tabulation for teachers in this department.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. Render granular capabilities grid for current teacher
+    renderHodTeacherPermsGrid(currentHodTeacherId);
+    renderHodDeptFacultyTable();
+  }
+
+  function onHodTeacherChange(teacherId) {
+    currentHodTeacherId = teacherId;
+    renderHodTeacherPermsGrid(teacherId);
+  }
+
+  function renderHodTeacherPermsGrid(teacherId) {
+    const container = document.getElementById('hodPermsGrid');
+    if (!container) return;
+    const perms = getTeacherPermissions(teacherId);
+
+    const capabilities = [
+      { key: 'enter_marks', name: 'Marks Entry & Tabulation', icon: 'fa-pen-to-square', desc: 'Can enter Unit Test and Terminal marks for subject classes' },
+      { key: 'create_exams', name: 'Create Exams & Question Papers', icon: 'fa-file-circle-plus', desc: 'Authorized to draft exam blueprints and questions under HOD supervision' },
+      { key: 'homework_assignments', name: 'Homework & Assignments', icon: 'fa-book-bookmark', desc: 'Can assign daily homework and review student submissions' },
+      { key: 'study_materials', name: 'Study Materials & Syllabus', icon: 'fa-file-lines', desc: 'Can upload department notes, worksheets & PDFs' },
+      { key: 'mark_attendance', name: 'Daily Attendance Marking', icon: 'fa-clipboard-check', desc: 'Can mark morning class attendance for assigned periods' },
+      { key: 'view_attendance', name: 'Attendance Registers & History', icon: 'fa-calendar-day', desc: 'Can inspect monthly class attendance register' },
+      { key: 'class_sections', name: 'Class & Section Management', icon: 'fa-shapes', desc: 'Can manage assigned class students and seating' },
+      { key: 'view_timetable', name: 'Timetable & Substitutions', icon: 'fa-calendar-week', desc: 'Can view teaching periods and log substitution acceptance' },
+      { key: 'send_announcements', name: 'Class Broadcasts & Notices', icon: 'fa-bullhorn', desc: 'Can broadcast departmental announcements to parents' },
+      { key: 'view_students', name: 'Class Student Roster', icon: 'fa-users', desc: 'Can access assigned student list and contact records' }
+    ];
+
+    container.innerHTML = capabilities.map(c => {
+      const isChecked = perms[c.key] !== false;
+      return `
+        <div class="perm-card ${isChecked ? 'enabled' : 'disabled'}">
+          <div class="perm-card-header">
+            <div class="perm-icon-wrap"><i class="fa-solid ${c.icon}"></i></div>
+            <div class="perm-info">
+              <h4>${c.name}</h4>
+              <p>${c.desc}</p>
+            </div>
+            <div class="perm-switch-wrap">
+              <label class="perm-switch">
+                <input type="checkbox" id="hod_perm_${c.key}" ${isChecked ? 'checked' : ''}>
+                <span class="perm-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="perm-card-footer">
+            <span class="perm-status-badge ${isChecked ? 'badge-allowed' : 'badge-denied'}">
+              <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-ban'}"></i> ${isChecked ? 'HOD Authorized' : 'Permission Restricted'}
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function applyHodPreset(preset) {
+    const keys = ['enter_marks', 'create_exams', 'homework_assignments', 'study_materials', 'mark_attendance', 'view_attendance', 'class_sections', 'view_timetable', 'send_announcements', 'view_students'];
+    const perms = getTeacherPermissions(currentHodTeacherId);
+
+    if (preset === 'full') {
+      keys.forEach(k => perms[k] = true);
+      showToast('Applied Full Departmental Capabilities Preset', 'info');
+    } else if (preset === 'teaching_only') {
+      keys.forEach(k => {
+        perms[k] = ['homework_assignments', 'study_materials', 'mark_attendance', 'view_attendance', 'view_timetable', 'view_students'].includes(k);
+      });
+      showToast('Applied Curriculum & Teaching Only Preset', 'info');
+    } else if (preset === 'exam_restricted') {
+      keys.forEach(k => {
+        if (k === 'create_exams') perms[k] = false;
+        else perms[k] = true;
+      });
+      showToast('Applied Exam Paper Restricted Preset (Drafting Disabled)', 'info');
+    }
+
+    saveTeacherPermissions(currentHodTeacherId, perms);
+    renderHodTeacherPermsGrid(currentHodTeacherId);
+    renderHodDeptFacultyTable();
+  }
+
+  function saveHodDelegatedPermissions() {
+    const teacherId = currentHodTeacherId;
+    const perms = getTeacherPermissions(teacherId);
+    const keys = ['enter_marks', 'create_exams', 'homework_assignments', 'study_materials', 'mark_attendance', 'view_attendance', 'class_sections', 'view_timetable', 'send_announcements', 'view_students'];
+
+    keys.forEach(k => {
+      const cb = document.getElementById('hod_perm_' + k);
+      if (cb) perms[k] = cb.checked;
+    });
+
+    const dept = HOD_DEPARTMENTS[currentHodDeptKey];
+    saveTeacherPermissions(teacherId, perms);
+
+    // Save delegation audit log
+    try {
+      const logs = JSON.parse(localStorage.getItem('sv_hod_delegation_audit') || '[]');
+      logs.unshift({
+        teacherId,
+        department: dept.name,
+        hodId: dept.hodId,
+        hodName: dept.hodName,
+        date: new Date().toLocaleString(),
+        summary: Object.keys(perms).filter(k => perms[k]).length + ' permissions active'
+      });
+      localStorage.setItem('sv_hod_delegation_audit', JSON.stringify(logs.slice(0, 50)));
+    } catch (e) {}
+
+    renderHodTeacherPermsGrid(teacherId);
+    renderHodDeptFacultyTable();
+    showToast(`Department permissions for ${teacherId} authorized and saved by HOD ${dept.hodName}!`, 'success');
+  }
+
+  function renderHodDeptFacultyTable() {
+    const tbody = document.getElementById('hodDeptFacultyTableBody');
+    if (!tbody) return;
+    const dept = HOD_DEPARTMENTS[currentHodDeptKey];
+
+    tbody.innerHTML = dept.faculty.map(fid => {
+      const fac = state.faculty.find(f => f.id === fid) || { id: fid, name: fid, subject: dept.name, role: 'Faculty Member' };
+      const perms = getTeacherPermissions(fid);
+      const activeCount = Object.values(perms).filter(Boolean).length;
+      const isHod = (fid === dept.hodId);
+
+      return `
+        <tr>
+          <td><span class="teacher-id-badge">${fac.id}</span></td>
+          <td><strong>${fac.name}</strong> ${isHod ? '<span class="portal-badge badge-primary" style="font-size:0.7rem;">HOD</span>' : ''}</td>
+          <td>${fac.subject || dept.name}</td>
+          <td>${isHod ? 'Department Head & Lead' : 'Faculty Reporting to HOD'}</td>
+          <td style="text-align:center;">
+            <span class="portal-badge ${activeCount >= 9 ? 'badge-success' : (activeCount >= 5 ? 'badge-primary' : 'badge-amber')}">
+              ${activeCount} / 12 Active
+            </span>
+          </td>
+          <td style="text-align:center;">
+            <span class="text-xs text-muted">${isHod ? 'Executive Scope' : 'HOD Delegated'}</span>
+          </td>
+          <td style="text-align:center;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.onHodTeacherChange('${fac.id}'); document.getElementById('permHodTeacherSelect').value='${fac.id}'; portalApp.showToast('Selected ' + '${fac.name}', 'info');">
+              <i class="fa-solid fa-sliders"></i> Configure
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
   const DEFAULT_CLERK_PERMISSIONS = {
     dashboard: true,
     students: true,
@@ -7557,8 +8307,13 @@ const portalApp = (function () {
     const teacherPanel = document.getElementById('permPanelTeacher');
     const matrixPanel = document.getElementById('permPanelMatrix');
 
+    const hodPanel = document.getElementById('permPanelHod');
+    const execPanel = document.getElementById('permPanelExecutive');
+
     if (clerkPanel) clerkPanel.style.display = 'none';
     if (teacherPanel) teacherPanel.style.display = 'none';
+    if (hodPanel) hodPanel.style.display = 'none';
+    if (execPanel) execPanel.style.display = 'none';
     if (matrixPanel) matrixPanel.style.display = 'none';
 
     if (tab === 'clerk') {
@@ -7571,6 +8326,16 @@ const portalApp = (function () {
       if (btn) btn.classList.add('active');
       if (teacherPanel) teacherPanel.style.display = 'block';
       initTeacherPermissionsView();
+    } else if (tab === 'hod') {
+      const btn = document.getElementById('permTabBtnHod');
+      if (btn) btn.classList.add('active');
+      if (hodPanel) hodPanel.style.display = 'block';
+      initHodDelegationView();
+    } else if (tab === 'executive') {
+      const btn = document.getElementById('permTabBtnExecutive');
+      if (btn) btn.classList.add('active');
+      if (execPanel) execPanel.style.display = 'block';
+      renderExecutiveRestrictionsForm();
     } else if (tab === 'matrix') {
       const btn = document.getElementById('permTabBtnMatrix');
       if (btn) btn.classList.add('active');
@@ -7932,6 +8697,31 @@ const portalApp = (function () {
     saveCurrentTeacherPermissions,
     applyTeacherPreset,
     renderTeacherRosterPermissionsTable,
+    getExecutiveRestrictions,
+    saveExecutiveRestrictions,
+    toggleExecutiveRestriction,
+    enforceAllExecutiveRestrictions,
+    enforcePrincipalRestrictions,
+    resetPrincipalRestrictions,
+    enforceVicePrincipalRestrictions,
+    resetVicePrincipalRestrictions,
+    renderPrincipalRestrictionsForm,
+    renderVicePrincipalRestrictionsForm,
+    resetExecutiveRestrictions,
+    renderExecutiveRestrictionsForm,
+    renderExecutiveRestrictionsBanner,
+    openExecutiveRestrictions,
+    initHodDelegationView,
+    onHodDeptChange,
+    onHodTeacherChange,
+    renderHodTeacherPermsGrid,
+    applyHodPreset,
+    saveHodDelegatedPermissions,
+    renderHodDeptFacultyTable,
+    populateStaffAttendanceChecklist,
+    setIndividualStaffStatus,
+    updateClerkFacultyAttSummary,
+    getSavedFacultyAttendance,
 
  
     resendBroadcast,

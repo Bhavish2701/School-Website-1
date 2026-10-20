@@ -92,25 +92,7 @@
 
           <form class="login-form" id="mgmtLoginForm" onsubmit="PortalAuth.login('management', event)">
             
-            <!-- Live Active Credentials Quick-Fill Card -->
-            <div class="login-creds-card" id="mgmtCredsHelperBox" style="background: rgba(37, 99, 235, 0.08); border: 1.5px solid rgba(37, 99, 235, 0.3); border-radius: 10px; padding: 12px 14px; margin-bottom: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #1e40af;">
-                  <i class="fa-solid fa-shield-halved" style="margin-right: 4px;"></i> <span id="mgmtCredsRoleTitle">Principal</span> Credentials
-                </span>
-                <span id="mgmtCredsBadge" style="background: #2563eb; color: #ffffff; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 9999px;">Executive</span>
-              </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem; background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px dashed rgba(37, 99, 235, 0.35);">
-                <div>
-                  <span style="color: #64748b; font-size: 0.72rem; display: block;" id="mgmtCredsUserLabel">Username / ID:</span>
-                  <strong style="color: #1d4ed8; font-family: monospace; font-size: 0.9rem;" id="mgmtCredsUserVal">principal</strong>
-                </div>
-                <div>
-                  <span style="color: #64748b; font-size: 0.72rem; display: block;">Password:</span>
-                  <code style="color: #1d4ed8; font-weight: 700; font-size: 0.88rem;" id="mgmtCredsPassVal">Principal@123</code>
-                </div>
-              </div>
-            </div>
+            
 
             <div class="login-field">
               <label class="login-label">Administrative Role</label>
@@ -127,7 +109,7 @@
             <div class="login-field">
               <label class="login-label">Official Email / User ID</label>
               <div class="login-input-wrap">
-                <input type="text" class="login-input" id="managementLoginUser" value="principal" required placeholder="e.g. srividyaschools2017@gmail.com" autocomplete="username">
+                <input type="text" class="login-input" id="managementLoginUser" value="" required placeholder="Enter username or official email" autocomplete="username">
                 <i class="fa-solid fa-envelope login-input-icon"></i>
               </div>
             </div>
@@ -135,7 +117,7 @@
             <div class="login-field">
               <label class="login-label">Security Password</label>
               <div class="login-input-wrap">
-                <input type="password" class="login-input" id="managementLoginPass" value="Principal@123" required placeholder="Enter password" autocomplete="current-password">
+                <input type="password" class="login-input" id="managementLoginPass" value="" required placeholder="Enter password" autocomplete="current-password">
                 <i class="fa-solid fa-lock login-input-icon"></i>
                 <button type="button" class="login-password-toggle" onclick="PortalAuth.togglePassword('managementLoginPass', this)" aria-label="Toggle password visibility">
                   <i class="fa-solid fa-eye"></i>
@@ -740,7 +722,32 @@
                Full Institutional Governance, High-Level Approvals & Performance
                ================================================================= -->
           <div class="role-dashboard-container" id="roleDashboardPrincipal">
-<!-- 4 Key Executive Indicators:
+          <!-- Executive Restrictions & Governance Active Policies Strip (Principal & VP) -->
+          <div class="executive-restrictions-banner mb-3" id="execRestrictionsBanner">
+            <div class="erb-header">
+              <div class="erb-title-wrap">
+                <div class="erb-icon-box" id="execRestrictionsIconBox">
+                  <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div class="erb-title-text">
+                  <div class="erb-title-row">
+                    <h4 id="execRestrictionsTitle">Principal Executive Governance &amp; Active Restrictions</h4>
+                    <span class="portal-badge badge-primary" id="execRestrictionsRoleBadge"><i class="fa-solid fa-user-tie"></i> Principal Jurisdiction</span>
+                  </div>
+                  <p class="erb-subtitle" id="execRestrictionsSubtitle">
+                    Campus-wide institutional policies enforced by Principal Smt. Gorle Varalakshmi. Modules restricted here are dynamically hidden from teacher &amp; clerk dashboards.
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm erb-header-btn" onclick="portalApp.openExecutiveRestrictions()" title="Configure Executive Restrictions">
+                <i class="fa-solid fa-sliders"></i> Configure Restrictions
+              </button>
+            </div>
+            <div class="erb-badges-row" id="execRestrictionsBadgeRow">
+              <!-- Dynamically populated based on active executive role: Principal vs Vice Principal -->
+            </div>
+          </div>
+          <!-- 4 Key Executive Indicators:
                [Students: 855] [Teachers: 45] [Attendance: 96.1%] [Fees: 92%] -->
           <div class="metrics-quad">
             
@@ -1267,6 +1274,27 @@
                 </div>
               </div>
 
+              <!-- Clerk Metric 5: Faculty Daily Attendance Desk (Office Authority) -->
+              <div class="metric-card" onclick="portalApp.openTeacherAttendanceModal()" title="Take / Mark Today's Faculty & Staff Attendance">
+                <div class="metric-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #059669;">
+                  <i class="fa-solid fa-clipboard-user"></i>
+                </div>
+                <div class="metric-details">
+                  <span class="metric-label">Faculty Daily Attendance Desk</span>
+                  <div class="metric-value text-emerald" id="clerkFacultyAttSummary">30 / 30 Verified</div>
+                  <div class="metric-trend trend-up">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <span>Administered by Office / Clerk</span>
+                  </div>
+                </div>
+                <div class="metric-progress-wrap">
+                  <div class="metric-subtext">Click to Take / Update Faculty Register</div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill fill-emerald" style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             <!-- Office Operations 2x2 Overview Grid -->
@@ -1280,6 +1308,9 @@
                   <span class="live-pulse-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">
                     <i class="fa-solid fa-circle"></i> Counter &amp; Records Active
                   </span>
+                  <button class="btn btn-secondary btn-sm" onclick="portalApp.openTeacherAttendanceModal()" style="padding: 0.35rem 0.85rem;" title="Take / Mark Today's Faculty & Staff Attendance">
+                    <i class="fa-solid fa-clipboard-user text-primary"></i> Take Faculty Attendance
+                  </button>
                   <button class="btn btn-primary btn-sm" onclick="portalApp.openModal('collectFeeModal')" style="padding: 0.35rem 0.85rem;">
                     <i class="fa-solid fa-receipt"></i> Collect Fee
                   </button>
@@ -5630,8 +5661,6 @@
               </div>
             </div>
 
-                </div>
-              </div>
             </div>
           </div>
 
@@ -5752,6 +5781,12 @@
                 <button type="button" class="perm-pill-btn" id="permTabBtnTeacher" onclick="portalApp.switchPermissionsSubTab('teacher')">
                   <i class="fa-solid fa-chalkboard-user"></i> Individual Teacher Permissions (by School ID)
                 </button>
+                <button type="button" class="perm-pill-btn" id="permTabBtnHod" onclick="portalApp.switchPermissionsSubTab('hod')">
+                  <i class="fa-solid fa-users-gear"></i> HOD Department Delegation
+                </button>
+                <button type="button" class="perm-pill-btn" id="permTabBtnExecutive" onclick="portalApp.switchPermissionsSubTab('executive')">
+                  <i class="fa-solid fa-lock text-primary"></i> Executive Restrictions &amp; Policy Controls
+                </button>
                 <button type="button" class="perm-pill-btn" id="permTabBtnMatrix" onclick="portalApp.switchPermissionsSubTab('matrix')">
                   <i class="fa-solid fa-table-cells"></i> Policy Matrix Summary
                 </button>
@@ -5842,6 +5877,174 @@
                         <!-- Populated dynamically -->
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              </div>
+
+              
+              <!-- PANEL 4: HOD DEPARTMENT DELEGATION -->
+              <div class="perm-panel" id="permPanelHod" style="display: none;">
+                <div class="perm-panel-header mb-3" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                  <div>
+                    <h4 style="margin-bottom:2px;"><i class="fa-solid fa-users-gear text-primary"></i> Head of Department (HOD) Capability Delegation</h4>
+                    <span class="text-muted text-xs">Department Heads can grant and manage academic, assessment, and curriculum capabilities for faculty members working under their department.</span>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.applyHodPreset('full')">
+                      <i class="fa-solid fa-check-double"></i> Grant Dept Full
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.applyHodPreset('teaching_only')">
+                      <i class="fa-solid fa-book"></i> Curriculum Only
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.applyHodPreset('exam_restricted')">
+                      <i class="fa-solid fa-shield"></i> Restrict Question Papers
+                    </button>
+                  </div>
+                </div>
+
+                <div class="perm-teacher-selector-box mb-4">
+                  <div class="row" style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:280px;">
+                      <label style="font-weight:700; font-size:0.85rem; color:var(--color-text-dark); display:block; margin-bottom:6px;">
+                        <i class="fa-solid fa-building-user text-primary"></i> 1. Select Academic Department:
+                      </label>
+                      <select id="permHodDeptSelect" class="form-control" onchange="portalApp.onHodDeptChange(this.value)" style="font-weight:600;">
+                        <option value="science" selected>Physical &amp; Biological Sciences (HOD: Sri K. Rajesh - SV200005)</option>
+                        <option value="maths">Mathematics Department (HOD: Smt. P. Sunitha - SV200004)</option>
+                        <option value="english_lang">English &amp; Languages (HOD: Sri D. Suresh - SV200003)</option>
+                        <option value="social">Social Sciences &amp; Humanities (HOD: Smt. B. Padmavati - SV200007)</option>
+                        <option value="computers">Computer Science &amp; ICT (Incharge: Sri Ch. Ramesh - SV200008)</option>
+                      </select>
+                    </div>
+                    <div style="flex:1; min-width:280px;">
+                      <label style="font-weight:700; font-size:0.85rem; color:var(--color-text-dark); display:block; margin-bottom:6px;">
+                        <i class="fa-solid fa-user-check text-primary"></i> 2. Select Teacher Working Under This HOD:
+                      </label>
+                      <select id="permHodTeacherSelect" class="form-control" onchange="portalApp.onHodTeacherChange(this.value)" style="font-weight:600;">
+                        <!-- Populated dynamically based on selected department -->
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HOD Department Lead & Scope Card -->
+                <div id="hodDeptScopeCard" class="mb-4">
+                  <!-- Populated dynamically -->
+                </div>
+
+                <!-- Granular HOD Capabilities Grid -->
+                <div class="card-header-flex mb-3">
+                  <div>
+                    <h4 style="margin-bottom:2px; font-size:0.95rem; font-weight:800; color:var(--color-text-dark);">
+                      <i class="fa-solid fa-list-check text-primary"></i> Departmental Capabilities Assigned to Faculty Member:
+                    </h4>
+                    <span class="text-muted text-xs">Configure exactly what the teacher under this department can access and execute.</span>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="portalApp.saveHodDelegatedPermissions()">
+                      <i class="fa-solid fa-floppy-disk"></i> Authorize &amp; Save Permissions
+                    </button>
+                  </div>
+                </div>
+
+                <div class="perm-grid mb-4" id="hodPermsGrid">
+                  <!-- Populated dynamically -->
+                </div>
+
+                <!-- Department Faculty Status Table -->
+                <div class="card p-3 mt-4">
+                  <div class="card-header-flex mb-3">
+                    <div>
+                      <h4 style="margin-bottom:2px;"><i class="fa-solid fa-table-list text-primary"></i> Department Faculty Permission Summary &amp; HOD Delegation Status</h4>
+                      <span class="text-muted text-xs">Live roster of teachers reporting under this department and their granted privileges.</span>
+                    </div>
+                  </div>
+                  <div class="table-container">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>School ID</th>
+                          <th>Faculty Name</th>
+                          <th>Subject / Specialization</th>
+                          <th>Role Under HOD</th>
+                          <th style="text-align:center;">Granted Privileges</th>
+                          <th style="text-align:center;">Delegation Source</th>
+                          <th style="text-align:center;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="hodDeptFacultyTableBody">
+                        <!-- Populated dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANEL 5: EXECUTIVE RESTRICTIONS & POLICY CONTROLS (PRINCIPAL & VICE PRINCIPAL SEPARATED) -->
+              <div class="perm-panel" id="permPanelExecutive" style="display: none;">
+                
+                <!-- Section 1: Principal Executive Jurisdiction -->
+                <div class="exec-jurisdiction-box principal-box mb-4">
+                  <div class="perm-panel-header mb-3" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                        <span class="portal-badge badge-primary"><i class="fa-solid fa-user-tie"></i> Principal Jurisdiction</span>
+                        <span class="portal-badge badge-danger"><i class="fa-solid fa-lock"></i> Statutory Authority</span>
+                      </div>
+                      <h4 style="margin-bottom:2px;"><i class="fa-solid fa-landmark text-primary"></i> Principal Institutional Restrictions &amp; Financial Governance</h4>
+                      <span class="text-muted text-xs">Statutory campus-wide policies strictly enforced by Principal Smt. Gorle Varalakshmi. Controls financial limits, marks freeze, TC dual-signoff, and administrative record locks.</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="portalApp.enforcePrincipalRestrictions()">
+                        <i class="fa-solid fa-lock"></i> Enforce Principal Policies
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.resetPrincipalRestrictions()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="perm-grid" id="principalRestrictionsGrid">
+                    <!-- Populated dynamically via portalApp.renderPrincipalRestrictionsForm() -->
+                  </div>
+                </div>
+
+                <!-- Section 2: Vice Principal Operational Jurisdiction -->
+                <div class="exec-jurisdiction-box vp-box mb-4">
+                  <div class="perm-panel-header mb-3" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                        <span class="portal-badge" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-user-check"></i> Vice Principal Jurisdiction</span>
+                        <span class="portal-badge" style="background:#ecfdf5; color:#065f46;"><i class="fa-solid fa-scale-balanced"></i> Academic Operations</span>
+                      </div>
+                      <h4 style="margin-bottom:2px;"><i class="fa-solid fa-scale-balanced" style="color:#6366f1;"></i> Vice Principal Academic Governance &amp; Campus Discipline Policies</h4>
+                      <span class="text-muted text-xs">Operational policies strictly enforced by Vice Principal Sri Navva Anand. Controls exam question paper lockdown, faculty substitution logs, gate late-entry summons, and leave thresholds.</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                      <button type="button" class="btn btn-primary btn-sm" style="background:#4f46e5; border-color:#4f46e5;" onclick="portalApp.enforceVicePrincipalRestrictions()">
+                        <i class="fa-solid fa-lock"></i> Enforce VP Policies
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.resetVicePrincipalRestrictions()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="perm-grid" id="vicePrincipalRestrictionsGrid">
+                    <!-- Populated dynamically via portalApp.renderVicePrincipalRestrictionsForm() -->
+                  </div>
+                </div>
+
+                <!-- Institutional Security & Audit Footnote -->
+                <div class="card p-3" style="background: linear-gradient(135deg, rgba(37,99,235,0.03) 0%, rgba(99,102,241,0.03) 100%); border-left: 4px solid var(--color-primary);">
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:1.5rem; color:var(--color-primary);"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div>
+                      <h4 style="margin-bottom:2px; font-size:0.92rem;">Executive Governance Assurance &bull; Sri Vidya E.M High School</h4>
+                      <p class="text-muted text-xs" style="margin:0;">
+                        Principal and Vice Principal exercise distinct, specialized authority. Principal policies govern statutory bylaws, financial authorizations, and permanent record locks. Vice Principal policies govern academic execution, exam confidentiality, and campus student conduct.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -7289,7 +7492,14 @@
   <div class="modal-backdrop" id="teacherAttendanceModal">
     <div class="portal-modal" style="max-width: 650px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-clipboard-user text-primary"></i> Mark Daily Staff Attendance Register</h3>
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span class="portal-badge badge-primary"><i class="fa-solid fa-id-badge"></i> Office / Clerk Department Authority</span>
+            <span class="portal-badge badge-success"><i class="fa-solid fa-circle-check"></i> Official Daily Register</span>
+          </div>
+          <h3 style="margin:0;"><i class="fa-solid fa-clipboard-user text-primary"></i> Daily Faculty &amp; Staff Attendance Register</h3>
+          <p class="text-muted text-xs" style="margin:4px 0 0 0;">Faculty attendance is officially verified and recorded daily by the School Office Administration &amp; Clerk Department.</p>
+        </div>
         <button class="modal-close-x" onclick="portalApp.closeModal('teacherAttendanceModal')" title="Close" aria-label="Close">
           <i class="fa-solid fa-xmark"></i>
         </button>

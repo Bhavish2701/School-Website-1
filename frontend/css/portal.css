@@ -8105,3 +8105,275 @@ input:disabled + .perm-slider {
 [data-theme="dark"] .perf-metric-box.highlight .perf-sub {
   color: var(--color-text-muted, #94A3B8) !important;
 }
+
+
+/* Executive Restrictions & Governance Banner */
+.executive-restrictions-banner {
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-left: 4px solid var(--color-primary, #2563eb);
+  border-radius: var(--radius-md, 10px);
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.executive-restrictions-banner.vp-theme {
+  border-left-color: #6366f1;
+}
+
+.erb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px dashed var(--color-border, #e2e8f0);
+}
+
+.erb-title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 1 320px;
+}
+
+.erb-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.executive-restrictions-banner.vp-theme .erb-icon-box {
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
+}
+
+.erb-title-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.erb-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.erb-title-row h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-text-main, #0f172a);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.erb-subtitle {
+  font-size: 0.82rem;
+  color: var(--color-text-muted, #64748b);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.erb-header-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0.45rem 0.9rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.erb-badges-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.erb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.erb-badge.active-policy {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+}
+
+.erb-badge.restricted-policy {
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.erb-badge.neutral-policy {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+/* Executive Settings Section Cards */
+.exec-jurisdiction-box {
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-md, 10px);
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.exec-jurisdiction-box.principal-box {
+  border-top: 3px solid var(--color-primary, #2563eb);
+}
+
+.exec-jurisdiction-box.vp-box {
+  border-top: 3px solid #6366f1;
+}
+
+[data-theme="dark"] .executive-restrictions-banner {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #3b82f6;
+}
+
+[data-theme="dark"] .executive-restrictions-banner.vp-theme {
+  border-left-color: #818cf8;
+}
+
+[data-theme="dark"] .erb-header {
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .erb-title-row h4 {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .erb-subtitle {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .erb-badge.active-policy {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+[data-theme="dark"] .erb-badge.restricted-policy {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+[data-theme="dark"] .erb-badge.neutral-policy {
+  background: #0f172a;
+  color: #94a3b8;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .exec-jurisdiction-box {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* Utility classes */
+.d-block {
+  display: block !important;
+}
+
+/* Staff Attendance Checklist & Buttons (Office / Clerk Authority) */
+.staff-att-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  gap: 8px;
+  transition: background 0.15s ease;
+}
+
+.staff-att-row:hover {
+  background: var(--color-bg-subtle, #f8fafc);
+}
+
+.staff-att-btn-group {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-att-opt {
+  width: 34px;
+  height: 28px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-att-opt:hover {
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.btn-att-opt.active-p {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #059669 !important;
+}
+
+.btn-att-opt.active-l {
+  background: #f59e0b !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+}
+
+.btn-att-opt.active-od {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+.btn-att-opt.active-a {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+[data-theme="dark"] .staff-att-row {
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .staff-att-row:hover {
+  background: #1e293b;
+}
+
+[data-theme="dark"] .btn-att-opt {
+  background: #0f172a;
+  border-color: #334155;
+  color: #94a3b8;
+}

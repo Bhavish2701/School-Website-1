@@ -2347,8 +2347,8 @@ const portalApp = (function () {
               <button class="action-icon-btn" onclick="portalApp.viewStudentProfile('${student.admNo}')" title="View Full Dossier">
                 <i class="fa-regular fa-eye"></i>
               </button>
-              <button class="action-icon-btn" onclick="portalApp.showToast('Generating ID card for ${student.name}', 'info')" title="Print Documents">
-                <i class="fa-solid fa-print"></i>
+              <button class="action-icon-btn" onclick="portalApp.openStudentIdCard('${student.admNo}')" title="Generate Student ID Card">
+                <i class="fa-solid fa-id-card"></i>
               </button>
               <button class="action-icon-btn action-icon-btn-delete" onclick="portalApp.handleStudentDeleteClick('${student.admNo}')" style="color: #ef4444;" title="Permanently Delete (Principal/VP Only)">
                 <i class="fa-solid fa-trash-can"></i>
@@ -2518,7 +2518,7 @@ const portalApp = (function () {
             <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.viewStudentProfile('${student.admNo}')">
               <i class="fa-regular fa-eye"></i> View Full Dossier
             </button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="portalApp.showToast('Generating official ID Card for ${student.name}', 'success')">
+            <button type="button" class="btn btn-primary btn-sm" onclick="portalApp.openStudentIdCard('${student.admNo}')">
               <i class="fa-solid fa-print"></i> ID Card
             </button>
           </div>
@@ -6630,54 +6630,372 @@ const portalApp = (function () {
     setTimeout(() => { window.print(); }, 300);
   }
 
-  function printStudentIdCard(admNo) {
+  function openStudentIdCard(admNo) {
     const student = (state.students || []).find(s => s.admNo === admNo) || state.students[0];
-    const printWin = window.open('', '_blank', 'width=600,height=450');
+    if (!student) {
+      showToast('Student record not found for ID Card', 'warning');
+      return;
+    }
+
+    state.activeIdCardAdmNo = student.admNo;
+
+    const renderArea = document.getElementById('idCardRenderArea');
+    if (!renderArea) return;
+
+    const initial = (student.name || 'S').trim().charAt(0).toUpperCase();
+
+    renderArea.innerHTML = `
+      <div class="school-id-card-wrapper" id="printableIdCardContent">
+        <div class="id-card-lanyard-slot"></div>
+        <div class="school-id-card">
+          <div class="id-card-top-accent"></div>
+          
+          <!-- Header -->
+          <div class="id-card-header">
+            <div class="id-header-top">
+              <div class="id-school-logo-frame">
+                <i class="fa-solid fa-graduation-cap" style="font-size:1.6rem; color:#1e3a8a;"></i>
+              </div>
+              <div class="id-school-info">
+                <h4 class="id-school-title">SRI VIDYA E.M. HIGH SCHOOL</h4>
+                <div class="id-school-board">Recognized by Govt. of Andhra Pradesh (Est. 2017)</div>
+                <div class="id-school-address"><i class="fa-solid fa-location-dot"></i> Vidyathe Vijayam &bull; Visakhapatnam</div>
+              </div>
+            </div>
+            <div class="id-badge-banner">STUDENT IDENTITY CARD &bull; 2026–2027</div>
+          </div>
+
+          <!-- Body -->
+          <div class="id-card-body">
+            <!-- Student Photo / Avatar -->
+            <div class="id-photo-section">
+              <div class="id-photo-frame">
+                <div class="id-photo-placeholder">
+                  <i class="fa-solid fa-user id-photo-avatar-icon"></i>
+                  <span class="id-photo-initials">${initial}</span>
+                </div>
+              </div>
+              <div class="id-blood-tag"><i class="fa-solid fa-droplet"></i> B+ Pos</div>
+            </div>
+
+            <!-- Details -->
+            <div class="id-student-details">
+              <h3 class="id-student-name">${student.name}</h3>
+              <div class="id-class-pill">
+                <span>Class: <strong>${student.class} - ${student.section || 'A'}</strong></span>
+                <span class="id-roll-tag">Roll #${student.rollNo || '1'}</span>
+              </div>
+
+              <table class="id-details-table">
+                <tbody>
+                  <tr>
+                    <td class="id-lbl"><i class="fa-solid fa-id-card"></i> Admission No</td>
+                    <td class="id-val"><span class="font-adm">${student.admNo}</span></td>
+                  </tr>
+                  <tr>
+                    <td class="id-lbl"><i class="fa-solid fa-user-group"></i> Father / Guardian</td>
+                    <td class="id-val">${student.parent || 'Guardian'}</td>
+                  </tr>
+                  <tr>
+                    <td class="id-lbl"><i class="fa-solid fa-phone"></i> Emergency Phone</td>
+                    <td class="id-val">${student.phone || '9848006228'}</td>
+                  </tr>
+                  <tr>
+                    <td class="id-lbl"><i class="fa-solid fa-calendar"></i> Academic Session</td>
+                    <td class="id-val">2026 – 2027 (Valid)</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Barcode -->
+              <div class="id-barcode-container">
+                <svg class="id-barcode-svg" viewBox="0 0 170 22">
+                  <rect x="0" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="5" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="9" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="15" y="0" width="1" height="22" fill="#0f172a"/>
+                  <rect x="18" y="0" width="5" height="22" fill="#0f172a"/>
+                  <rect x="25" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="29" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="34" y="0" width="6" height="22" fill="#0f172a"/>
+                  <rect x="42" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="46" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="52" y="0" width="1" height="22" fill="#0f172a"/>
+                  <rect x="55" y="0" width="5" height="22" fill="#0f172a"/>
+                  <rect x="62" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="67" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="71" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="77" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="81" y="0" width="5" height="22" fill="#0f172a"/>
+                  <rect x="88" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="92" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="97" y="0" width="5" height="22" fill="#0f172a"/>
+                  <rect x="104" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="108" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="114" y="0" width="1" height="22" fill="#0f172a"/>
+                  <rect x="117" y="0" width="6" height="22" fill="#0f172a"/>
+                  <rect x="125" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="129" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="135" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="140" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="144" y="0" width="5" height="22" fill="#0f172a"/>
+                  <rect x="151" y="0" width="2" height="22" fill="#0f172a"/>
+                  <rect x="155" y="0" width="4" height="22" fill="#0f172a"/>
+                  <rect x="161" y="0" width="3" height="22" fill="#0f172a"/>
+                  <rect x="166" y="0" width="4" height="22" fill="#0f172a"/>
+                </svg>
+                <span class="id-barcode-text">* ${student.admNo} *</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer with Principal Sign -->
+          <div class="id-card-footer">
+            <div class="id-footer-contacts">
+              <small style="font-size:0.62rem; color:#64748b; line-height:1.2; display:block;">
+                <i class="fa-solid fa-phone"></i> +91 93985 78584<br>
+                srividyaschools2017@gmail.com
+              </small>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-family:'Brush Script MT', cursive, serif; font-size:1.15rem; color:#1e3a8a; font-weight:700; display:block; line-height:1;">G. Varalakshmi</span>
+              <span style="font-size:0.58rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">Principal Signature</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    openModal('studentIdCardModal');
+  }
+
+  function printStudentIdCard(admNo) {
+    const student = (state.students || []).find(s => s.admNo === (admNo || state.activeIdCardAdmNo)) || state.students[0];
+    if (!student) return;
+
+    const printWin = window.open('', '_blank', 'width=500,height=620');
     if (!printWin) {
       window.print();
       return;
     }
+    const initial = (student.name || 'S').trim().charAt(0).toUpperCase();
+
     printWin.document.write(`
       <!DOCTYPE html>
       <html>
       <head>
         <title>Student ID Card - ${student.name}</title>
         <style>
-          body { font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #f1f5f9; }
-          .id-card { width: 340px; background: #ffffff; border: 2px solid #1e3a8a; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-          .header { background: #1e3a8a; color: white; text-align: center; padding: 12px 10px; }
-          .title { font-size: 14px; font-weight: bold; letter-spacing: 0.5px; }
-          .sub { font-size: 10px; opacity: 0.9; }
-          .body { padding: 16px; text-align: center; }
-          .avatar { width: 70px; height: 70px; border-radius: 50%; background: #e2e8f0; border: 2px solid #1e3a8a; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: bold; color: #1e3a8a; }
-          .name { font-size: 16px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
-          .meta { font-size: 12px; color: #2563eb; font-weight: 700; margin-bottom: 12px; }
-          .details { text-align: left; font-size: 12px; line-height: 1.6; border-top: 1px solid #e2e8f0; padding-top: 10px; }
-          .footer { background: #f8fafc; border-top: 1px solid #cbd5e1; padding: 8px; font-size: 10px; color: #64748b; text-align: center; }
+          * { box-sizing: border-box; }
+          body {
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f1f5f9;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          @page { size: auto; margin: 15mm; }
+          .school-id-card {
+            width: 350px;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            overflow: hidden;
+          }
+          .id-card-top-accent {
+            height: 6px;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24, #d97706);
+          }
+          .id-card-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+            color: #ffffff;
+            padding: 12px 14px 10px;
+            text-align: center;
+          }
+          .id-school-title {
+            margin: 0 0 2px 0;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+          }
+          .id-school-board {
+            font-size: 9.5px;
+            color: #93c5fd;
+            margin-bottom: 2px;
+          }
+          .id-school-address {
+            font-size: 9px;
+            color: #e2e8f0;
+          }
+          .id-badge-banner {
+            margin-top: 6px;
+            background: #f59e0b;
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+          }
+          .id-card-body {
+            padding: 14px 16px 10px;
+            background: #ffffff;
+            text-align: center;
+          }
+          .id-photo-frame {
+            width: 80px;
+            height: 92px;
+            border-radius: 8px;
+            border: 2.5px solid #1e40af;
+            margin: 0 auto 6px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+          }
+          .id-blood-tag {
+            display: inline-block;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+          }
+          .id-student-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+          }
+          .id-class-pill {
+            display: inline-block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+          }
+          .id-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+          }
+          .id-details-table td {
+            padding: 4px 8px;
+            border-bottom: 1px solid #f1f5f9;
+          }
+          .id-lbl {
+            color: #64748b;
+            font-weight: 600;
+            width: 44%;
+          }
+          .id-val {
+            color: #0f172a;
+            font-weight: 700;
+          }
+          .font-adm {
+            font-family: monospace;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 800;
+          }
+          .id-card-footer {
+            background: #f8fafc;
+            border-top: 1.5px solid #e2e8f0;
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+          }
+          .sign-text {
+            font-family: 'Brush Script MT', cursive, serif;
+            font-size: 18px;
+            color: #1e3a8a;
+            font-weight: 700;
+            line-height: 1;
+          }
+          .sign-title {
+            font-size: 9px;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+          }
         </style>
       </head>
       <body>
-        <div class="id-card">
-          <div class="header">
-            <div class="title">SRI VIDYA E.M. HIGH SCHOOL</div>
-            <div class="sub">Visakhapatnam &bull; Est. 2017</div>
+        <div class="school-id-card">
+          <div class="id-card-top-accent"></div>
+          <div class="id-card-header">
+            <h4 class="id-school-title">SRI VIDYA E.M. HIGH SCHOOL</h4>
+            <div class="id-school-board">Recognized by Govt. of Andhra Pradesh (Est. 2017)</div>
+            <div class="id-school-address">Vidyathe Vijayam &bull; Visakhapatnam</div>
+            <div class="id-badge-banner">STUDENT IDENTITY CARD &bull; 2026–2027</div>
           </div>
-          <div class="body">
-            <div class="avatar">${student.name.charAt(0)}</div>
-            <div class="name">${student.name}</div>
-            <div class="meta">Class ${student.class} - ${student.section} &bull; Roll #${student.rollNo}</div>
-            <div class="details">
-              <div><strong>Adm No:</strong> ${student.admNo}</div>
-              <div><strong>Parent:</strong> ${student.parent}</div>
-              <div><strong>Contact:</strong> ${student.phone}</div>
-              <div><strong>Valid Through:</strong> Academic Year 2026–27</div>
+          <div class="id-card-body">
+            <div class="id-photo-frame">${initial}</div>
+            <div class="id-blood-tag">Blood Group: B+ Pos</div>
+            <h3 class="id-student-name">${student.name}</h3>
+            <div class="id-class-pill">Class ${student.class} - ${student.section || 'A'} &bull; Roll #${student.rollNo || '1'}</div>
+            <table class="id-details-table">
+              <tr>
+                <td class="id-lbl">Admission No:</td>
+                <td class="id-val"><span class="font-adm">${student.admNo}</span></td>
+              </tr>
+              <tr>
+                <td class="id-lbl">Father / Guardian:</td>
+                <td class="id-val">${student.parent || 'Guardian'}</td>
+              </tr>
+              <tr>
+                <td class="id-lbl">Emergency Contact:</td>
+                <td class="id-val">${student.phone || '9848006228'}</td>
+              </tr>
+              <tr>
+                <td class="id-lbl">Academic Session:</td>
+                <td class="id-val">2026 – 2027 (Valid)</td>
+              </tr>
+            </table>
+          </div>
+          <div class="id-card-footer">
+            <div style="font-size:9px; color:#64748b; line-height:1.3;">
+              Phone: +91 93985 78584<br>
+              srividyaschools2017@gmail.com
+            </div>
+            <div style="text-align:right;">
+              <div class="sign-text">G. Varalakshmi</div>
+              <div class="sign-title">Principal Signature</div>
             </div>
           </div>
-          <div class="footer">
-            Principal Signature &bull; Sri Vidya High School
-          </div>
         </div>
-        <script>window.onload = function() { window.print(); window.close(); }</script>
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 300);
+          };
+        </script>
       </body>
       </html>
     `);
@@ -10717,6 +11035,7 @@ const portalApp = (function () {
     handleStudentDeleteClick,
     confirmPermanentStudentDelete,
     renderWithdrawnStudentsPage,
+    openStudentIdCard,
     printStudentIdCard,
     printAdmissionVerification,
     downloadSampleCsv,

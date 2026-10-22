@@ -7679,8 +7679,14 @@ body {
 
 .perm-pill-btn.active {
   background: var(--color-primary, #2563eb);
-  color: #ffffff;
+  color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.perm-pill-btn.active i,
+.perm-pill-btn.active .text-primary,
+.perm-pill-btn.active span {
+  color: #ffffff !important;
 }
 
 .perm-grid {

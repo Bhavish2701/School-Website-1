@@ -2233,6 +2233,15 @@ var teacherApp = (function () {
     const tbody = document.getElementById('marksEntryTableBody');
     if (!tbody) return;
 
+    // Load any previously saved marks from localStorage
+    try {
+      const stored = JSON.parse(localStorage.getItem('srividya_teacher_marks_math_ut2') || '{}');
+      state.students.forEach(s => {
+        if (stored[s.roll] !== undefined) s.marks = stored[s.roll];
+        else if (stored[s.name] !== undefined) s.marks = stored[s.name];
+      });
+    } catch (e) {}
+
     const class8A = state.students.filter(s => s.class === '8A');
 
     tbody.innerHTML = class8A.map(s => {
@@ -2267,10 +2276,29 @@ var teacherApp = (function () {
         gradeEl.textContent = grade;
         gradeEl.className = `portal-badge ${grade.startsWith('A') ? 'badge-success' : 'badge-primary'}`;
       }
+
+      // Save to localStorage so student profiles and reports update instantly
+      try {
+        const stored = JSON.parse(localStorage.getItem('srividya_teacher_marks_math_ut2') || '{}');
+        stored[roll] = num;
+        if (s.name) stored[s.name] = num;
+        localStorage.setItem('srividya_teacher_marks_math_ut2', JSON.stringify(stored));
+      } catch (err) {}
     }
   }
 
   function saveMarks() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('srividya_teacher_marks_math_ut2') || '{}');
+      (state.students || []).forEach(st => {
+        if (st.roll && st.marks !== undefined) {
+          stored[st.roll] = st.marks;
+          if (st.name) stored[st.name] = st.marks;
+        }
+      });
+      localStorage.setItem('srividya_teacher_marks_math_ut2', JSON.stringify(stored));
+      localStorage.setItem('srividya_teacher_marks_math_ut2_timestamp', new Date().toISOString());
+    } catch (err) {}
     showToast('Mathematics Unit Test 2 marks locked and published to student grade reports!', 'success');
   }
 

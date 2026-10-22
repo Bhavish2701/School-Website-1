@@ -3917,62 +3917,97 @@ const portalApp = (function () {
     const modalBody = document.getElementById('viewStudentModalBody');
     if (!modalBody) return;
 
+    const isPaid = (student.feeStatus || '').toLowerCase() === 'paid';
+    const initial = (student.name || 'S').trim().charAt(0).toUpperCase();
+
     modalBody.innerHTML = `
       <div class="student-profile-dossier">
+        <!-- Hero Header Card with Avatar & Metadata Chips -->
         <div class="profile-header-strip">
-          <div class="profile-avatar">${student.name.charAt(0)}</div>
+          <div class="profile-avatar">${initial}</div>
           <div class="profile-title-block">
             <h2>${student.name}</h2>
             <div class="profile-meta-line">
-              <span>Adm No: <strong>${student.admNo}</strong></span> • 
-              <span>Class: <strong>${student.class} - ${student.section}</strong></span> • 
-              <span>Roll No: <strong>#${student.rollNo}</strong></span>
+              <span class="dossier-chip chip-adm"><i class="fa-solid fa-id-badge"></i> Adm No: <strong>${student.admNo}</strong></span>
+              <span class="dossier-chip"><i class="fa-solid fa-graduation-cap"></i> Class: <strong>${student.class} - ${student.section || 'A'}</strong></span>
+              <span class="dossier-chip"><i class="fa-solid fa-hashtag"></i> Roll: <strong>#${student.rollNo || '1'}</strong></span>
+              <span class="dossier-chip chip-active"><i class="fa-solid fa-circle-check"></i> Enrolled</span>
             </div>
           </div>
         </div>
 
-        <div class="profile-info-grid mt-4">
-          <div class="info-group">
-            <label>Parent / Guardian</label>
-            <div class="info-val">${student.parent}</div>
+        <!-- 3 Executive KPI Metric Cards -->
+        <div class="dossier-kpi-row">
+          <div class="dossier-kpi-card">
+            <span class="dossier-kpi-label"><i class="fa-solid fa-star text-amber"></i> Cumulative GPA</span>
+            <span class="dossier-kpi-val" style="color: #2563eb;">${student.gpa || '8.2'} <span style="font-size:0.78rem; font-weight:600; color:var(--color-text-muted);">/ 10.0</span></span>
           </div>
-          <div class="info-group">
-            <label>Emergency Contact</label>
-            <div class="info-val"><a href="tel:${student.phone}">${student.phone}</a></div>
+          <div class="dossier-kpi-card">
+            <span class="dossier-kpi-label"><i class="fa-solid fa-calendar-check text-emerald"></i> Attendance</span>
+            <span class="dossier-kpi-val" style="color: #10b981;">${student.attendance || '95.0%'}</span>
           </div>
-          <div class="info-group">
-            <label>Academic Year</label>
-            <div class="info-val">2025 – 2026</div>
-          </div>
-          <div class="info-group">
-            <label>Current Cumulative GPA</label>
-            <div class="info-val text-primary font-bold">${student.gpa} / 10.0</div>
-          </div>
-          <div class="info-group">
-            <label>Overall Attendance</label>
-            <div class="info-val text-emerald font-bold">${student.attendance}</div>
-          </div>
-          <div class="info-group">
-            <label>Tuition Fee Status</label>
-            <div class="info-val"><span class="portal-badge ${student.feeStatus === 'Paid' ? 'badge-success' : 'badge-danger'}">${student.feeStatus}</span></div>
+          <div class="dossier-kpi-card">
+            <span class="dossier-kpi-label"><i class="fa-solid fa-receipt text-primary"></i> Fee Clearance</span>
+            <span class="dossier-kpi-val">
+              <span class="portal-badge ${isPaid ? 'badge-success' : 'badge-danger'}" style="font-size:0.82rem; font-weight:700;">
+                <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-clock'}"></i> ${student.feeStatus || 'Pending'}
+              </span>
+            </span>
           </div>
         </div>
 
-        <div class="profile-section-card mt-4">
-          <h4>Academic Report Summary (Quarterly Exam 2026)</h4>
-          <table class="data-table mt-2">
+        <!-- 4 Clean Information Cards Grid -->
+        <div class="profile-info-grid">
+          <div class="info-group">
+            <label><i class="fa-solid fa-user-shield text-primary"></i> Parent / Guardian</label>
+            <div class="info-val">${student.parent || 'Guardian'}</div>
+          </div>
+          <div class="info-group">
+            <label><i class="fa-solid fa-phone text-emerald"></i> Emergency Contact</label>
+            <div class="info-val">
+              <a href="tel:${student.phone}" class="phone-link">
+                <i class="fa-solid fa-phone-volume"></i> ${student.phone || '9848000000'}
+              </a>
+            </div>
+          </div>
+          <div class="info-group">
+            <label><i class="fa-solid fa-calendar-days text-primary"></i> Academic Session</label>
+            <div class="info-val">2025 – 2026 Academic Year</div>
+          </div>
+          <div class="info-group">
+            <label><i class="fa-solid fa-school text-primary"></i> Campus Medium &amp; Board</label>
+            <div class="info-val">English Medium (AP Recognized)</div>
+          </div>
+        </div>
+
+        <!-- Academic Examination Performance Card -->
+        <div class="profile-section-card">
+          <div class="profile-section-card-header">
+            <h4><i class="fa-solid fa-chart-line text-primary"></i> Quarterly Assessment Report (2026)</h4>
+            <span class="portal-badge badge-success" style="font-size:0.75rem; font-weight:700;">Overall Distinction</span>
+          </div>
+          <table class="data-table">
             <thead>
-              <tr><th>Subject</th><th>Max Marks</th><th>Marks Scored</th><th>Grade</th></tr>
+              <tr>
+                <th>Subject</th>
+                <th>Max Marks</th>
+                <th>Marks Scored</th>
+                <th>Grade</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>First Language (Telugu / Sanskrit)</td><td>100</td><td>96</td><td><span class="portal-badge badge-success">A1</span></td></tr>
-              <tr><td>Second Language (Hindi)</td><td>100</td><td>92</td><td><span class="portal-badge badge-success">A1</span></td></tr>
-              <tr><td>Third Language (English)</td><td>100</td><td>95</td><td><span class="portal-badge badge-success">A1</span></td></tr>
-              <tr><td>Mathematics</td><td>100</td><td>98</td><td><span class="portal-badge badge-success">A1</span></td></tr>
-              <tr><td>General Science (Physics & Biology)</td><td>100</td><td>94</td><td><span class="portal-badge badge-success">A1</span></td></tr>
-              <tr><td>Social Studies</td><td>100</td><td>93</td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-book text-muted"></i> First Language (Telugu / Sanskrit)</td><td>100</td><td><strong>96</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-book text-muted"></i> Second Language (Hindi)</td><td>100</td><td><strong>92</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-book text-muted"></i> Third Language (English)</td><td>100</td><td><strong>95</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-calculator text-muted"></i> Mathematics</td><td>100</td><td><strong>98</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-flask text-muted"></i> General Science (Physics &amp; Biology)</td><td>100</td><td><strong>94</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
+              <tr><td><i class="fa-solid fa-globe text-muted"></i> Social Studies</td><td>100</td><td><strong>93</strong></td><td><span class="portal-badge badge-success">A1</span></td></tr>
             </tbody>
           </table>
+          <div class="profile-section-card-footer">
+            <span>Aggregate Marks: <strong>568 / 600</strong></span>
+            <span>Performance Index: <strong>94.7% (Grade A1)</strong></span>
+          </div>
         </div>
       </div>
     `;

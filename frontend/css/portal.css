@@ -8670,3 +8670,344 @@ input:disabled + .perm-slider {
   gap: 10px;
 }
 
+/* ==========================================================================
+   STUDENT PROFILE DOSSIER (EXECUTIVE ERP DESIGN)
+   ========================================================================== */
+#viewStudentModal .portal-modal {
+  max-width: 680px;
+  width: 95%;
+}
+
+.student-profile-dossier {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+/* Header Strip & Avatar */
+.profile-header-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(59, 130, 246, 0.03) 100%);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  border-radius: var(--radius-lg, 14px);
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
+  border: 3px solid #ffffff;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+
+.profile-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-title-block h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text-dark, #0f172a);
+  line-height: 1.2;
+}
+
+.profile-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.dossier-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  color: var(--color-text-main, #334155);
+}
+
+.dossier-chip strong {
+  color: var(--color-text-dark, #0f172a);
+  font-weight: 700;
+}
+
+.dossier-chip.chip-adm {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.dossier-chip.chip-active {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
+/* 3 Quick KPI Stat Cards */
+.dossier-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+}
+
+.dossier-kpi-card {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  border: 1px solid var(--color-border, #e2e8f0);
+  background: var(--color-bg-surface, #ffffff);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+}
+
+.dossier-kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dossier-kpi-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted, #64748b);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dossier-kpi-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text-dark, #0f172a);
+  line-height: 1.2;
+}
+
+/* Info Grid (2 Columns, Clean Card Style) */
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.info-group {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  background: var(--color-bg-subtle, #f8fafc);
+  border: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.info-group label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted, #64748b);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.info-group .info-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-dark, #0f172a);
+}
+
+.info-val a.phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  background: rgba(37, 99, 235, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+}
+
+.info-val a.phone-link:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Academic Report Section Card */
+.profile-section-card {
+  border-radius: var(--radius-md, 12px);
+  border: 1px solid var(--color-border, #e2e8f0);
+  background: var(--color-bg-surface, #ffffff);
+  overflow: hidden;
+}
+
+.profile-section-card-header {
+  padding: 0.85rem 1.15rem;
+  background: var(--color-bg-subtle, #f8fafc);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-section-card-header h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text-dark, #0f172a);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-section-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.profile-section-card th {
+  background: var(--color-bg-subtle, #f8fafc);
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--color-text-muted, #64748b);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+
+.profile-section-card td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--color-border, #f1f5f9);
+  color: var(--color-text-main, #334155);
+}
+
+.profile-section-card tr:last-child td {
+  border-bottom: none;
+}
+
+.profile-section-card-footer {
+  padding: 0.65rem 1.15rem;
+  background: #eff6ff;
+  border-top: 1px solid #bfdbfe;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1e40af;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 580px) {
+  .dossier-kpi-row {
+    grid-template-columns: 1fr;
+  }
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-header-strip {
+    flex-direction: column;
+    text-align: center;
+  }
+  .profile-meta-line {
+    justify-content: center;
+  }
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] .profile-header-strip {
+  background: rgba(30, 58, 138, 0.25);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="dark"] .profile-title-block h2 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .dossier-chip {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .dossier-chip strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .dossier-kpi-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .dossier-kpi-val {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .info-group {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .info-group .info-val {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .profile-section-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .profile-section-card-header {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .profile-section-card-header h4 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .profile-section-card th {
+  background: #1e293b;
+  color: #94a3b8;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .profile-section-card td {
+  border-color: #1e293b;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .profile-section-card-footer {
+  background: rgba(30, 58, 138, 0.3);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+}
+

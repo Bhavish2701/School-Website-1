@@ -137,6 +137,54 @@
             </button>
           </form>
 
+          <!-- Management 2FA Phone OTP Verification Form -->
+          <form class="login-form" id="mgmtOtpForm" style="display: none;" onsubmit="PortalAuth.verifyOtp('management', event)">
+            <div class="otp-verification-header">
+              <div class="otp-icon-wrap badge-mgmt-otp">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1.25rem; font-weight: 800; color: var(--color-text-dark, #0f172a);">Phone OTP Verification</h3>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted, #64748b); line-height: 1.45;">
+                A 6-digit security authentication code has been dispatched to your registered phone number:
+              </p>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.5rem;">
+                <strong id="mgmtOtpPhoneDisplay" style="color: #1e3a8a; font-size: 1rem; letter-spacing: 0.5px;">+91 93985 *****84</strong>
+                <button type="button" class="btn-change-phone" onclick="PortalAuth.promptChangePhone('management')">Change Phone</button>
+              </div>
+            </div>
+
+            <!-- OTP Input Boxes (6 Digits) -->
+            <div class="otp-input-container">
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-1" inputmode="numeric" autocomplete="one-time-code" required>
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-2" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-3" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-4" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-5" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="mgmtOtp-6" inputmode="numeric" required>
+            </div>
+
+            <!-- Demo Helper & Auto-Fill Pill -->
+            <div style="text-align: center; margin-bottom: 1.15rem;">
+              <button type="button" class="btn-autofill-otp" id="mgmtAutoFillOtpBtn" onclick="PortalAuth.autoFillOtp('management')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-fill Demo OTP: <span id="mgmtDemoOtpText" style="font-family: monospace; font-size: 0.95rem; letter-spacing: 1px;"></span>
+              </button>
+            </div>
+
+            <button type="submit" class="btn-login-submit" id="mgmtOtpSubmitBtn">
+              <i class="fa-solid fa-shield-check"></i> Verify OTP &amp; Open Management Console
+            </button>
+
+            <div class="otp-meta-actions">
+              <button type="button" class="btn-otp-resend" id="mgmtResendOtpBtn" onclick="PortalAuth.resendOtp('management')" disabled>
+                Resend OTP in <span id="mgmtOtpTimer">45</span>s
+              </button>
+              <button type="button" class="btn-otp-cancel" onclick="PortalAuth.cancelOtp('management')">
+                <i class="fa-solid fa-arrow-left"></i> Change Account
+              </button>
+            </div>
+          </form>
+
+
           <div class="login-portal-switch">
             <span class="switch-label">Other School Portals:</span>
             <div class="switch-links">
@@ -455,7 +503,7 @@
           <!-- Role Switcher Dropdown (Principal / Vice Principal / Admin) -->
           <div class="role-selector-wrap" title="Switch Portal Role View">
             <label for="roleSelect" class="role-select-label">Role:</label>
-            <select id="roleSelect" class="role-select" onchange="portalApp.switchRole(this.value)">
+            <select id="roleSelect" class="role-select" onchange="portalApp.switchRole(this.value, true)">
               <option value="principal" selected>Principal (Smt. Gorle Varalakshmi)</option>
               <option value="vice-principal">Vice Principal (Sri Navva Anand)</option>
               <option value="admin">Office Administrator / Clerk</option>
@@ -471,7 +519,7 @@
           <div class="notification-dropdown-wrapper">
             <button class="header-action-btn" id="notifBellBtn" title="Pending Notifications" aria-label="Notifications">
               <i class="fa-regular fa-bell"></i>
-              <span class="notif-badge" id="headerNotifCount">4</span>
+              <span class="notif-badge" id="headerNotifCount" style="display:none;">0</span>
             </button>
             <div class="notif-flyout" id="notifFlyout">
               <div class="notif-header">
@@ -1656,6 +1704,93 @@
           <!-- ==========================================
                SUB-VIEW 2: STUDENT PROFILES DOSSIERS
                ========================================== -->
+          
+          <!-- ==========================================
+               SUB-VIEW 5: STUDENT DEPARTURES & DELETIONS
+               ========================================== -->
+          <div class="student-subview" id="subview-students-withdrawn" style="display:none;">
+            <!-- Executive Guarantee Notice Banner -->
+            <div style="background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 12px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+              <div style="display: flex; gap: 14px; align-items: flex-start;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: #3b82f6; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 0.35rem 0; font-size: 1.1rem; color: #1e3a8a; font-weight: 700;">Executive Student Departure &amp; Deletion Console</h3>
+                  <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.55;">
+                    Permanent record deletion from official school registers is <strong>restricted exclusively to Principal Smt. Gorle Varalakshmi and Vice Principal Sri Navva Anand</strong>.
+                    <br>
+                    <span style="color: #166534; font-weight: 600;"><i class="fa-solid fa-lock"></i> Admission Numbers Permanent Guarantee:</span> When a student leaves or is permanently purged, remaining students' admission numbers <strong>never shift or change</strong>. New admissions are automatically allocated the next sequential admission ID.
+                  </p>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end; flex-shrink:0;">
+                <span class="portal-badge badge-primary" style="font-size:0.8rem; font-weight:700;"><i class="fa-solid fa-building-columns"></i> Main Department</span>
+                <span class="portal-badge badge-success" style="font-size:0.75rem;"><i class="fa-solid fa-check"></i> Fixed IDs Protected</span>
+              </div>
+            </div>
+
+            <!-- Section 1: Class Teacher Departure Notices -->
+            <div class="card mb-4" style="border-radius: 12px; border: 1px solid var(--color-border); overflow: hidden;">
+              <div class="card-header-bar" style="padding: 1rem 1.4rem; background: var(--color-bg-subtle, #f8fafc); border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-dark); display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-person-walking-arrow-right text-amber"></i> Class Teacher Student Departure Notices
+                  </h4>
+                  <small style="color: var(--color-text-muted);">Students reported as quit/withdrawn by their designated Class Teachers. Awaiting executive record action.</small>
+                </div>
+                <span class="portal-badge badge-warning" id="pendingWithdrawnBadge" style="font-weight:700;">0 Notices</span>
+              </div>
+              <div class="table-container p-0">
+                <table class="data-table" style="margin: 0;">
+                  <thead>
+                    <tr>
+                      <th>Student Name</th>
+                      <th>Class &amp; Roll</th>
+                      <th>Reason / Destination</th>
+                      <th>Class Teacher</th>
+                      <th>Reported On</th>
+                      <th class="text-center">Executive Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="withdrawnNoticesTableBody">
+                    <tr><td colspan="6" class="text-center p-4 text-muted">No pending student departure notices from class teachers.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Section 2: Permanent Deletion Audit Archive -->
+            <div class="card" style="border-radius: 12px; border: 1px solid var(--color-border); overflow: hidden;">
+              <div class="card-header-bar" style="padding: 1rem 1.4rem; background: var(--color-bg-subtle, #f8fafc); border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--color-text-dark); display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-box-archive text-primary"></i> Permanent Student Deletion Official Register
+                  </h4>
+                  <small style="color: var(--color-text-muted);">Statutory archival record of all permanently purged student accounts certified by Principal / Vice Principal.</small>
+                </div>
+                <span class="portal-badge badge-danger" id="deletedArchiveBadge" style="font-weight:700;">0 Purged</span>
+              </div>
+              <div class="table-container p-0">
+                <table class="data-table" style="margin: 0;">
+                  <thead>
+                    <tr>
+                      <th>Retired Adm No</th>
+                      <th>Student Name</th>
+                      <th>Former Class</th>
+                      <th>Deletion Reason / TC</th>
+                      <th>Authorizing Executive</th>
+                      <th>Date Certified</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deletedArchiveTableBody">
+                    <tr><td colspan="6" class="text-center p-4 text-muted">No students have been permanently deleted from official school records.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <div class="student-subview" id="subview-students-profiles" style="display:none;">
             <!-- Profiles Filter Toolbar -->
             <div class="filter-toolbar">
@@ -1702,6 +1837,28 @@
                SUB-VIEW 3: ADMISSIONS QUEUE
                ========================================== -->
           <div class="student-subview" id="subview-students-admissions" style="display:none;">
+            <!-- Permission controls relocated exclusively to Settings -> Access Permissions per institutional design -->
+
+            <!-- Access Restricted Card for Office Staff without Permission -->
+            <div id="officeAdmissionsRestrictedCard" class="card" style="display:none; text-align:center; padding: 3.5rem 2rem; background: var(--color-bg-surface); border: 2px dashed rgba(220, 38, 38, 0.35); border-radius: 14px; margin-top: 1rem;">
+              <div style="width: 72px; height: 72px; margin: 0 auto 1.25rem; background: rgba(220, 38, 38, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #DC2626; font-size: 2rem;">
+                <i class="fa-solid fa-user-lock"></i>
+              </div>
+              <h3 style="font-size: 1.45rem; color: var(--color-text-dark); margin-bottom: 0.6rem; font-weight: 800;">
+                Access Restricted: Executive Authorization Required
+              </h3>
+              <p style="max-width: 580px; margin: 0 auto 1.5rem; color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+                Student Admission Applications and dossiers contain confidential applicant records. Office staff members are not currently authorized to view or process these records.
+              </p>
+              <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 0.9rem 1.4rem; max-width: 520px; margin: 0 auto 1.5rem; font-size: 0.88rem; color: #B45309; text-align: left; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fa-solid fa-circle-exclamation" style="font-size: 1.2rem; flex-shrink: 0;"></i>
+                <span>Permission must be granted directly by <strong>Principal Smt. Gorle Varalakshmi</strong> or <strong>Vice Principal Sri Navva Anand</strong> to unlock the Admissions Queue.</span>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="portalApp.requestOfficeAdmissionPermission()" style="font-weight: 700; padding: 0.65rem 1.5rem;">
+                <i class="fa-solid fa-paper-plane"></i> Request Access from Principal / VP
+              </button>
+            </div>
+
             <!-- Admissions Summary Stats Bar -->
             <div class="admissions-overview-bar">
               <div class="adm-stat-card">
@@ -1728,7 +1885,7 @@
             </div>
 
             <!-- Admissions Table -->
-            <div class="table-container">
+            <div class="table-container" id="admissionsTableContainer">
               <table class="data-table" id="admissionsTable">
                 <thead>
                   <tr>
@@ -5796,20 +5953,26 @@
               <div class="perm-panel" id="permPanelClerk">
                 <div class="perm-panel-header mb-3" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                   <div>
-                    <h4 style="margin-bottom:2px;"><i class="fa-solid fa-unlock-keyhole text-primary"></i> Office / Clerk Module Access Controls</h4>
-                    <span class="text-muted text-xs">Modules enabled here will be unlocked for Office / Clerk accounts. Disabled modules show executive authorization lock.</span>
+                    <h4 style="margin-bottom:2px;"><i class="fa-solid fa-unlock-keyhole text-primary"></i> Office / Clerk Submenu Navigation Permissions</h4>
+                    <span class="text-muted text-xs">Executive Clearance Authority: Every navigation submenu is strictly hidden from Office / Clerk accounts until granted clearance by Principal Smt. Gorle Varalakshmi or Vice Principal Sri Navva Anand.</span>
                   </div>
                   <div style="display:flex; gap:8px;">
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.grantAllClerkPerms()">
-                      <i class="fa-solid fa-check-double"></i> Grant All Modules
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.grantAllClerkSubPerms()">
+                      <i class="fa-solid fa-check-double"></i> Grant All Submenus
                     </button>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.resetClerkPerms()">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.hideAllClerkSubPerms()">
+                      <i class="fa-solid fa-eye-slash"></i> Hide All Submenus
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.resetClerkSubPerms()">
                       <i class="fa-solid fa-rotate-left"></i> Reset Defaults
                     </button>
                   </div>
                 </div>
 
-                <div class="perm-grid" id="clerkPermsGrid">
+                <!-- Office Members Admission Desk Permission Box in Settings -->
+                <div id="settingsOfficeAdmissionPermBox" class="mb-4"></div>
+
+                <div class="perm-module-grid" id="clerkPermsGrid">
                   <!-- Populated dynamically via portalApp.renderClerkPermissionsForm() -->
                 </div>
               </div>
@@ -5845,9 +6008,35 @@
                   <!-- Populated dynamically -->
                 </div>
 
-                <!-- Granular Teacher Capabilities Grid -->
+                <!-- Section A: Submenu Navigation Permissions for Teacher Portal -->
+                <div class="mb-5">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                    <div>
+                      <h4 style="font-size:0.95rem; font-weight:800; color:var(--color-text-dark); margin-bottom:2px;">
+                        <i class="fa-solid fa-bars-staggered text-primary"></i> Teacher Navigation Bar Submenus Clearance:
+                      </h4>
+                      <span class="text-muted text-xs">Only submenus allowed below will appear in this teacher's portal navigation bar. All others are strictly hidden.</span>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.grantAllTeacherSubPerms()">
+                        <i class="fa-solid fa-check-double"></i> Allow All Submenus
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.hideAllTeacherSubPerms()">
+                        <i class="fa-solid fa-eye-slash"></i> Hide All Submenus
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="portalApp.resetTeacherSubPerms()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Teacher Defaults
+                      </button>
+                    </div>
+                  </div>
+                  <div class="perm-module-grid" id="teacherSubmenuPermsGrid">
+                    <!-- Populated dynamically via portalApp.renderTeacherSubmenuPermissionsForm() -->
+                  </div>
+                </div>
+
+                <!-- Section B: Granular Teacher Capabilities Grid -->
                 <h4 class="mb-3" style="font-size:0.95rem; font-weight:800; color:var(--color-text-dark);">
-                  <i class="fa-solid fa-toggle-on text-primary"></i> Granular Workspace Capabilities &amp; Permissions:
+                  <i class="fa-solid fa-toggle-on text-primary"></i> Granular Operational Capabilities &amp; Features:
                 </h4>
                 <div class="perm-grid mb-5" id="teacherPermsGrid">
                   <!-- Populated dynamically -->
@@ -8362,6 +8551,118 @@ Class X-A,Monday,2,09:35 AM - 10:20 AM,Physical Science,Sri Navva Anand,Room 201
         <button type="button" class="btn btn-primary" onclick="portalApp.printCredentialReceipt()">
           <i class="fa-solid fa-print"></i> Print Credential Slip
         </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- =========================================================================
+       MODAL: PERMANENT STUDENT DELETION (EXECUTIVE ONLY: PRINCIPAL OR VICE PRINCIPAL)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="permanentStudentDeleteModal" style="display:none;">
+    <div class="portal-modal" style="max-width: 600px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #991b1b, #b91c1c); color: #fff; padding: 1.1rem 1.4rem;">
+        <h3 style="color:#fff; margin:0; display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:700;">
+          <i class="fa-solid fa-trash-can"></i> Permanent Student Deletion (Executive Authority)
+        </h3>
+        <button class="modal-close-x" onclick="portalApp.closeModal('permanentStudentDeleteModal')" title="Close" style="color:#fff; background:transparent; border:none; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 1.4rem;">
+        <div style="background: #fef2f2; border: 1.5px solid #ef4444; border-radius: 8px; padding: 0.95rem; margin-bottom: 1.2rem; display: flex; gap: 12px;">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #b91c1c; font-size: 1.35rem; margin-top: 3px;"></i>
+          <div style="font-size: 0.88rem; color: #7f1d1d; line-height: 1.48;">
+            <strong style="color: #991b1b; display: block; margin-bottom: 2px;">Statutory Executive Authority Sign-off:</strong>
+            Student records can be permanently deleted from official school registers <strong>ONLY by Principal Smt. Gorle Varalakshmi or Vice Principal Sri Navva Anand</strong>.
+          </div>
+        </div>
+
+        <!-- Admission Numbers Immutability Guarantee Banner -->
+        <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 0.85rem; margin-bottom: 1.2rem; display: flex; gap: 10px;">
+          <i class="fa-solid fa-shield-check" style="color: #16a34a; font-size: 1.2rem; margin-top: 2px;"></i>
+          <div style="font-size: 0.84rem; color: #166534; line-height: 1.45;">
+            <strong>Admission Numbers Fixed:</strong> Deleting this student will <strong>NEVER alter or shift the admission numbers of any remaining students</strong>. All enrolled students permanently retain their fixed admission IDs throughout their schooling. New admissions will receive new sequential admission IDs.
+          </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.95rem; margin-bottom: 1.2rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.88rem;">
+            <div><span style="color:#64748b;">Permanent Adm No:</span> <strong id="delStudentAdmNo" class="text-primary" style="display:block; font-size:1.05rem;">-</strong></div>
+            <div><span style="color:#64748b;">Student Full Name:</span> <strong id="delStudentName" style="color:#0f172a; display:block; font-size:0.95rem;">-</strong></div>
+            <div><span style="color:#64748b;">Class &amp; Roll:</span> <strong id="delStudentClassRoll" style="color:#0f172a; display:block;">-</strong></div>
+            <div><span style="color:#64748b;">Parent / Guardian:</span> <strong id="delStudentParent" style="color:#0f172a; display:block;">-</strong></div>
+            <div><span style="color:#64748b;">Executing Authority:</span> <strong id="delExecutingAuthority" style="color:#1e3a8a; display:block;">Principal Smt. Gorle Varalakshmi</strong></div>
+            <div><span style="color:#64748b;">Action:</span> <span class="portal-badge badge-danger">Permanent Purge &amp; Archive</span></div>
+          </div>
+        </div>
+
+        <form id="permanentStudentDeleteForm" onsubmit="event.preventDefault(); portalApp.confirmPermanentStudentDelete();">
+          <input type="hidden" id="delStudentAdmNoInput">
+
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:600; color:#334155; margin-bottom:4px;">
+              Reason for Record Deletion <span style="color:#dc2626;">*</span>
+            </label>
+            <select class="form-control" id="delReasonSelect" required style="width:100%; padding:0.6rem; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem;">
+              <option value="Quit school in the middle of academic year / Joined another school" selected>Quit school in middle of academic year / Joined another school</option>
+              <option value="Transfer Certificate (TC) Issued to other institution">Transfer Certificate (TC) Issued to other institution</option>
+              <option value="Family relocation / Moved out of district">Family relocation / Moved out of district</option>
+              <option value="Administrative correction / Duplicate entry">Administrative correction / Duplicate entry</option>
+              <option value="Long absence / Discontinued studies">Long absence / Discontinued studies</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:600; color:#334155; margin-bottom:4px;">
+              Transfer / Clearance Reference (TC Slip No)
+            </label>
+            <input type="text" class="form-control" id="delTcReferenceInput" placeholder="e.g. TC-2026-009" style="width:100%; padding:0.6rem; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem;">
+          </div>
+
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:700; color:#334155; margin-bottom:4px;">
+              Official Deletion Remark &amp; Justification <span style="color:#dc2626;">* (Mandatory Remark)</span>
+            </label>
+            <textarea class="form-control" id="delExecutiveRemarks" rows="3" required placeholder="Mandatory: Write the official remark explaining why you are deleting this student record (e.g., student moved to another school, TC issued, or parent relocation)..." style="width:100%; padding:0.65rem; border:1.5px solid #cbd5e1; border-radius:6px; font-size:0.9rem;"></textarea>
+            <small style="display:block; margin-top:4px; font-size:0.75rem; color:#dc2626; font-weight:600;">
+              <i class="fa-solid fa-asterisk"></i> A descriptive remark is mandatory before deleting any record from the school registers.
+            </small>
+          </div>
+
+          <div class="modal-footer" style="padding-top:1rem; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('permanentStudentDeleteModal')">Cancel</button>
+            <button type="submit" class="btn btn-danger" style="background:#b91c1c; border-color:#991b1b; color:#fff; font-weight:600;">
+              <i class="fa-solid fa-trash-can"></i> Permanently Delete from School Records
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Permission Restricted Modal (For Office Clerk / Non-Executives) -->
+  <div class="modal-backdrop" id="deletePermissionRestrictedModal" style="display:none;">
+    <div class="portal-modal" style="max-width: 500px; border-radius: 14px; overflow:hidden;">
+      <div class="modal-header" style="background:#fef2f2; border-bottom:1px solid #fee2e2; color:#991b1b; padding:1.1rem 1.4rem;">
+        <h3 style="margin:0; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-shield-halved text-danger"></i> Executive Authority Required
+        </h3>
+        <button class="modal-close-x" onclick="portalApp.closeModal('deletePermissionRestrictedModal')" title="Close" style="color:#991b1b; background:none; border:none; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem; text-align:center;">
+        <div style="width:64px; height:64px; border-radius:50%; background:#fee2e2; color:#dc2626; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1.2rem;">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h4 style="margin:0 0 0.6rem 0; font-size:1.15rem; color:#1e293b;">Permission Restricted: Executive Sign-Off Mandatory</h4>
+        <p style="font-size:0.92rem; color:#475569; line-height:1.55; margin-bottom:1.3rem;">
+          Student records can be <strong>permanently deleted from official school registers ONLY by Principal Smt. Gorle Varalakshmi or Vice Principal Sri Navva Anand</strong>.
+          <br><br>
+          Office clerks and administrative staff cannot delete records. Please switch to or login with the Principal or Vice Principal account to proceed with permanent deletion.
+        </p>
+        <button type="button" class="btn btn-secondary" onclick="portalApp.closeModal('deletePermissionRestrictedModal')">Understood</button>
       </div>
     </div>
   </div>

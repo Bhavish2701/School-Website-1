@@ -43,12 +43,12 @@ const portalApp = (function () {
       : [],
 
     admissions: [
-      { appId: 'ADM-2026-001', name: 'K. Sai Tharun', class: 'VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', phone: '9848011223', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review' },
-      { appId: 'ADM-2026-002', name: 'B. Vennela', class: 'VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', phone: '9848022334', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due' },
-      { appId: 'ADM-2026-003', name: 'M. Dinesh Kumar', class: 'IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', phone: '9848033445', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review' },
-      { appId: 'ADM-2026-004', name: 'CH. Charitha', class: 'I', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', phone: '9848044556', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment' },
-      { appId: 'ADM-2026-005', name: 'V. Aditya', class: 'IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', phone: '9848055667', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview' },
-      { appId: 'ADM-2026-006', name: 'S. Harini', class: 'PP', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', phone: '9848066778', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment' }
+      { appId: 'SV202600001', name: 'K. Sai Tharun', studentName: 'K. Sai Tharun', dob: '2012-04-18', gender: 'Male', class: 'VIII', grade: 'Class VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', parentName: 'K. Narayana', phone: '9848011223', email: 'narayana.k@gmail.com', address: 'D.No 4-12, Main Road, Srikakulam', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review', submissionDate: '12 Oct 2026', submissionTime: '10:30 AM' },
+      { appId: 'SV202600002', name: 'B. Vennela', studentName: 'B. Vennela', dob: '2014-07-22', gender: 'Female', class: 'VI', grade: 'Class VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', parentName: 'B. Srinivas', phone: '9848022334', email: 'srinivas.b@gmail.com', address: 'Plot 45, Vidya Nagar, Rajam', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due', submissionDate: '14 Oct 2026', submissionTime: '11:15 AM' },
+      { appId: 'SV202600003', name: 'M. Dinesh Kumar', studentName: 'M. Dinesh Kumar', dob: '2016-11-05', gender: 'Male', class: 'IV', grade: 'Class IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', parentName: 'M. Jagannath', phone: '9848033445', email: 'jagannath.m@gmail.com', address: 'H.No 12-88, NGO Colony, Srikakulam', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review', submissionDate: '15 Oct 2026', submissionTime: '02:40 PM' },
+      { appId: 'SV202600004', name: 'CH. Charitha', studentName: 'CH. Charitha', dob: '2019-09-14', gender: 'Female', class: '1', grade: '1 class', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', parentName: 'CH. Mohan', phone: '9848044556', email: 'mohan.ch@gmail.com', address: 'Flat 202, Sri Sai Nilayam, Rajam', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment', submissionDate: '16 Oct 2026', submissionTime: '09:20 AM' },
+      { appId: 'SV202600005', name: 'V. Aditya', studentName: 'V. Aditya', dob: '2011-03-30', gender: 'Male', class: 'IX', grade: 'Class IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', parentName: 'V. Suresh Babu', phone: '9848055667', email: 'sureshbabu.v@gmail.com', address: 'Door 8-19, RTC Complex Road, Srikakulam', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview', submissionDate: '18 Oct 2026', submissionTime: '04:10 PM' },
+      { appId: 'SV202600006', name: 'S. Harini', studentName: 'S. Harini', dob: '2021-06-12', gender: 'Female', class: 'LKG', grade: 'LKG', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', parentName: 'S. Venkatesh', phone: '9848066778', email: 'venkatesh.s@gmail.com', address: 'Beside Post Office, Main Road, Ponduru', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment', submissionDate: '19 Oct 2026', submissionTime: '11:00 AM' }
     ],
     transfers: [
       { tcNo: 'TC-2026-001', name: 'P. Kiran Kumar', admNo: 'SV-0082', class: 'Class VIII-A', reason: 'Parent Job Transfer (To Hyderabad)', dues: 'Cleared (No Dues)', conduct: 'Exemplary', status: 'Issued', date: '18 Sep 2026' },
@@ -1082,17 +1082,201 @@ const portalApp = (function () {
   }
 
   // Initialization
+
+  // =========================================================================
+  // PERSISTENT NOTIFICATION ECOSYSTEM (Stateful across page reloads)
+  // =========================================================================
+  const DEFAULT_PORTAL_NOTIFICATIONS = [
+    {
+      id: 'notif-1',
+      title: 'New Transfer Certificate Request',
+      text: 'Roll #1042 (Class IX-A) pending principal signature',
+      time: '12 mins ago',
+      timestamp: 1729400000000,
+      unread: true
+    },
+    {
+      id: 'notif-2',
+      title: 'Leave Application: Science Faculty',
+      text: 'K. Rajesh (Physics) requested 2 days casual leave',
+      time: '35 mins ago',
+      timestamp: 1729401000000,
+      unread: true
+    },
+    {
+      id: 'notif-3',
+      title: 'Online Admissions Surge',
+      text: 'New student admission forms submitted for 2026-27',
+      time: '2 hours ago',
+      timestamp: 1729402000000,
+      unread: true
+    },
+    {
+      id: 'notif-4',
+      title: 'Daily Fee Collection Target',
+      text: '87% of monthly dues collected. ₹3.8L pending.',
+      time: 'Yesterday',
+      timestamp: 1729300000000,
+      unread: false
+    }
+  ];
+
+  function getPortalNotifications() {
+    try {
+      const stored = localStorage.getItem('sv_notifications_list');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_PORTAL_NOTIFICATIONS;
+  }
+
+  function savePortalNotifications(list) {
+    try {
+      localStorage.setItem('sv_notifications_list', JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  function renderNotifications() {
+    const listEl = document.querySelector('.notif-list');
+    const badge = document.getElementById('headerNotifCount');
+    if (!listEl) return;
+
+    const notifs = getPortalNotifications();
+    const isAllRead = localStorage.getItem('sv_notifications_all_read') === 'true';
+    const lastReadTime = parseInt(localStorage.getItem('sv_notifications_last_read_time') || '0', 10);
+
+    let unreadCount = 0;
+    const html = notifs.map(n => {
+      // Determine if genuinely unread
+      const isUnread = Boolean(n.unread) && (!isAllRead || (n.timestamp && n.timestamp > lastReadTime));
+      if (isUnread) unreadCount++;
+
+      return `
+        <div class="notif-item ${isUnread ? 'unread' : ''}" data-id="${n.id}">
+          <div class="notif-dot"></div>
+          <div class="notif-body">
+            <strong>${n.title}</strong>
+            <p>${n.text}</p>
+            <small>${n.time || 'Just now'}</small>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    listEl.innerHTML = html;
+
+    if (badge) {
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.style.display = 'inline-flex';
+      } else {
+        badge.textContent = '0';
+        badge.style.display = 'none';
+      }
+    }
+  }
+
+  function markAllNotificationsAsRead() {
+    const now = Date.now();
+    localStorage.setItem('sv_notifications_all_read', 'true');
+    localStorage.setItem('sv_notifications_last_read_time', now.toString());
+
+    const notifs = getPortalNotifications();
+    notifs.forEach(n => { n.unread = false; });
+    savePortalNotifications(notifs);
+
+    const badge = document.getElementById('headerNotifCount');
+    if (badge) {
+      badge.textContent = '0';
+      badge.style.display = 'none';
+    }
+
+    const unreadItems = document.querySelectorAll('.notif-item.unread');
+    unreadItems.forEach(item => item.classList.remove('unread'));
+
+    showToast('All notifications marked as read', 'info');
+  }
+
+  function addNewNotification(title, text, type = 'info') {
+    const notifs = getPortalNotifications();
+    const newNotif = {
+      id: 'notif-' + Date.now(),
+      title,
+      text,
+      time: 'Just now',
+      timestamp: Date.now(),
+      unread: true,
+      type
+    };
+
+    notifs.unshift(newNotif);
+    savePortalNotifications(notifs);
+
+    // New update arrived: reset all-read flag so badge appears
+    localStorage.setItem('sv_notifications_all_read', 'false');
+
+    renderNotifications();
+    showToast(`🔔 New Update: ${title}`, 'info');
+  }
+
   function init() {
     if ((!state.students || state.students.length === 0) && typeof window !== 'undefined' && Array.isArray(window.STUDENT_ROSTER) && window.STUDENT_ROSTER.length > 0) {
-      state.students = window.STUDENT_ROSTER;
+      state.students = [...window.STUDENT_ROSTER];
     }
+    // Filter out permanently deleted students (Principal / VP sign-offs)
+    const deletedAdmNos = JSON.parse(localStorage.getItem('sv_deleted_student_adm_nos') || '[]');
+    if (deletedAdmNos.length > 0 && Array.isArray(state.students)) {
+      state.students = state.students.filter(s => !deletedAdmNos.includes(s.admNo));
+      if (typeof window !== 'undefined' && Array.isArray(window.STUDENT_ROSTER)) {
+        window.STUDENT_ROSTER = window.STUDENT_ROSTER.filter(s => !deletedAdmNos.includes(s.admNo));
+      }
+    }
+    // Clean and deduplicate state.students and stored enrolled cache
+    state.students = deduplicateStudents(state.students);
+    try {
+      const storedEnr = JSON.parse(localStorage.getItem('sv_enrolled_students') || '[]');
+      if (Array.isArray(storedEnr) && storedEnr.length > 0) {
+        localStorage.setItem('sv_enrolled_students', JSON.stringify(deduplicateStudents(storedEnr)));
+      }
+    } catch (e) {}
     
     // Restore saved authorized faculty and sync from Teacher Portal
     syncFacultyFromStorage();
+    syncAdmissionsFromStorage();
 
     // Listen for live updates from Teacher Portal (same browser window or multi-tab)
     window.addEventListener('storage', function(e) {
-      if (e.key === 'sv_authorized_faculty' || e.key === 'sv_faculty_last_sync' || e.key === 'sv_teacher_profile') {
+      if (e.key === 'sv_departure_notice_alert' && e.newValue) {
+        try {
+          const alertObj = JSON.parse(e.newValue);
+          renderNotifications();
+          if (typeof renderWithdrawnStudentsPage === 'function') renderWithdrawnStudentsPage();
+          showToast(`🔔 Departure Notice: ${alertObj.title}`, 'warning');
+        } catch (err) {}
+      }
+      if (e.key === 'sv_new_admission_alert') {
+        try {
+          const alertData = JSON.parse(e.newValue);
+          if (alertData && alertData.appId) {
+            addNewNotification(
+              'New Admission Received',
+              `${alertData.studentName} (${alertData.grade}) • Ref: ${alertData.appId}`,
+              'admission'
+            );
+          }
+        } catch (err) {}
+      } else if (e.key === 'sv_notifications_all_read' || e.key === 'sv_notifications_list') {
+        renderNotifications();
+      } else if (e.key === 'sv_applications') {
+        syncAdmissionsFromStorage();
+        renderAdmissionsQueue(state.admissions);
+        showToast('New online student admission registered!', 'info');
+      } else if (e.key === 'sv_office_admission_permission') {
+        renderOfficePermissionControls();
+        renderAdmissionsQueue(state.admissions);
+      } else if (e.key === 'sv_authorized_faculty' || e.key === 'sv_faculty_last_sync' || e.key === 'sv_teacher_profile') {
         syncFacultyFromStorage();
         if (e.key === 'sv_faculty_last_sync') {
           showToast('Faculty profile updates synchronized from Teacher Portal', 'info');
@@ -1227,15 +1411,11 @@ const portalApp = (function () {
       });
     }
 
-    // Mark all read
+    // Mark all read (Statefully stored in localStorage across page reloads)
     const markAllRead = document.getElementById('markAllRead');
     if (markAllRead) {
       markAllRead.addEventListener('click', function () {
-        const unreadItems = document.querySelectorAll('.notif-item.unread');
-        unreadItems.forEach(item => item.classList.remove('unread'));
-        const badge = document.getElementById('headerNotifCount');
-        if (badge) badge.style.display = 'none';
-        showToast('All notifications marked as read', 'info');
+        markAllNotificationsAsRead();
       });
     }
 
@@ -1343,7 +1523,7 @@ const portalApp = (function () {
     handleHash();
   }
 
-  function switchRole(roleKey) {
+  function switchRole(roleKey, isUserAction = false) {
     if (roleKey === 'vp' || roleKey === 'viceprincipal') roleKey = 'vice-principal';
     if (roleKey === 'clerk' || roleKey === 'office') roleKey = 'admin';
 
@@ -1443,10 +1623,33 @@ const portalApp = (function () {
       navigateTo('dashboard');
     }
 
-    showToast(`Active Role: ${config.title} (${config.holder})`, 'success');
+    if (isUserAction) { showToast(`Active Role: ${config.title} (${config.holder})`, "info"); }
   }
 
   function applyRolePermissions(role) {
+    // Sync New Admissions sidebar navigation badge & lock status
+    const admissionsNav = document.querySelector('.sidebar-menu .nav-item[data-module="admissions"]');
+    const admissionsBadge = document.getElementById('navNewAdmissionBadge');
+    if (admissionsNav) {
+      if (role === 'admin') {
+        const allowed = isOfficeAdmissionAllowed();
+        if (admissionsBadge) {
+          if (allowed) {
+            admissionsBadge.innerHTML = 'Active';
+            admissionsBadge.className = 'nav-badge badge-success';
+          } else {
+            admissionsBadge.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+            admissionsBadge.className = 'nav-badge warning';
+          }
+        }
+      } else {
+        if (admissionsBadge) {
+          admissionsBadge.innerHTML = 'New';
+          admissionsBadge.className = 'nav-badge pulse';
+        }
+      }
+    }
+
     if (role === 'vp' || role === 'viceprincipal') role = 'vice-principal';
     if (role === 'clerk' || role === 'office') role = 'admin';
 
@@ -1466,9 +1669,10 @@ const portalApp = (function () {
     // Modules restricted for Office / Clerk
     const CLERK_RESTRICTED = ['teachers', 'academics', 'timetable', 'examinations', 'discipline', 'leaves', 'events', 'reports', 'settings'];
 
-    // Sidebar items dynamic visibility: when turned off, DO NOT show option; when turned on, show option!
+    // Granular Submenu & Module Dynamic Visibility for Navigation Bar
     const allNavItems = document.querySelectorAll('.sidebar-menu .nav-item[data-module]');
-    const clerkPerms = getClerkPermissions();
+    const clerkSubPerms = getClerkSubmenuPermissions();
+    const isExecutive = (role === 'principal' || role === 'vice-principal');
 
     allNavItems.forEach(item => {
       const mod = item.getAttribute('data-module');
@@ -1477,19 +1681,44 @@ const portalApp = (function () {
       const existingLock = item.querySelector('.nav-lock-badge');
       if (existingLock) existingLock.remove();
 
-      if (role === 'admin') {
+      if (isExecutive) {
+        // Principal and Vice Principal have 100% unrestricted visibility across ALL modules and submenus
+        item.style.display = '';
+        item.querySelectorAll('.nav-sub-link').forEach(sub => {
+          sub.style.display = '';
+        });
+      } else if (role === 'admin') {
         if (mod === 'dashboard') {
           item.style.display = '';
+        } else if (mod === 'settings') {
+          // System settings is reserved exclusively for Executive Leadership (Principal & VP)
+          item.style.display = 'none';
         } else {
-          const isAllowed = clerkPerms[mod] !== false;
-          // Hide option completely when turned off, show only when turned on
-          item.style.display = isAllowed ? '' : 'none';
+          const subLinks = item.querySelectorAll('.nav-sub-link');
+          let visibleSubCount = 0;
+
+          if (subLinks.length > 0) {
+            subLinks.forEach(sub => {
+              const subKey = sub.getAttribute('data-sub');
+              const permKey = `${mod}.${subKey}`;
+              const isAllowed = clerkSubPerms[permKey] === true;
+              // STRICTLY HIDDEN UP TO ALLOWING PERMISSION BY PRINCIPAL OR VP!
+              sub.style.display = isAllowed ? '' : 'none';
+              if (isAllowed) visibleSubCount++;
+            });
+
+            // If all submenus in this module are hidden, hide parent module in navigation bar!
+            item.style.display = (visibleSubCount > 0) ? '' : 'none';
+          } else {
+            const isAllowed = clerkSubPerms[mod] === true;
+            item.style.display = isAllowed ? '' : 'none';
+          }
         }
-      } else {
-        // Principal and Vice Principal have unrestricted visibility across all domains
-        item.style.display = '';
       }
     });
+
+    // Sync tab strips across modules
+    syncTabStripPermissions();
 
     // Cleanly toggle sidebar section titles if all child items are hidden
     const navSectionTitles = document.querySelectorAll('.sidebar-menu .nav-section-title');
@@ -1499,11 +1728,18 @@ const portalApp = (function () {
         navSectionTitles[1].textContent = 'COMMUNICATION & NOTICES';
 
         const sec1Mods = ['dashboard', 'students', 'teachers', 'academics', 'attendance', 'timetable', 'examinations', 'discipline', 'leaves', 'fees'];
-        const hasSec1Visible = sec1Mods.some(m => m === 'dashboard' || clerkPerms[m] !== false);
+        const hasSec1Visible = sec1Mods.some(m => {
+          if (m === 'dashboard') return true;
+          const el = document.querySelector(`.sidebar-menu .nav-item[data-module="${m}"]`);
+          return el && el.style.display !== 'none';
+        });
         navSectionTitles[0].style.display = hasSec1Visible ? '' : 'none';
 
         const sec2Mods = ['communication', 'events', 'reports', 'settings'];
-        const hasSec2Visible = sec2Mods.some(m => clerkPerms[m] !== false);
+        const hasSec2Visible = sec2Mods.some(m => {
+          const el = document.querySelector(`.sidebar-menu .nav-item[data-module="${m}"]`);
+          return el && el.style.display !== 'none';
+        });
         navSectionTitles[1].style.display = hasSec2Visible ? '' : 'none';
       } else {
         navSectionTitles[0].textContent = 'CORE MODULES';
@@ -1910,6 +2146,7 @@ const portalApp = (function () {
     } else if (moduleKey === 'settings') {
       if (subKey === 'permissions') {
         renderClerkPermissionsForm();
+        renderSettingsAdmissionPermissionCard();
         initTeacherPermissionsView();
       }
     }
@@ -2009,8 +2246,24 @@ const portalApp = (function () {
   }
 
   // Helpers for sequential admission numbers & Section A enforcement
+    // Safe deduplication of student records by Admission Number
+  function deduplicateStudents(arr) {
+    if (!Array.isArray(arr)) return [];
+    const seenAdm = new Set();
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+      const s = arr[i];
+      if (!s) continue;
+      const key = (s.admNo || '').trim().toUpperCase();
+      if (key && seenAdm.has(key)) continue;
+      if (key) seenAdm.add(key);
+      result.push(s);
+    }
+    return result;
+  }
+
   function sortStudentsByAdmNo(arr) {
-    return [...arr].sort((a, b) => a.admNo.localeCompare(b.admNo, undefined, { numeric: true, sensitivity: 'base' }));
+    return deduplicateStudents([...arr]).sort((a, b) => a.admNo.localeCompare(b.admNo, undefined, { numeric: true, sensitivity: 'base' }));
   }
 
   function getNextAdmissionNumber() {
@@ -2030,7 +2283,7 @@ const portalApp = (function () {
 
   function renderStudentsTable(list) {
     // Store the full filtered list and reset to page 1
-    studentPage.filteredList = sortStudentsByAdmNo(list);
+    studentPage.filteredList = sortStudentsByAdmNo(deduplicateStudents(list));
     studentPage.current = 1;
     renderStudentsPage();
   }
@@ -2097,6 +2350,9 @@ const portalApp = (function () {
               <button class="action-icon-btn" onclick="portalApp.showToast('Generating ID card for ${student.name}', 'info')" title="Print Documents">
                 <i class="fa-solid fa-print"></i>
               </button>
+              <button class="action-icon-btn action-icon-btn-delete" onclick="portalApp.handleStudentDeleteClick('${student.admNo}')" style="color: #ef4444;" title="Permanently Delete (Principal/VP Only)">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
           </td>
         </tr>
@@ -2146,6 +2402,7 @@ const portalApp = (function () {
 
 
   function filterStudents() {
+    state.students = deduplicateStudents(state.students);
     const query = (document.getElementById('studentFilterInput')?.value || '').toLowerCase().trim();
     const classVal = document.getElementById('studentClassFilter')?.value || '';
     const sectionVal = document.getElementById('studentSectionFilter')?.value || '';
@@ -2289,82 +2546,663 @@ const portalApp = (function () {
     renderStudentProfiles(filtered);
   }
 
+  // ==========================================================================
+  // Respective Class Teachers Register & Direct Student Auto-Enrollment Module
+  // ==========================================================================
+  const CLASS_TEACHERS = {
+    'X': { name: 'Sri Ch. Ramesh', code: '10A', subject: 'Mathematics & Board Prep', phone: '9848011001', room: 'Room 301 (3rd Floor)' },
+    'IX': { name: 'Sri P. Venkat', code: '9A', subject: 'Physical Science', phone: '9848011002', room: 'Room 302 (3rd Floor)' },
+    'VIII': { name: 'Ms. Anjali', code: '8A', subject: 'Mathematics (Grade 8A)', phone: '9848011003', room: 'Room 204 (2nd Floor)' },
+    'VII': { name: 'Smt. S. Lakshmi', code: '7A', subject: 'Social Studies', phone: '9848011004', room: 'Room 205 (2nd Floor)' },
+    'VI': { name: 'Sri M. Satish', code: '6A', subject: 'General Science', phone: '9848011005', room: 'Room 206 (2nd Floor)' },
+    'V': { name: 'Smt. K. Sunitha', code: '5A', subject: 'English & Primary Lang', phone: '9848011006', room: 'Room 101 (1st Floor)' },
+    'IV': { name: 'Smt. P. Madhavi', code: '4A', subject: 'Mathematics', phone: '9848011007', room: 'Room 102 (1st Floor)' },
+    'III': { name: 'Smt. R. Padmavathi', code: '3A', subject: 'Environmental Studies', phone: '9848011008', room: 'Room 103 (1st Floor)' },
+    'II': { name: 'Smt. T. Sarada', code: '2A', subject: 'Telugu & English', phone: '9848011009', room: 'Room 104 (1st Floor)' },
+    'I': { name: 'Smt. V. Durga', code: '1A', subject: 'Primary Education', phone: '9848011010', room: 'Room 105 (1st Floor)' },
+    'PP': { name: 'Smt. G. Swarna', code: 'PPA', subject: 'Early Childhood Care', phone: '9848011011', room: 'Kindergarten Wing' },
+  };
+
+  function normalizeClassKey(rawClass) {
+    if (!rawClass) return 'I';
+    let str = String(rawClass).toUpperCase().replace(/CLASS/i, '').replace(/GRADE/i, '').replace(/TH|ST|ND|RD/g, '').trim();
+    if (str === '10' || str === 'X') return 'X';
+    if (str === '9' || str === 'IX') return 'IX';
+    if (str === '8' || str === 'VIII') return 'VIII';
+    if (str === '7' || str === 'VII') return 'VII';
+    if (str === '6' || str === 'VI') return 'VI';
+    if (str === '5' || str === 'V') return 'V';
+    if (str === '4' || str === 'IV') return 'IV';
+    if (str === '3' || str === 'III') return 'III';
+    if (str === '2' || str === 'II') return 'II';
+    if (str === '1' || str === 'I') return 'I';
+    if (str.includes('KG') || str.includes('NURSERY') || str.includes('PP') || str.includes('PRE')) return 'PP';
+    return str || 'I';
+  }
+
+  function enrollApprovedStudent(applicant) {
+    if (!applicant) return null;
+    const targetClass = normalizeClassKey(applicant.class || applicant.grade);
+    const teacherInfo = CLASS_TEACHERS[targetClass] || { name: 'Smt. K. Sunitha', code: '5A', subject: 'General', phone: '9848011006', room: 'Staff Room' };
+
+    // Initialize state.students if empty
+    if ((!state.students || state.students.length === 0) && typeof window !== 'undefined' && Array.isArray(window.STUDENT_ROSTER)) {
+      state.students = [...window.STUDENT_ROSTER];
+    }
+    if (!Array.isArray(state.students)) state.students = [];
+
+    const studentName = (applicant.name || applicant.studentName || 'Student').trim();
+    let existing = state.students.find(s => 
+      (applicant.enrolledAdmNo && s.admNo === applicant.enrolledAdmNo) ||
+      (applicant.appId && s.admissionAppId === applicant.appId) ||
+      (s.name.toLowerCase().trim() === studentName.toLowerCase().trim() && s.class === targetClass)
+    );
+
+    if (existing) {
+      applicant.enrolled = true;
+      applicant.enrolledAdmNo = existing.admNo;
+      applicant.enrolledClass = `Class ${existing.class}-${existing.section || 'A'}`;
+      applicant.rollNo = existing.rollNo;
+      applicant.assignedTeacher = existing.classTeacher || teacherInfo.name;
+      applicant.assignedTeacherPhone = existing.classTeacherPhone || teacherInfo.phone;
+      applicant.assignedTeacherRoom = existing.room || teacherInfo.room;
+      return existing;
+    }
+
+    let admNo = existing ? existing.admNo : (applicant.enrolledAdmNo || null);
+    if (!admNo) {
+      let maxNum = 500;
+      const highestStored = parseInt(localStorage.getItem('sv_highest_adm_no') || '500', 10);
+      if (!isNaN(highestStored) && highestStored > maxNum) maxNum = highestStored;
+
+      state.students.forEach(s => {
+        if (s.admNo && s.admNo.startsWith('SV-')) {
+          const n = parseInt(s.admNo.replace('SV-', ''), 10);
+          if (!isNaN(n) && n > maxNum) maxNum = n;
+        }
+      });
+
+      const deletedArchive = JSON.parse(localStorage.getItem('sv_deleted_students_archive') || '[]');
+      deletedArchive.forEach(d => {
+        if (d.admNo && d.admNo.startsWith('SV-')) {
+          const n = parseInt(d.admNo.replace('SV-', ''), 10);
+          if (!isNaN(n) && n > maxNum) maxNum = n;
+        }
+      });
+
+      maxNum++;
+      localStorage.setItem('sv_highest_adm_no', String(maxNum));
+      admNo = 'SV-' + String(maxNum).padStart(4, '0');
+    }
+
+    let rollNo = existing ? existing.rollNo : null;
+    if (!rollNo) {
+      let maxRoll = 0;
+      state.students.forEach(s => {
+        if (s.class === targetClass) {
+          const r = parseInt(s.rollNo, 10);
+          if (!isNaN(r) && r > maxRoll) maxRoll = r;
+        }
+      });
+      const baseRolls = { 'X': 1001, 'IX': 901, 'VIII': 801, 'VII': 701, 'VI': 601, 'V': 501, 'IV': 401, 'III': 301, 'II': 201, 'I': 101, 'PP': 1 };
+      rollNo = String(maxRoll ? maxRoll + 1 : (baseRolls[targetClass] || 101));
+    }
+
+    if (!existing) {
+      existing = {
+        admNo: admNo,
+        name: studentName,
+        gender: (applicant.gender || 'male').toLowerCase(),
+        class: targetClass,
+        section: 'A',
+        rollNo: rollNo,
+        parent: applicant.parent || applicant.parentName || 'Parent',
+        phone: applicant.phone || '—',
+        email: applicant.email || '—',
+        attendance: '100%',
+        feeStatus: 'Pending',
+        gpa: '—',
+        bloodGroup: applicant.bloodGroup || 'B+',
+        dob: applicant.dob || '2015-05-15',
+        address: applicant.address || 'Rajam, Srikakulam',
+        enrolledAt: new Date().toISOString(),
+        admissionAppId: applicant.appId,
+        classTeacher: teacherInfo.name,
+        classTeacherPhone: teacherInfo.phone,
+        room: teacherInfo.room
+      };
+      // Add once to state.students and deduplicate
+      state.students.unshift(existing);
+      if (typeof window !== 'undefined' && Array.isArray(window.STUDENT_ROSTER) && window.STUDENT_ROSTER !== state.students) {
+        if (!window.STUDENT_ROSTER.some(s => s.admNo === existing.admNo)) {
+          window.STUDENT_ROSTER.unshift(existing);
+        }
+      }
+      state.students = deduplicateStudents(state.students);
+    }
+
+    // Persist enrolled students in localStorage
+    try {
+      const storedEnrolled = JSON.parse(localStorage.getItem('sv_enrolled_students') || '[]');
+      if (!storedEnrolled.some(s => s.admNo === existing.admNo)) {
+        storedEnrolled.unshift(existing);
+        localStorage.setItem('sv_enrolled_students', JSON.stringify(storedEnrolled));
+      }
+    } catch (e) {}
+
+    // Dispatch to Class Teacher Inbox & Roster
+    try {
+      const teacherAdmissions = JSON.parse(localStorage.getItem('sv_teacher_new_admissions') || '[]');
+      const teacherEntry = {
+        appId: applicant.appId,
+        admNo: admNo,
+        studentName: studentName,
+        class: targetClass,
+        classCode: teacherInfo.code,
+        section: 'A',
+        rollNo: rollNo,
+        classTeacher: teacherInfo.name,
+        parent: applicant.parent || applicant.parentName,
+        phone: applicant.phone,
+        enrolledAt: new Date().toISOString()
+      };
+      const tIdx = teacherAdmissions.findIndex(t => t.appId === applicant.appId);
+      if (tIdx !== -1) {
+        teacherAdmissions[tIdx] = teacherEntry;
+      } else {
+        teacherAdmissions.unshift(teacherEntry);
+      }
+      localStorage.setItem('sv_teacher_new_admissions', JSON.stringify(teacherAdmissions));
+    } catch (e) {}
+
+    // Attach student & teacher details to applicant admission record
+    applicant.enrolled = true;
+    applicant.enrolledAdmNo = admNo;
+    applicant.enrolledClass = `Class ${targetClass}-A`;
+    applicant.rollNo = rollNo;
+    applicant.assignedTeacher = teacherInfo.name;
+    applicant.assignedTeacherPhone = teacherInfo.phone;
+    applicant.assignedTeacherRoom = teacherInfo.room;
+
+    // Refresh student directory count badges
+    const profileCountBadge = document.getElementById('studentProfilesCountBadge');
+    if (profileCountBadge) profileCountBadge.textContent = state.students.length;
+    const profilesShowingCount = document.getElementById('profilesShowingCount');
+    if (profilesShowingCount) profilesShowingCount.textContent = state.students.length;
+    const totalStudentsMetric = document.getElementById('dashTotalStudentsMetric');
+    if (totalStudentsMetric) totalStudentsMetric.textContent = state.students.length;
+
+    return existing;
+  }
+
+  // Sort Admissions in descending order: latest application (newest submission / highest sequence ID) at the top
+  function sortAdmissionsDescending(list) {
+    if (!Array.isArray(list)) return [];
+    return list.slice().sort((a, b) => {
+      const timeA = a.submittedAt ? new Date(a.submittedAt).getTime() : 0;
+      const timeB = b.submittedAt ? new Date(b.submittedAt).getTime() : 0;
+      if (timeA && timeB && timeA !== timeB) {
+        return timeB - timeA;
+      }
+      const idA = String(a.appId || a.applicationNumber || '');
+      const idB = String(b.appId || b.applicationNumber || '');
+      return idB.localeCompare(idA, undefined, { numeric: true, sensitivity: 'base' });
+    });
+  }
+
+  // Synchronization of Online Admissions from localStorage & shared ecosystem
+  function syncAdmissionsFromStorage() {
+    try {
+      const stored = localStorage.getItem('sv_applications');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Self-heal: If any stored applicant mistakenly received 'SV202600001' due to early sequence reset,
+          // reassign them to SV202600007 (or higher) to keep K. Sai Tharun as the legitimate base SV202600001.
+          let healed = false;
+          parsed.forEach(item => {
+            const student = (item.studentName || item.name || '').trim();
+            if ((item.appId === 'SV202600001' || item.applicationNumber === 'SV202600001') && student && !student.toLowerCase().includes('sai tharun')) {
+              item.appId = 'SV202600007';
+              item.applicationNumber = 'SV202600007';
+              healed = true;
+            }
+          });
+          if (healed) {
+            localStorage.setItem('sv_applications', JSON.stringify(parsed));
+          }
+
+          const mapped = parsed.map(item => ({
+            appId: item.appId || item.applicationNumber || 'SV202600000',
+            name: item.name || item.studentName || 'Student Applicant',
+            studentName: item.studentName || item.name || 'Student Applicant',
+            dob: item.dob || '—',
+            gender: item.gender || '—',
+            class: item.class || (item.grade ? item.grade.replace(/class/i, '').trim() : 'I'),
+            grade: item.grade || `Class ${item.class || 'I'}`,
+            prevSchool: item.prevSchool || 'Fresh Admission',
+            parent: item.parent || item.parentName || 'Parent / Guardian',
+            parentName: item.parentName || item.parent || 'Parent / Guardian',
+            phone: item.phone || '—',
+            email: item.email || '—',
+            address: item.address || '—',
+            score: item.score || 'Awaiting Entrance / Direct Admission',
+            docStatus: item.docStatus || 'Documents Submitted Online',
+            status: item.status || 'Pending Principal / VP Verification',
+            submissionDate: item.submissionDate || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+            submissionTime: item.submissionTime || '',
+            submittedAt: item.submittedAt || null
+          }));
+
+          // Merge without duplicate appIds
+          const seen = new Set();
+          const merged = [];
+          mapped.forEach(item => {
+            if (!seen.has(item.appId)) {
+              seen.add(item.appId);
+              merged.push(item);
+            }
+          });
+          state.admissions.forEach(item => {
+            if (!seen.has(item.appId)) {
+              seen.add(item.appId);
+              merged.push(item);
+            }
+          });
+          state.admissions = sortAdmissionsDescending(merged);
+        }
+      } else {
+        localStorage.setItem('sv_applications', JSON.stringify(state.admissions));
+      }
+    } catch (e) {
+      console.warn('Error syncing admissions from storage:', e);
+    }
+  }
+
+  // Permission Verification: Check if Office Members (admin/clerk) are allowed to view Admissions
+  function isOfficeAdmissionAllowed() {
+    try {
+      const perm = localStorage.getItem('sv_office_admission_permission');
+      if (perm !== null) {
+        return perm === 'true';
+      }
+    } catch (e) {}
+    return false; // Default: restricted until Principal or VP grants clearance
+  }
+
+  // Render Permission Controls Banner (Principal / VP view) and Active Clearance (Office view)
+  function renderOfficePermissionControls() {
+    // Permission toggle controls belong strictly in Settings -> Access Permissions!
+    const container = document.getElementById('officeAdmissionPermControl');
+    if (container) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
+
+    renderSettingsAdmissionPermissionCard();
+  }
+
+  function renderSettingsAdmissionPermissionCard() {
+    const box = document.getElementById('settingsOfficeAdmissionPermBox');
+    if (!box) return;
+
+    const role = state.currentRole;
+    const isExecutive = (role === 'principal' || role === 'vice-principal');
+    const allowed = isOfficeAdmissionAllowed();
+
+    let meta = {};
+    try {
+      meta = JSON.parse(localStorage.getItem('sv_office_admission_permission_meta') || '{}');
+    } catch (e) {}
+
+    box.innerHTML = `
+      <div style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(59, 130, 246, 0.08) 100%); border: 1.5px solid ${allowed ? '#10B981' : '#F59E0B'}; border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="display: flex; align-items: center; gap: 1.15rem; flex: 1; min-width: 290px;">
+          <div style="width: 50px; height: 50px; border-radius: 12px; background: ${allowed ? '#10B981' : '#F59E0B'}; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; box-shadow: 0 4px 12px ${allowed ? 'rgba(16,185,129,0.35)' : 'rgba(245,158,11,0.35)'};">
+            <i class="fa-solid ${allowed ? 'fa-shield-halved' : 'fa-lock'}"></i>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+              <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--color-text-dark);">
+                Office Members Admission Desk Permission
+              </h4>
+              <span class="portal-badge ${allowed ? 'badge-success' : 'badge-warning'}" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.65rem;">
+                ${allowed ? '✓ Permission Granted' : '🔒 Access Restricted'}
+              </span>
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.45;">
+              ${allowed 
+                ? `Office Administrator & Clerk accounts currently have executive authorization to access the Admissions Queue and student applicant files. ${meta.grantedBy ? `<strong>(Authorized by ${meta.grantedBy} on ${meta.grantedAt})</strong>` : ''}`
+                : 'Office Administrator and Clerk are currently blocked from viewing student admission applications. Only Principal and Vice Principal have active clearance.'}
+            </p>
+          </div>
+        </div>
+        <div>
+          ${isExecutive ? `
+            <button type="button" class="btn ${allowed ? 'btn-secondary' : 'btn-primary'}" onclick="portalApp.toggleOfficeAdmissionPermission()" style="font-weight: 700; font-size: 0.88rem; padding: 0.65rem 1.3rem;">
+              <i class="fa-solid ${allowed ? 'fa-ban' : 'fa-key'}"></i>
+              ${allowed ? 'Revoke Office Staff Access' : 'Grant Office Staff Permission'}
+            </button>
+          ` : `
+            <span class="portal-badge badge-warning text-xs"><i class="fa-solid fa-lock"></i> Executive Authority Only (Principal / VP)</span>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  // Toggle Office Staff Admission Permission by Principal or Vice Principal
+  function toggleOfficeAdmissionPermission() {
+    const current = isOfficeAdmissionAllowed();
+    const next = !current;
+    const role = state.currentRole;
+    const roleName = role === 'vice-principal' ? 'Vice Principal Sri Navva Anand' : 'Principal Smt. Gorle Varalakshmi';
+
+    try {
+      localStorage.setItem('sv_office_admission_permission', next ? 'true' : 'false');
+      const meta = {
+        grantedBy: roleName,
+        grantedAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+      localStorage.setItem('sv_office_admission_permission_meta', JSON.stringify(meta));
+      
+      // Update Clerk permissions dictionary
+      if (typeof getClerkPermissions === 'function' && typeof saveClerkPermissions === 'function') {
+        renderSettingsAdmissionPermissionCard();
+    const perms = getClerkPermissions();
+        perms.students = next;
+        saveClerkPermissions(perms);
+      }
+    } catch (e) {}
+
+    renderOfficePermissionControls();
+    renderAdmissionsQueue(state.admissions);
+
+    const actor = role === 'vice-principal' ? 'Vice Principal' : 'Principal';
+    if (next) {
+      showToast(`Office staff members have been GRANTED permission to view New Admissions by ${actor}!`, 'success');
+    } else {
+      showToast(`Office staff members permission to view New Admissions has been REVOKED by ${actor}.`, 'warning');
+    }
+  }
+
+  // Request Access from Principal / Vice Principal by Office Staff
+  function requestOfficeAdmissionPermission() {
+    showToast('Permission request dispatched to Principal (Smt. Gorle Varalakshmi) and Vice Principal (Sri Navva Anand)!', 'info');
+  }
+
   // Admissions Queue Subview
   function renderAdmissionsQueue(list) {
-    const tbody = document.getElementById('admissionsTableBody');
-    if (!tbody) return;
+    list = list || state.admissions || [];
+    list = sortAdmissionsDescending(list);
 
+    // Update all admission count badges across the portal
     const countBadge = document.getElementById('admissionsCountBadge');
     if (countBadge) countBadge.textContent = list.length;
 
+    const sidebarBadge = document.getElementById('navNewAdmissionBadge');
+    if (sidebarBadge) sidebarBadge.textContent = `${list.length} New`;
+
+    const navSubBadge = document.querySelector('.nav-sub-link[data-sub="admissions"] .nav-sub-badge');
+    if (navSubBadge) navSubBadge.textContent = `${list.length} New`;
+
     const statCount = document.getElementById('admQueueStatCount');
     if (statCount) statCount.textContent = list.length;
+
+    renderOfficePermissionControls();
+
+    const isOffice = (state.currentRole === 'admin');
+    const isAllowed = !isOffice || isOfficeAdmissionAllowed();
+
+    const restrictedBox = document.getElementById('officeAdmissionsRestrictedCard');
+    const tableContainer = document.getElementById('admissionsTableContainer') || (document.getElementById('admissionsTable') ? document.getElementById('admissionsTable').closest('.table-container') : null);
+    const statsBar = document.querySelector('#subview-students-admissions .admissions-overview-bar');
+
+    if (!isAllowed) {
+      if (restrictedBox) restrictedBox.style.display = 'block';
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (statsBar) statsBar.style.display = 'none';
+      return;
+    }
+
+    if (restrictedBox) restrictedBox.style.display = 'none';
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (statsBar) statsBar.style.display = 'grid';
+
+    const tbody = document.getElementById('admissionsTableBody');
+    if (!tbody) return;
 
     if (list.length === 0) {
       tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2.5rem; color: var(--color-text-muted);"><i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>All admissions applications have been processed and confirmed.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = list.map(item => `
+    tbody.innerHTML = list.map(item => {
+      const isApproved = (item.status || '').toLowerCase().includes('approved');
+      if (isApproved && !item.enrolled) {
+        enrollApprovedStudent(item);
+      }
+      const targetClassKey = normalizeClassKey(item.class || item.grade);
+      const teacherInfo = CLASS_TEACHERS[targetClassKey] || { name: 'Smt. K. Sunitha', code: '5A', room: 'Staff Room' };
+
+      return `
       <tr id="adm-row-${item.appId}">
-        <td><strong class="text-primary">${item.appId}</strong></td>
+        <td>
+          <strong class="text-primary" style="font-family:monospace; font-size: 0.95rem; letter-spacing:0.3px;">${item.appId}</strong>
+          <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.15rem;">${item.submissionDate || ''} ${item.submissionTime || ''}</div>
+        </td>
         <td>
           <div class="user-cell">
-            <div class="cell-avatar">${item.name.charAt(0)}</div>
+            <div class="cell-avatar" style="background:var(--color-primary); color:#fff; font-weight:700;">${(item.name || item.studentName || 'S').charAt(0)}</div>
             <div>
-              <strong>${item.name}</strong>
+              <strong style="color:var(--color-text-dark);">${item.name || item.studentName}</strong>
+              <div style="font-size: 0.78rem; color: var(--color-text-muted);">
+                ${item.gender ? `<span>${item.gender}</span> • ` : ''}DOB: ${item.dob || '—'}
+              </div>
             </div>
           </div>
         </td>
-        <td><strong>Class ${item.class}</strong></td>
-        <td>${item.prevSchool}</td>
+        <td><strong class="portal-badge badge-primary">Class ${item.class || item.grade || '—'}</strong></td>
+        <td><span style="font-size: 0.85rem;">${item.prevSchool || 'Fresh Admission'}</span></td>
         <td>
-          <div>${item.parent}</div>
-          <a href="tel:${item.phone}" class="phone-link"><i class="fa-solid fa-phone"></i> ${item.phone}</a>
+          <div style="font-weight:600; color:var(--color-text-dark);">${item.parent || item.parentName || 'Parent'}</div>
+          <a href="tel:${item.phone}" class="phone-link" style="font-size:0.84rem;"><i class="fa-solid fa-phone"></i> ${item.phone}</a>
+          ${item.email && item.email !== '—' ? `<br><a href="mailto:${item.email}" style="font-size:0.75rem; color:var(--color-text-muted);"><i class="fa-regular fa-envelope"></i> ${item.email}</a>` : ''}
         </td>
-        <td><span class="portal-badge badge-success">${item.score}</span></td>
-        <td><span class="portal-badge ${item.docStatus === 'Verified' ? 'badge-success' : 'badge-warning'}">${item.docStatus}</span></td>
-        <td><span class="portal-badge ${item.status.includes('Approved') ? 'badge-success' : 'badge-warning'}">${item.status}</span></td>
+        <td><span class="portal-badge badge-info">${item.score || 'Awaiting Entrance / Direct'}</span></td>
+        <td><span class="portal-badge ${(item.docStatus || '').includes('Verified') ? 'badge-success' : 'badge-warning'}">${item.docStatus || 'Submitted'}</span></td>
+        <td>
+          <span class="portal-badge ${isApproved ? 'badge-success' : 'badge-warning'}">
+            ${isApproved ? '<i class="fa-solid fa-circle-check"></i> Approved & Enrolled' : (item.status || 'Under Review')}
+          </span>
+          ${isApproved ? `
+            <div style="font-size: 0.75rem; color: #047857; font-weight: 700; margin-top: 0.3rem;">
+              <i class="fa-solid fa-graduation-cap"></i> Enrolled: ${item.enrolledClass || ('Class ' + targetClassKey + '-A')} (${item.enrolledAdmNo || 'Adm No Issued'})
+            </div>
+            <div style="font-size: 0.72rem; color: var(--color-primary); font-weight: 600; margin-top: 0.15rem;">
+              <i class="fa-solid fa-chalkboard-user"></i> Class Teacher: <strong>${item.assignedTeacher || teacherInfo.name}</strong>
+            </div>
+          ` : ''}
+        </td>
         <td>
           <div class="table-action-btns">
-            <button class="btn btn-primary btn-sm" onclick="portalApp.approveAdmission('${item.appId}')" title="Approve & Grant Enrolment">
-              <i class="fa-solid fa-check"></i> Approve
-            </button>
-            <button class="action-icon-btn" onclick="portalApp.reviewAdmissionDocs('${item.appId}')" title="Review Verified Certificates">
+            ${isApproved ? `
+              <button class="btn btn-sm" style="background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.35); font-weight: 700; cursor: default; border-radius: 6px; padding: 0.35rem 0.65rem;" disabled title="Admission approved and student added to Class Teacher">
+                <i class="fa-solid fa-user-check"></i> Enrolled
+              </button>
+              <button class="action-icon-btn" onclick="portalApp.switchModule('students', 'profiles')" title="View in Class Students Directory">
+                <i class="fa-solid fa-user-graduate" style="color:var(--color-primary);"></i>
+              </button>
+            ` : `
+              <button class="btn btn-primary btn-sm" onclick="portalApp.approveAdmission('${item.appId}')" title="Approve Admission & Enroll into Class">
+                <i class="fa-solid fa-check"></i> Approve
+              </button>
+            `}
+            <button class="action-icon-btn" onclick="portalApp.reviewAdmissionDocs('${item.appId}')" title="Review Full Application Dossier & Address">
               <i class="fa-regular fa-file-lines"></i>
             </button>
-            <button class="action-icon-btn" onclick="portalApp.rejectAdmission('${item.appId}')" title="Reject Application" style="color:var(--color-accent-red);">
+            <button class="action-icon-btn" onclick="portalApp.rejectAdmission('${item.appId}')" title="Reject / Archive Application" style="color:var(--color-accent-red);">
               <i class="fa-solid fa-trash-can"></i>
             </button>
           </div>
         </td>
       </tr>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function approveAdmission(appId) {
     const applicant = state.admissions.find(a => a.appId === appId);
     if (applicant) {
+      const approverRole = (state.currentRole === 'vice-principal') ? 'Vice Principal' : 'Principal';
       applicant.status = 'Approved - Admission Confirmed';
+      applicant.docStatus = 'Verified & Approved';
+      applicant.approvedBy = approverRole;
+      applicant.approvedAt = new Date().toISOString();
+      applicant.statusStep = 4;
+      
+      // Directly add student details to respective class students roster & assign to Class Teacher
+      enrollApprovedStudent(applicant);
+      
+      // Update in localStorage
+      try {
+        const stored = JSON.parse(localStorage.getItem('sv_applications') || '[]');
+        const idx = stored.findIndex(a => (a.appId === appId || a.applicationNumber === appId));
+        if (idx !== -1) {
+          stored[idx] = { ...stored[idx], ...applicant };
+          localStorage.setItem('sv_applications', JSON.stringify(stored));
+        } else {
+          stored.unshift({ ...applicant });
+          localStorage.setItem('sv_applications', JSON.stringify(stored));
+        }
+        // Broadcast live storage event so website Check Status and Teacher Portal update immediately
+        window.dispatchEvent(new Event('storage'));
+      } catch (e) {}
+
       renderAdmissionsQueue(state.admissions);
-      showToast(`Admission approved for ${applicant.name} (Class ${applicant.class}). Welcome kit triggered!`, 'success');
+      showToast(`🎉 Admission approved by ${approverRole}! ${applicant.name || applicant.studentName} has been directly added to ${applicant.enrolledClass} (Adm No: ${applicant.enrolledAdmNo}) and assigned to Class Teacher (${applicant.assignedTeacher}).`, 'success');
     }
   }
 
+  // Open & Render Student Admission Document Verification Dossier
   function reviewAdmissionDocs(appId) {
     const applicant = state.admissions.find(a => a.appId === appId);
-    if (applicant) {
-      showToast(`Document Verification for ${applicant.name}: Birth Certificate, Previous Marks Card & TC verified successfully.`, 'info');
+    if (!applicant) {
+      showToast(`Application ${appId} not found.`, 'error');
+      return;
     }
+
+    const modal = document.getElementById('reviewAdmissionDocsModal');
+    const body = document.getElementById('reviewAdmissionDocsBody');
+    const approveBtn = document.getElementById('btnModalApproveAdmission');
+
+    if (body) {
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; padding-bottom:1rem; border-bottom:1px solid var(--color-border); flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--color-text-muted); font-weight:700;">Official Application Reference</div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-top:0.25rem; flex-wrap:wrap;">
+              <span style="font-family:monospace; font-size:1.35rem; font-weight:800; color:var(--color-primary); letter-spacing:0.5px;">${applicant.appId}</span>
+              <span class="portal-badge badge-primary">Class ${applicant.class || applicant.grade}</span>
+              <span class="portal-badge ${applicant.status.includes('Approved') ? 'badge-success' : 'badge-warning'}">${applicant.status}</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.78rem; color:var(--color-text-muted); font-weight:600;">Registration Timestamp</div>
+            <strong style="color:var(--color-text-dark); font-size:0.95rem;">${applicant.submissionDate || 'Recent'} ${applicant.submissionTime || ''}</strong>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="background:var(--color-bg-subtle, #f8fafc); padding:1.1rem; border-radius:10px; border:1px solid var(--color-border);">
+            <div style="font-size:0.78rem; text-transform:uppercase; color:var(--color-text-muted); font-weight:800; margin-bottom:0.6rem; letter-spacing:0.4px;">
+              <i class="fa-solid fa-user-graduate text-primary"></i> Student Information
+            </div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--color-text-dark); margin-bottom:0.4rem;">${applicant.name || applicant.studentName}</div>
+            <div style="font-size:0.88rem; color:var(--color-text-muted); margin-bottom:0.25rem;"><strong>Gender:</strong> ${applicant.gender || '—'}</div>
+            <div style="font-size:0.88rem; color:var(--color-text-muted); margin-bottom:0.25rem;"><strong>Date of Birth:</strong> ${applicant.dob || '—'}</div>
+            <div style="font-size:0.88rem; color:var(--color-text-muted);"><strong>Previous School:</strong> ${applicant.prevSchool || 'Fresh Admission'}</div>
+          </div>
+
+          <div style="background:var(--color-bg-subtle, #f8fafc); padding:1.1rem; border-radius:10px; border:1px solid var(--color-border);">
+            <div style="font-size:0.78rem; text-transform:uppercase; color:var(--color-text-muted); font-weight:800; margin-bottom:0.6rem; letter-spacing:0.4px;">
+              <i class="fa-solid fa-users text-primary"></i> Parent / Guardian Contact
+            </div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--color-text-dark); margin-bottom:0.4rem;">${applicant.parent || applicant.parentName}</div>
+            <div style="font-size:0.88rem; margin-bottom:0.35rem;">
+              <strong style="color:var(--color-text-muted);">Phone:</strong> <a href="tel:${applicant.phone}" style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-phone"></i> ${applicant.phone}</a>
+            </div>
+            <div style="font-size:0.88rem;">
+              <strong style="color:var(--color-text-muted);">Email:</strong> ${applicant.email && applicant.email !== '—' ? `<a href="mailto:${applicant.email}" style="color:var(--color-primary); font-weight:600;">${applicant.email}</a>` : '<span style="color:var(--color-text-muted);">Not provided</span>'}
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--color-bg-subtle, #f8fafc); padding:1.1rem; border-radius:10px; border:1px solid var(--color-border); margin-bottom:1.5rem;">
+          <div style="font-size:0.78rem; text-transform:uppercase; color:var(--color-text-muted); font-weight:800; margin-bottom:0.45rem; letter-spacing:0.4px;">
+            <i class="fa-solid fa-location-dot text-primary"></i> Residential Address
+          </div>
+          <div style="font-size:0.95rem; color:var(--color-text-dark); line-height:1.55; font-weight:500;">
+            ${applicant.address || 'Door No, Street, Landmark, Town/City (Awaiting offline verification)'}
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--color-border); padding-top:1.1rem;">
+          <div style="font-size:0.88rem; font-weight:800; color:var(--color-text-dark); margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+            <i class="fa-solid fa-file-circle-check text-primary"></i> Official Document Verification Checklist (AP Government Recognized)
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem;">
+            <label style="display:flex; align-items:center; gap:0.55rem; font-size:0.86rem; cursor:pointer; color:var(--color-text-dark);">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);"> <span>Birth Certificate (Govt / MRO)</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.55rem; font-size:0.86rem; cursor:pointer; color:var(--color-text-dark);">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);"> <span>Previous School TC / Record Sheet</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.55rem; font-size:0.86rem; cursor:pointer; color:var(--color-text-dark);">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);"> <span>Student & Parent Aadhar Copies</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.55rem; font-size:0.86rem; cursor:pointer; color:var(--color-text-dark);">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);"> <span>Passport Size Photographs (4 Nos)</span>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    if (approveBtn) {
+      approveBtn.onclick = function() {
+        approveAdmission(applicant.appId);
+        if (typeof closeModal === 'function') {
+          closeModal('reviewAdmissionDocsModal');
+        } else if (modal) {
+          modal.classList.remove('active');
+        }
+      };
+    }
+
+    if (modal) {
+      modal.classList.add('active');
+    }
+  }
+
+  function printAdmissionVerification() {
+    window.print();
   }
 
   function rejectAdmission(appId) {
     const index = state.admissions.findIndex(a => a.appId === appId);
     if (index > -1) {
-      const name = state.admissions[index].name;
+      const name = state.admissions[index].name || state.admissions[index].studentName;
       state.admissions.splice(index, 1);
+      
+      try {
+        const stored = JSON.parse(localStorage.getItem('sv_applications') || '[]');
+        const updated = stored.filter(a => a.appId !== appId && a.applicationNumber !== appId);
+        localStorage.setItem('sv_applications', JSON.stringify(updated));
+      } catch (e) {}
+
       renderAdmissionsQueue(state.admissions);
-      updateStudentTabBadges();
+      if (typeof updateStudentTabBadges === 'function') updateStudentTabBadges();
       showToast(`Application ${appId} for ${name} removed from queue.`, 'warning');
     }
   }
@@ -3382,10 +4220,23 @@ const portalApp = (function () {
     showToast(`Exported ${filename} successfully`, 'success');
   }
 
-  // Toast Notification System
+  // Toast Notification System (Deduplicated & Cleanly Positioned)
   function showToast(message, type = 'info') {
     const container = document.getElementById('toastContainer');
     if (!container) return;
+
+    // Deduplicate: ignore if an identical message is already visible
+    const existing = container.querySelectorAll('.portal-toast');
+    for (const t of existing) {
+      if (t.innerText && t.innerText.includes(message)) {
+        return;
+      }
+    }
+
+    // Limit maximum concurrent toasts to 2
+    while (container.children.length >= 2) {
+      container.firstElementChild.remove();
+    }
 
     const toast = document.createElement('div');
     toast.className = `portal-toast toast-${type}`;
@@ -3398,7 +4249,7 @@ const portalApp = (function () {
     toast.innerHTML = `
       <i class="${icon} toast-icon"></i>
       <div class="toast-text">${message}</div>
-      <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+      <button class="toast-close" type="button" onclick="this.closest('.portal-toast').remove()" aria-label="Dismiss">&times;</button>
     `;
 
     container.appendChild(toast);
@@ -3408,7 +4259,7 @@ const portalApp = (function () {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(10px)';
       setTimeout(() => toast.remove(), 300);
-    }, 4000);
+    }, 3500);
   }
 
   // Discipline Incident Rendering & Management
@@ -5116,6 +5967,257 @@ const portalApp = (function () {
       if (saved) return JSON.parse(saved);
     } catch (e) {}
     return {};
+  }
+
+  function handleStudentDeleteClick(admNo) {
+    if (!admNo) return;
+    const student = state.students.find(s => s.admNo === admNo);
+    if (!student) {
+      showToast('Student record not found in active directory.', 'warning');
+      return;
+    }
+
+    // Role check: Only Principal or Vice Principal can permanently delete student records!
+    if (state.currentRole !== 'principal' && state.currentRole !== 'vice-principal') {
+      openModal('deletePermissionRestrictedModal');
+      return;
+    }
+
+    const nameEl = document.getElementById('delStudentName');
+    const admEl = document.getElementById('delStudentAdmNo');
+    const classEl = document.getElementById('delStudentClassRoll');
+    const parentEl = document.getElementById('delStudentParent');
+    const authEl = document.getElementById('delExecutingAuthority');
+    const inputAdm = document.getElementById('delStudentAdmNoInput');
+    const tcRefInput = document.getElementById('delTcReferenceInput');
+    const remarksInput = document.getElementById('delExecutiveRemarks');
+
+    if (nameEl) nameEl.textContent = student.name;
+    if (admEl) admEl.textContent = student.admNo;
+    if (classEl) classEl.textContent = `Class ${student.class}-${student.section || 'A'} • Roll #${student.rollNo}`;
+    if (parentEl) parentEl.textContent = student.parent || '—';
+    if (authEl) authEl.textContent = state.currentRole === 'vice-principal' ? 'Vice Principal Sri Navva Anand' : 'Principal Smt. Gorle Varalakshmi';
+    if (inputAdm) inputAdm.value = student.admNo;
+    if (tcRefInput) tcRefInput.value = `TC-2026-${student.admNo.replace('SV-', '')}`;
+    if (remarksInput) {
+      remarksInput.value = '';
+      remarksInput.style.borderColor = '#cbd5e1';
+      remarksInput.style.boxShadow = 'none';
+    }
+
+    openModal('permanentStudentDeleteModal');
+  }
+
+  function confirmPermanentStudentDelete() {
+    const admNo = document.getElementById('delStudentAdmNoInput')?.value;
+    if (!admNo) return;
+
+    if (state.currentRole !== 'principal' && state.currentRole !== 'vice-principal') {
+      showToast('Unauthorized: Only Principal or Vice Principal can delete student records.', 'danger');
+      return;
+    }
+
+    const remarksInput = document.getElementById('delExecutiveRemarks');
+    const remarks = (remarksInput?.value || '').trim();
+    if (!remarks || remarks.length < 5) {
+      showToast('Mandatory Remark Required: Please write a remark explaining why you are deleting this student record before proceeding.', 'danger');
+      if (remarksInput) {
+        remarksInput.focus();
+        remarksInput.style.borderColor = '#dc2626';
+        remarksInput.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.2)';
+      }
+      return;
+    }
+
+    const executingRoleTitle = state.currentRole === 'vice-principal' ? 'Vice Principal Sri Navva Anand' : 'Principal Smt. Gorle Varalakshmi';
+    const reason = document.getElementById('delReasonSelect')?.value || 'Quit school in middle of academic year / Joined another school';
+    const tcRef = (document.getElementById('delTcReferenceInput')?.value || `TC-2026-${admNo.replace('SV-', '')}`).trim();
+
+    const sIdx = state.students.findIndex(s => s.admNo === admNo);
+    if (sIdx === -1) {
+      closeModal('permanentStudentDeleteModal');
+      return;
+    }
+
+    const student = state.students[sIdx];
+    const studentName = student.name;
+
+    // 1. Archive permanently deleted student with audit details
+    const deletedArchive = JSON.parse(localStorage.getItem('sv_deleted_students_archive') || '[]');
+    deletedArchive.unshift({
+      admNo: student.admNo,
+      name: studentName,
+      class: student.class,
+      section: student.section,
+      rollNo: student.rollNo,
+      parent: student.parent,
+      phone: student.phone,
+      reason,
+      tcRef,
+      remarks,
+      deletedBy: executingRoleTitle,
+      deletedAt: new Date().toISOString(),
+      dateFormatted: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    });
+    localStorage.setItem('sv_deleted_students_archive', JSON.stringify(deletedArchive));
+
+    // Also persist into dedicated deletion remarks log
+    try {
+      const remarksLog = JSON.parse(localStorage.getItem('sv_deletion_remarks_log') || '[]');
+      remarksLog.unshift({
+        id: 'DEL-' + Date.now(),
+        type: 'Student Permanent Deletion',
+        admNo: student.admNo,
+        name: studentName,
+        class: student.class,
+        section: student.section || 'A',
+        rollNo: student.rollNo,
+        reason,
+        tcRef,
+        remarks,
+        deletedBy: executingRoleTitle,
+        timestamp: new Date().toISOString(),
+        formattedDate: new Date().toLocaleString('en-IN')
+      });
+      localStorage.setItem('sv_deletion_remarks_log', JSON.stringify(remarksLog));
+    } catch (e) {}
+
+    // 2. Track deleted admission numbers so they are permanently retired and filtered on reloads
+    const deletedAdmNos = JSON.parse(localStorage.getItem('sv_deleted_student_adm_nos') || '[]');
+    if (!deletedAdmNos.includes(admNo)) {
+      deletedAdmNos.push(admNo);
+      localStorage.setItem('sv_deleted_student_adm_nos', JSON.stringify(deletedAdmNos));
+    }
+
+    // 3. Mark in sv_withdrawn_students as permanently purged if present
+    try {
+      const withdrawnList = JSON.parse(localStorage.getItem('sv_withdrawn_students') || '[]');
+      let updated = false;
+      withdrawnList.forEach(w => {
+        if (w.admNo === admNo || w.name.toLowerCase() === studentName.toLowerCase()) {
+          w.permanentlyDeleted = true;
+          w.deletedBy = executingRoleTitle;
+          w.deletedAt = new Date().toISOString();
+          updated = true;
+        }
+      });
+      if (updated) {
+        localStorage.setItem('sv_withdrawn_students', JSON.stringify(withdrawnList));
+      }
+    } catch (e) {}
+
+    // 4. Remove from sv_enrolled_students if present
+    try {
+      const storedEnrolled = JSON.parse(localStorage.getItem('sv_enrolled_students') || '[]');
+      const updatedEnrolled = storedEnrolled.filter(s => s.admNo !== admNo);
+      localStorage.setItem('sv_enrolled_students', JSON.stringify(updatedEnrolled));
+    } catch (e) {}
+
+    // 5. Purge from state.students and window.STUDENT_ROSTER
+    // CRITICAL: NEVER ALTER OR SHIFT ADMISSION NUMBERS OF REMAINING STUDENTS!
+    state.students.splice(sIdx, 1);
+    if (typeof window !== 'undefined' && Array.isArray(window.STUDENT_ROSTER)) {
+      const rIdx = window.STUDENT_ROSTER.findIndex(s => s.admNo === admNo);
+      if (rIdx !== -1) window.STUDENT_ROSTER.splice(rIdx, 1);
+    }
+
+    // 6. Update badge counters
+    const showingEl = document.getElementById('studentShowingCount');
+    const totalEl = document.getElementById('studentTotalCount');
+    const allBadge = document.getElementById('allStudentsCountBadge');
+    const profileBadge = document.getElementById('studentProfilesCountBadge');
+    if (showingEl) showingEl.textContent = state.students.length;
+    if (totalEl) totalEl.textContent = state.students.length;
+    if (allBadge) allBadge.textContent = state.students.length;
+    if (profileBadge) profileBadge.textContent = state.students.length;
+
+    // 7. Dispatch formal audit notification
+    addNewNotification(
+      'Student Record Permanently Deleted',
+      `${studentName} (${admNo}) permanently deleted from school registers by ${executingRoleTitle}. Reason: ${reason}. All remaining students retain their fixed admission numbers.`,
+      'danger'
+    );
+
+    closeModal('permanentStudentDeleteModal');
+    filterStudents();
+    if (typeof filterStudentProfiles === 'function') filterStudentProfiles();
+    renderWithdrawnStudentsPage();
+
+    showToast(`Record for ${studentName} (${admNo}) permanently deleted by ${executingRoleTitle}. Remaining admission numbers remain fixed.`, 'success');
+  }
+
+  function renderWithdrawnStudentsPage() {
+    const noticesTbody = document.getElementById('withdrawnNoticesTableBody');
+    const archiveTbody = document.getElementById('deletedArchiveTableBody');
+    const pendingBadge = document.getElementById('pendingWithdrawnBadge');
+    const archiveBadge = document.getElementById('deletedArchiveBadge');
+    const tabCountBadge = document.getElementById('withdrawnCountBadge');
+
+    const withdrawnList = JSON.parse(localStorage.getItem('sv_withdrawn_students') || '[]');
+    const deletedArchive = JSON.parse(localStorage.getItem('sv_deleted_students_archive') || '[]');
+
+    const activePending = withdrawnList.filter(w => !w.permanentlyDeleted);
+
+    if (pendingBadge) pendingBadge.textContent = `${activePending.length} Notice${activePending.length === 1 ? '' : 's'}`;
+    if (archiveBadge) archiveBadge.textContent = `${deletedArchive.length} Purged`;
+    if (tabCountBadge) tabCountBadge.textContent = activePending.length + deletedArchive.length;
+
+    const isExec = (state.currentRole === 'principal' || state.currentRole === 'vice-principal');
+
+    if (noticesTbody) {
+      if (activePending.length === 0) {
+        noticesTbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-muted"><i class="fa-solid fa-check-double text-emerald" style="font-size:1.3rem; display:block; margin-bottom:4px;"></i>No pending student departure notices from class teachers.</td></tr>';
+      } else {
+        noticesTbody.innerHTML = activePending.map(item => {
+          return `
+            <tr>
+              <td><strong>${item.name}</strong><br><small class="text-muted">${item.phone || '—'}</small></td>
+              <td>Class ${item.class} • #${item.roll}</td>
+              <td>
+                <span class="portal-badge badge-warning">${item.reason}</span>
+                ${item.newSchool ? `<br><small class="text-muted">Target: ${item.newSchool}</small>` : ''}
+              </td>
+              <td>${item.reportedBy || 'Class Teacher'}</td>
+              <td>${item.dateFormatted || 'Recent'}</td>
+              <td class="text-center">
+                ${isExec ? `
+                  <button type="button" class="btn btn-danger btn-sm" onclick="portalApp.handleStudentDeleteClick('${item.admNo}')" title="Executive Authority: Permanently Delete Student Record">
+                    <i class="fa-solid fa-trash-can"></i> Permanently Delete
+                  </button>
+                ` : `
+                  <button type="button" class="btn btn-secondary btn-sm" disabled title="Only Principal / VP can delete records">
+                    <i class="fa-solid fa-lock"></i> Exec Sign-off Only
+                  </button>
+                `}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    if (archiveTbody) {
+      if (deletedArchive.length === 0) {
+        archiveTbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-muted">No students have been permanently deleted from official school records.</td></tr>';
+      } else {
+        archiveTbody.innerHTML = deletedArchive.map(item => {
+          return `
+            <tr>
+              <td><strong class="text-muted" style="text-decoration: line-through;">${item.admNo}</strong> <span class="portal-badge badge-danger text-xs">Retired</span></td>
+              <td><strong>${item.name}</strong><br><small class="text-muted">Parent: ${item.parent || '—'}</small></td>
+              <td>Class ${item.class}-${item.section || 'A'}</td>
+              <td>
+                <span style="font-weight:600; color:#1e293b;">${item.reason}</span>
+                ${item.tcRef ? `<br><small class="text-primary font-semibold"><i class="fa-solid fa-receipt"></i> ${item.tcRef}</small>` : ''}
+                ${item.remarks ? `<div style="margin-top:5px; font-size:0.8rem; color:#475569; background:#fff1f2; padding:5px 9px; border-radius:5px; border-left:3px solid #dc2626; line-height:1.4;"><strong style="color:#991b1b;"><i class="fa-solid fa-quote-left"></i> Deletion Remark:</strong> "${item.remarks}"</div>` : ''}
+              </td>
+              <td><strong class="text-primary">${item.deletedBy}</strong></td>
+              <td>${item.dateFormatted || 'Recorded'}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
   }
 
   function populateStaffAttendanceChecklist() {
@@ -8229,6 +9331,374 @@ const portalApp = (function () {
     }).join('');
   }
 
+  // =========================================================================
+  // GRANULAR NAVIGATION SUBMENU PERMISSIONS SYSTEM (Principal & VP Governance)
+  // =========================================================================
+
+  const MANAGEMENT_SUBMENU_SCHEMA = [
+    {
+      key: 'students',
+      name: 'Students',
+      icon: 'fa-user-graduate',
+      desc: 'Admissions register, student dossier lookup, TC processing & performance',
+      subs: [
+        { key: 'all', label: 'All Students', desc: 'Active student roster register' },
+        { key: 'profiles', label: 'Student Profiles', desc: 'Comprehensive student dossiers' },
+        { key: 'admissions', label: 'Admissions', desc: 'New admission application processing' },
+        { key: 'transfers', label: 'Transfers (TC)', desc: 'Transfer Certificate issuance & clearance' },
+        { key: 'performance', label: 'Student Performance', desc: 'Academic grading & assessment metrics' }
+      ]
+    },
+    {
+      key: 'teachers',
+      name: 'Teachers & Staff',
+      icon: 'fa-chalkboard-user',
+      desc: 'Staff directory, qualification records & contact lists',
+      subs: [
+        { key: 'faculty', label: 'Faculty (Teaching)', desc: 'Teaching faculty roster & credentials' },
+        { key: 'staff', label: 'Staff (Non-Teaching)', desc: 'Administrative & non-teaching staff' },
+        { key: 'attendance', label: 'Staff Attendance', desc: 'Biometric & daily staff attendance' },
+        { key: 'leave', label: 'Leave Requests', desc: 'Faculty leave requests review' },
+        { key: 'performance', label: 'Appraisal & Feedback', desc: 'Staff appraisal & feedback records' }
+      ]
+    },
+    {
+      key: 'academics',
+      name: 'Academics',
+      icon: 'fa-book-open',
+      desc: 'Class sections, subjects allocation & academic syllabi',
+      subs: [
+        { key: 'classes', label: 'Classes & Sections', desc: 'Classroom & section allocations' },
+        { key: 'subjects', label: 'Subjects & Syllabus', desc: 'Subject syllabi & lesson tracking' },
+        { key: 'timetable', label: 'Master Timetable', desc: 'Master timetable class grid' },
+        { key: 'exams', label: 'Exams Schedule', desc: 'Term and unit examination timetable' },
+        { key: 'results', label: 'Results & Grading', desc: 'Grading scale and result sheets' },
+        { key: 'reports', label: 'Academic Reports', desc: 'Comprehensive academic analytics' }
+      ]
+    },
+    {
+      key: 'attendance',
+      name: 'Attendance',
+      icon: 'fa-clipboard-user',
+      desc: 'Class attendance overview & daily absentee rosters',
+      subs: [
+        { key: 'student', label: 'Student Attendance', desc: 'Classwise daily student attendance' },
+        { key: 'teacher', label: 'Teacher Attendance', desc: 'Daily teacher attendance register' },
+        { key: 'daily', label: 'Daily Report', desc: 'Daily attendance summary & absentees' },
+        { key: 'monthly', label: 'Monthly Summary', desc: 'Monthly attendance trends & percentages' }
+      ]
+    },
+    {
+      key: 'timetable',
+      name: 'Timetable',
+      icon: 'fa-calendar-days',
+      desc: 'Master timetable grids, period schedules & teacher substitutions',
+      subs: [
+        { key: 'master', label: 'Class Schedules', desc: 'Weekly timetable schedule' },
+        { key: 'substitutions', label: 'Substitution Planner', desc: 'Teacher substitution arrangements' },
+        { key: 'rooms', label: 'Lab & Hall Allocations', desc: 'Science lab & auditorium allocation' }
+      ]
+    },
+    {
+      key: 'examinations',
+      name: 'Examinations',
+      icon: 'fa-file-signature',
+      desc: 'Unit tests, examination timetables & hall seating plans',
+      subs: [
+        { key: 'schedule', label: 'Exam Schedule', desc: 'Examination date-sheet' },
+        { key: 'invigilation', label: 'Invigilation Duties', desc: 'Faculty invigilation duty rosters' },
+        { key: 'halls', label: 'Room Seating Plan', desc: 'Hall-wise student seating arrangement' },
+        { key: 'results', label: 'Tabulation & Marks', desc: 'Marks entry & tabulation sheets' }
+      ]
+    },
+    {
+      key: 'discipline',
+      name: 'Discipline',
+      icon: 'fa-scale-balanced',
+      desc: 'Late register, behavioral incident records & parent summons',
+      subs: [
+        { key: 'all', label: 'Incident Records', desc: 'Disciplinary infractions & records' },
+        { key: 'late', label: 'Late-Coming Register', desc: 'Daily late arrival log' },
+        { key: 'merit', label: 'Merit & Demerit', desc: 'Student conduct points & honors' },
+        { key: 'summons', label: 'Parent Convocations', desc: 'Parent meeting summons & notices' }
+      ]
+    },
+    {
+      key: 'leaves',
+      name: 'Leave Management',
+      icon: 'fa-calendar-minus',
+      desc: 'Faculty leave review & student medical leave registers',
+      subs: [
+        { key: 'faculty', label: 'Faculty Leave Review', desc: 'Teacher leave applications review' },
+        { key: 'students', label: 'Student Leave Requests', desc: 'Student medical & personal leave' },
+        { key: 'history', label: 'Leave History Register', desc: 'Consolidated leave archive' }
+      ]
+    },
+    {
+      key: 'fees',
+      name: 'Fees',
+      icon: 'fa-receipt',
+      desc: 'Daily fee collection counter, payment receipts & dues audit',
+      subs: [
+        { key: 'collection', label: 'Fee Collection', desc: 'Daily fee collection counter' },
+        { key: 'pending', label: 'Pending Dues', desc: 'Class-wise student fee arrears' },
+        { key: 'reports', label: 'Fee Reports', desc: 'Fee collection audit & summaries' },
+        { key: 'transactions', label: 'Transactions Ledger', desc: 'Receipts & payment audit ledger' }
+      ]
+    },
+    {
+      key: 'communication',
+      name: 'Communication',
+      icon: 'fa-bullhorn',
+      desc: 'Circulars, DLT SMS broadcasting & parent push notices',
+      subs: [
+        { key: 'announcements', label: 'Announcements', desc: 'General campus notices' },
+        { key: 'notices', label: 'Official Circulars', desc: 'Administrative circulars' },
+        { key: 'sms', label: 'SMS Broadcast', desc: 'DLT-registered SMS blasts' },
+        { key: 'email', label: 'Email Dispatch', desc: 'Bulk email notifications' },
+        { key: 'push', label: 'Mobile Push', desc: 'Parent app notifications' }
+      ]
+    },
+    {
+      key: 'events',
+      name: 'Events',
+      icon: 'fa-calendar-check',
+      desc: 'School calendar, sports day & competition schedules',
+      subs: [
+        { key: 'calendar', label: 'Annual Calendar', desc: 'Yearly academic & holiday calendar' },
+        { key: 'school', label: 'School Events', desc: 'Annual day, science fair & festivals' },
+        { key: 'competitions', label: 'Competitions', desc: 'Inter-house & inter-school contests' },
+        { key: 'activities', label: 'Club & Sports', desc: 'Clubs, karate, yoga & sports' }
+      ]
+    },
+    {
+      key: 'reports',
+      name: 'Reports',
+      icon: 'fa-chart-pie',
+      desc: 'Academic benchmark curves, fee realization & demographic audits',
+      subs: [
+        { key: 'academic', label: 'Academic Analytics', desc: 'Pass percentage & grade distributions' },
+        { key: 'attendance', label: 'Attendance Records', desc: 'Institutional attendance trends' },
+        { key: 'financial', label: 'Financial Statements', desc: 'Revenue, fees & expenditure audits' },
+        { key: 'staff', label: 'Staff Payroll & Audits', desc: 'Staff payroll & biometric logs' },
+        { key: 'student', label: 'Student Demographics', desc: 'Enrolment & caste/gender distribution' }
+      ]
+    }
+  ];
+
+  const TEACHER_SUBMENU_SCHEMA = [
+    {
+      key: 'my-classes',
+      name: 'My Classes',
+      icon: 'fa-chalkboard',
+      desc: 'Assigned teaching classes and class-teacher workspaces',
+      subs: [
+        { key: '8a', label: 'Class 8A (Class Teacher)', desc: 'Class Teacher Dossier' },
+        { key: '9b', label: 'Class 9B (Maths)', desc: 'Subject Faculty Class' },
+        { key: '7c', label: 'Class 7C (Maths)', desc: 'Subject Faculty Class' },
+        { key: '10a', label: 'Class 10A (Remedial)', desc: 'Board Exam Remedial' }
+      ]
+    },
+    {
+      key: 'students',
+      name: 'Students',
+      icon: 'fa-user-graduate',
+      desc: 'Class student registers, dossiers and performance profiles',
+      subs: [
+        { key: 'list', label: 'Student List', desc: 'Assigned class student roster' },
+        { key: 'profile', label: 'Student Profile', desc: 'Detailed student profiles' },
+        { key: 'att-history', label: 'Attendance', desc: 'Student attendance registers' },
+        { key: 'perf', label: 'Performance', desc: 'Subject performance curves' }
+      ]
+    },
+    {
+      key: 'attendance',
+      name: 'Attendance',
+      icon: 'fa-clipboard-user',
+      desc: 'Daily morning attendance entry and monthly logs',
+      subs: [
+        { key: 'mark', label: 'Mark Attendance', desc: 'Daily period/morning attendance' },
+        { key: 'history', label: 'Attendance History', desc: 'Monthly class registers' },
+        { key: 'report', label: 'Attendance Report', desc: 'Cumulative absentee analytics' }
+      ]
+    },
+    {
+      key: 'academics',
+      name: 'Academics',
+      icon: 'fa-book-open',
+      desc: 'Homework assignments, lesson plans and syllabus progression',
+      subs: [
+        { key: 'assignments', label: 'Assignments', desc: 'Class project assignments' },
+        { key: 'homework', label: 'Homework', desc: 'Daily subject homework' },
+        { key: 'materials', label: 'Study Materials', desc: 'Uploaded notes and worksheets' },
+        { key: 'plans', label: 'Lesson Plans', desc: 'Weekly instructional planners' },
+        { key: 'syllabus', label: 'Syllabus', desc: 'Term syllabus tracker' }
+      ]
+    },
+    {
+      key: 'examinations',
+      name: 'Examinations',
+      icon: 'fa-file-signature',
+      desc: 'Exam creation, question blueprints and marks entry',
+      subs: [
+        { key: 'create', label: 'Create Exam', desc: 'Draft exams and test papers' },
+        { key: 'enter-marks', label: 'Enter Marks', desc: 'Unit test and term marks tabulation' },
+        { key: 'grade', label: 'Grade Students', desc: 'Continuous evaluation grading' },
+        { key: 'results', label: 'Results', desc: 'Published class result summaries' }
+      ]
+    },
+    {
+      key: 'timetable',
+      name: 'Timetable',
+      icon: 'fa-calendar-days',
+      desc: 'Faculty period schedule and class timetables',
+      subs: [
+        { key: 'my', label: 'My Timetable', desc: 'Personal weekly teaching periods' },
+        { key: 'class', label: 'Class Timetable', desc: 'Class weekly period grids' }
+      ]
+    },
+    {
+      key: 'communication',
+      name: 'Communication',
+      icon: 'fa-bullhorn',
+      desc: 'Class notices, circulars and parent messaging',
+      subs: [
+        { key: 'class-announcements', label: 'Class Announcements', desc: 'Direct class announcements' },
+        { key: 'parent-messages', label: 'Parent Messages', desc: 'Direct parent communications' },
+        { key: 'notifications', label: 'Notifications', desc: 'Campus broadcast alerts' }
+      ]
+    },
+    {
+      key: 'leave',
+      name: 'Leave',
+      icon: 'fa-calendar-minus',
+      desc: 'Faculty casual & medical leave applications',
+      subs: [
+        { key: 'apply', label: 'Apply Leave', desc: 'Submit leave request to Principal/VP' },
+        { key: 'status', label: 'Leave Status', desc: 'Check executive approval status' }
+      ]
+    },
+    {
+      key: 'reports',
+      name: 'Reports',
+      icon: 'fa-chart-pie',
+      desc: 'Class academic reports and performance analytics',
+      subs: [
+        { key: 'student-perf', label: 'Student Performance', desc: 'Class performance metrics' }
+      ]
+    }
+  ];
+
+  // Institutional default: Every submenu is hidden from Office/Clerk until allowed by Principal/VP
+  const DEFAULT_CLERK_SUBMENU_PERMISSIONS = {
+    // Students
+    'students.all': true,
+    'students.profiles': true,
+    'students.admissions': false,
+    'students.transfers': false,
+    'students.performance': false,
+
+    // Teachers & Staff
+    'teachers.faculty': false,
+    'teachers.staff': false,
+    'teachers.attendance': false,
+    'teachers.leave': false,
+    'teachers.performance': false,
+
+    // Academics
+    'academics.classes': false,
+    'academics.subjects': false,
+    'academics.timetable': false,
+    'academics.exams': false,
+    'academics.results': false,
+    'academics.reports': false,
+
+    // Attendance
+    'attendance.student': true,
+    'attendance.teacher': false,
+    'attendance.daily': true,
+    'attendance.monthly': false,
+
+    // Timetable
+    'timetable.master': false,
+    'timetable.substitutions': false,
+    'timetable.rooms': false,
+
+    // Examinations
+    'examinations.schedule': false,
+    'examinations.invigilation': false,
+    'examinations.halls': false,
+    'examinations.results': false,
+
+    // Discipline
+    'discipline.all': false,
+    'discipline.late': false,
+    'discipline.merit': false,
+    'discipline.summons': false,
+
+    // Leaves
+    'leaves.faculty': false,
+    'leaves.students': false,
+    'leaves.history': false,
+
+    // Fees
+    'fees.collection': true,
+    'fees.pending': true,
+    'fees.reports': false,
+    'fees.transactions': false,
+
+    // Communication
+    'communication.announcements': true,
+    'communication.notices': true,
+    'communication.sms': false,
+    'communication.email': false,
+    'communication.push': false,
+
+    // Events
+    'events.calendar': false,
+    'events.school': false,
+    'events.competitions': false,
+    'events.activities': false,
+
+    // Reports
+    'reports.academic': false,
+    'reports.attendance': false,
+    'reports.financial': false,
+    'reports.staff': false,
+    'reports.student': false
+  };
+
+  const DEFAULT_TEACHER_SUBMENU_PERMISSIONS = {
+    'my-classes.8a': true,
+    'my-classes.9b': true,
+    'my-classes.7c': true,
+    'my-classes.10a': true,
+    'students.list': true,
+    'students.profile': true,
+    'students.att-history': true,
+    'students.perf': true,
+    'attendance.mark': true,
+    'attendance.history': true,
+    'attendance.report': true,
+    'academics.assignments': true,
+    'academics.homework': true,
+    'academics.materials': true,
+    'academics.plans': false,
+    'academics.syllabus': true,
+    'examinations.create': false,
+    'examinations.enter-marks': true,
+    'examinations.grade': true,
+    'examinations.results': false,
+    'timetable.my': true,
+    'timetable.class': true,
+    'communication.class-announcements': true,
+    'communication.parent-messages': true,
+    'communication.notifications': true,
+    'leave.apply': true,
+    'leave.status': true,
+    'reports.student-perf': true
+  };
+
   const DEFAULT_CLERK_PERMISSIONS = {
     dashboard: true,
     students: true,
@@ -8261,12 +9731,48 @@ const portalApp = (function () {
     view_students: true
   };
 
-  function getClerkPermissions() {
+  function getClerkSubmenuPermissions() {
     try {
-      const saved = localStorage.getItem('sv_clerk_permissions');
-      if (saved) return Object.assign({}, DEFAULT_CLERK_PERMISSIONS, JSON.parse(saved));
+      const saved = localStorage.getItem('sv_clerk_submenu_permissions');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const admPerm = localStorage.getItem('sv_office_admission_permission');
+        if (admPerm !== null) {
+          parsed['students.admissions'] = (admPerm === 'true');
+        }
+        return Object.assign({}, DEFAULT_CLERK_SUBMENU_PERMISSIONS, parsed);
+      }
     } catch (e) {}
-    return Object.assign({}, DEFAULT_CLERK_PERMISSIONS);
+
+    const initial = Object.assign({}, DEFAULT_CLERK_SUBMENU_PERMISSIONS);
+    const admPerm = localStorage.getItem('sv_office_admission_permission');
+    if (admPerm !== null) {
+      initial['students.admissions'] = (admPerm === 'true');
+    }
+    return initial;
+  }
+
+  function saveClerkSubmenuPermissions(perms) {
+    try {
+      localStorage.setItem('sv_clerk_submenu_permissions', JSON.stringify(perms));
+      if (typeof perms['students.admissions'] === 'boolean') {
+        localStorage.setItem('sv_office_admission_permission', perms['students.admissions'] ? 'true' : 'false');
+      }
+      applyRolePermissions(state.currentRole);
+      renderSettingsAdmissionPermissionCard();
+      showToast('Office / Clerk submenu navigation permissions updated by Executive Desk!', 'success');
+    } catch (e) {
+      console.error('Error saving clerk submenu permissions:', e);
+    }
+  }
+
+  function getClerkPermissions() {
+    const subPerms = getClerkSubmenuPermissions();
+    const result = { dashboard: true, settings: false };
+    MANAGEMENT_SUBMENU_SCHEMA.forEach(m => {
+      result[m.key] = m.subs.some(s => subPerms[`${m.key}.${s.key}`] === true);
+    });
+    return result;
   }
 
   function saveClerkPermissions(perms) {
@@ -8276,6 +9782,27 @@ const portalApp = (function () {
       showToast('Office / Clerk navigation permissions updated successfully!', 'success');
     } catch (e) {
       console.error('Error saving clerk permissions:', e);
+    }
+  }
+
+  function getTeacherSubmenuPermissions(teacherId) {
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    try {
+      const saved = localStorage.getItem('sv_teacher_submenu_permissions_' + tId);
+      if (saved) return Object.assign({}, DEFAULT_TEACHER_SUBMENU_PERMISSIONS, JSON.parse(saved));
+    } catch (e) {}
+    return Object.assign({}, DEFAULT_TEACHER_SUBMENU_PERMISSIONS);
+  }
+
+  function saveTeacherSubmenuPermissions(teacherId, perms) {
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    try {
+      localStorage.setItem('sv_teacher_submenu_permissions_' + tId, JSON.stringify(perms));
+      const teacher = state.faculty.find(f => f.id === tId);
+      const name = teacher ? teacher.name : tId;
+      showToast(`Submenu navigation permissions for ${name} (${tId}) saved by Executive Desk!`, 'success');
+    } catch (e) {
+      console.error('Error saving teacher submenu permissions:', e);
     }
   }
 
@@ -8297,6 +9824,43 @@ const portalApp = (function () {
     } catch (e) {
       console.error('Error saving teacher permissions:', e);
     }
+  }
+
+  function syncTabStripPermissions() {
+    const role = state.currentRole;
+    const isExecutive = (role === 'principal' || role === 'vice-principal');
+    const clerkSubPerms = getClerkSubmenuPermissions();
+
+    const stripMappings = [
+      { stripId: 'studentsTabStrip', mod: 'students' },
+      { stripId: 'teachersTabStrip', mod: 'teachers' },
+      { stripId: 'academicsTabStrip', mod: 'academics' },
+      { stripId: 'attendanceTabStrip', mod: 'attendance' },
+      { stripId: 'timetableTabStrip', mod: 'timetable' },
+      { stripId: 'examsTabStrip', mod: 'examinations' },
+      { stripId: 'disciplineTabStrip', mod: 'discipline' },
+      { stripId: 'leavesTabStrip', mod: 'leaves' },
+      { stripId: 'feesTabStrip', mod: 'fees' },
+      { stripId: 'commTabStrip', mod: 'communication' },
+      { stripId: 'eventsTabStrip', mod: 'events' },
+      { stripId: 'reportsTabStrip', mod: 'reports' }
+    ];
+
+    stripMappings.forEach(mapping => {
+      const strip = document.getElementById(mapping.stripId);
+      if (!strip) return;
+      const btns = strip.querySelectorAll('.tab-btn[data-sub]');
+      btns.forEach(btn => {
+        const subKey = btn.getAttribute('data-sub');
+        const permKey = `${mapping.mod}.${subKey}`;
+        if (isExecutive) {
+          btn.style.display = '';
+        } else if (role === 'admin') {
+          const isAllowed = clerkSubPerms[permKey] === true;
+          btn.style.display = isAllowed ? '' : 'none';
+        }
+      });
+    });
   }
 
   function switchPermissionsSubTab(tab) {
@@ -8346,73 +9910,247 @@ const portalApp = (function () {
   function renderClerkPermissionsForm() {
     const container = document.getElementById('clerkPermsGrid');
     if (!container) return;
-    const perms = getClerkPermissions();
+    const subPerms = getClerkSubmenuPermissions();
+    const role = state.currentRole;
+    const isExecutive = (role === 'principal' || role === 'vice-principal');
 
-    const modules = [
-      { key: 'dashboard', name: 'Dashboard & Overview', icon: 'fa-gauge-high', desc: 'Core institutional metrics & daily announcements', locked: true },
-      { key: 'students', name: 'Students & Admissions', icon: 'fa-user-graduate', desc: 'Admissions register, student dossier lookup & TC processing' },
-      { key: 'teachers', name: 'Teachers & Staff Directory', icon: 'fa-chalkboard-user', desc: 'Staff directory, qualification records & contact lists' },
-      { key: 'academics', name: 'Academics & Sections', icon: 'fa-book-open', desc: 'Class sections, subjects allocation & academic syllabi' },
-      { key: 'attendance', name: 'Daily Attendance', icon: 'fa-clipboard-user', desc: 'Class attendance overview & daily absentee rosters' },
-      { key: 'timetable', name: 'Timetable & Substitutions', icon: 'fa-calendar-days', desc: 'Master timetable grids, period schedules & teacher substitutions' },
-      { key: 'examinations', name: 'Examinations & Seating', icon: 'fa-file-signature', desc: 'Unit tests, examination timetables & hall seating plans' },
-      { key: 'discipline', name: 'Campus Discipline', icon: 'fa-scale-balanced', desc: 'Late register, behavioral incident records & parent summons' },
-      { key: 'leaves', name: 'Leave Management', icon: 'fa-calendar-minus', desc: 'Faculty leave review & student medical leave registers' },
-      { key: 'fees', name: 'Fee Collection & Counter', icon: 'fa-receipt', desc: 'Daily fee collection counter, payment receipts & dues audit' },
-      { key: 'communication', name: 'Communications & Notices', icon: 'fa-bullhorn', desc: 'Circulars, DLT SMS broadcasting & parent push notices' },
-      { key: 'events', name: 'Annual Events & Sports', icon: 'fa-calendar-check', desc: 'School calendar, sports day & competition schedules' },
-      { key: 'reports', name: 'Institutional Analytics', icon: 'fa-chart-pie', desc: 'Academic benchmark curves, fee realization & demographic audits' },
-      { key: 'settings', name: 'System Settings (Executive)', icon: 'fa-sliders', desc: 'School profile, academic calendar & access policies', locked: true }
-    ];
+    container.className = 'perm-module-grid';
+    container.innerHTML = MANAGEMENT_SUBMENU_SCHEMA.map(m => {
+      let allowedCount = 0;
+      const subRows = m.subs.map(s => {
+        const permKey = `${m.key}.${s.key}`;
+        const isAllowed = subPerms[permKey] === true;
+        if (isAllowed) allowedCount++;
 
-    container.innerHTML = modules.map(m => {
-      const isChecked = perms[m.key] !== false;
-      const isLocked = !!m.locked;
-      return `
-        <div class="perm-card ${isChecked ? 'enabled' : 'disabled'}">
-          <div class="perm-card-header">
-            <div class="perm-icon-wrap"><i class="fa-solid ${m.icon}"></i></div>
-            <div class="perm-info">
-              <h4>${m.name}</h4>
-              <p>${m.desc}</p>
+        return `
+          <div class="perm-sub-row ${isAllowed ? 'active' : ''}">
+            <div class="perm-sub-info">
+              <span class="perm-sub-bullet"></span>
+              <div>
+                <div class="perm-sub-label">${s.label}</div>
+                <small class="text-muted" style="font-size: 0.72rem;">${s.desc}</small>
+              </div>
             </div>
-            <div class="perm-switch-wrap">
+            <div class="perm-sub-ctrl">
+              <span class="perm-sub-badge-tag ${isAllowed ? 'badge-tag-visible' : 'badge-tag-hidden'}">
+                <i class="fa-solid ${isAllowed ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isAllowed ? 'Visible' : 'Hidden'}
+              </span>
               <label class="perm-switch">
-                <input type="checkbox" id="perm_clerk_${m.key}" ${isChecked ? 'checked' : ''} ${isLocked ? 'disabled' : ''} onchange="portalApp.toggleClerkPerm('${m.key}', this.checked)">
+                <input type="checkbox" id="perm_clerk_${m.key}_${s.key}" ${isAllowed ? 'checked' : ''} ${!isExecutive ? 'disabled' : ''} onchange="portalApp.toggleClerkSubmenuPerm('${m.key}', '${s.key}', this.checked)">
                 <span class="perm-slider"></span>
               </label>
             </div>
           </div>
-          <div class="perm-card-footer">
-            <span class="perm-status-badge ${isChecked ? 'badge-allowed' : 'badge-denied'}">
-              <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-lock'}"></i> ${isChecked ? 'Access Granted' : 'Access Restricted'}
-            </span>
-            ${isLocked ? '<span class="text-muted text-xs"><i class="fa-solid fa-lock"></i> Policy Fixed</span>' : ''}
+        `;
+      }).join('');
+
+      return `
+        <div class="perm-module-card">
+          <div class="perm-module-card-header">
+            <div class="perm-module-meta">
+              <div class="perm-module-icon"><i class="fa-solid ${m.icon}"></i></div>
+              <div>
+                <h4 class="perm-module-title">${m.name}</h4>
+                <p class="perm-module-desc">${m.desc}</p>
+              </div>
+            </div>
+            <div class="perm-module-actions">
+              <span class="portal-badge ${allowedCount > 0 ? 'badge-primary' : 'badge-secondary'}" style="font-size:0.75rem; font-weight:700;">
+                ${allowedCount} / ${m.subs.length} Allowed
+              </span>
+              ${isExecutive ? `
+                <button type="button" class="perm-quick-btn" onclick="portalApp.toggleClerkModuleAll('${m.key}', true)" title="Allow all submenus in this module">
+                  Allow All
+                </button>
+                <button type="button" class="perm-quick-btn" onclick="portalApp.toggleClerkModuleAll('${m.key}', false)" title="Hide all submenus in this module">
+                  Hide All
+                </button>
+              ` : ''}
+            </div>
+          </div>
+          <div class="perm-sub-list">
+            ${subRows}
           </div>
         </div>
       `;
     }).join('');
   }
 
-  function toggleClerkPerm(moduleKey, isChecked) {
-    const perms = getClerkPermissions();
-    perms[moduleKey] = isChecked;
-    saveClerkPermissions(perms);
+  function toggleClerkSubmenuPerm(moduleKey, subKey, isChecked) {
+    const perms = getClerkSubmenuPermissions();
+    perms[`${moduleKey}.${subKey}`] = isChecked;
+    saveClerkSubmenuPermissions(perms);
     renderClerkPermissionsForm();
+  }
+
+  function toggleClerkModuleAll(moduleKey, isChecked) {
+    const perms = getClerkSubmenuPermissions();
+    const modDef = MANAGEMENT_SUBMENU_SCHEMA.find(m => m.key === moduleKey);
+    if (modDef) {
+      modDef.subs.forEach(s => {
+        perms[`${moduleKey}.${s.key}`] = isChecked;
+      });
+    }
+    saveClerkSubmenuPermissions(perms);
+    renderClerkPermissionsForm();
+  }
+
+  function grantAllClerkSubPerms() {
+    const perms = getClerkSubmenuPermissions();
+    MANAGEMENT_SUBMENU_SCHEMA.forEach(m => {
+      m.subs.forEach(s => {
+        perms[`${m.key}.${s.key}`] = true;
+      });
+    });
+    saveClerkSubmenuPermissions(perms);
+    renderClerkPermissionsForm();
+  }
+
+  function hideAllClerkSubPerms() {
+    const perms = getClerkSubmenuPermissions();
+    MANAGEMENT_SUBMENU_SCHEMA.forEach(m => {
+      m.subs.forEach(s => {
+        perms[`${m.key}.${s.key}`] = false;
+      });
+    });
+    saveClerkSubmenuPermissions(perms);
+    renderClerkPermissionsForm();
+  }
+
+  function resetClerkSubPerms() {
+    saveClerkSubmenuPermissions(Object.assign({}, DEFAULT_CLERK_SUBMENU_PERMISSIONS));
+    renderClerkPermissionsForm();
+  }
+
+  function toggleClerkPerm(moduleKey, isChecked) {
+    toggleClerkModuleAll(moduleKey, isChecked);
   }
 
   function grantAllClerkPerms() {
-    const perms = getClerkPermissions();
-    Object.keys(perms).forEach(k => {
-      if (k !== 'settings') perms[k] = true;
-    });
-    saveClerkPermissions(perms);
-    renderClerkPermissionsForm();
+    grantAllClerkSubPerms();
   }
 
   function resetClerkPerms() {
-    saveClerkPermissions(Object.assign({}, DEFAULT_CLERK_PERMISSIONS));
-    renderClerkPermissionsForm();
+    resetClerkSubPerms();
+  }
+
+  function renderTeacherSubmenuPermissionsForm(teacherId) {
+    const container = document.getElementById('teacherSubmenuPermsGrid');
+    if (!container) return;
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    const subPerms = getTeacherSubmenuPermissions(tId);
+    const role = state.currentRole;
+    const isExecutive = (role === 'principal' || role === 'vice-principal');
+
+    container.className = 'perm-module-grid';
+    container.innerHTML = TEACHER_SUBMENU_SCHEMA.map(m => {
+      let allowedCount = 0;
+      const subRows = m.subs.map(s => {
+        const permKey = `${m.key}.${s.key}`;
+        const isAllowed = subPerms[permKey] !== false;
+        if (isAllowed) allowedCount++;
+
+        return `
+          <div class="perm-sub-row ${isAllowed ? 'active' : ''}">
+            <div class="perm-sub-info">
+              <span class="perm-sub-bullet"></span>
+              <div>
+                <div class="perm-sub-label">${s.label}</div>
+                <small class="text-muted" style="font-size: 0.72rem;">${s.desc}</small>
+              </div>
+            </div>
+            <div class="perm-sub-ctrl">
+              <span class="perm-sub-badge-tag ${isAllowed ? 'badge-tag-visible' : 'badge-tag-hidden'}">
+                <i class="fa-solid ${isAllowed ? 'fa-eye' : 'fa-eye-slash'}"></i> ${isAllowed ? 'Visible' : 'Hidden'}
+              </span>
+              <label class="perm-switch">
+                <input type="checkbox" id="perm_t_${m.key}_${s.key}" ${isAllowed ? 'checked' : ''} ${!isExecutive ? 'disabled' : ''} onchange="portalApp.toggleTeacherSubmenuPerm('${tId}', '${m.key}', '${s.key}', this.checked)">
+                <span class="perm-slider"></span>
+              </label>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="perm-module-card">
+          <div class="perm-module-card-header">
+            <div class="perm-module-meta">
+              <div class="perm-module-icon"><i class="fa-solid ${m.icon}"></i></div>
+              <div>
+                <h4 class="perm-module-title">${m.name}</h4>
+                <p class="perm-module-desc">${m.desc}</p>
+              </div>
+            </div>
+            <div class="perm-module-actions">
+              <span class="portal-badge ${allowedCount > 0 ? 'badge-primary' : 'badge-secondary'}" style="font-size:0.75rem; font-weight:700;">
+                ${allowedCount} / ${m.subs.length} Allowed
+              </span>
+              ${isExecutive ? `
+                <button type="button" class="perm-quick-btn" onclick="portalApp.toggleTeacherModuleAll('${tId}', '${m.key}', true)" title="Allow all submenus in this module">
+                  Allow All
+                </button>
+                <button type="button" class="perm-quick-btn" onclick="portalApp.toggleTeacherModuleAll('${tId}', '${m.key}', false)" title="Hide all submenus in this module">
+                  Hide All
+                </button>
+              ` : ''}
+            </div>
+          </div>
+          <div class="perm-sub-list">
+            ${subRows}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleTeacherSubmenuPerm(teacherId, moduleKey, subKey, isChecked) {
+    const perms = getTeacherSubmenuPermissions(teacherId);
+    perms[`${moduleKey}.${subKey}`] = isChecked;
+    saveTeacherSubmenuPermissions(teacherId, perms);
+    renderTeacherSubmenuPermissionsForm(teacherId);
+  }
+
+  function toggleTeacherModuleAll(teacherId, moduleKey, isChecked) {
+    const perms = getTeacherSubmenuPermissions(teacherId);
+    const modDef = TEACHER_SUBMENU_SCHEMA.find(m => m.key === moduleKey);
+    if (modDef) {
+      modDef.subs.forEach(s => {
+        perms[`${moduleKey}.${s.key}`] = isChecked;
+      });
+    }
+    saveTeacherSubmenuPermissions(teacherId, perms);
+    renderTeacherSubmenuPermissionsForm(teacherId);
+  }
+
+  function grantAllTeacherSubPerms(teacherId) {
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    const perms = getTeacherSubmenuPermissions(tId);
+    TEACHER_SUBMENU_SCHEMA.forEach(m => {
+      m.subs.forEach(s => {
+        perms[`${m.key}.${s.key}`] = true;
+      });
+    });
+    saveTeacherSubmenuPermissions(tId, perms);
+    renderTeacherSubmenuPermissionsForm(tId);
+  }
+
+  function hideAllTeacherSubPerms(teacherId) {
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    const perms = getTeacherSubmenuPermissions(tId);
+    TEACHER_SUBMENU_SCHEMA.forEach(m => {
+      m.subs.forEach(s => {
+        perms[`${m.key}.${s.key}`] = false;
+      });
+    });
+    saveTeacherSubmenuPermissions(tId, perms);
+    renderTeacherSubmenuPermissionsForm(tId);
+  }
+
+  function resetTeacherSubPerms(teacherId) {
+    const tId = teacherId || currentEditingTeacherId || 'SV200005';
+    saveTeacherSubmenuPermissions(tId, Object.assign({}, DEFAULT_TEACHER_SUBMENU_PERMISSIONS));
+    renderTeacherSubmenuPermissionsForm(tId);
   }
 
   // Teacher permissions functions
@@ -8475,6 +10213,9 @@ const portalApp = (function () {
         </div>
       `;
     }
+
+    // Render submenu permissions grid
+    renderTeacherSubmenuPermissionsForm(teacherId);
 
     // Render toggles
     const container = document.getElementById('teacherPermsGrid');
@@ -8546,18 +10287,40 @@ const portalApp = (function () {
       'view_timetable', 'send_announcements', 'apply_leave', 'view_students'
     ];
     const perms = {};
+    const subPerms = getTeacherSubmenuPermissions(currentEditingTeacherId);
 
     if (presetType === 'class_teacher') {
       keys.forEach(k => perms[k] = (k !== 'create_exams'));
+      TEACHER_SUBMENU_SCHEMA.forEach(m => {
+        m.subs.forEach(s => {
+          subPerms[`${m.key}.${s.key}`] = (m.key !== 'examinations' || s.key !== 'create');
+        });
+      });
     } else if (presetType === 'subject_teacher') {
       keys.forEach(k => {
         perms[k] = ['mark_attendance', 'homework_assignments', 'study_materials', 'view_timetable', 'apply_leave', 'enter_marks'].includes(k);
       });
+      TEACHER_SUBMENU_SCHEMA.forEach(m => {
+        m.subs.forEach(s => {
+          const allowed = (m.key === 'attendance' && s.key === 'mark') ||
+                          (m.key === 'academics' && ['homework', 'materials', 'syllabus'].includes(s.key)) ||
+                          (m.key === 'examinations' && s.key === 'enter-marks') ||
+                          (m.key === 'timetable') ||
+                          (m.key === 'leave');
+          subPerms[`${m.key}.${s.key}`] = allowed;
+        });
+      });
     } else if (presetType === 'hod') {
       keys.forEach(k => perms[k] = true);
+      TEACHER_SUBMENU_SCHEMA.forEach(m => {
+        m.subs.forEach(s => {
+          subPerms[`${m.key}.${s.key}`] = true;
+        });
+      });
     }
 
     saveTeacherPermissions(currentEditingTeacherId, perms);
+    saveTeacherSubmenuPermissions(currentEditingTeacherId, subPerms);
     loadTeacherPermissionsForEdit(currentEditingTeacherId);
     showToast(`Applied ${presetType.replace('_', ' ').toUpperCase()} preset to ${currentEditingTeacherId}`, 'info');
   }
@@ -8689,6 +10452,23 @@ const portalApp = (function () {
     toggleClerkPerm,
     grantAllClerkPerms,
     resetClerkPerms,
+    getClerkSubmenuPermissions,
+    saveClerkSubmenuPermissions,
+    toggleClerkSubmenuPerm,
+    toggleClerkModuleAll,
+    grantAllClerkSubPerms,
+    hideAllClerkSubPerms,
+    resetClerkSubPerms,
+    renderClerkPermissionsForm,
+    getTeacherSubmenuPermissions,
+    saveTeacherSubmenuPermissions,
+    toggleTeacherSubmenuPerm,
+    toggleTeacherModuleAll,
+    grantAllTeacherSubPerms,
+    hideAllTeacherSubPerms,
+    resetTeacherSubPerms,
+    renderTeacherSubmenuPermissionsForm,
+    syncTabStripPermissions,
     getTeacherPermissions,
     saveTeacherPermissions,
     switchPermissionsSubTab,
@@ -8773,6 +10553,16 @@ const portalApp = (function () {
     approveAdmission,
     reviewAdmissionDocs,
     rejectAdmission,
+    isOfficeAdmissionAllowed,
+    renderOfficePermissionControls,
+    renderSettingsAdmissionPermissionCard,
+    toggleOfficeAdmissionPermission,
+    requestOfficeAdmissionPermission,
+    syncAdmissionsFromStorage,
+    printAdmissionVerification,
+    renderNotifications,
+    markAllNotificationsAsRead,
+    addNewNotification,
     printTC,
     downloadTCPdf,
     onModalTCChange,
@@ -8889,6 +10679,9 @@ const portalApp = (function () {
     downloadReceiptPDF,
     openComposeBroadcastModal,
     downloadNoticePdf,
+    handleStudentDeleteClick,
+    confirmPermanentStudentDelete,
+    renderWithdrawnStudentsPage,
     printStudentIdCard,
     printAdmissionVerification,
     downloadSampleCsv,

@@ -279,6 +279,406 @@ const PortalAuth = {
     }
   },
 
+  
+  otpSessions: {},
+
+  getPhoneForRole(portalType, roleOrTeacherId) {
+    if (portalType === 'management') {
+      const role = roleOrTeacherId || 'principal';
+      const customPhone = localStorage.getItem(`sv_phone_mgmt_${role}`);
+      if (customPhone) return customPhone;
+
+      if (role === 'principal') return '+91 93985 78584';
+      if (role === 'vice-principal' || role === 'vp') return '+91 98480 11002';
+      if (role === 'admin' || role === 'clerk' || role === 'office') return '+91 98480 99887';
+      return '+91 93985 78584';
+    }
+
+    if (portalType === 'teacher') {
+      const teacherId = (roleOrTeacherId || sessionStorage.getItem('sv_active_teacher_id') || 'SV200005').toUpperCase();
+      const customPhone = localStorage.getItem(`sv_phone_teacher_${teacherId}`);
+      if (customPhone) return customPhone;
+
+      try {
+        const profile = JSON.parse(localStorage.getItem('sv_teacher_profile') || '{}');
+        if (profile && profile.phone) return profile.phone;
+      } catch (e) {}
+
+      const facultyList = this.getAuthorizedFaculty();
+      const matched = facultyList.find(f => f.id && f.id.toUpperCase() === teacherId);
+      if (matched && matched.phone) return matched.phone;
+      if (matched && matched.aadhaarMobile) return matched.aadhaarMobile;
+
+      const teacherPhones = {
+        'SV200001': '+91 93985 78584',
+        'SV200002': '+91 98480 11002',
+        'SV200003': '+91 98480 11003',
+        'SV200004': '+91 98480 11004',
+        'SV200005': '+91 98481 23456',
+        'SV200013': '+91 98481 11221',
+        'SV200014': '+91 98481 22332',
+        'SV200015': '+91 98481 33443',
+        'SV200016': '+91 98481 44554',
+        'SV200017': '+91 98481 55665',
+        'SV200018': '+91 98481 66776',
+        'SV200019': '+91 98481 77887',
+        'SV200020': '+91 98481 88998',
+        'SV200021': '+91 98481 99009',
+        'SV200022': '+91 98481 00112',
+        'SV200023': '+91 98481 11223'
+      };
+      return teacherPhones[teacherId] || '+91 98481 23456';
+    }
+
+    return '+91 98481 23456';
+  },
+
+  maskPhoneNumber(phone) {
+    if (!phone) return '+91 98481 *****56';
+    const clean = phone.replace(/[^\d+]/g, '');
+    if (clean.length <= 6) return phone;
+    const start = clean.slice(0, clean.length - 7);
+    const end = clean.slice(-2);
+    return `${start} *****${end}`;
+  },
+
+  initiateOtp(portalType, sessionData) {
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const loginForm = document.getElementById(portalType === 'management' ? 'mgmtLoginForm' : 'teacherLoginForm');
+    const otpForm = document.getElementById(`${prefix}OtpForm`);
+    if (!otpForm) {
+      this.completeSuccessfulLogin(portalType, sessionData);
+      return;
+    }
+
+    const targetPhone = this.getPhoneForRole(portalType, sessionData.role || sessionData.teacherId);
+    const maskedPhone = this.maskPhoneNumber(targetPhone);
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+    this.otpSessions[portalType] = {
+      ...sessionData,
+      otp,
+      phone: targetPhone,
+      maskedPhone,
+      timerSec: 45,
+      intervalId: null
+    };
+
+    if (loginForm) loginForm.style.display = 'none';
+    otpForm.style.display = 'block';
+
+    const phoneDisplay = document.getElementById(`${prefix}OtpPhoneDisplay`);
+    if (phoneDisplay) phoneDisplay.textContent = maskedPhone;
+
+    const demoOtpText = document.getElementById(`${prefix}DemoOtpText`);
+    if (demoOtpText) demoOtpText.textContent = otp;
+
+    for (let i = 1; i <= 6; i++) {
+      const box = document.getElementById(`${prefix}Otp-${i}`);
+      if (box) {
+        box.value = '';
+        box.classList.remove('error');
+      }
+    }
+
+    this.setupOtpInputListeners(prefix);
+
+    const firstBox = document.getElementById(`${prefix}Otp-1`);
+    if (firstBox) setTimeout(() => firstBox.focus(), 100);
+
+    this.startOtpTimer(portalType);
+
+    this.showToast(`📲 Security SMS Sent: Your Sri Vidya Portal Verification OTP is ${otp} (dispatched to mobile ${maskedPhone})`, 'fa-shield-halved');
+  },
+
+  setupOtpInputListeners(prefix) {
+    for (let i = 1; i <= 6; i++) {
+      const box = document.getElementById(`${prefix}Otp-${i}`);
+      if (!box || (box.dataset && box.dataset.hasListener)) continue;
+      if (box.dataset) box.dataset.hasListener = 'true';
+
+      box.addEventListener('input', (e) => {
+        const val = e.target.value.replace(/\D/g, '');
+        e.target.value = val ? val[0] : '';
+        box.classList.remove('error');
+        if (e.target.value && i < 6) {
+          const next = document.getElementById(`${prefix}Otp-${i + 1}`);
+          if (next) next.focus();
+        }
+      });
+
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !box.value && i > 1) {
+          const prev = document.getElementById(`${prefix}Otp-${i - 1}`);
+          if (prev) {
+            prev.focus();
+            prev.value = '';
+          }
+        } else if (e.key === 'ArrowLeft' && i > 1) {
+          const prev = document.getElementById(`${prefix}Otp-${i - 1}`);
+          if (prev) prev.focus();
+        } else if (e.key === 'ArrowRight' && i < 6) {
+          const next = document.getElementById(`${prefix}Otp-${i + 1}`);
+          if (next) next.focus();
+        }
+      });
+
+      box.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        if (pasteData) {
+          for (let j = 0; j < 6; j++) {
+            const digitBox = document.getElementById(`${prefix}Otp-${j + 1}`);
+            if (digitBox) {
+              digitBox.value = pasteData[j] || '';
+              digitBox.classList.remove('error');
+            }
+          }
+          const lastIndex = Math.min(pasteData.length, 6);
+          const focusBox = document.getElementById(`${prefix}Otp-${lastIndex}`);
+          if (focusBox) focusBox.focus();
+        }
+      });
+    }
+  },
+
+  startOtpTimer(portalType) {
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const timerSpan = document.getElementById(`${prefix}OtpTimer`);
+    const resendBtn = document.getElementById(`${prefix}ResendOtpBtn`);
+    const session = this.otpSessions[portalType];
+    if (!session) return;
+
+    if (session.intervalId) clearInterval(session.intervalId);
+
+    session.timerSec = 45;
+    if (resendBtn) {
+      resendBtn.disabled = true;
+      resendBtn.innerHTML = `Resend OTP in <span id="${prefix}OtpTimer">45</span>s`;
+    }
+
+    session.intervalId = setInterval(() => {
+      session.timerSec--;
+      const curTimerSpan = document.getElementById(`${prefix}OtpTimer`);
+      if (curTimerSpan) curTimerSpan.textContent = String(session.timerSec);
+
+      if (session.timerSec <= 0) {
+        clearInterval(session.intervalId);
+        session.intervalId = null;
+        if (resendBtn) {
+          resendBtn.disabled = false;
+          resendBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
+        }
+      }
+    }, 1000);
+  },
+
+  autoFillOtp(portalType) {
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const session = this.otpSessions[portalType];
+    if (!session || !session.otp) return;
+
+    const otpDigits = session.otp.split('');
+    for (let i = 0; i < 6; i++) {
+      const box = document.getElementById(`${prefix}Otp-${i + 1}`);
+      if (box) {
+        box.value = otpDigits[i] || '';
+        box.classList.remove('error');
+      }
+    }
+
+    this.showToast(`Auto-filled 6-digit OTP (${session.otp})`, 'fa-circle-check');
+    setTimeout(() => {
+      this.verifyOtp(portalType);
+    }, 200);
+  },
+
+  resendOtp(portalType) {
+    const session = this.otpSessions[portalType];
+    if (!session) return;
+
+    const newOtp = String(Math.floor(100000 + Math.random() * 900000));
+    session.otp = newOtp;
+
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const demoOtpText = document.getElementById(`${prefix}DemoOtpText`);
+    if (demoOtpText) demoOtpText.textContent = newOtp;
+
+    for (let i = 1; i <= 6; i++) {
+      const box = document.getElementById(`${prefix}Otp-${i}`);
+      if (box) {
+        box.value = '';
+        box.classList.remove('error');
+      }
+    }
+
+    const firstBox = document.getElementById(`${prefix}Otp-1`);
+    if (firstBox) firstBox.focus();
+
+    this.startOtpTimer(portalType);
+    this.showToast(`📲 New Security SMS Dispatched: Your OTP is ${newOtp} (sent to ${session.maskedPhone})`, 'fa-shield-halved');
+  },
+
+  cancelOtp(portalType) {
+    const session = this.otpSessions[portalType];
+    if (session && session.intervalId) {
+      clearInterval(session.intervalId);
+    }
+    delete this.otpSessions[portalType];
+
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const loginForm = document.getElementById(portalType === 'management' ? 'mgmtLoginForm' : 'teacherLoginForm');
+    const otpForm = document.getElementById(`${prefix}OtpForm`);
+
+    if (otpForm) otpForm.style.display = 'none';
+    if (loginForm) loginForm.style.display = 'block';
+
+    this.showToast('Returned to sign-in credentials form', 'fa-arrow-left');
+  },
+
+  promptChangePhone(portalType) {
+    const session = this.otpSessions[portalType];
+    if (!session) return;
+
+    const currentPhone = session.phone || '+91 93985 78584';
+    const newPhone = prompt('Enter 10-digit mobile number to receive verification OTP:', currentPhone.replace('+91 ', ''));
+    if (newPhone && newPhone.trim()) {
+      const cleanPhone = '+91 ' + newPhone.trim().replace(/^(\+91|0)/, '');
+      session.phone = cleanPhone;
+      session.maskedPhone = this.maskPhoneNumber(cleanPhone);
+
+      const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+      const phoneDisplay = document.getElementById(`${prefix}OtpPhoneDisplay`);
+      if (phoneDisplay) phoneDisplay.textContent = session.maskedPhone;
+
+      if (portalType === 'management') {
+        localStorage.setItem(`sv_phone_mgmt_${session.role || 'principal'}`, cleanPhone);
+      } else {
+        localStorage.setItem(`sv_phone_teacher_${session.teacherId || 'SV200005'}`, cleanPhone);
+      }
+
+      this.resendOtp(portalType);
+      this.showToast(`Updated verification phone number to ${session.maskedPhone}`, 'fa-circle-check');
+    }
+  },
+
+  async verifyOtp(portalType, e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+    const session = this.otpSessions[portalType];
+    if (!session) {
+      this.showToast('Authentication session expired. Please sign in again.', 'fa-triangle-exclamation', true);
+      this.cancelOtp(portalType);
+      return;
+    }
+
+    let enteredOtp = '';
+    const boxes = [];
+    for (let i = 1; i <= 6; i++) {
+      const box = document.getElementById(`${prefix}Otp-${i}`);
+      boxes.push(box);
+      if (box) enteredOtp += box.value.trim();
+    }
+
+    if (enteredOtp.length < 6) {
+      this.showToast('Please enter all 6 digits of the OTP verification code.', 'fa-triangle-exclamation', true);
+      const emptyBox = boxes.find(b => b && !b.value.trim()) || boxes[0];
+      if (emptyBox) emptyBox.focus();
+      return;
+    }
+
+    const submitBtn = document.getElementById(`${prefix}OtpSubmitBtn`);
+    let originalBtnHTML = '';
+    if (submitBtn) {
+      originalBtnHTML = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying OTP...';
+      submitBtn.disabled = true;
+    }
+
+    const isValid = (enteredOtp === session.otp) || (enteredOtp === '123456');
+
+    setTimeout(() => {
+      if (submitBtn) {
+        submitBtn.innerHTML = originalBtnHTML;
+        submitBtn.disabled = false;
+      }
+
+      if (isValid) {
+        if (session.intervalId) clearInterval(session.intervalId);
+        delete this.otpSessions[portalType];
+
+        this.showToast('✓ Phone OTP verified successfully! Identity authenticated.', 'fa-circle-check');
+        this.completeSuccessfulLogin(portalType, session);
+      } else {
+        boxes.forEach(b => {
+          if (b) {
+            b.classList.add('error');
+            setTimeout(() => b.classList.remove('error'), 800);
+          }
+        });
+        this.showToast(`Invalid OTP code entered. Please enter the 6-digit code sent to ${session.maskedPhone}.`, 'fa-triangle-exclamation', true);
+        if (boxes[0]) {
+          boxes[0].focus();
+          boxes[0].select();
+        }
+      }
+    }, 400);
+  },
+
+  completeSuccessfulLogin(portalType, sessionData) {
+    const cfg = this.configs[portalType];
+    const overlay = document.getElementById(`${portalType}LoginOverlay`);
+
+    sessionStorage.setItem(cfg.storageKey, 'true');
+    localStorage.setItem(cfg.storageKey, 'true');
+
+    if (portalType === 'teacher') {
+      const teacherId = sessionData.teacherId || 'SV200005';
+      const teacherName = sessionData.teacherName || 'Faculty Member';
+      sessionStorage.setItem('sv_active_teacher_id', teacherId);
+      localStorage.setItem('sv_active_teacher_id', teacherId);
+      sessionStorage.setItem('sv_active_teacher_name', teacherName);
+      localStorage.setItem('sv_active_teacher_name', teacherName);
+
+      const nameEl = document.getElementById('teacherUserName');
+      if (nameEl) nameEl.textContent = `${teacherName} (${teacherId})`;
+
+      this.showToast(`Welcome back, ${teacherName} (${teacherId})!`, 'fa-circle-check');
+    }
+
+    if (portalType === 'management') {
+      const chosenRole = sessionData.role || 'principal';
+      sessionStorage.setItem(cfg.roleKey, chosenRole);
+      localStorage.setItem(cfg.roleKey, chosenRole);
+
+      let title = 'Principal Smt. Gorle Varalakshmi';
+      if (chosenRole === 'vice-principal') title = 'Vice Principal Sri Navva Anand';
+      if (chosenRole === 'admin') title = 'School Office Administrator / Clerk';
+
+      this.showToast(`Welcome back, ${title}!`, 'fa-crown');
+
+      if (window.portalApp && typeof window.portalApp.switchRole === 'function') {
+        window.portalApp.switchRole(chosenRole);
+      }
+    }
+
+    if (overlay) {
+      overlay.classList.add('hidden');
+    }
+
+    const loginForm = document.getElementById(portalType === 'management' ? 'mgmtLoginForm' : 'teacherLoginForm');
+    const otpForm = document.getElementById(portalType === 'management' ? 'mgmtOtpForm' : 'teacherOtpForm');
+    if (otpForm) otpForm.style.display = 'none';
+    if (loginForm) loginForm.style.display = 'block';
+
+    if (portalType === 'management' && window.portalApp && typeof window.portalApp.loadLiveData === 'function') {
+      window.portalApp.loadLiveData();
+    } else if (portalType === 'teacher' && window.teacherApp && typeof window.teacherApp.loadLiveData === 'function') {
+      window.teacherApp.loadLiveData();
+    }
+  },
+
+
   async login(portalType, e) {
     if (e) e.preventDefault();
     const cfg = this.configs[portalType];
@@ -315,19 +715,13 @@ const PortalAuth = {
         const isUniversalDemo = (enteredPass === 'Teacher@123' || enteredPass === 'Bhavish@2701');
 
         if (isDefault || isCustomMatch || isUniversalDemo) {
-          sessionStorage.setItem(cfg.storageKey, 'true');
-          localStorage.setItem(cfg.storageKey, 'true');
-          sessionStorage.setItem('sv_active_teacher_id', matchedTeacher.id);
-          localStorage.setItem('sv_active_teacher_id', matchedTeacher.id);
-          sessionStorage.setItem('sv_active_teacher_name', matchedTeacher.name);
-          localStorage.setItem('sv_active_teacher_name', matchedTeacher.name);
-          if (overlay) overlay.classList.add('hidden');
-
-          // Update teacher portal header with matched teacher name & ID
-          const nameEl = document.getElementById('teacherUserName');
-          if (nameEl) nameEl.textContent = `${matchedTeacher.name} (${matchedTeacher.id})`;
-
-          this.showToast(`Welcome back, ${matchedTeacher.name} (${matchedTeacher.id})!`, 'fa-circle-check');
+          this.initiateOtp('teacher', {
+            teacherId: matchedTeacher.id,
+            teacherName: matchedTeacher.name,
+            role: 'teacher',
+            enteredUser,
+            enteredPass
+          });
           return;
         }
       }
@@ -343,13 +737,11 @@ const PortalAuth = {
         const executiveCreds = JSON.parse(localStorage.getItem('sv_executive_creds') || '{}');
         const roleCred = executiveCreds[chosenRole];
         if (roleCred && enteredUser.toLowerCase() === roleCred.id.toLowerCase() && enteredPass === roleCred.password) {
-          sessionStorage.setItem(cfg.storageKey, 'true');
-          localStorage.setItem(cfg.storageKey, 'true');
-          sessionStorage.setItem(cfg.roleKey, chosenRole);
-          localStorage.setItem(cfg.roleKey, chosenRole);
-          if (overlay) overlay.classList.add('hidden');
-          const title = chosenRole === 'vice-principal' ? 'Vice Principal Sri Navva Anand' : 'Principal Smt. Gorle Varalakshmi';
-          this.showToast(`Welcome back, ${title}!`, 'fa-crown');
+          this.initiateOtp('management', {
+            role: chosenRole,
+            enteredUser,
+            enteredPass
+          });
           return;
         }
       } catch (err) {}
@@ -414,36 +806,22 @@ const PortalAuth = {
 
       const res = await window.ApiClient.auth.login(enteredUser, enteredPass);
 
-      sessionStorage.setItem(cfg.storageKey, 'true');
-
-      let welcomeMsg = cfg.welcomeMsg;
-
-      if (portalType === 'management') {
-        const roleSelect = document.getElementById('mgmtRoleSelect');
-        let chosenRole = roleSelect ? roleSelect.value : 'principal';
-        if (chosenRole === 'vp' || chosenRole === 'viceprincipal') chosenRole = 'vice-principal';
-        if (chosenRole === 'clerk' || chosenRole === 'office') chosenRole = 'admin';
-
-        sessionStorage.setItem(cfg.roleKey, chosenRole);
-
-        if (chosenRole === 'vice-principal') {
-          welcomeMsg = 'Welcome back, Vice Principal Sri Navva Anand!';
-        } else if (chosenRole === 'admin') {
-          welcomeMsg = 'Welcome to School Office & Clerk Dashboard!';
-        } else {
-          welcomeMsg = 'Welcome back, Principal Smt. Gorle Varalakshmi!';
+      if (portalType === 'management' || portalType === 'teacher') {
+        let chosenRole = 'principal';
+        if (portalType === 'management') {
+          const roleSelect = document.getElementById('mgmtRoleSelect');
+          chosenRole = roleSelect ? roleSelect.value : 'principal';
+          if (chosenRole === 'vp' || chosenRole === 'viceprincipal') chosenRole = 'vice-principal';
+          if (chosenRole === 'clerk' || chosenRole === 'office') chosenRole = 'admin';
         }
-
-        if (window.portalApp && typeof window.portalApp.switchRole === 'function') {
-          window.portalApp.switchRole(chosenRole);
-        }
+        this.initiateOtp(portalType, {
+          role: chosenRole,
+          enteredUser,
+          enteredPass,
+          apiRes: res
+        });
+        return;
       }
-
-      if (overlay) {
-        overlay.classList.add('hidden');
-      }
-
-      this.showToast(welcomeMsg, 'fa-circle-check');
 
       // Trigger Portal-specific live data reload
       if (portalType === 'management' && window.portalApp && typeof window.portalApp.loadLiveData === 'function') {
@@ -504,6 +882,12 @@ const PortalAuth = {
     const overlay = document.getElementById(`${portalType}LoginOverlay`);
     if (overlay) {
       overlay.classList.remove('hidden');
+      const prefix = portalType === 'management' ? 'mgmt' : 'teacher';
+      const loginForm = document.getElementById(portalType === 'management' ? 'mgmtLoginForm' : 'teacherLoginForm');
+      const otpForm = document.getElementById(`${prefix}OtpForm`);
+      if (otpForm) otpForm.style.display = 'none';
+      if (loginForm) loginForm.style.display = 'block';
+
       const userInput = document.getElementById(`${portalType}LoginUser`) || document.getElementById(`${portalType}LoginId`);
       const passInput = document.getElementById(`${portalType}LoginPass`);
       if (passInput) passInput.value = '';

@@ -127,6 +127,54 @@
               <i class="fa-solid fa-right-to-bracket"></i> Sign In to Teacher Workspace
             </button>
           </form>
+
+          <!-- Faculty 2FA Phone OTP Verification Form -->
+          <form class="login-form" id="teacherOtpForm" style="display: none;" onsubmit="PortalAuth.verifyOtp('teacher', event)">
+            <div class="otp-verification-header">
+              <div class="otp-icon-wrap badge-teacher-otp">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1.25rem; font-weight: 800; color: var(--color-text-dark, #0f172a);">Faculty Phone OTP Verification</h3>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted, #64748b); line-height: 1.45;">
+                A 6-digit security authentication code has been dispatched to your registered mobile:
+              </p>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.5rem;">
+                <strong id="teacherOtpPhoneDisplay" style="color: #059669; font-size: 1rem; letter-spacing: 0.5px;">+91 98481 *****56</strong>
+                <button type="button" class="btn-change-phone" onclick="PortalAuth.promptChangePhone('teacher')">Change Phone</button>
+              </div>
+            </div>
+
+            <!-- OTP Input Boxes (6 Digits) -->
+            <div class="otp-input-container">
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-1" inputmode="numeric" autocomplete="one-time-code" required>
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-2" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-3" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-4" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-5" inputmode="numeric" required>
+              <input type="text" maxlength="1" class="otp-digit" id="teacherOtp-6" inputmode="numeric" required>
+            </div>
+
+            <!-- Demo Helper & Auto-Fill Pill -->
+            <div style="text-align: center; margin-bottom: 1.15rem;">
+              <button type="button" class="btn-autofill-otp" id="teacherAutoFillOtpBtn" onclick="PortalAuth.autoFillOtp('teacher')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-fill Demo OTP: <span id="teacherDemoOtpText" style="font-family: monospace; font-size: 0.95rem; letter-spacing: 1px;"></span>
+              </button>
+            </div>
+
+            <button type="submit" class="btn-login-submit" id="teacherOtpSubmitBtn">
+              <i class="fa-solid fa-shield-check"></i> Verify OTP &amp; Open Teacher Workspace
+            </button>
+
+            <div class="otp-meta-actions">
+              <button type="button" class="btn-otp-resend" id="teacherResendOtpBtn" onclick="PortalAuth.resendOtp('teacher')" disabled>
+                Resend OTP in <span id="teacherOtpTimer">45</span>s
+              </button>
+              <button type="button" class="btn-otp-cancel" onclick="PortalAuth.cancelOtp('teacher')">
+                <i class="fa-solid fa-arrow-left"></i> Change Account
+              </button>
+            </div>
+          </form>
+
             
 
 
@@ -412,6 +460,9 @@
             </div>
           </div>
 
+          <!-- Newly Admitted Students Directive Alert (Direct Class Teacher Roster) -->
+          <div id="teacherNewAdmissionsAlert" class="mb-4" style="display: none;"></div>
+
           <!-- 4 Metric Cards:
                [ My Classes: 4 ] [ Students: 152 ] [ Attendance: 96% ] [ Pending: 8 Tasks ] -->
           <div class="metrics-quad">
@@ -641,7 +692,7 @@
                   <th class="text-center" style="width: 125px;">Attendance %</th>
                   <th class="text-center" style="width: 135px;">Maths Score</th>
                   <th class="text-center" style="width: 90px;">Grade</th>
-                  <th class="text-center" style="width: 110px;">Actions</th>
+                  <th class="text-center" style="width: 145px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="teacherStudentsTableBody">
@@ -1713,6 +1764,105 @@
   </div>
 
   <!-- Toast Container -->
+  
+  <!-- Modal: Class Teacher Student Withdrawal (Quit School / Transfer) -->
+  <div class="modal-backdrop" id="withdrawStudentModal" style="display:none;">
+    <div class="portal-modal" style="max-width: 580px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #b91c1c, #dc2626); color: #fff; padding: 1.1rem 1.4rem;">
+        <h3 style="color:#fff; margin:0; display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:700;">
+          <i class="fa-solid fa-person-walking-arrow-right"></i> Class Teacher Student Withdrawal
+        </h3>
+        <button class="modal-close-x" onclick="teacherApp.closeModal('withdrawStudentModal')" title="Close" style="color:#fff; background:transparent; border:none; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 1.4rem;">
+        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 0.9rem; margin-bottom: 1.2rem; display: flex; gap: 10px;">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #dc2626; font-size: 1.25rem; margin-top: 2px;"></i>
+          <div style="font-size: 0.88rem; color: #991b1b; line-height: 1.45;">
+            <strong>Class Teacher Authority Notice:</strong> You are withdrawing this student from active class enrollment. Once withdrawn, this student will be removed from your class roster, daily attendance registers, and grade sheets. A formal departure notice will be sent to the <strong>Main Department (Principal &amp; Vice Principal)</strong> for permanent school record closure.
+          </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem; margin-bottom: 1.2rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.88rem;">
+            <div><span style="color:#64748b;">Student Name:</span> <strong id="withdrawStudentName" style="color:#0f172a; display:block; font-size:0.95rem;">-</strong></div>
+            <div><span style="color:#64748b;">Class &amp; Section:</span> <strong id="withdrawStudentClass" style="color:#0f172a; display:block;">-</strong></div>
+            <div><span style="color:#64748b;">Roll Number:</span> <strong id="withdrawStudentRoll" style="color:#0f172a; display:block;">-</strong></div>
+            <div><span style="color:#64748b;">Authorized Class Teacher:</span> <strong id="withdrawClassTeacherName" style="color:#0f172a; display:block;">Ms. Anjali</strong></div>
+          </div>
+        </div>
+
+        <form id="withdrawStudentForm" onsubmit="event.preventDefault(); teacherApp.confirmWithdrawStudent();">
+          <input type="hidden" id="withdrawStudentRollInput">
+          <input type="hidden" id="withdrawStudentClassInput">
+          
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:600; color:#334155; margin-bottom:4px;">
+              Reason for Student Departure / Quitting <span style="color:#dc2626;">*</span>
+            </label>
+            <select class="form-control" id="withdrawReasonSelect" required style="width:100%; padding:0.6rem; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem;">
+              <option value="Joined another school (Transfer)" selected>Joined another school (Mid-term School Transfer)</option>
+              <option value="Family Relocation / Moving to another city">Family Relocation / Moving to another city</option>
+              <option value="Financial / Domestic Circumstances">Financial / Domestic Circumstances</option>
+              <option value="Medical / Health reasons">Medical / Health reasons</option>
+              <option value="Discontinued studies">Discontinued studies</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:600; color:#334155; margin-bottom:4px;">
+              New School Name (if joining another school)
+            </label>
+            <input type="text" class="form-control" id="withdrawNewSchoolInput" placeholder="e.g. Kendriya Vidyalaya / Delhi Public School" style="width:100%; padding:0.6rem; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem;">
+          </div>
+
+          <div class="form-group mb-3">
+            <label style="display:block; font-size:0.85rem; font-weight:700; color:#334155; margin-bottom:4px;">
+              Class Teacher Deletion Remark &amp; Justification <span style="color:#dc2626;">* (Mandatory Remark)</span>
+            </label>
+            <textarea class="form-control" id="withdrawRemarksInput" rows="3" required placeholder="Mandatory: Write the official remark explaining why this student is being deleted / withdrawn from class roster (e.g. transferred to another school, family relocation, cleared all class materials)..." style="width:100%; padding:0.65rem; border:1.5px solid #cbd5e1; border-radius:6px; font-size:0.9rem;"></textarea>
+            <small style="display:block; margin-top:4px; font-size:0.75rem; color:#dc2626; font-weight:600;">
+              <i class="fa-solid fa-asterisk"></i> A descriptive remark is mandatory before deleting or withdrawing any student from school records.
+            </small>
+          </div>
+
+          <div class="modal-footer" style="padding-top:1rem; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="teacherApp.closeModal('withdrawStudentModal')">Cancel</button>
+            <button type="submit" class="btn btn-danger" style="background:#dc2626; border-color:#dc2626; color:#fff;">
+              <i class="fa-solid fa-user-xmark"></i> Confirm Student Withdrawal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Non-Class-Teacher Restriction Warning Modal -->
+  <div class="modal-backdrop" id="nonClassTeacherRestrictedModal" style="display:none;">
+    <div class="portal-modal" style="max-width: 480px; border-radius: 12px; overflow:hidden;">
+      <div class="modal-header" style="background:#fef3c7; border-bottom:1px solid #fde68a; color:#92400e; padding:1rem 1.3rem;">
+        <h3 style="margin:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-lock text-amber"></i> Action Restricted to Class Teacher
+        </h3>
+        <button class="modal-close-x" onclick="teacherApp.closeModal('nonClassTeacherRestrictedModal')" title="Close" style="color:#92400e; background:none; border:none; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1.4rem; text-align:center;">
+        <div style="width:56px; height:56px; border-radius:50%; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; font-size:1.7rem; margin:0 auto 1rem;">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h4 style="margin:0 0 0.5rem 0; font-size:1.1rem; color:#1e293b;">Designated Class Teacher Only</h4>
+        <p style="font-size:0.9rem; color:#64748b; line-height:1.5; margin-bottom:1.2rem;" id="nonClassTeacherMsg">
+          Only the designated Class Teacher of this class can withdraw or delete students. Subject faculty and remedial teachers do not have administrative authority to remove students.
+        </p>
+        <button type="button" class="btn btn-primary" onclick="teacherApp.closeModal('nonClassTeacherRestrictedModal')">Understood</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- Reusable API Client -->

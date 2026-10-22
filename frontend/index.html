@@ -95,12 +95,20 @@
               Admissions <i class="fa-solid fa-chevron-down dropdown-caret"></i>
             </a>
             <ul class="nav-dropdown">
+              <li><a href="#admissions-apply" class="dropdown-link" style="color:var(--color-primary); font-weight:700;"><i class="fa-solid fa-file-signature"></i> New Admission Form</a></li>
               <li><a href="#admissions-process" class="dropdown-link"><i class="fa-solid fa-diagram-project"></i> Admission Process</a></li>
               <li><a href="#admissions-eligibility" class="dropdown-link"><i class="fa-solid fa-clipboard-check"></i> Eligibility Criteria</a></li>
               <li><a href="#admissions-fees" class="dropdown-link"><i class="fa-solid fa-receipt"></i> Fee Structure</a></li>
               <li><a href="#admissions-apply" class="dropdown-link"><i class="fa-solid fa-file-pen"></i> Apply Online</a></li>
               <li><a href="#admissions-status" class="dropdown-link"><i class="fa-solid fa-magnifying-glass"></i> Admission Status</a></li>
             </ul>
+          </li>
+
+          <!-- Dedicated New Admission Option in Navigation Bar -->
+          <li class="nav-item">
+            <a href="#admissions-apply" class="nav-link nav-admission-badge-link" id="navNewAdmission" title="Apply Online for New Student Admission">
+              <i class="fa-solid fa-graduation-cap"></i> New Admission <span class="nav-pulse-badge">Open</span>
+            </a>
           </li>
 
           <!-- Student Life Dropdown -->
@@ -122,7 +130,7 @@
           <li class="nav-item"><a href="#contact" class="nav-link" id="navContact">Contact</a></li>
           <li class="nav-item mobile-only-apply" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-border);">
             <a href="#admissions-apply" class="btn btn-primary" style="width: 100%; justify-content: center;">
-              <i class="fa-solid fa-paper-plane"></i> Apply Online (2025-26)
+              <i class="fa-solid fa-graduation-cap"></i> New Admission (Apply Online)
             </a>
           </li>
         </ul>
@@ -1971,54 +1979,39 @@
   </footer>
 
   <!-- ==========================================================================
-       MODAL 1: ADMISSION APPLICATION RECEIPT SLIP
+       MODAL 1: ADMISSION APPLICATION RECEIPT SLIP (APPLICATION NUMBER ONLY)
        ========================================================================== -->
   <div class="modal-overlay" id="receiptModal">
-    <div class="modal-content-box">
+    <div class="modal-content-box" style="max-width: 520px;">
       <button class="modal-close-btn modal-close-trigger" aria-label="Close modal">&times;</button>
-      <div class="modal-body">
-        <div class="receipt-box">
-          <div class="receipt-header">
+      <div class="modal-body" style="padding: 1.5rem;">
+        <div class="receipt-box" id="receiptPrintArea">
+          <div class="receipt-header" style="text-align: center; border-bottom: 2px dashed var(--color-border); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
             <img src="assets/images/school-logo.jpg" alt="Logo" style="width: 55px; height: 55px; margin: 0 auto 0.5rem; object-fit: contain;">
-            <h3>SRI VIDYA E.M HIGH SCHOOL</h3>
+            <h3 style="margin-bottom: 0.25rem;">SRI VIDYA E.M HIGH SCHOOL</h3>
             <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-accent-blue);">Vidyathe Vijayam • Knowledge Brings Victory</div>
-            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem;">Official Online Admission Acknowledgement Slip (2025-26)</div>
+            <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem;">Official Online Admission Acknowledgement Slip</div>
           </div>
 
-          <div style="text-align: center; margin-bottom: 1.5rem;">
-            <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 700;">Application Reference Number</span>
-            <div style="margin-top: 0.25rem;"><span class="receipt-app-id" id="receiptAppId">SV-2025-0000</span></div>
-          </div>
-
-          <div class="receipt-grid">
-            <div class="receipt-field">
-              <label>Student Name</label>
-              <div id="receiptStudentName">-</div>
+          <!-- Application Reference Number ONLY -->
+          <div style="text-align: center; padding: 1.75rem 1rem; background: linear-gradient(180deg, #f0f7ff 0%, #e8f2fe 100%); border-radius: var(--radius-md); border: 2px dashed var(--color-primary); margin-bottom: 1.5rem;">
+            <span style="font-size: 0.82rem; text-transform: uppercase; color: var(--color-text-muted); font-weight: 700; letter-spacing: 0.75px; display: block; margin-bottom: 0.6rem;">
+              Application Reference Number
+            </span>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="receipt-app-id" id="receiptAppId" style="font-size: 1.9rem; font-weight: 800; font-family: monospace; letter-spacing: 1.5px; padding: 0.45rem 1.25rem; background: #ffffff; border: 2px solid var(--color-primary); box-shadow: 0 4px 12px rgba(26,75,140,0.12); color: var(--color-primary); border-radius: var(--radius-sm);">
+                SV202600001
+              </span>
             </div>
-            <div class="receipt-field">
-              <label>Class Applied For</label>
-              <div id="receiptGrade">-</div>
-            </div>
-            <div class="receipt-field">
-              <label>Parent / Guardian</label>
-              <div id="receiptParentName">-</div>
-            </div>
-            <div class="receipt-field">
-              <label>Contact Phone</label>
-              <div id="receiptPhone">-</div>
-            </div>
-            <div class="receipt-field">
-              <label>Submission Date</label>
-              <div id="receiptDate">-</div>
-            </div>
-            <div class="receipt-field">
-              <label>Current Status</label>
-              <div style="color: var(--color-accent-green);"><i class="fa-solid fa-circle-check"></i> Application Received</div>
+            <div style="margin-top: 1rem;">
+              <button type="button" class="btn btn-sm btn-outline" id="copyAppIdBtn" style="font-size: 0.82rem; padding: 0.35rem 0.85rem;">
+                <i class="fa-regular fa-copy"></i> <span id="copyAppIdText">Copy Application Number</span>
+              </button>
             </div>
           </div>
 
-          <div style="background-color: var(--color-bg-warm); padding: 1rem; border-radius: var(--radius-md); font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.5; border-left: 3px solid var(--color-primary);">
-            <strong>Next Steps:</strong> Please keep this reference slip saved. Our admissions coordinator will contact your mobile number for document verification and interview scheduling. You can also track your status anytime in the "Admission Status" tab using this ID.
+          <div style="background-color: var(--color-bg-warm); padding: 1.1rem 1.25rem; border-radius: var(--radius-md); font-size: 0.86rem; color: var(--color-text-dark); line-height: 1.55; border-left: 4px solid var(--color-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+            <strong>Next Steps:</strong> After filling this form, please go to school and contact the Principal or Vice Principal with your Application Reference Number for the confirmation of your admission. Once they approve your application, your admission will go forward in Sri Vidya E.M High School.
           </div>
         </div>
 

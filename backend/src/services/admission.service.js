@@ -15,18 +15,19 @@ const { Student } = require('../models/student.model');
 const ApiError = require('../utils/apiError');
 
 /**
- * Generate unique Application Reference Number (e.g. SV-2025-8412)
+ * Generate unique Application Reference Number (e.g. SV202600001, SV202700001)
  */
-const generateApplicationNumber = async (year = '2025') => {
-  let appNo;
-  let exists = true;
-  while (exists) {
-    const rand = Math.floor(1000 + Math.random() * 9000);
-    appNo = `SV-${year}-${rand}`;
-    const found = await Admission.findOne({ applicationNumber: appNo });
-    if (!found) exists = false;
+const generateApplicationNumber = async (year = new Date().getFullYear().toString()) => {
+  const prefix = `SV${year}`;
+  const regex = new RegExp(`^${prefix}\\d{5}$`);
+  const last = await Admission.findOne({ applicationNumber: regex }).sort({ applicationNumber: -1 });
+  let nextSeq = (year === '2026') ? 7 : 1;
+  if (last && last.applicationNumber) {
+    const numPart = parseInt(last.applicationNumber.slice(prefix.length), 10);
+    if (!isNaN(numPart) && numPart >= nextSeq) nextSeq = numPart + 1;
   }
-  return appNo;
+  const padded = String(nextSeq).padStart(5, '0');
+  return `${prefix}${padded}`;
 };
 
 /**
@@ -65,6 +66,7 @@ const submitApplication = async (applicationData) => {
     address: address || '',
     bloodGroup: bloodGroup || '',
     status: 'SUBMITTED',
+    reviewerRemarks: 'After filling this form, please visit the school and contact the Principal or Vice Principal for the confirmation of your admission.',
     documents: documents || [],
   });
 
@@ -228,7 +230,11 @@ const updateApplicationStatus = async (applicationId, updateData, user) => {
   const { status, reviewerRemarks, rejectionReason, requestedDocuments } = updateData;
 
   application.status = status;
-  if (reviewerRemarks !== undefined) application.reviewerRemarks = reviewerRemarks;
+  if (reviewerRemarks !== undefined) {
+    application.reviewerRemarks = reviewerRemarks;
+  } else if (status === 'APPROVED') {
+    application.reviewerRemarks = 'Congratulations! Your application has been approved by the Principal / Vice Principal. Your admission is officially confirmed to go forward in Sri Vidya E.M High School.';
+  }
   if (rejectionReason !== undefined) application.rejectionReason = rejectionReason;
   if (requestedDocuments && Array.isArray(requestedDocuments)) {
     application.requestedDocuments = requestedDocuments;

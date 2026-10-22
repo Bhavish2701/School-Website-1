@@ -152,7 +152,7 @@ function initHashRouter() {
       if (sectionEl) {
         sectionEl.scrollIntoView({ behavior: 'smooth' });
 
-        const targetBtn = sectionEl.querySelector(`.tab-btn[data-tab="tab-${subTabId}"]`);
+        const targetBtn = sectionEl.querySelector(`.tab-btn[data-tab="tab-${subTabId}"], .tab-btn[data-tab="tab-adm-${subTabId}"], .tab-btn[data-tab="${subTabId}"]`);
         if (targetBtn) {
           targetBtn.click();
         }
@@ -170,6 +170,15 @@ function initHashRouter() {
 /* ==========================================================================
    4. Online Admission Application Form
    ========================================================================== */
+const INITIAL_ADMISSIONS_REGISTER = [
+  { appId: 'SV202600001', name: 'K. Sai Tharun', studentName: 'K. Sai Tharun', dob: '2012-04-18', gender: 'Male', class: 'VIII', grade: 'Class VIII', prevSchool: "St. Ann's High School", parent: 'K. Narayana', parentName: 'K. Narayana', phone: '9848011223', email: 'narayana.k@gmail.com', address: 'D.No 4-12, Main Road, Srikakulam', score: '88% (Distinction)', docStatus: 'Verified', status: 'Pending Principal Review', submissionDate: '12 Oct 2026', submissionTime: '10:30 AM' },
+  { appId: 'SV202600002', name: 'B. Vennela', studentName: 'B. Vennela', dob: '2014-07-22', gender: 'Female', class: 'VI', grade: 'Class VI', prevSchool: 'Kendriya Vidyalaya', parent: 'B. Srinivas', parentName: 'B. Srinivas', phone: '9848022334', email: 'srinivas.b@gmail.com', address: 'Plot 45, Vidya Nagar, Rajam', score: '92% (Top Tier)', docStatus: 'Verified', status: 'Approved - Fee Due', submissionDate: '14 Oct 2026', submissionTime: '11:15 AM' },
+  { appId: 'SV202600003', name: 'M. Dinesh Kumar', studentName: 'M. Dinesh Kumar', dob: '2016-11-05', gender: 'Male', class: 'IV', grade: 'Class IV', prevSchool: 'Ravindra Bharathi', parent: 'M. Jagannath', parentName: 'M. Jagannath', phone: '9848033445', email: 'jagannath.m@gmail.com', address: 'H.No 12-88, NGO Colony, Srikakulam', score: '78% (Pass)', docStatus: 'Pending TC Transfer', status: 'Document Review', submissionDate: '15 Oct 2026', submissionTime: '02:40 PM' },
+  { appId: 'SV202600004', name: 'CH. Charitha', studentName: 'CH. Charitha', dob: '2019-09-14', gender: 'Female', class: '1', grade: '1 class', prevSchool: 'Bright Stars Play School', parent: 'CH. Mohan', parentName: 'CH. Mohan', phone: '9848044556', email: 'mohan.ch@gmail.com', address: 'Flat 202, Sri Sai Nilayam, Rajam', score: 'Interview Cleared', docStatus: 'Verified', status: 'Ready for Enrolment', submissionDate: '16 Oct 2026', submissionTime: '09:20 AM' },
+  { appId: 'SV202600005', name: 'V. Aditya', studentName: 'V. Aditya', dob: '2011-03-30', gender: 'Male', class: 'IX', grade: 'Class IX', prevSchool: 'Bhashyam Public School', parent: 'V. Suresh Babu', parentName: 'V. Suresh Babu', phone: '9848055667', email: 'sureshbabu.v@gmail.com', address: 'Door 8-19, RTC Complex Road, Srikakulam', score: '84% (Distinction)', docStatus: 'Verified', status: 'Pending Interview', submissionDate: '18 Oct 2026', submissionTime: '04:10 PM' },
+  { appId: 'SV202600006', name: 'S. Harini', studentName: 'S. Harini', dob: '2021-06-12', gender: 'Female', class: 'LKG', grade: 'LKG', prevSchool: 'Little Angels Play School', parent: 'S. Venkatesh', parentName: 'S. Venkatesh', phone: '9848066778', email: 'venkatesh.s@gmail.com', address: 'Beside Post Office, Main Road, Ponduru', score: 'Direct Admission', docStatus: 'Verified', status: 'Ready for Enrolment', submissionDate: '19 Oct 2026', submissionTime: '11:00 AM' }
+];
+
 const sampleApplications = [
   {
     appId: 'SV-2025-1082',
@@ -218,66 +227,147 @@ function initAdmissionForm() {
         return;
       }
 
-      // Generate App ID
-      const randomNum = Math.floor(1000 + Math.random() * 9000);
-      const generatedAppId = `SV-2025-${randomNum}`;
+      // Extract Previous School
+      const prevSchoolEl = document.getElementById('admPrevSchool');
+      const prevSchool = prevSchoolEl ? prevSchoolEl.value.trim() : '';
+
+      // Generate Dynamic Year-Based Unique Application ID (e.g. SV202600007, SV202700001)
+      const currentYear = new Date().getFullYear();
+      const yearPrefix = `SV${currentYear}`;
+      const yearSeqKey = `sv_admission_seq_${currentYear}`;
+      
+      // Calculate current maximum sequence for this calendar year across base roster + localStorage
+      let maxYearSeq = 0;
+
+      // 1. Check initial base roster
+      INITIAL_ADMISSIONS_REGISTER.forEach(item => {
+        const id = item.appId || item.applicationNumber || '';
+        if (typeof id === 'string' && id.startsWith(yearPrefix)) {
+          const numPart = parseInt(id.slice(yearPrefix.length), 10);
+          if (!isNaN(numPart) && numPart > maxYearSeq) {
+            maxYearSeq = numPart;
+          }
+        }
+      });
+
+      // 2. Check stored applications
+      try {
+        const storedApps = JSON.parse(localStorage.getItem('sv_applications') || '[]');
+        if (Array.isArray(storedApps)) {
+          storedApps.forEach(item => {
+            const id = item.appId || item.applicationNumber || '';
+            if (typeof id === 'string' && id.startsWith(yearPrefix)) {
+              const numPart = parseInt(id.slice(yearPrefix.length), 10);
+              if (!isNaN(numPart) && numPart > maxYearSeq) {
+                maxYearSeq = numPart;
+              }
+            }
+          });
+        }
+      } catch (err) {}
+
+      // 3. Increment sequence
+      const storedSeq = parseInt(localStorage.getItem(yearSeqKey) || '0', 10);
+      const nextSeq = Math.max(maxYearSeq, storedSeq) + 1;
+      localStorage.setItem(yearSeqKey, nextSeq.toString());
+
+      const paddedSeq = String(nextSeq).padStart(5, '0');
+      const generatedAppId = `SV${currentYear}${paddedSeq}`;
 
       const newRecord = {
         appId: generatedAppId,
         studentName,
+        name: studentName,
+        dob: dob || '2015-05-15',
+        gender: gender || 'Male',
         grade,
+        class: grade.replace(/class/i, '').trim(),
         parentName,
+        parent: parentName,
         phone,
-        email,
-        address,
-        status: 'Application Submitted - Under Initial Review',
+        email: email || '—',
+        prevSchool: prevSchool || 'Fresh Admission',
+        address: address || '—',
+        score: 'Awaiting Entrance / Direct Admission',
+        docStatus: 'Documents Submitted Online',
+        status: 'Pending Principal / VP Verification',
         statusStep: 2,
-        interviewDate: 'To be announced within 3 working days',
-        submissionDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        interviewDate: 'To be scheduled within 3 working days',
+        submissionDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        submissionTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        submittedAt: new Date().toISOString()
       };
 
-      // Store in memory & localStorage
+      // Store in memory & localStorage for shared access with Management Portal
       sampleApplications.unshift(newRecord);
       try {
-        localStorage.setItem('sv_applications', JSON.stringify(sampleApplications));
-      } catch (err) {}
+        let allApps = [];
+        const existingStored = localStorage.getItem('sv_applications');
+        if (existingStored) {
+          allApps = JSON.parse(existingStored);
+          if (!Array.isArray(allApps)) allApps = [];
+        }
+        allApps.unshift(newRecord);
+        localStorage.setItem('sv_applications', JSON.stringify(allApps));
+        localStorage.setItem('sv_new_admission_alert', JSON.stringify({
+          appId: generatedAppId,
+          studentName,
+          grade,
+          timestamp: Date.now()
+        }));
+        
+        // Trigger live storage event for active tabs (Principal & VP Management Portal)
+        window.dispatchEvent(new Event('storage'));
+      } catch (err) {
+        console.warn('LocalStorage save error:', err);
+      }
 
-      // Fill Receipt Modal
-      document.getElementById('receiptAppId').textContent = generatedAppId;
-      document.getElementById('receiptStudentName').textContent = studentName;
-      document.getElementById('receiptGrade').textContent = grade;
-      document.getElementById('receiptParentName').textContent = parentName;
-      document.getElementById('receiptPhone').textContent = phone;
-      document.getElementById('receiptDate').textContent = newRecord.submissionDate;
+      // Fill Receipt Modal (shows Application Number ONLY)
+      const rcAppId = document.getElementById('receiptAppId');
+      if (rcAppId) rcAppId.textContent = generatedAppId;
 
-      // Submit to Express REST backend
-      if (window.ApiClient) {
+      // Copy Application Number functionality
+      const copyBtn = document.getElementById('copyAppIdBtn');
+      const copyText = document.getElementById('copyAppIdText');
+      if (copyBtn) {
+        copyBtn.onclick = () => {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(generatedAppId).then(() => {
+              if (copyText) copyText.textContent = 'Copied!';
+              showToast(`Copied Application Number: ${generatedAppId}`, 'info');
+              setTimeout(() => {
+                if (copyText) copyText.textContent = 'Copy Application Number';
+              }, 2500);
+            }).catch(() => {
+              showToast(`Application Number: ${generatedAppId}`, 'info');
+            });
+          } else {
+            showToast(`Application Number: ${generatedAppId}`, 'info');
+          }
+        };
+      }
+
+      // Submit to Express REST backend if active
+      if (window.ApiClient && window.ApiClient.admissions && typeof window.ApiClient.admissions.submitApplication === 'function') {
         window.ApiClient.admissions.submitApplication({
           studentName,
           dob: dob || '2015-05-15',
           gender: gender || 'Male',
           applyingClass: grade.replace(/\D/g, '') || '1',
-          academicYear: '2025-2026',
+          academicYear: `${currentYear}-${currentYear + 1}`,
           parentName,
           phone,
           email,
+          prevSchool,
           address
-        }).then(res => {
-          if (res && res.data) {
-            const realAppNo = res.data.applicationNumber || generatedAppId;
-            document.getElementById('receiptAppId').textContent = realAppNo;
-            newRecord.appId = realAppNo;
-            localStorage.setItem('sv_applications', JSON.stringify(sampleApplications));
-            showToast(`Application successfully registered on server! Ref: ${realAppNo}`, 'success');
-          }
         }).catch(err => {
-          console.warn('[submitApplication API error]:', err.message);
+          console.warn('[submitApplication API note]:', err.message);
         });
       }
 
       // Show Receipt Modal
-      receiptModal.classList.add('active');
-      showToast(`Application successfully generated! Reference: ${generatedAppId}`);
+      if (receiptModal) receiptModal.classList.add('active');
+      showToast(`Application successfully registered! Reference Number: ${generatedAppId}`, 'success');
 
       form.reset();
     });
@@ -321,13 +411,38 @@ function initStatusChecker() {
   async function performSearch() {
     const query = searchInput.value.trim().toUpperCase();
     if (!query) {
-      showToast('Please enter an Application ID (e.g. SV-2025-1082) or Phone Number.', 'error');
+      showToast('Please enter an Application ID (e.g. SV202600007) or Phone Number.', 'error');
       return;
     }
 
-    const match = sampleApplications.find(app => 
-      app.appId.toUpperCase() === query || app.phone === query
-    );
+    // Refresh application state dynamically from storage & base registers in real time
+    let currentApplications = [...INITIAL_ADMISSIONS_REGISTER, ...sampleApplications];
+    try {
+      const saved = localStorage.getItem('sv_applications');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(storedItem => {
+            const sid = (storedItem.appId || storedItem.applicationNumber || '').toUpperCase();
+            const existingIdx = currentApplications.findIndex(a => {
+              const aid = (a.appId || a.applicationNumber || '').toUpperCase();
+              return aid === sid;
+            });
+            if (existingIdx !== -1) {
+              currentApplications[existingIdx] = { ...currentApplications[existingIdx], ...storedItem };
+            } else {
+              currentApplications.unshift(storedItem);
+            }
+          });
+        }
+      }
+    } catch (e) {}
+
+    const match = currentApplications.find(app => {
+      const aid = (app.appId || app.applicationNumber || '').toUpperCase();
+      const phone = (app.phone || '').trim();
+      return aid === query || phone === query;
+    });
 
     // If ApiClient is available and we have an application id and phone from match or query
     if (window.ApiClient && match && match.appId && match.phone) {
@@ -349,44 +464,70 @@ function initStatusChecker() {
     }
 
     if (match) {
+      const isApproved = (match.status || '').toLowerCase().includes('approved') || match.statusStep >= 4;
+      const statusStep = isApproved ? 4 : (match.statusStep || 2);
+      const approverText = match.approvedBy || 'Principal / Vice Principal';
+
       resultCard.style.display = 'block';
       resultCard.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
           <div>
-            <span class="receipt-app-id">${match.appId}</span>
-            <h4 style="font-family: var(--font-heading); font-size: 1.3rem; margin-top: 0.35rem; color: var(--color-text-dark);">${match.studentName}</h4>
-            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Grade: <strong>${match.grade}</strong> | Parent: ${match.parentName}</div>
+            <span class="receipt-app-id" style="font-size: 1.15rem; font-weight: 800;">${match.appId || match.applicationNumber}</span>
+            <h4 style="font-family: var(--font-heading); font-size: 1.35rem; margin-top: 0.35rem; color: var(--color-text-dark);">${match.studentName || match.name}</h4>
+            <div style="font-size: 0.9rem; color: var(--color-text-muted);">Class: <strong>${match.grade || match.class}</strong> | Parent: ${match.parentName || match.parent}</div>
           </div>
           <span style="background-color: var(--color-primary-tint); color: var(--color-primary-dark); font-weight: 700; padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.82rem;">
-            Submitted: ${match.submissionDate}
+            Submitted: ${match.submissionDate || 'Recently'}
           </span>
         </div>
 
-        <div style="background: #FFFFFF; border-radius: 12px; padding: 1.25rem; border: 1px solid var(--color-border); margin-bottom: 1rem;">
-          <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary-dark); text-transform: uppercase; margin-bottom: 0.25rem;">Current Status</div>
-          <div style="font-size: 1.1rem; font-weight: 700; color: var(--color-accent-red); margin-bottom: 0.5rem;">
-            <i class="fa-solid fa-circle-check" style="color: var(--color-accent-green); margin-right: 0.4rem;"></i> ${match.status}
+        ${isApproved ? `
+          <div style="background: #FFFFFF; border-radius: 12px; padding: 1.35rem; border: 2px solid #10b981; margin-bottom: 1.25rem; box-shadow: 0 4px 14px rgba(16,185,129,0.12);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 0.5px;">Official Admission Decision</span>
+              <span style="background: #ecfdf5; color: #059669; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.85rem; border: 1px solid rgba(16,185,129,0.3);">
+                <i class="fa-solid fa-circle-check"></i> Approved & Confirmed
+              </span>
+            </div>
+            <div style="font-size: 1.2rem; font-weight: 800; color: #059669; margin-bottom: 0.75rem;">
+              <i class="fa-solid fa-award" style="margin-right: 0.4rem;"></i> ${match.status || 'Approved by Principal / Vice Principal - Admission Confirmed'}
+            </div>
+            <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 0.9rem 1.1rem; border-radius: 6px; font-size: 0.92rem; color: #065f46; line-height: 1.6;">
+              <strong>Confirmation Notice:</strong> Congratulations! Your application has been approved by the <strong>${approverText}</strong>. Your admission is officially confirmed to go forward in Sri Vidya E.M High School! Please visit the administrative office to complete enrollment formalities, fee payment, and collect your uniform & textbook kit.
+            </div>
           </div>
-          <div style="font-size: 0.88rem; color: var(--color-text-muted);">
-            Next Stage / Note: <strong>${match.interviewDate}</strong>
+        ` : `
+          <div style="background: #FFFFFF; border-radius: 12px; padding: 1.35rem; border: 2px solid #f59e0b; margin-bottom: 1.25rem; box-shadow: 0 4px 14px rgba(245,158,11,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: #b45309; text-transform: uppercase; letter-spacing: 0.5px;">Current Admission Status</span>
+              <span style="background: #fffbeb; color: #d97706; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.85rem; border: 1px solid rgba(245,158,11,0.3);">
+                <i class="fa-solid fa-clock"></i> Verification In Progress
+              </span>
+            </div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--color-text-dark); margin-bottom: 0.75rem;">
+              <i class="fa-solid fa-file-circle-check" style="color: #f59e0b; margin-right: 0.4rem;"></i> ${match.status || 'Pending Principal / VP Verification'}
+            </div>
+            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 0.9rem 1.1rem; border-radius: 6px; font-size: 0.92rem; color: #92400e; line-height: 1.6;">
+              <strong>Next Action Required:</strong> After filling this form, please go to school and contact the Principal (Smt. Gorle Varalakshmi) or Vice Principal (Sri Navva Anand) with your Application Reference Number (<strong>${match.appId || match.applicationNumber}</strong>) for the confirmation of your admission. Once they approve your application, your admission will go forward in Sri Vidya E.M High School.
+            </div>
           </div>
-        </div>
+        `}
 
         <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 700; color: var(--color-text-muted); text-align: center; gap: 0.5rem;">
-          <div style="flex: 1; padding: 0.5rem; border-radius: 6px; background: ${match.statusStep >= 1 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">1. Submitted</div>
-          <div style="flex: 1; padding: 0.5rem; border-radius: 6px; background: ${match.statusStep >= 2 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">2. Verification</div>
-          <div style="flex: 1; padding: 0.5rem; border-radius: 6px; background: ${match.statusStep >= 3 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">3. Interaction</div>
-          <div style="flex: 1; padding: 0.5rem; border-radius: 6px; background: ${match.statusStep >= 4 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">4. Enrolled</div>
+          <div style="flex: 1; padding: 0.55rem; border-radius: 6px; background: ${statusStep >= 1 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">1. Submitted</div>
+          <div style="flex: 1; padding: 0.55rem; border-radius: 6px; background: ${statusStep >= 2 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">2. Verification</div>
+          <div style="flex: 1; padding: 0.55rem; border-radius: 6px; background: ${statusStep >= 3 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">3. Interaction</div>
+          <div style="flex: 1; padding: 0.55rem; border-radius: 6px; background: ${statusStep >= 4 ? '#ECFDF5; color: #047857;' : '#F3F4F6;'}">4. Enrolled</div>
         </div>
       `;
-      showToast(`Record found for ${match.studentName}`);
+      showToast(`Record found for ${match.studentName || match.name}`);
     } else {
       resultCard.style.display = 'block';
       resultCard.innerHTML = `
         <div style="text-align: center; padding: 1.5rem; color: var(--color-accent-red);">
           <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
           <p style="font-weight: 700;">No record found for "${query}"</p>
-          <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.25rem;">Please double check your Application Reference Number or try typing <strong>SV-2025-1082</strong> to test.</p>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.25rem;">Please check your Application Reference Number (e.g. <strong>SV202600007</strong>) or contact the school office.</p>
         </div>
       `;
       showToast('No matching application found.', 'error');
@@ -403,12 +544,11 @@ function initStatusChecker() {
     });
   }
 
-  // Quick chips click
-  document.querySelectorAll('.sample-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      searchInput.value = chip.getAttribute('data-id');
+  // Auto-refresh displayed status card on live storage event (when Principal or VP approves)
+  window.addEventListener('storage', (e) => {
+    if (resultCard && resultCard.style.display !== 'none' && searchInput && searchInput.value.trim()) {
       performSearch();
-    });
+    }
   });
 }
 

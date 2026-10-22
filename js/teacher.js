@@ -224,12 +224,32 @@ var teacherApp = (function () {
   let activeDossierRoll = null;
 
   function init() {
+    // Filter out students withdrawn by Class Teacher
+    const withdrawnRolls = JSON.parse(localStorage.getItem('sv_teacher_withdrawn_rolls') || '[]');
+    const withdrawnAdms = JSON.parse(localStorage.getItem('sv_teacher_withdrawn_adms') || '[]');
+    if (withdrawnRolls.length > 0 || withdrawnAdms.length > 0) {
+      state.students = state.students.filter(s => !withdrawnRolls.includes(s.roll) && !withdrawnAdms.includes(s.admNo));
+      state.classes.forEach(cls => {
+        const activeCount = state.students.filter(s => s.class === cls.code || s.class === cls.id.toUpperCase()).length;
+        if (activeCount > 0) {
+          cls.strength = activeCount;
+        }
+      });
+      state.teacher.totalStudents = state.students.length;
+    }
     setupTheme();
     loadSavedProfile();
     bindEvents();
     renderAll();
     setupHashRouting();
     applyTeacherDynamicPermissions();
+    syncAdmittedStudentsFromStorage();
+
+    window.addEventListener('storage', function(e) {
+      if (!e.key || e.key === 'sv_teacher_new_admissions' || e.key === 'sv_enrolled_students' || e.key === 'sv_applications') {
+        syncAdmittedStudentsFromStorage(true);
+      }
+    });
 
     // Listen for real-time permission modifications made by Principal, Vice Principal, or HOD
     window.addEventListener('storage', function(e) {
@@ -563,7 +583,174 @@ var teacherApp = (function () {
       if (stored) {
         const parsed = JSON.parse(stored);
         // Map granular keys to module keys
-        return {
+        
+  function promptWithdrawStudent(roll, name, className) {
+    const cls = state.classes.find(c => c.code === className || c.id === className.toLowerCase());
+    if (!cls || !cls.isClassTeacher) {
+      notifyNonClassTeacherAttempt(name, className);
+      return;
+    }
+
+    const nameEl = document.getElementById('withdrawStudentName');
+    const classEl = document.getElementById('withdrawStudentClass');
+    const rollEl = document.getElementById('withdrawStudentRoll');
+    const teacherEl = document.getElementById('withdrawClassTeacherName');
+    const rollInput = document.getElementById('withdrawStudentRollInput');
+    const classInput = document.getElementById('withdrawStudentClassInput');
+    const remarksInput = document.getElementById('withdrawRemarksInput');
+
+    if (nameEl) nameEl.textContent = name;
+    if (classEl) classEl.textContent = `Class ${className}`;
+    if (rollEl) rollEl.textContent = `#${roll}`;
+    if (teacherEl) teacherEl.textContent = state.teacher.name || 'Ms. Anjali';
+    if (rollInput) rollInput.value = roll;
+    if (classInput) classInput.value = className;
+    if (remarksInput) {
+      remarksInput.value = '';
+      remarksInput.style.borderColor = '#cbd5e1';
+      remarksInput.style.boxShadow = 'none';
+    }
+
+    openModal('withdrawStudentModal');
+  }
+
+  function notifyNonClassTeacherAttempt(name, className) {
+    const msgEl = document.getElementById('nonClassTeacherMsg');
+    if (msgEl) {
+      msgEl.innerHTML = `Student <strong>${name}</strong> is enrolled in <strong>Class ${className}</strong>.<br><br>Under Sri Vidya statutory policy, only the officially designated <strong>Class Teacher of Class ${className}</strong> possesses authority to withdraw or delete a student from school records. As subject/remedial faculty, you cannot delete this student.`;
+    }
+    openModal('nonClassTeacherRestrictedModal');
+  }
+
+  function confirmWithdrawStudent() {
+    const roll = parseInt(document.getElementById('withdrawStudentRollInput')?.value, 10);
+    const className = document.getElementById('withdrawStudentClassInput')?.value;
+    if (isNaN(roll)) return;
+
+    const cls = state.classes.find(c => c.code === className || c.id === className.toLowerCase());
+    if (!cls || !cls.isClassTeacher) {
+      showToast(`Action Restricted: Only Class Teacher of Class ${className} can withdraw student.`, 'danger');
+      return;
+    }
+
+    const remarksInput = document.getElementById('withdrawRemarksInput');
+    const remarks = (remarksInput?.value || '').trim();
+    if (!remarks || remarks.length < 5) {
+      showToast('Mandatory Remark Required: Please write a remark explaining why you are withdrawing/deleting this student before proceeding.', 'danger');
+      if (remarksInput) {
+        remarksInput.focus();
+        remarksInput.style.borderColor = '#dc2626';
+        remarksInput.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.2)';
+      }
+      return;
+    }
+
+    const reason = document.getElementById('withdrawReasonSelect')?.value || 'Joined another school (Transfer)';
+    const newSchool = (document.getElementById('withdrawNewSchoolInput')?.value || '').trim();
+
+    const sIdx = state.students.findIndex(s => s.roll === roll && (s.class === className || s.class === cls.code));
+    if (sIdx === -1) {
+      closeModal('withdrawStudentModal');
+      return;
+    }
+
+    const student = state.students[sIdx];
+    const studentName = student.name;
+    const studentAdmNo = student.admNo || ('SV-0' + roll);
+
+    // 1. Remove from active state.students
+    state.students.splice(sIdx, 1);
+
+    // 2. Persist withdrawn rolls and adms in localStorage
+    const withdrawnRolls = JSON.parse(localStorage.getItem('sv_teacher_withdrawn_rolls') || '[]');
+    if (!withdrawnRolls.includes(roll)) {
+      withdrawnRolls.push(roll);
+      localStorage.setItem('sv_teacher_withdrawn_rolls', JSON.stringify(withdrawnRolls));
+    }
+
+    const withdrawnAdms = JSON.parse(localStorage.getItem('sv_teacher_withdrawn_adms') || '[]');
+    if (student.admNo && !withdrawnAdms.includes(student.admNo)) {
+      withdrawnAdms.push(student.admNo);
+      localStorage.setItem('sv_teacher_withdrawn_adms', JSON.stringify(withdrawnAdms));
+    }
+
+    // 3. Save to formal withdrawn records for Main Department (Principal / VP)
+    const departureNotice = {
+      id: 'notif-dep-' + Date.now(),
+      roll: roll,
+      admNo: studentAdmNo,
+      name: studentName,
+      class: className,
+      phone: student.phone || '—',
+      reason: reason,
+      newSchool: newSchool || 'Another School',
+      remarks: remarks,
+      reportedBy: `${state.teacher.name} (Class Teacher - ${className})`,
+      reportedAt: new Date().toISOString(),
+      dateFormatted: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    };
+
+    const allWithdrawn = JSON.parse(localStorage.getItem('sv_withdrawn_students') || '[]');
+    allWithdrawn.unshift(departureNotice);
+    localStorage.setItem('sv_withdrawn_students', JSON.stringify(allWithdrawn));
+
+    // Also persist into dedicated deletion remarks log
+    try {
+      const remarksLog = JSON.parse(localStorage.getItem('sv_deletion_remarks_log') || '[]');
+      remarksLog.unshift({
+        id: 'WD-' + Date.now(),
+        type: 'Class Teacher Withdrawal',
+        admNo: studentAdmNo,
+        name: studentName,
+        class: className,
+        rollNo: roll,
+        reason,
+        newSchool,
+        remarks,
+        deletedBy: `${state.teacher.name} (Class Teacher - ${className})`,
+        timestamp: new Date().toISOString(),
+        formattedDate: new Date().toLocaleString('en-IN')
+      });
+      localStorage.setItem('sv_deletion_remarks_log', JSON.stringify(remarksLog));
+    } catch (e) {}
+
+    // 4. Send official notification to Main Department (Principal & VP)
+    const mainDeptNotice = {
+      id: 'notif-wd-' + Date.now(),
+      title: `Student Departure: ${studentName} (Class ${className})`,
+      text: `Class Teacher ${state.teacher.name} has withdrawn student ${studentName} (Roll #${roll}, Class ${className}) from class roster. Reason: ${reason}${newSchool ? ' (Joining ' + newSchool + ')' : ''}. Awaiting Principal / Vice Principal permanent record deletion & TC clearance.`,
+      type: 'warning',
+      unread: true,
+      time: 'Just now',
+      timestamp: Date.now()
+    };
+
+    try {
+      const existingNotifs = JSON.parse(localStorage.getItem('sv_notifications') || '[]');
+      existingNotifs.unshift(mainDeptNotice);
+      localStorage.setItem('sv_notifications', JSON.stringify(existingNotifs));
+      localStorage.setItem('sv_notifications_all_read', 'false');
+      localStorage.setItem('sv_departure_notice_alert', JSON.stringify(mainDeptNotice));
+    } catch (e) {}
+
+    // 5. Update class strength and badges
+    if (cls) {
+      cls.strength = Math.max(0, cls.strength - 1);
+    }
+    state.teacher.totalStudents = state.students.length;
+
+    // 6. Close modal and re-render
+    closeModal('withdrawStudentModal');
+    filterStudentList();
+    renderClassInfoBanner(className);
+    if (typeof renderAttendanceMarkingTable === 'function') {
+      renderAttendanceMarkingTable();
+    }
+
+    showToast(`Student ${studentName} removed from Class ${className} roster. Main Department (Principal & VP) notified.`, 'success');
+  }
+
+  return {
           'dashboard': true,
           'my-classes': parsed.class_sections !== false,
           'students': parsed.view_students !== false || parsed.student_profiles !== false,
@@ -603,12 +790,70 @@ var teacherApp = (function () {
     };
   }
 
+  const DEFAULT_TEACHER_SUBMENU_PERMISSIONS = {
+    'my-classes.8a': true,
+    'my-classes.9b': true,
+    'my-classes.7c': true,
+    'my-classes.10a': true,
+    'students.list': true,
+    'students.profile': true,
+    'students.att-history': true,
+    'students.perf': true,
+    'attendance.mark': true,
+    'attendance.history': true,
+    'attendance.report': true,
+    'academics.assignments': true,
+    'academics.homework': true,
+    'academics.materials': true,
+    'academics.plans': false,
+    'academics.syllabus': true,
+    'examinations.create': false,
+    'examinations.enter-marks': true,
+    'examinations.grade': true,
+    'examinations.results': false,
+    'timetable.my': true,
+    'timetable.class': true,
+    'communication.class-announcements': true,
+    'communication.parent-messages': true,
+    'communication.notifications': true,
+    'leave.apply': true,
+    'leave.status': true,
+    'reports.student-perf': true
+  };
+
+  function getTeacherSubmenuPermissions(teacherId) {
+    const activeId = teacherId || sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
+    try {
+      const stored = localStorage.getItem('sv_teacher_submenu_permissions_' + activeId);
+      if (stored) return Object.assign({}, DEFAULT_TEACHER_SUBMENU_PERMISSIONS, JSON.parse(stored));
+    } catch (e) {}
+    return Object.assign({}, DEFAULT_TEACHER_SUBMENU_PERMISSIONS);
+  }
+
+  function syncTeacherTabStripPermissions(subPerms) {
+    const tabs = document.querySelectorAll('.tab-btn[data-tab], .tab-btn[data-sub]');
+    tabs.forEach(tab => {
+      const sub = tab.getAttribute('data-tab') || tab.getAttribute('data-sub');
+      const parentView = tab.closest('.portal-view');
+      const modId = parentView ? parentView.id.replace('view-', '') : '';
+      if (modId && sub) {
+        const permKey = `${modId}.${sub}`;
+        if (subPerms[permKey] === false) {
+          tab.style.display = 'none';
+        } else {
+          tab.style.display = '';
+        }
+      }
+    });
+  }
+
   function applyTeacherDynamicPermissions() {
     const activeTeacherId = sessionStorage.getItem('sv_active_teacher_id') || 'SV200005';
     const modAccess = getFacultyPermissions(activeTeacherId);
+    const subPerms = getTeacherSubmenuPermissions(activeTeacherId);
     const granular = getRawTeacherPermissions(activeTeacherId);
 
-    // 1. Sidebar Modules: When turned off, completely hide option; when turned on, show option!
+    // 1. Sidebar Modules & Granular Submenus
     const navItems = document.querySelectorAll('#teacherSidebarMenu .nav-item[data-module]');
     navItems.forEach(item => {
       const mod = item.getAttribute('data-module');
@@ -616,8 +861,31 @@ var teacherApp = (function () {
         item.style.display = '';
         return;
       }
-      const isAllowed = modAccess[mod] !== false;
-      item.style.display = isAllowed ? '' : 'none';
+
+      if (modAccess[mod] === false) {
+        item.style.display = 'none';
+        return;
+      }
+
+      const subLinks = item.querySelectorAll('.nav-sub-link');
+      let visibleSubCount = 0;
+
+      if (subLinks.length > 0) {
+        subLinks.forEach(sub => {
+          const subKey = sub.getAttribute('data-sub');
+          const permKey = `${mod}.${subKey}`;
+          const isAllowed = subPerms[permKey] !== false;
+          // STRICTLY HIDDEN UP TO ALLOWING PERMISSION BY PRINCIPAL OR VP!
+          sub.style.display = isAllowed ? '' : 'none';
+          if (isAllowed) visibleSubCount++;
+        });
+
+        // If all submenus in this module are hidden, hide parent module
+        item.style.display = (visibleSubCount > 0) ? '' : 'none';
+      } else {
+        const isAllowed = subPerms[mod] !== false;
+        item.style.display = isAllowed ? '' : 'none';
+      }
     });
 
     // Cleanly toggle sidebar section titles if all child modules in section are hidden
@@ -625,57 +893,39 @@ var teacherApp = (function () {
     if (sectionTitles && sectionTitles.length >= 3) {
       // Section 1: TEACHER WORKSPACE
       const s1Mods = ['dashboard', 'my-classes', 'students', 'attendance', 'academics', 'examinations', 'timetable'];
-      const s1Visible = s1Mods.some(m => m === 'dashboard' || modAccess[m] !== false);
+      const s1Visible = s1Mods.some(m => {
+        if (m === 'dashboard') return true;
+        const el = document.querySelector(`#teacherSidebarMenu .nav-item[data-module="${m}"]`);
+        return el && el.style.display !== 'none';
+      });
       sectionTitles[0].style.display = s1Visible ? '' : 'none';
 
       // Section 2: CONNECT & LEAVE
       const s2Mods = ['communication', 'leave', 'reports'];
-      const s2Visible = s2Mods.some(m => modAccess[m] !== false);
+      const s2Visible = s2Mods.some(m => {
+        const el = document.querySelector(`#teacherSidebarMenu .nav-item[data-module="${m}"]`);
+        return el && el.style.display !== 'none';
+      });
       sectionTitles[1].style.display = s2Visible ? '' : 'none';
     }
 
-    // 2. Submenus inside modules: hide options that are turned off
-    const attMarkSub = document.querySelector('#teacherSidebarMenu a[data-sub="mark"]');
-    if (attMarkSub) attMarkSub.style.display = (granular.mark_attendance !== false ? '' : 'none');
-
-    const attHistSub = document.querySelector('#teacherSidebarMenu a[data-sub="history"]');
-    if (attHistSub) attHistSub.style.display = (granular.view_attendance !== false ? '' : 'none');
-
-    const examCreateSub = document.querySelector('#teacherSidebarMenu a[data-sub="create"]');
-    if (examCreateSub) examCreateSub.style.display = (granular.create_exams !== false ? '' : 'none');
-
-    const examEnterSub = document.querySelector('#teacherSidebarMenu a[data-sub="enter-marks"]');
-    if (examEnterSub) examEnterSub.style.display = (granular.enter_marks !== false ? '' : 'none');
-
-    const examGradeSub = document.querySelector('#teacherSidebarMenu a[data-sub="grade"]');
-    if (examGradeSub) examGradeSub.style.display = (granular.enter_marks !== false ? '' : 'none');
-
-    const hwSub = document.querySelector('#teacherSidebarMenu a[data-sub="homework"]');
-    if (hwSub) hwSub.style.display = (granular.homework_assignments !== false ? '' : 'none');
-
-    const assignSub = document.querySelector('#teacherSidebarMenu a[data-sub="assignments"]');
-    if (assignSub) assignSub.style.display = (granular.homework_assignments !== false ? '' : 'none');
-
-    const matSub = document.querySelector('#teacherSidebarMenu a[data-sub="materials"]');
-    if (matSub) matSub.style.display = (granular.study_materials !== false ? '' : 'none');
-
-    const leaveApplySub = document.querySelector('#teacherSidebarMenu a[data-sub="apply"]');
-    if (leaveApplySub) leaveApplySub.style.display = (granular.apply_leave !== false ? '' : 'none');
+    // 2. Sync internal view tab strips
+    syncTeacherTabStripPermissions(subPerms);
 
     // 3. Teacher Dashboard Actions & Metric Cards
     // Welcome Banner Quick Mark Attendance
     const quickAttBtn = document.querySelector('.teacher-welcome-banner button[onclick*="markAttendanceModal"]');
-    if (quickAttBtn) quickAttBtn.style.display = (granular.mark_attendance !== false ? '' : 'none');
+    if (quickAttBtn) quickAttBtn.style.display = (granular.mark_attendance !== false && subPerms['attendance.mark'] !== false ? '' : 'none');
 
     // Today's classes schedule buttons
     document.querySelectorAll('.schedule-actions button[onclick*="markAttendanceModal"]').forEach(b => {
-      b.style.display = (granular.mark_attendance !== false ? '' : 'none');
+      b.style.display = (granular.mark_attendance !== false && subPerms['attendance.mark'] !== false ? '' : 'none');
     });
     document.querySelectorAll('.schedule-actions button[onclick*="homework"]').forEach(b => {
-      b.style.display = (granular.homework_assignments !== false ? '' : 'none');
+      b.style.display = (granular.homework_assignments !== false && subPerms['academics.homework'] !== false ? '' : 'none');
     });
     document.querySelectorAll('.schedule-actions button[onclick*="materials"]').forEach(b => {
-      b.style.display = (granular.study_materials !== false ? '' : 'none');
+      b.style.display = (granular.study_materials !== false && subPerms['academics.materials'] !== false ? '' : 'none');
     });
 
     // Metric Cards on Dashboard
@@ -1629,7 +1879,23 @@ var teacherApp = (function () {
     }
   }
 
+    function deduplicateTeacherStudents(arr) {
+    if (!Array.isArray(arr)) return [];
+    const seenRoll = new Set();
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+      const s = arr[i];
+      if (!s) continue;
+      const key = `${s.class || ''}_${s.roll || ''}`;
+      if (seenRoll.has(key)) continue;
+      seenRoll.add(key);
+      result.push(s);
+    }
+    return result;
+  }
+
   function renderStudentsList(list) {
+    list = deduplicateTeacherStudents(list);
     const tbody = document.getElementById('teacherStudentsTableBody');
     const countBadge = document.getElementById('studentRosterCountBadge');
     if (countBadge) {
@@ -1646,6 +1912,8 @@ var teacherApp = (function () {
       const grade = s.marks >= 45 ? 'A1' : (s.marks >= 40 ? 'A2' : (s.marks >= 35 ? 'B1' : 'B2'));
       const badgeClass = grade.startsWith('A') ? 'badge-success' : 'badge-primary';
       const attPct = s.att === 'P' ? '96%' : (s.att === 'L' ? '91%' : '86%');
+      const cls = state.classes.find(c => c.code === s.class || c.id === s.class.toLowerCase());
+      const isLeadClassTeacher = cls ? !!cls.isClassTeacher : false;
 
       return `
         <tr>
@@ -1661,9 +1929,20 @@ var teacherApp = (function () {
           <td class="text-center"><strong>${s.marks} / 50</strong> (${(s.marks * 2)}%)</td>
           <td class="text-center"><span class="portal-badge ${badgeClass}">${grade}</span></td>
           <td class="text-center">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.viewStudentDossier(${s.roll})" title="View Full Dossier">
-              <i class="fa-regular fa-id-badge"></i> Dossier
-            </button>
+            <div style="display: inline-flex; gap: 4px; align-items: center; justify-content: center;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.viewStudentDossier(${s.roll})" title="View Full Dossier">
+                <i class="fa-regular fa-id-badge"></i> Dossier
+              </button>
+              ${isLeadClassTeacher ? `
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="teacherApp.promptWithdrawStudent(${s.roll}, '${s.name.replace(/'/g, "\\'")}', '${s.class}')" title="Class Teacher Authority: Withdraw Student from School Roster">
+                  <i class="fa-solid fa-user-xmark"></i> Withdraw
+                </button>
+              ` : `
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="teacherApp.notifyNonClassTeacherAttempt('${s.name.replace(/'/g, "\\'")}', '${s.class}')" style="opacity:0.6; cursor:not-allowed;" title="Action Restricted: Only designated Class Teacher of Class ${s.class} can withdraw student">
+                  <i class="fa-solid fa-lock"></i>
+                </button>
+              `}
+            </div>
           </td>
         </tr>
       `;
@@ -2169,7 +2448,7 @@ var teacherApp = (function () {
         </div>
         <div>
           <h3 style="margin: 0; font-size: 1.15rem; color: var(--color-text-dark);">${s.name}</h3>
-          <p style="margin: 0.15rem 0 0 0; color: var(--color-text-muted); font-size: 0.85rem;">Roll #${s.roll} • Grade ${s.class} • Sri Vidya E.M High School</p>
+          <p style="margin: 0.15rem 0 0 0; color: var(--color-text-muted); font-size: 0.85rem;">Roll #${s.roll} • Grade ${s.class} ${s.admNo ? `• Adm No: <strong style="color:var(--color-primary);">${s.admNo}</strong>` : ''} • Sri Vidya E.M High School</p>
         </div>
       </div>
 
@@ -2387,6 +2666,336 @@ var teacherApp = (function () {
 
     showToast('Your password has been changed successfully! Account is secured.', 'success');
   }
+
+  
+  // =========================================================================
+  // SYNC APPROVED ADMISSIONS DIRECTLY TO CLASS TEACHER & CLASS STUDENTS ROSTER
+  // =========================================================================
+  function normalizeClassForTeacher(rawClass) {
+    if (!rawClass) return '8A';
+    let str = String(rawClass).toUpperCase().replace(/CLASS/i, '').replace(/GRADE/i, '').replace(/TH|ST|ND|RD/g, '').trim();
+    if (str === '10' || str === 'X') return '10A';
+    if (str === '9' || str === 'IX') return '9B';
+    if (str === '8' || str === 'VIII') return '8A';
+    if (str === '7' || str === 'VII') return '7C';
+    if (str === '6' || str === 'VI') return '6A';
+    if (str === '5' || str === 'V') return '5A';
+    if (str === '4' || str === 'IV') return '4A';
+    if (str === '3' || str === 'III') return '3A';
+    if (str === '2' || str === 'II') return '2A';
+    if (str === '1' || str === 'I') return '1A';
+    if (str.includes('KG') || str.includes('NURSERY') || str.includes('PP')) return 'PPA';
+    return (str ? str + 'A' : '8A');
+  }
+
+  function updateClassFilterUI(classCode) {
+    const select = document.getElementById('studentClassFilterSelect');
+    if (select) {
+      const exists = Array.from(select.options).some(o => o.value === classCode);
+      if (!exists) {
+        const opt = document.createElement('option');
+        opt.value = classCode;
+        opt.textContent = `Class ${classCode} (Admitted Section)`;
+        const allOpt = select.querySelector('option[value="ALL"]');
+        if (allOpt) {
+          select.insertBefore(opt, allOpt);
+        } else {
+          select.appendChild(opt);
+        }
+      }
+    }
+
+    const quickBar = document.querySelector('.class-quick-bar');
+    if (quickBar) {
+      const pillId = 'btnClassPill-' + classCode;
+      if (!document.getElementById(pillId)) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-class-pill';
+        btn.id = pillId;
+        btn.onclick = () => selectStudentClass(classCode);
+        btn.innerHTML = `<i class="fa-solid fa-graduation-cap text-emerald"></i> Class ${classCode}`;
+        const allBtn = document.getElementById('btnClassPill-ALL');
+        if (allBtn) {
+          quickBar.insertBefore(btn, allBtn);
+        } else {
+          quickBar.appendChild(btn);
+        }
+      }
+    }
+  }
+
+  function renderDashboardNewAdmissionsBox(admissionsList) {
+    const container = document.getElementById('teacherNewAdmissionsAlert');
+    if (!container) return;
+
+    if (!Array.isArray(admissionsList) || admissionsList.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+
+    container.style.display = 'block';
+    container.innerHTML = `
+      <div class="card p-4 mb-4" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%); border: 1.5px solid #10b981; border-radius: var(--radius-md); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08);">
+        <div class="card-header-bar mb-3" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:44px; height:44px; border-radius:10px; background:#10b981; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow:0 3px 10px rgba(16,185,129,0.35); flex-shrink:0;">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                <h3 style="margin:0; font-size:1.15rem; color:var(--color-text-dark);">Newly Admitted Students (Class Teacher Roster)</h3>
+                <span class="portal-badge badge-success" style="font-size:0.75rem; text-transform:uppercase;"><i class="fa-solid fa-circle-check"></i> Approved &amp; Enrolled</span>
+              </div>
+              <p class="text-muted text-xs mt-1" style="margin:0;">
+                Approved by Principal &amp; Vice Principal and directly integrated into the respective class teacher's active student roster.
+              </p>
+            </div>
+          </div>
+          <span class="portal-badge badge-primary" style="font-weight:700;">${admissionsList.length} Admitted Student${admissionsList.length > 1 ? 's' : ''}</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:1rem;">
+          ${admissionsList.map(item => {
+            const studentName = item.studentName || item.name;
+            const targetCode = normalizeClassForTeacher(item.classCode || item.class);
+            const admNo = item.admNo || item.enrolledAdmNo || 'SV-0501';
+            const matchedStudent = state.students.find(s => (s.admNo && s.admNo === admNo) || (s.name && s.name.toLowerCase() === studentName.toLowerCase()));
+            const roll = matchedStudent ? matchedStudent.roll : (item.rollNo || 801);
+            const teacherName = item.classTeacher || 'Assigned Faculty';
+
+            return `
+              <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:1.1rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.6rem;">
+                    <div>
+                      <div style="font-size:1.05rem; font-weight:800; color:var(--color-text-dark);">${studentName}</div>
+                      <div style="display:flex; align-items:center; gap:0.4rem; margin-top:0.25rem; flex-wrap:wrap;">
+                        <span class="portal-badge badge-primary" style="font-size:0.75rem; font-weight:700;">Class ${targetCode}</span>
+                        <span class="portal-badge badge-success" style="font-size:0.75rem; font-weight:700;">Adm: ${admNo}</span>
+                        <span class="portal-badge" style="background:#f1f5f9; color:#475569; font-size:0.75rem; font-weight:700;">Roll #${roll}</span>
+                      </div>
+                    </div>
+                    <div style="width:38px; height:38px; border-radius:50%; background:var(--color-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.05rem; flex-shrink:0;">
+                      ${studentName.split(' ').pop()[0] || 'S'}
+                    </div>
+                  </div>
+
+                  <div style="font-size:0.83rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:0.75rem; background:var(--color-bg-subtle, #f8fafc); padding:0.6rem 0.75rem; border-radius:6px; border:1px solid #f1f5f9;">
+                    <div><strong>Class Teacher:</strong> <span style="color:var(--color-text-dark); font-weight:600;">${teacherName}</span></div>
+                    <div><strong>Parent:</strong> ${item.parent || 'Parent / Guardian'} &bull; <a href="tel:${item.phone}" style="color:var(--color-primary); font-weight:600;"><i class="fa-solid fa-phone"></i> ${item.phone || '—'}</a></div>
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:0.5rem; margin-top:0.25rem;">
+                  <button type="button" class="btn btn-primary btn-sm" style="flex:1;" onclick="teacherApp.viewEnrolledStudentInClass('${targetCode}', ${roll})">
+                    <i class="fa-solid fa-user-graduate"></i> View in Class Roster
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="teacherApp.viewStudentDossier(${roll})" title="View Student Dossier">
+                    <i class="fa-regular fa-id-badge"></i> Dossier
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function viewEnrolledStudentInClass(classCode, roll) {
+    navigateTo('students', 'list');
+    selectStudentClass(classCode);
+    showToast(`Navigated to Class ${classCode} Roster for newly admitted student (Roll #${roll})`, 'info');
+  }
+
+  function syncAdmittedStudentsFromStorage(isLiveBroadcast = false) {
+    try {
+      const admissionsList = [];
+
+      // 1. sv_teacher_new_admissions
+      const rawTeacherAdm = localStorage.getItem('sv_teacher_new_admissions');
+      if (rawTeacherAdm) {
+        try {
+          const list = JSON.parse(rawTeacherAdm);
+          if (Array.isArray(list)) admissionsList.push(...list);
+        } catch (e) {}
+      }
+
+      // 2. sv_enrolled_students
+      const rawEnrolled = localStorage.getItem('sv_enrolled_students');
+      if (rawEnrolled) {
+        try {
+          const list = JSON.parse(rawEnrolled);
+          if (Array.isArray(list)) {
+            list.forEach(item => {
+              if (!admissionsList.some(a => a.admNo === item.admNo || (a.appId && a.appId === item.admissionAppId))) {
+                admissionsList.push({
+                  appId: item.admissionAppId,
+                  admNo: item.admNo,
+                  studentName: item.name,
+                  class: item.class,
+                  classCode: normalizeClassForTeacher(item.class),
+                  rollNo: item.rollNo,
+                  parent: item.parent,
+                  phone: item.phone,
+                  enrolledAt: item.enrolledAt,
+                  classTeacher: item.classTeacher
+                });
+              }
+            });
+          }
+        } catch (e) {}
+      }
+
+      // 3. sv_applications
+      const rawApps = localStorage.getItem('sv_applications');
+      if (rawApps) {
+        try {
+          const list = JSON.parse(rawApps);
+          if (Array.isArray(list)) {
+            list.forEach(app => {
+              const isApproved = (app.status || '').toLowerCase().includes('approved');
+              if (isApproved) {
+                const sName = app.name || app.studentName;
+                if (!admissionsList.some(a => (a.appId && a.appId === app.appId) || (a.admNo && a.admNo === app.enrolledAdmNo))) {
+                  admissionsList.push({
+                    appId: app.appId || app.applicationNumber,
+                    admNo: app.enrolledAdmNo || 'SV-0501',
+                    studentName: sName,
+                    class: app.class || app.grade,
+                    classCode: normalizeClassForTeacher(app.class || app.grade),
+                    rollNo: app.rollNo,
+                    parent: app.parent || app.parentName,
+                    phone: app.phone,
+                    enrolledAt: app.approvedAt || new Date().toISOString(),
+                    classTeacher: app.assignedTeacher
+                  });
+                }
+              }
+            });
+          }
+        } catch (e) {}
+      }
+
+      if (admissionsList.length === 0) return;
+
+      let hasNewAddition = false;
+
+      admissionsList.forEach(item => {
+        const studentName = (item.studentName || item.name || '').trim();
+        if (!studentName) return;
+
+        const targetCode = normalizeClassForTeacher(item.classCode || item.class);
+        const admNo = item.admNo || item.enrolledAdmNo || 'SV-0501';
+
+        // Check if student already in state.students
+        let existing = state.students.find(s => 
+          (s.admNo && s.admNo === admNo) || 
+          (s.name && s.name.toLowerCase() === studentName.toLowerCase() && (s.class === targetCode || s.class === item.class))
+        );
+
+        if (!existing) {
+          let maxRoll = 0;
+          state.students.forEach(s => {
+            if (s.class === targetCode) {
+              const r = parseInt(s.roll, 10);
+              if (!isNaN(r) && r > maxRoll) maxRoll = r;
+            }
+          });
+
+          const baseRolls = {
+            '10A': 1032,
+            '9B': 940,
+            '8A': 842,
+            '7C': 738,
+            '6A': 600,
+            '5A': 500,
+            '4A': 400,
+            '3A': 300,
+            '2A': 200,
+            '1A': 100,
+            'PPA': 0
+          };
+
+          const calculatedRoll = parseInt(item.rollNo, 10) || (maxRoll ? maxRoll + 1 : (baseRolls[targetCode] || 800) + 1);
+
+          const newStudentObj = {
+            roll: calculatedRoll,
+            admNo: admNo,
+            name: studentName,
+            class: targetCode,
+            phone: item.phone || '9848123000',
+            parent: item.parent || 'Parent',
+            att: 'P',
+            marks: 45,
+            remarks: `Direct admission confirmed by Principal/VP. Enrolled in Class ${targetCode} (Adm No: ${admNo}).`
+          };
+
+          state.students.unshift(newStudentObj);
+          hasNewAddition = true;
+
+          // Ensure class exists in state.classes and update strength
+          let cls = state.classes.find(c => c.code === targetCode || c.id === targetCode.toLowerCase());
+          if (!cls) {
+            cls = {
+              id: targetCode.toLowerCase(),
+              code: targetCode,
+              name: `Class ${targetCode}`,
+              isClassTeacher: true,
+              roleTitle: 'Class Teacher Assigned Section',
+              subject: 'Curriculum & Student Onboarding',
+              strength: 1,
+              room: item.assignedTeacherRoom || 'Classroom Wing',
+              timing: 'Period 1 (08:45 AM - 09:30 AM)',
+              avgScore: '86.0%',
+              topper: studentName
+            };
+            state.classes.push(cls);
+          } else {
+            cls.strength = (cls.strength || 0) + 1;
+          }
+
+          updateClassFilterUI(targetCode);
+
+          // Add onboarding task
+          const taskId = 'new-adm-' + (item.appId || admNo);
+          if (!state.pendingTasks.some(t => t.id === taskId)) {
+            state.pendingTasks.unshift({
+              id: taskId,
+              title: `Complete class onboarding & diary issuance: ${studentName} (${targetCode})`,
+              meta: `New Admission • Adm No: ${admNo} • Roll #${calculatedRoll}`,
+              badge: 'due-today',
+              badgeText: 'New Student',
+              done: false
+            });
+          }
+
+          if (isLiveBroadcast) {
+            showToast(`🎉 New Student Admitted: ${studentName} has been enrolled in ${targetCode} (Adm No: ${admNo}, Roll #${calculatedRoll}) and added to your class roster!`, 'success');
+          }
+        }
+      });
+
+      // Update total students metric
+      state.teacher.totalStudents = state.students.length;
+      const countPill = document.getElementById('studentRosterCountBadge');
+      if (countPill) countPill.textContent = `${state.students.length} Students`;
+
+      const studentMetric = document.querySelector('.metrics-quad .metric-card[onclick*="students"] .metric-value');
+      if (studentMetric) studentMetric.textContent = state.students.length;
+
+      renderDashboardNewAdmissionsBox(admissionsList);
+
+      filterStudentList();
+      renderTasks();
+      updateAttendanceBadges();
+
+    } catch (err) {
+      console.warn('Error syncing admitted students to teacher portal:', err);
+    }
+  }
+
 
   function loadSavedProfile() {
     try {
@@ -2759,7 +3368,13 @@ var teacherApp = (function () {
     resetProfile,
     loadSavedProfile,
     viewStudentDossier,
-    contactParentFromDossier
+    syncAdmittedStudentsFromStorage,
+    viewEnrolledStudentInClass,
+    renderDashboardNewAdmissionsBox,
+    contactParentFromDossier,
+    promptWithdrawStudent,
+    notifyNonClassTeacherAttempt,
+    confirmWithdrawStudent
   };
 
 })();

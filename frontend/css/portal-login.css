@@ -1437,3 +1437,175 @@
 .p-3 { padding: 1rem !important; }
 .p-5 { padding: 2rem !important; }
 .p-2 { padding: 0.5rem !important; }
+
+
+/* ==========================================================================
+   Two-Factor Authentication (2FA) Phone Number OTP Verification Styles
+   ========================================================================== */
+.otp-verification-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.otp-verification-header .otp-icon-wrap {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.badge-mgmt-otp {
+  background: rgba(30, 58, 138, 0.12);
+  color: #1e3a8a;
+}
+
+.badge-teacher-otp {
+  background: rgba(5, 150, 105, 0.12);
+  color: #059669;
+}
+
+.otp-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 1.25rem 0;
+}
+
+.otp-digit {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--color-text-dark, #0f172a);
+  background: var(--color-bg-subtle, #f8fafc);
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Outfit', 'Inter', monospace;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.otp-digit:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.login-theme-teacher .otp-digit:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+}
+
+.otp-digit.error {
+  border-color: #ef4444 !important;
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  animation: otpShake 0.4s ease;
+}
+
+@keyframes otpShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.btn-autofill-otp {
+  background: rgba(16, 185, 129, 0.1);
+  color: #047857;
+  border: 1px dashed #10b981;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-autofill-otp:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #059669;
+  transform: scale(1.02);
+}
+
+.btn-change-phone {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.btn-change-phone:hover {
+  color: #1d4ed8;
+}
+
+.login-theme-teacher .btn-change-phone {
+  color: #059669;
+}
+.login-theme-teacher .btn-change-phone:hover {
+  color: #047857;
+}
+
+.otp-meta-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-otp-resend {
+  background: none;
+  border: none;
+  color: var(--color-primary, #2563eb);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-otp-resend:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-otp-cancel {
+  background: none;
+  border: none;
+  color: var(--color-text-muted, #64748b);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-otp-cancel:hover {
+  color: var(--color-text-dark, #0f172a);
+}
+
+[data-theme="dark"] .otp-digit {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .btn-autofill-otp {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: #059669;
+}
